@@ -1,0 +1,15 @@
+{
+  "name": "router-service",
+  "version": "1.0.0",
+  "description": "API gateway - does not contain business inside, only filter and forward request to actual services to handle. Expected to be extremely lightweight and lightning fast.",
+  "main": "index.js",
+  "dependencies": {
+    "moleculer": "^0.13.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "DuyPham",
+  "license": "ISC"
+}
