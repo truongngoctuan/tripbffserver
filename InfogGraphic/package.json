@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "server-start": "http-server .\\LottieWeb\\ -p 4050",
+    "snapshot": "node .\\chrome-generator.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
