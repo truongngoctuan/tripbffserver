@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer');
 const url = "http://localhost:4050";
 (async () => {
     const browser = await puppeteer.launch({
-        headless: false
+        // headless: false
     });
     const page = await browser.newPage();
     await page.goto(url);
@@ -27,7 +27,7 @@ const url = "http://localhost:4050";
     const svgInfoGraphic = await page.$('#info-graphic-base');
     await svgInfoGraphic.screenshot({
         path: 'svg-info-graphic.png',
-        omitBackground: true,
+        // omitBackground: true,
     });
 
     await browser.close();
