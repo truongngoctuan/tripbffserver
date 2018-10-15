@@ -1,13 +1,16 @@
 const http = require('http');
 const HttpStatus = require('http-status-codes');
 const urlParser = require('url');
-const apiHandler = require('./endpoint/api.handler');
-const logger = require('./common/logger');
+const apiHandler = require('../endpoint/api.handler');
+const logger = require('../common/logger');
+const discoveryAgent = require('platform-common/discovery/agent.discovery');
 
 function setHttpStatus(response, statusCode) {
     response.statusCode = statusCode;
     response.statusMessage = HttpStatus.getStatusText(statusCode);
 }
+
+discoveryAgent.init({"serviceTag": "router-service"});
 
 http.createServer(function (request, response) {
     logger.log("detected method: %s", request.method);

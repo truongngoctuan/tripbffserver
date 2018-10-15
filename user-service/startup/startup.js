@@ -1,61 +1,30 @@
 //we use redis as message broker for now
-//setup redis
-var redis = require('redis');
-var sub = redis.createClient(), pub = redis.createClient();
 
-// sub.on("subscribe", function (channel, count) {
-//     console.log("subscribed on channel = " + channel + " count = " + count);
-// });
+var discoveryAgent = require('platform-common/discovery/agent.discovery')
 
-// sub.on("message", function (channel, message) {
-//     console.log("message = " + message);
+discoveryAgent.init({ "serviceTag": "user-service" });
 
+discoveryAgent.consume(function (context, action, payload) {
+    //TODO: handle business
+    if ("LOGIN" === action) {
+        console.log("detect LOGIN request");
+        console.log("context: " + JSON.stringify(context));
+        console.log("payload: " + JSON.stringify(payload));
 
-// });
-
-
-var messageHandler = function(message){
-        //TODO: handle business
-        var requestMessage = JSON.parse(message);
-        var action = requestMessage.action;
-        var context = requestMessage.context;
-    
-        if ("LOGIN" === action) {
-            console.log("detect LOGIN request");
-            console.log("context: " + context);
-    
-            var callbackMessage = {
-                "context": context,
-                "callback": {
-                    "code": 200,
-                    "data": {
-                        "user-service": "hello"
-                    }
+        var response = {
+            "context": context,
+            "callback": {
+                "code": 200,
+                "data": {
+                    "user-service": "hello"
                 }
-            };
-    
-            pub.publish(context.instanceId, JSON.stringify(callbackMessage));
-        }
-}
+            }
+        };
 
-// sub.subscribe("user-service");
-// sub.blpop("user-service", 0, function (err, message) {
-//     console.log("lpop message: " + message);
-// });
+        discoveryAgent.reply(context, response);
+    }
+});
 
-
-var consumer = function() {
-    sub.blpop("user-service", 0, function (err, messages) {
-        console.log("lpop message: " + messages[1]);
-        messageHandler(messages[1]);
-        consumer();
-    }); 
-}
-
-consumer();
-
-
-
-
+console.log("user-service is ready");
 
 

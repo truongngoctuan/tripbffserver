@@ -70,7 +70,7 @@ const logger = require('../common/logger');
 //     });
 // };
 
-var discoveryAgent = require('../discovery/agent.discovery');
+var discoveryAgent = require('platform-common/discovery/agent.discovery');
 
 
 exports.doLogin = function(requestHeaders, requestBodyAsBuffer, callback) {
