@@ -216,7 +216,7 @@ function drawLottie(svgBase, location) {
         renderer: 'svg',
         loop: false,
         autoplay: false,
-        path: './data/gradient_animated_background.json',
+        path: './data/octopus-image/data.json',
         // name: 'svgB',
         // rendererSettings: {
         //   className: 'svgBold'
