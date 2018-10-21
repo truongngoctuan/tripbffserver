@@ -1,9 +1,7 @@
 import * as Hapi from "hapi";
+const authService = require("./bootstraping/authentication.js");
+const swaggerUiService = require("./bootstraping/swagger-documentation");
 
-const Inert = require('inert');
-const Vision = require('vision');
-const HapiSwagger = require('hapi-swagger');
-const Pack = require('../package');
 const Joi = require('joi');
 
 (async () => {
@@ -13,37 +11,24 @@ const Joi = require('joi');
         port: 8000
     });
 
-    const swaggerOptions = {
-        info: {
-            title: 'Test API Documentation',
-            version: Pack.version,
-        },
-    };
-
-    await server.register([
-        Inert,
-        Vision,
-        {
-            plugin: HapiSwagger,
-            options: swaggerOptions
-        }
-    ]);
+    await swaggerUiService.addSwaggerUi(server);
+    await authService.addAuth(server);
 
     // Add the route
     server.route({
         method: 'GET',
         path: '/hello/{id}',
         handler: function (request, h) {
-
             return 'hello world2';
         },
         options: {
+            auth: "simple",
             tags: ["api"],
             validate: {
                 params: {
-                    id : Joi.number()
-                            .required()
-                            .description('the id for the todo item'),
+                    id: Joi.number()
+                        .required()
+                        .description('the id for the todo item'),
                 }
             },
         }
