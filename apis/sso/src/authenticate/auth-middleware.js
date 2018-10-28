@@ -3,7 +3,6 @@ const config = require('../config');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
 
-console.log(config.redisStore.url);
 var redis = require("redis"),
     client = redis.createClient({
         host: config.redisStore.host,

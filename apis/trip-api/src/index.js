@@ -19,7 +19,8 @@ const Joi = require('joi');
         method: 'GET',
         path: '/hello/{id}',
         handler: function (request, h) {
-            return 'hello world2';
+            console.log(request.auth);
+            return `hello logged user ${request.auth.credentials.user.name}, params: ${JSON.stringify(request.params)}`;
         },
         options: {
             auth: "simple",
