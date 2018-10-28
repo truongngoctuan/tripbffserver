@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const authMiddleware = require('./authenticate/auth-middleware');
 
 module.exports = function (app, passport) {
     // =====================================
@@ -8,42 +9,23 @@ module.exports = function (app, passport) {
         res.send('Hello World!')
     })
 
-    app.get('/dashboard', function (req, res) {
+    app.get('/unauthorised', (req, res) => res.send("unauthorised"))
+
+    app.get('/dashboard', isLoggedIn, function (req, res) {
         console.log("dashboard")
         res.send(`dashboard`)
     });
 
-    app.get('/login2', (req, res) => {
-        // console.log(req)
-        res.send("login failed")
-    })
     // process the login form
     app.post('/login', passport.authenticate('local', {
-        // successRedirect: '/profile', // redirect to the secure profile section
         failureRedirect: '/login2', // redirect back to the signup page if there is an error
         failureFlash: true, // allow flash messages
         session: false,
     }), function (req, res) {
-        console.log("here it went")
-        console.log(req.user)
-
-        const user = req.user;
-
-        req.login(user, {
-            session: false,
-        }, err => {
-            if (err) {
-                res.send(err);
-            }
-
-            // generate a signed son web token with the contents of user object and return it in the response
-            const token = jwt.sign(user, 'your_jwt_secret');
-            return res.json({
-                user,
-                token
-            });
-        })
+        return authMiddleware.login(req, res);
     });
+
+    //TODO: logout does not work for sure :D
 
     // =====================================
     // LOGOUT ==============================
@@ -51,8 +33,9 @@ module.exports = function (app, passport) {
     app.get('/logout', function (req, res) {
         req.logout();
         res.redirect('/');
-    });
+    });    
 
+    // TODO add this kind of function into hapi in `consumer-api`
     // route middleware to make sure a user is logged in
     function isLoggedIn(req, res, next) {
 
@@ -61,7 +44,7 @@ module.exports = function (app, passport) {
             return next();
 
         // if they aren't redirect them to the home page
-        res.redirect('/');
+        res.redirect('/unauthorised');
     }
 
 }

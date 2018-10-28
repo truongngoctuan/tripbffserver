@@ -2,8 +2,12 @@ const config = {
     app: {
       port: 3000
     },
+    auth: {
+      TTLInSeconds: 3600,
+      keyPrefix: "login-session",
+    },
     redisStore: {
-        url: "locahost",
+        host: "localhost",
         port: 7001,
         secret: "asd",
     },

@@ -2,12 +2,6 @@
 // const bcrypt = require('bcrypt')
 const LocalStrategy = require('passport-local').Strategy
 
-const user = {
-    username: 'test-user',
-    passwordHash: 'bcrypt-hashed-password',
-    id: 1
-}
-
 // expose this function to our app using module.exports
 module.exports = function (passport) {
 
@@ -28,9 +22,15 @@ module.exports = function (passport) {
         },
         function (req, email, password, done) { // callback with email and password from our form
             // console.log(req);
-            console.log(email + password);
+            console.log(`${email}:${password}`);
+
+            var fakeUser = {
+                username: email,
+                name: email,
+                id: 1,
+            }
             // all is well, return successful user
-            return done(null, user);
+            return done(null, fakeUser);
 
             // // find a user whose email is the same as the forms email
             // // we are checking to see if the user trying to login already exists
