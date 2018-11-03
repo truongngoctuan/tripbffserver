@@ -7,7 +7,8 @@ const Joi = require('joi');
 (async () => {
     // Create a server with a host and port
     const server = Hapi.server({
-        host: 'localhost',
+        //host: 'localhost',
+        host: '192.168.2.101', // local: should use IP4 of current local computer to allow call API from native app
         port: 8000
     });
 

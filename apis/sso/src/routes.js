@@ -18,10 +18,11 @@ module.exports = function (app, passport) {
 
     // process the login form
     app.post('/login', passport.authenticate('local', {
-        failureRedirect: '/login2', // redirect back to the signup page if there is an error
-        failureFlash: true, // allow flash messages
+        //failureRedirect: '/login2', // redirect back to the signup page if there is an error
+        failureFlash: false, // allow flash messages
         session: false,
     }), function (req, res) {
+        console.log('come here login api ');
         return authMiddleware.login(req, res);
     });
 
