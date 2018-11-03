@@ -1,0 +1,9 @@
+db-mongo:
+  image: mongo:3.6-jessie
+  container_name: db-mongo
+  # networks:
+  #   - _network name_
+  volumes:
+    - ./db-mongo:/data/db
+    - ./mongod.conf:/etc/mongod.conf
+  command: mongod --config /etc/mongod.conf
