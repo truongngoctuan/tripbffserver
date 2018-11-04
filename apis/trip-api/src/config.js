@@ -10,6 +10,9 @@ const config = {
     host: "localhost",
     port: 7001,
   },
+  trip: {
+    keyPrefix: "trip"
+  }
   // db: {
   //   host: 'localhost',
   //   port: 27017,
