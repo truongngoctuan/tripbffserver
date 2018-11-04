@@ -51,13 +51,15 @@ var redis = require("redis");
             console.log('trip name :' + request.payload.name);
             console.log('trip from date:' + request.payload.fromDate);
             console.log('trip to date:' + request.payload.toDate);
+
+            //TODO: should create tripId later when we have mongo DB
+            var tripId = Math.floor(Math.random() * 100);
             var data = {
+                id: tripId,
                 name: request.payload.name,
                 fromDate: request.payload.fromDate,
                 toDate: request.payload.toDate
             };
-            //TODO: should create tripId later when we have mongo DB
-            var tripId = Math.floor(Math.random() * 100);
             // store trip info into Redis and return tripId
             client.set(`${config.trip.keyPrefix}:${tripId}`, JSON.stringify(data));
             return tripId;
