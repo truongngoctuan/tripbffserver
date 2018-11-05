@@ -9,7 +9,7 @@ var redis = require("redis");
     // Create a server with a host and port
     const server = Hapi.server({
         //host: 'localhost',
-        host: '192.168.0.109', // local: should use IP4 of current local computer to allow call API from native app
+        host: '192.168.2.101', // local: should use IP4 of current local computer to allow call API from native app
         port: 8000
     });
 
@@ -97,6 +97,54 @@ var redis = require("redis");
                         .description('the id for the todo item'),
                 }
             },
+        }
+    });
+
+    ////////////// TRIP IMPORT API ////////////
+
+    server.route({
+        method: 'POST',
+        path: '/trips/{id}/locations',
+        handler: function (request, h) {
+            var selectedLocations = request.payload;
+
+            selectedLocations.forEach(element => {
+                console.log('location long:' + element.location.long);
+                console.log('location lat:' + element.location.lat);
+                console.log('location from time :' + element.fromTime);
+                
+                var images = element.images;
+                images.forEach(image => {
+                    console.log('image url: ' + image.url);
+                });
+            });
+
+            
+            var tripId = request.params.id;
+            console.log('trip id :' + tripId);
+
+            // get trip from redis
+            var key = `${config.trip.keyPrefix}:${tripId}`;
+            var trip = authService.getAsync(key);
+            trip.locations = selectedLocations;
+
+            // store trip with locations into redis
+            client.set(key, JSON.stringify(trip));
+
+            //TODO: check again trip is updated or not
+            return tripId;
+        },
+        options: {
+            auth: "simple",
+            tags: ["api"],
+            //TODO: validate locations
+            // validate: {
+            //     payload: {
+            //         name: Joi.string().required().description('the id for the todo item'),
+            //         fromDate: Joi.date().required().description('the fromDate'),
+            //         toDate: Joi.date().required().description('the toDate'),
+            //     }
+            // },
         }
     });
 
