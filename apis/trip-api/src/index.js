@@ -102,49 +102,56 @@ var redis = require("redis");
 
     ////////////// TRIP IMPORT API ////////////
 
+    const locationsSchema = Joi.array().items(Joi.object({
+        locationId: Joi.number(),
+        fromTime: Joi.date(),
+        toTime: Joi.date()        ,
+        location: Joi.object({
+            long: Joi.number().required(),
+            lat: Joi.number().required(),
+            address: Joi.string()
+        })
+        ,
+        images: Joi.array().items(Joi.object({
+            url: Joi.string().required(),
+            isSelected: Joi.bool().required()
+        }))
+    }));
+
     server.route({
         method: 'POST',
         path: '/trips/{id}/locations',
         handler: function (request, h) {
             var selectedLocations = request.payload;
-
-            selectedLocations.forEach(element => {
-                console.log('location long:' + element.location.long);
-                console.log('location lat:' + element.location.lat);
-                console.log('location from time :' + element.fromTime);
-                
-                var images = element.images;
-                images.forEach(image => {
-                    console.log('image url: ' + image.url);
-                });
-            });
-
-            
             var tripId = request.params.id;
-            console.log('trip id :' + tripId);
+            
+            // selectedLocations.forEach(element => {
+            //     console.log('location long:' + element.location.long);
+            //     console.log('location lat:' + element.location.lat);
+            //     console.log('location from time :' + element.fromTime);
+                
+            //     var images = element.images;
+            //     images.forEach(image => {
+            //         console.log('image url: ' + image.url);
+            //     });
+            // });            
 
             // get trip from redis
             var key = `${config.trip.keyPrefix}:${tripId}`;
-            var trip = authService.getAsync(key);
-            trip.locations = selectedLocations;
+            authService.getAsync(key).then((trip) => {
+                trip.locations = selectedLocations;         
+                // store trip with locations into redis
+                client.set(key, JSON.stringify(trip));          
+            });    
 
-            // store trip with locations into redis
-            client.set(key, JSON.stringify(trip));
-
-            //TODO: check again trip is updated or not
-            return tripId;
+            return tripId;        
         },
         options: {
             auth: "simple",
             tags: ["api"],
-            //TODO: validate locations
-            // validate: {
-            //     payload: {
-            //         name: Joi.string().required().description('the id for the todo item'),
-            //         fromDate: Joi.date().required().description('the fromDate'),
-            //         toDate: Joi.date().required().description('the toDate'),
-            //     }
-            // },
+            validate: {
+                payload: locationsSchema
+            },
         }
     });
 
