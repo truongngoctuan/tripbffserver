@@ -152,7 +152,30 @@ var redis = require("redis");
             validate: {
                 payload: locationsSchema
             },
-        }
+        }        
+    });
+    
+
+    server.route({
+        method: 'GET',
+        path: '/trips/{id}/locations',
+        handler: function (request, h) {
+            var tripId = request.params.id;  
+            var key = `${config.trip.keyPrefix}:${tripId}`;
+            var trip = authService.getAsync(key);
+            return trip;        
+        },
+        options: {
+            auth: "simple",
+            tags: ["api"],
+            validate: {
+                params: {
+                    id: Joi.number()
+                        .required()
+                        .description('the id for the todo item'),
+                }
+            },
+        }        
     });
 
     // Start the server
