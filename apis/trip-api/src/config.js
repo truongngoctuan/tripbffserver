@@ -7,8 +7,8 @@ const config = {
   //   keyPrefix: "login-session",
   // },
   redisStore: {
-    host: "localhost",
-    port: 7001,
+    host: "127.0.1.1",
+    port: 6379,
   },
   // db: {
   //   host: 'localhost',

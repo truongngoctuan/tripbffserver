@@ -1,5 +1,6 @@
 version: '3.1'
-
+# TODO copy mongo-express if needed
+# TODO setup username and password for mongodb
 services:
 
   mongo:

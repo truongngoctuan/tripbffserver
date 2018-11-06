@@ -2,7 +2,7 @@ import * as Hapi from "hapi";
 const authService = require("./bootstraping/authentication.js");
 const swaggerUiService = require("./bootstraping/swagger-documentation");
 
-const Joi = require('joi');
+import helloRoutes from './sample.module/route';
 
 (async () => {
     // Create a server with a host and port
@@ -15,25 +15,29 @@ const Joi = require('joi');
     await authService.addAuth(server);
 
     // Add the route
-    server.route({
-        method: 'GET',
-        path: '/hello/{id}',
-        handler: function (request, h) {
-            console.log(request.auth);
-            return `hello logged user ${request.auth.credentials.user.name}, params: ${JSON.stringify(request.params)}`;
-        },
-        options: {
-            auth: "simple",
-            tags: ["api"],
-            validate: {
-                params: {
-                    id: Joi.number()
-                        .required()
-                        .description('the id for the todo item'),
-                }
-            },
-        }
-    });
+    helloRoutes.init(server);
+
+    // server.route({
+    //     method: 'GET',
+    //     path: '/hello/{id}',
+    //     handler: function (request, h) {
+    //         var result = helloService.index(request.params);
+    //         return JSON.stringify(result);
+    //         // return `${JSON.stringify(request.params)}`;
+    //         // return `hello logged user ${request.auth.credentials.user.name}, params: ${JSON.stringify(request.params)}`;
+    //     },
+    //     options: {
+    //         // auth: "simple",
+    //         tags: ["api"],
+    //         validate: {
+    //             params: {
+    //                 id: Joi.number()
+    //                     .required()
+    //                     .description('the id for the todo item'),
+    //             }
+    //         },
+    //     }
+    // });
 
     // Start the server
     async function start() {
