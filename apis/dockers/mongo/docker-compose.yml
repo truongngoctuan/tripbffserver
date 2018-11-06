@@ -1,9 +1,19 @@
-db-mongo:
-  image: mongo:3.6-jessie
-  container_name: db-mongo
-  # networks:
-  #   - _network name_
-  volumes:
-    - ./db-mongo:/data/db
-    - ./mongod.conf:/etc/mongod.conf
-  command: mongod --config /etc/mongod.conf
+version: '3.7'
+
+services:
+  mongo:
+    image: mongo:4.1.4-xenial
+    container_name: db-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    networks:
+      - api_network
+    volumes:
+      - ../../data/db-mongo:/data/db
+      - ./dockers/mongo/mongod.conf:/etc/mongod.conf
+    # command: mongod --dbpath /data/db
+networks:
+  api_network:
+    external:
+      name: mnet
