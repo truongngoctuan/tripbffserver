@@ -65,3 +65,4 @@ async function addAuth(server) {
 }
 
 module.exports.addAuth = addAuth;
+module.exports.getAsync = getAsync;

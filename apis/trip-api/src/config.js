@@ -8,11 +8,14 @@ const config = {
   // },
   redisStore: {
     host: "127.0.1.1",
-    port: 6379,
+    port: 6379
   },
   mongo: {
-    host: '127.0.1.1',
-    port: '27017',
+    host: "127.0.1.1",
+    port: "27017"
+  },
+  trip: {
+    keyPrefix: "trip"
   }
   // db: {
   //   host: 'localhost',
