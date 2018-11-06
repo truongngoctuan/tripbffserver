@@ -10,6 +10,10 @@ const config = {
     host: "127.0.1.1",
     port: 6379,
   },
+  mongo: {
+    host: '127.0.1.1',
+    port: '27017',
+  }
   // db: {
   //   host: 'localhost',
   //   port: 27017,

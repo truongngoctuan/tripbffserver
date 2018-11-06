@@ -1,10 +1,3 @@
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.1.1:27017/");
-//test mongodb connection
-mongoose.connection.once("open", () => {
-  console.log("connected to mongodb database");
-});
-
 const Foo = require("../models/Foo");
 
 function toFooDto(o) {

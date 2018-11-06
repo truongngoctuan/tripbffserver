@@ -1,6 +1,7 @@
 import * as Hapi from "hapi";
 const authService = require("./bootstraping/authentication.js");
 const swaggerUiService = require("./bootstraping/swagger-documentation");
+const mongoService = require('./bootstraping/mongo-connection');
 
 import helloRoutes from './sample.module/route';
 
@@ -13,6 +14,8 @@ import helloRoutes from './sample.module/route';
 
     await swaggerUiService.addSwaggerUi(server);
     await authService.addAuth(server);
+    await mongoService.init();
+
 
     // Add the route
     helloRoutes.init(server);
