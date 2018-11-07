@@ -1,7 +1,9 @@
-import helloService from "./services/hello-service";
+import { FooService } from "./services/hello-service";
 import { Server } from "hapi";
+import {FooRepository} from "./infrastructures/repositories/foo-repository";
 const Joi = require("joi");
 
+var helloService = new FooService(new FooRepository());
 module.exports = {
   init: function(server: Server) {
     server.route({

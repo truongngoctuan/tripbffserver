@@ -1,18 +1,19 @@
-import fooRepository from "../infrastructures/repositories/foo-repository";
+import { IFooRepository } from "./IFooRepository";
 
-function list(payload: {}) {
-  var results = fooRepository.list();
-  return results;
+export class FooService {
+  constructor(private fooRepository: IFooRepository) {
+
+  }
+
+  public list(payload: {}) {
+    var results = this.fooRepository.list();
+    return results;
+  }
+  
+  public create(payload: { name: String; description: String }) {
+    var foo = this.fooRepository.create(payload);
+    return foo;
+  }
+
 }
-
-function create(payload: { name: String; description: String }) {
-  var foo = fooRepository.create(payload);
-  return foo;
-}
-
-const fooService = {
-  list,
-  create,
-}
-
-export default fooService;
+export default FooService;
