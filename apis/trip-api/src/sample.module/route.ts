@@ -1,20 +1,19 @@
 import helloService from "./services/hello-service";
-
+import { Server } from "hapi";
 const Joi = require("joi");
 
 module.exports = {
-  init: function(server) {
+  init: function(server: Server) {
     server.route({
       method: "GET",
       path: "/hello",
       handler: function(request, h) {
-          try {
-              var result = helloService.list();
-              
-          } catch (error) {
-              console.log(error);
-          }
-        return result;
+        try {
+          var result = helloService.list({});
+          return result;
+        } catch (error) {
+          console.log(error);
+        }
         // return `${JSON.stringify(request.params)}`;
         // return `hello logged user ${request.auth.credentials.user.name}, params: ${JSON.stringify(request.params)}`;
       },
@@ -22,9 +21,9 @@ module.exports = {
         // auth: "simple",
         tags: ["api"],
         validate: {
-        //   params: {
-        //     id: Joi.required().description("the id for the todo item")
-        //   }
+          //   params: {
+          //     id: Joi.required().description("the id for the todo item")
+          //   }
         }
       }
     });
@@ -33,7 +32,8 @@ module.exports = {
       method: "POST",
       path: "/hello",
       handler: function(request, h) {
-        var result = helloService.create(request.payload);
+        const { name, description } = request.payload as any;
+        var result = helloService.create({ name, description });
         return result;
         // return `${JSON.stringify(request.params)}`;
         // return `hello logged user ${request.auth.credentials.user.name}, params: ${JSON.stringify(request.params)}`;
@@ -44,8 +44,8 @@ module.exports = {
         validate: {
           payload: {
             name: Joi.required().description("name"),
-            description: Joi.required().description("description"),
-          },
+            description: Joi.required().description("description")
+          }
         }
       }
     });
