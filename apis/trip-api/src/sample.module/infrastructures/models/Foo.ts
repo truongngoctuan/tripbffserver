@@ -13,6 +13,7 @@ export interface IFooModel extends IFoo, Document {}
 
 //schema definition, similar to db model
 export const FooSchema = new Schema({
+  id: String,
   name: String,
   description: String
 });

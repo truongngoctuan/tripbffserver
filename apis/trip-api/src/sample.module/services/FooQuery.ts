@@ -5,11 +5,7 @@ export class FooQueryHandler {
   constructor(private fooRepository: IFooRepository) {}
 
   async GetById(id: String): Promise<IFoo> {
-    return {
-      id: "0",
-      name: "aa",
-      description: "aaaa",
-    }
+    return this.fooRepository.get(id);
   }
 
   async list(): Promise<IFoo[]> {

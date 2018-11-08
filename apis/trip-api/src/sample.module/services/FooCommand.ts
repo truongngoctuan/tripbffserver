@@ -1,6 +1,7 @@
 import { IFooRepository } from "./IFooRepository";
 import { ServiceBus } from "./ServiceBus";
-import { EventHandler, FooEvent } from "./FooEvent";
+import { EventHandler, FooEvent, IFooEventRepository } from "./FooEvent";
+import { FooReducers } from "./FooReducer";
 
 // type FooCommand = CreateFooCommand | UpdateFooCommand;
 
@@ -18,16 +19,21 @@ type UpdateFooCommand = {
 };
 
 export interface CommandResult {
-  isSucceed: boolean,
-  errors?: String[],
+  isSucceed: boolean;
+  errors?: String[];
 }
 
 export class FooCommandHandler {
+  private reducers: FooReducers;
+  private eventHandler: EventHandler;
   constructor(
     private fooRepository: IFooRepository,
-    private eventHandler: EventHandler,
+    fooEventRepository: IFooEventRepository,
     private emitter: ServiceBus
-  ) {}
+  ) {
+    this.reducers = new FooReducers(fooEventRepository);
+    this.eventHandler = new EventHandler(fooEventRepository);
+  }
 
   // async exec(command: FooCommand) {
   //   var result;
@@ -45,7 +51,7 @@ export class FooCommandHandler {
   // }
 
   async createFoo(command: CreateFooCommand): Promise<CommandResult> {
-    //TODO validate
+    //validate
 
     const { fooId, name, description } = command;
     var event: FooEvent = {
@@ -64,11 +70,16 @@ export class FooCommandHandler {
   }
 
   async updateFoo(command: UpdateFooCommand) {
-    //TODO validate
+    //validate
 
     const { fooId, name, description } = command;
+    const state = await this.reducers.getCurrentState(fooId);
 
-    //todo get current state
+    //get current state
+    if (state.name == name && state.description == description) {
+      return this.Succeed();
+    }
+    
     var event: FooEvent = {
       type: "FooUpdated",
       fooId,
@@ -87,7 +98,7 @@ export class FooCommandHandler {
   //utils function
   Succeed(): CommandResult {
     return {
-      isSucceed: true,
-    }
+      isSucceed: true
+    };
   }
 }
