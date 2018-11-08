@@ -1,5 +1,5 @@
 import { Foo, FooSchema, IFooModel } from "../models/Foo";
-import { IFooRepository } from "../../services/IFooRepository";
+import { IFooRepository } from "../../models/IFooRepository";
 import { IFoo } from "../../models/IFoo";
 
 export class FooRepository implements IFooRepository {

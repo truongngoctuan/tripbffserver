@@ -1,10 +1,10 @@
 import { IFoo } from "../models/IFoo";
-import { IFooRepository } from "./IFooRepository";
+import { IFooRepository } from "../models/IFooRepository";
 
 export class FooQueryHandler {
   constructor(private fooRepository: IFooRepository) {}
 
-  async GetById(id: String): Promise<IFoo> {
+  async GetById(id: String): Promise<IFoo | undefined> {
     return this.fooRepository.get(id);
   }
 

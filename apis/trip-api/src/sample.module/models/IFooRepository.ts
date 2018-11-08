@@ -1,4 +1,4 @@
-import { IFoo } from "../models/IFoo";
+import { IFoo } from "./IFoo";
 
 export interface IFooRepository {
   get: (id: String) => Promise<IFoo | undefined>;

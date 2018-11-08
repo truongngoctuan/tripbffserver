@@ -1,8 +1,7 @@
 import { Server } from "hapi";
 import { FooRepository } from "./infrastructures/repositories/FooRepository";
-import { FooCommandHandler } from "./services/FooCommand";
+import { FooCommandHandler } from "./services/commands/_commandHandler";
 import { ServiceBus } from "./services/ServiceBus";
-import { EventHandler } from "./services/FooEvent";
 import { FooQueryHandler } from "./services/FooQuery";
 import { FooEventRepository } from "./infrastructures/repositories/FooEventRepository";
 const Joi = require("joi");
@@ -10,7 +9,6 @@ const Joi = require("joi");
 const fooEventRepository = new FooEventRepository();
 const fooRepository = new FooRepository();
 const fooCommandHandler = new FooCommandHandler(
-  fooRepository,
   fooEventRepository,
   new ServiceBus(fooRepository)
 );
@@ -50,7 +48,7 @@ module.exports = {
           const { name, description } = request.payload as any;
           var fooId = Math.floor(Math.random() * 100);
 
-          var commandResult = await fooCommandHandler.createFoo({
+          var commandResult = await fooCommandHandler.exec({
             type: "createFoo",
             fooId: fooId.toString(),
             name,
@@ -87,7 +85,7 @@ module.exports = {
           const { name, description } = request.payload as any;
           var fooId = request.params.id;
 
-          var commandResult = await fooCommandHandler.updateFoo({
+          var commandResult = await fooCommandHandler.exec({
             type: "updateFoo",
             fooId: fooId.toString(),
             name,

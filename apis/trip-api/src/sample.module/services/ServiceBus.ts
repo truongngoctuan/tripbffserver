@@ -1,6 +1,6 @@
 import { FooEvent } from "./FooEvent";
 import { FooReducers } from "./FooReducer";
-import { IFooRepository } from "./IFooRepository";
+import { IFooRepository } from "../models/IFooRepository";
 import { IFoo } from "../models/IFoo";
 
 export class ServiceBus {
