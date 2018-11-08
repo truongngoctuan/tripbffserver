@@ -70,8 +70,8 @@ var redis = require("redis");
             validate: {
                 payload: {
                     name: Joi.string().required().description('the id for the todo item'),
-                    fromDate: Joi.date().required().description('the fromDate'),
-                    toDate: Joi.date().required().description('the toDate'),
+                    fromDate: Joi.string().required().description('the fromDate'),
+                    toDate: Joi.string().required().description('the toDate'),
                 }
             },
         }
@@ -104,8 +104,8 @@ var redis = require("redis");
 
     const locationsSchema = Joi.array().items(Joi.object({
         locationId: Joi.number(),
-        fromTime: Joi.date(),
-        toTime: Joi.date()        ,
+        fromTime: Joi.string(),
+        toTime: Joi.string(),
         location: Joi.object({
             long: Joi.number().required(),
             lat: Joi.number().required(),
