@@ -1,6 +1,6 @@
 //business model
 export interface IFoo {
-  id: String,
+  id: String;
   name: String;
   description: String;
 }
