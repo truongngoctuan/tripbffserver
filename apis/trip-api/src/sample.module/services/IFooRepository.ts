@@ -1,4 +1,4 @@
-import { IFoo } from "./IFoo";
+import { IFoo } from "../models/IFoo";
 
 export interface IFooRepository {
   get: (id: String) => IFoo;

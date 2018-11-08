@@ -1,9 +1,5 @@
 import { IFooRepository } from "./IFooRepository";
 
-//TODO: setup command
-//TODO: setup command handler for write flow
-//TODO setup event
-//TODO setup service bus
 //TODO setup reducers
 
 //TODO setup normalizer for read flow -> service bus will run normalize immediately, the system will be

@@ -1,4 +1,4 @@
-import { IFoo } from "./IFoo";
+import { IFoo } from "../models/IFoo";
 import { IFooRepository } from "./IFooRepository";
 
 export class FooQueryHandler {

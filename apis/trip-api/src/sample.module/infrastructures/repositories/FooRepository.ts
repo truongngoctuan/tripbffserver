@@ -1,6 +1,6 @@
 import { Foo, FooSchema, IFooModel } from "../models/Foo";
 import { IFooRepository } from "../../services/IFooRepository";
-import { IFoo } from "../../services/IFoo";
+import { IFoo } from "../../models/IFoo";
 
 export class FooRepository implements IFooRepository {
   toFooDto(o: IFooModel) {
