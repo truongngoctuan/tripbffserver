@@ -1,6 +1,10 @@
 import * as Hapi from "hapi";
 const authService = require("./bootstraping/authentication.js");
 const swaggerUiService = require("./bootstraping/swagger-documentation");
+const mongoService = require('./bootstraping/mongo-connection');
+
+import helloRoutes from './sample.module/route';
+
 const config = require('./config');
 const Joi = require('joi');
 var redis = require("redis");
@@ -10,6 +14,7 @@ var redis = require("redis");
     const server = Hapi.server({
         //host: 'localhost',
         host: '192.168.2.101', // local: should use IP4 of current local computer to allow call API from native app
+        // host: '192.168.0.109', // local: should use IP4 of current local computer to allow call API from native app
         port: 8000
     });
 
@@ -20,27 +25,33 @@ var redis = require("redis");
 
     await swaggerUiService.addSwaggerUi(server);
     await authService.addAuth(server);
+    await mongoService.init();
+
 
     // Add the route
-    server.route({
-        method: 'GET',
-        path: '/hello/{id}',
-        handler: function (request, h) {
-            console.log(request.auth);
-            return `hello logged user ${request.auth.credentials.user.name}, params: ${JSON.stringify(request.params)}`;
-        },
-        options: {
-            auth: "simple",
-            tags: ["api"],
-            validate: {
-                params: {
-                    id: Joi.number()
-                        .required()
-                        .description('the id for the todo item'),
-                }
-            },
-        }
-    });
+    helloRoutes.init(server);
+
+    // server.route({
+    //     method: 'GET',
+    //     path: '/hello/{id}',
+    //     handler: function (request, h) {
+    //         var result = helloService.index(request.params);
+    //         return JSON.stringify(result);
+    //         // return `${JSON.stringify(request.params)}`;
+    //         // return `hello logged user ${request.auth.credentials.user.name}, params: ${JSON.stringify(request.params)}`;
+    //     },
+    //     options: {
+    //         // auth: "simple",
+    //         tags: ["api"],
+    //         validate: {
+    //             params: {
+    //                 id: Joi.number()
+    //                     .required()
+    //                     .description('the id for the todo item'),
+    //             }
+    //         },
+    //     }
+    // });
 
     ///////////////// TRIP API /////////////////////
 
