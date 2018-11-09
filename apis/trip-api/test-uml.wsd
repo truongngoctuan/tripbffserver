@@ -1,0 +1,24 @@
+@startuml
+interface "rest API" as tripapi
+rectangle "command handlers" as command
+rectangle reducers as reducers
+queue "service bus" as ServiceBus
+rectangle "normalizers" as Normalizer
+rectangle "queries handler" as Query
+
+database "cache current state" as CurrentStateDb
+database "event store\n (write db)" as EventStoreDb
+database "(read db)" as ReadDb
+tripapi <-down-> command: send command / return status
+tripapi <--> Query
+command <--> reducers: get current state
+reducers <--> CurrentStateDb
+reducers <--> EventStoreDb
+
+command --> EventStoreDb
+command -right-> ServiceBus
+ServiceBus -right-> Normalizer
+Normalizer <--> ReadDb
+Query <--> ReadDb
+
+@enduml
