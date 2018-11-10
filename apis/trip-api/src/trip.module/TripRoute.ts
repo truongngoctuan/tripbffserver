@@ -1,22 +1,24 @@
 //TODO: move routes into here
 import tripService from "./services/TripService";
+import { Server } from "hapi";
 
 const Joi = require("joi");
 
 module.exports = {
-  init: function(server) {
+  init: function(server: Server) {
     server.route({
       method: "POST",
       path: "/trips",
       handler: function(request, h) {
-        console.log("trip name :" + request.payload.name);
-        console.log("trip from date:" + request.payload.fromDate);
-        console.log("trip to date:" + request.payload.toDate);
+        const {name, fromDate, toDate} = request.payload as any;
+        console.log("trip name :" + name);
+        console.log("trip from date:" + fromDate);
+        console.log("trip to date:" + toDate);
 
         var data = {
-          name: request.payload.name,
-          fromDate: request.payload.fromDate,
-          toDate: request.payload.toDate
+          name,
+          fromDate,
+          toDate,
         };
         var newTrip = tripService.create(data);
 
