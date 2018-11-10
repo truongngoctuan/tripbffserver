@@ -1,5 +1,3 @@
-//TODO: move routes into here
-import tripService from "./services/TripService";
 import { Server } from "hapi";
 
 const Joi = require("joi");
