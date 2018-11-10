@@ -5,6 +5,7 @@ import {
   TripUpdatedEvent,
   TripEvent
 } from "./TripEvent";
+import moment from "moment";
 
 export class TripReducers {
   constructor(private TripEventRepository?: ITripEventRepository) {}
@@ -16,8 +17,8 @@ export class TripReducers {
     var state: ITrip = {
       id: "",
       name: "",
-      fromDate: new Date(),
-      toDate: new Date(),
+      fromDate: moment(),
+      toDate: moment(),
     };
 
     events.forEach(async (event, idx) => {

@@ -1,6 +1,8 @@
+import { Moment } from "moment";
+
 export interface ITrip {
   id: String,
   name: String,
-  fromDate: Date,
-  toDate: Date,
+  fromDate: Moment,
+  toDate: Moment,
 }

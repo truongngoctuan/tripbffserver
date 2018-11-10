@@ -2,13 +2,14 @@ import { EventHandler, TripEvent } from "../TripEvent";
 import { TripReducers } from "../TripReducer";
 import { ServiceBus } from "../TripServiceBus";
 import { CommandResult, Succeed } from "../../../_shared/utils";
+import { Moment } from "moment";
 
 export type CreateTripCommand = {
   type: "createTrip";
   TripId: String;
   name: String;
-  fromDate: Date;
-  toDate: Date;
+  fromDate: Moment;
+  toDate: Moment;
 };
 
 export async function createTrip(command: CreateTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus): Promise<CommandResult> {

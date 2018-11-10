@@ -1,26 +1,51 @@
 import { Server } from "hapi";
-
 const Joi = require("joi");
+import { TripCommandHandler } from "./services/commands/_commandHandler";
+import { TripQueryHandler } from "./services/TripQuery";
+import { ServiceBus } from "./services/TripServiceBus";
+import { Err } from "../_shared/utils";
+
+const tripEventRepository = new TripEventRepository();
+const tripRepository = new TripRepository();
+const tripCommandHandler = new TripCommandHandler(
+  tripEventRepository,
+  new ServiceBus(tripRepository)
+);
+const tripQueryHandler = new TripQueryHandler(new TripRepository());
 
 module.exports = {
   init: function(server: Server) {
     server.route({
       method: "POST",
       path: "/trips",
-      handler: function(request, h) {
-        const {name, fromDate, toDate} = request.payload as any;
+      handler: async function(request, h) {
+        const { name, fromDate, toDate } = request.payload as any;
         console.log("trip name :" + name);
         console.log("trip from date:" + fromDate);
         console.log("trip to date:" + toDate);
 
-        var data = {
-          name,
-          fromDate,
-          toDate,
-        };
-        var newTrip = tripService.create(data);
+        try {
+          const { name, description } = request.payload as any;
+          var tripId = Math.floor(Math.random() * 100);
 
-        return newTrip.id;
+          var commandResult = await tripCommandHandler.exec({
+            type: "create",
+            fooId: tripId.toString(),
+            name,
+            description
+          });
+
+          if (commandResult.isSucceed) {
+            var queryResult = await tripQueryHandler.GetById(tripId.toString());
+
+            if (!queryResult) return Err("can't get data after create trip");
+            return queryResult.id;
+          }
+
+          return commandResult.errors;
+        } catch (error) {
+          console.log(error);
+        }
       },
       options: {
         auth: "simple",

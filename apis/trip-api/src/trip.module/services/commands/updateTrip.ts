@@ -2,19 +2,20 @@ import { Succeed } from "../../../_shared/utils";
 import { TripEvent, EventHandler } from "../TripEvent";
 import { TripReducers } from "../TripReducer";
 import { ServiceBus } from "../TripServiceBus";
+import { Moment } from "moment";
 
 export type UpdateTripCommand = {
   type: "updateTrip";
   TripId: String;
   name: String;
-  fromDate: Date;
-  toDate: Date;
+  fromDate: Moment;
+  toDate: Moment;
 };
 
 export async function updateTrip(command: UpdateTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus) {
-  //validate
-
   const { TripId, name, fromDate, toDate } = command;
+  
+  //validate
   const state = await reducers.getCurrentState(TripId);
 
   //get current state

@@ -1,19 +1,21 @@
+import { Moment } from "moment";
+
 export type TripEvent = TripCreatedEvent | TripUpdatedEvent;
 
 export type TripCreatedEvent = {
   type: "TripCreated";
   TripId: String;
   name: String;
-  fromDate: Date;
-  toDate: Date;
+  fromDate: Moment;
+  toDate: Moment;
 };
 
 export type TripUpdatedEvent = {
   type: "TripUpdated";
   TripId: String;
   name: String;
-  fromDate: Date;
-  toDate: Date;
+  fromDate: Moment;
+  toDate: Moment;
 };
 
 export class EventHandler {
