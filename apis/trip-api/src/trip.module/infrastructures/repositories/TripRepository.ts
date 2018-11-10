@@ -20,38 +20,39 @@ export class TripRepository implements ITripRepository {
 
   public async create(payload: ITrip) {
     const { id, name, fromDate, toDate } = payload;
-    var Trip = new Trip({
+    var trip = new Trip({
       id,
       name,
       fromDate,
       toDate,
     });
-    await Trip.save();
+    await trip.save();
 
-    return this.toTripDto(Trip);
+    return this.toTripDto(trip);
   }
 
   public async update(payload: ITrip) {
-    var Trip = await Trip.findOne()
+    var trip = await Trip.findOne()
       .where("id")
       .equals(payload.id)
       .exec();
-    if (!Trip) throw "can't find Trip with id = " + payload.id;
+    if (!trip) throw "can't find Trip with id = " + payload.id;
 
-    Trip.name = payload.name;
-    Trip.description = payload.description;
+    trip.name = payload.name;
+    trip.fromDate = payload.fromDate.toDate();
+    trip.toDate = payload.toDate.toDate();
 
-    await Trip.save();
+    await trip.save();
   }
 
   public async get(id: String) {
-    var Trip = await Trip.findOne()
+    var trip = await Trip.findOne()
       .where("id")
       .equals(id)
       .exec();
-    if (!Trip) return undefined;
+    if (!trip) return undefined;
 
-    return this.toTripDto(Trip);
+    return this.toTripDto(trip);
   }
 }
 

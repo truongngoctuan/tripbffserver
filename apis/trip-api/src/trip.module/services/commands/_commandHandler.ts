@@ -26,6 +26,8 @@ export class TripCommandHandler {
   ) {
     this.reducers = new TripReducers(TripEventRepository);
     this.eventHandler = new EventHandler(TripEventRepository);
+
+    this.handlers = staticHandlers;
   }
   private handlers = new Map<String, CommandFunc>();
 

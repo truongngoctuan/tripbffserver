@@ -4,6 +4,8 @@ import { TripCommandHandler } from "./services/commands/_commandHandler";
 import { TripQueryHandler } from "./services/TripQuery";
 import { ServiceBus } from "./services/TripServiceBus";
 import { Err } from "../_shared/utils";
+import { TripEventRepository } from "./infrastructures/repositories/TripEventRepository";
+import TripRepository from "./infrastructures/repositories/TripRepository";
 
 const tripEventRepository = new TripEventRepository();
 const tripRepository = new TripRepository();
@@ -25,14 +27,15 @@ module.exports = {
         console.log("trip to date:" + toDate);
 
         try {
-          const { name, description } = request.payload as any;
+          const { name, fromDate, toDate } = request.payload as any;
           var tripId = Math.floor(Math.random() * 100);
 
           var commandResult = await tripCommandHandler.exec({
-            type: "create",
-            fooId: tripId.toString(),
+            type: "createTrip",
+            TripId: tripId.toString(),
             name,
-            description
+            fromDate,
+            toDate,
           });
 
           if (commandResult.isSucceed) {
@@ -48,7 +51,7 @@ module.exports = {
         }
       },
       options: {
-        auth: "simple",
+        // auth: "simple",
         tags: ["api"],
         validate: {
           payload: {
@@ -72,11 +75,11 @@ module.exports = {
       handler: function(request, h) {
         var tripId = request.params.id;
         console.log("trip id :" + tripId);
-        var trip = tripService.getById(tripId);
+        var trip = tripQueryHandler.GetById(tripId);
         return trip;
       },
       options: {
-        auth: "simple",
+        // auth: "simple",
         tags: ["api"],
         validate: {
           params: {

@@ -26,6 +26,7 @@ export class FooCommandHandler {
   ) {
     this.reducers = new FooReducers(fooEventRepository);
     this.eventHandler = new EventHandler(fooEventRepository);
+    this.handlers = staticHandlers;
   }
   private handlers = new Map<String, CommandFunc>();
 
