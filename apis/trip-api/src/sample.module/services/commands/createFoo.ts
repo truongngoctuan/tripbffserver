@@ -1,7 +1,7 @@
 import { EventHandler, FooEvent } from "../FooEvent";
 import { FooReducers } from "../FooReducer";
 import { ServiceBus } from "../ServiceBus";
-import { CommandResult, Succeed } from "./utils";
+import { CommandResult, Succeed } from "../../../_shared/utils";
 
 export type CreateFooCommand = {
   type: "createFoo";

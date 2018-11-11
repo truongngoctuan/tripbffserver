@@ -1,4 +1,4 @@
-import { Succeed } from "./utils";
+import { Succeed } from "../../../_shared/utils";
 import { FooEvent, EventHandler } from "../FooEvent";
 import { FooReducers } from "../FooReducer";
 import { ServiceBus } from "../ServiceBus";

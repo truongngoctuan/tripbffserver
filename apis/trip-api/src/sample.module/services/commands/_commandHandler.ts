@@ -2,7 +2,7 @@ import { IFooRepository } from "../../models/IFooRepository";
 import { ServiceBus } from "../ServiceBus";
 import { EventHandler, IFooEventRepository } from "../FooEvent";
 import { FooReducers } from "../FooReducer";
-import { CommandResult, Err } from "./utils";
+import { CommandResult, Err } from "../../../_shared/utils";
 import { CreateFooCommand, createFoo } from "./createFoo";
 import { UpdateFooCommand, updateFoo } from "./updateFoo";
 
@@ -26,6 +26,7 @@ export class FooCommandHandler {
   ) {
     this.reducers = new FooReducers(fooEventRepository);
     this.eventHandler = new EventHandler(fooEventRepository);
+    this.handlers = staticHandlers;
   }
   private handlers = new Map<String, CommandFunc>();
 

@@ -1,7 +1,7 @@
 var redis = require("redis"),
     client = redis.createClient({
-        host: "localhost",
-        port: 7001,
+        host: "127.0.1.1",
+        port: 6379,
     })
  
 // if you'd like to select database 3, instead of 0 (default), call
