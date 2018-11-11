@@ -14,7 +14,7 @@ var redis = require("redis");
 (async () => {
   // Create a server with a host and port
   const server = new Server({
-    host: 'localhost',
+    host: '192.168.1.8',
     // host: '192.168.2.101', // local: should use IP4 of current local computer to allow call API from native app
     // host: '192.168.0.109', // local: should use IP4 of current local computer to allow call API from native app
     port: 8000
