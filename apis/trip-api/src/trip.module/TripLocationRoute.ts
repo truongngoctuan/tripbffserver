@@ -1,6 +1,6 @@
 import { Server } from "hapi";
 import { TripCommandHandler } from "./services/commands/_commandHandler";
-// import { TripQueryHandler } from "./services/TripQuery";
+import { TripQueryHandler } from "./services/TripQuery";
 import { ServiceBus } from "./services/TripServiceBus";
 import { Err } from "../_shared/utils";
 import { TripEventRepository } from "./infrastructures/repositories/TripEventRepository";
@@ -12,7 +12,7 @@ const tripCommandHandler = new TripCommandHandler(
   tripEventRepository,
   new ServiceBus(tripRepository)
 );
-//const tripQueryHandler = new TripQueryHandler(new TripRepository());
+const tripQueryHandler = new TripQueryHandler(new TripRepository());
 const authService = require("../bootstraping/authentication.js");
 const config = require("../config");
 
@@ -79,8 +79,9 @@ module.exports = {
       path: "/trips/{id}/locations",
       handler: async function(request, h) {
         var tripId = request.params.id;
-        var trip = await tripRepository.get(tripId);
-        return trip;
+        var queryResult = await tripQueryHandler.GetById(tripId.toString());
+        if (!queryResult) return Err("can't get data after create trip");
+        return queryResult;
       },
       options: {
         auth: "simple",
