@@ -80,7 +80,7 @@ module.exports = {
       handler: async function(request, h) {
         var tripId = request.params.id;
         var queryResult = await tripQueryHandler.GetById(tripId.toString());
-        if (!queryResult) return Err("can't get data after create trip");
+        if (!queryResult) return Err("can't get data after import trip");
         return queryResult;
       },
       options: {
