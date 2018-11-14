@@ -77,10 +77,9 @@ module.exports = {
     server.route({
       method: "GET",
       path: "/trips/{id}/locations",
-      handler: function(request, h) {
+      handler: async function(request, h) {
         var tripId = request.params.id;
-        var key = `${config.trip.keyPrefix}:${tripId}`;
-        var trip = authService.getAsync(key);
+        var trip = await tripRepository.get(tripId);
         return trip;
       },
       options: {
