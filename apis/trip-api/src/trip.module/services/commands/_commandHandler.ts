@@ -5,11 +5,13 @@ import { TripReducers } from "../TripReducer";
 import { CommandResult, Err } from "../../../_shared/utils";
 import { CreateTripCommand, createTrip } from "./createTrip";
 import { UpdateTripCommand, updateTrip } from "./updateTrip";
+import { ImportTripCommand, importTrip } from "./importTrip";
 
-type TripCommand = CreateTripCommand | UpdateTripCommand;
+type TripCommand = CreateTripCommand | UpdateTripCommand | ImportTripCommand;
 var staticHandlers = new Map<String, CommandFunc>();
 staticRegister(createTrip);
 staticRegister(updateTrip);
+staticRegister(importTrip);
 
 function staticRegister(func: Function) {
   staticHandlers.set(func.name, func as CommandFunc);

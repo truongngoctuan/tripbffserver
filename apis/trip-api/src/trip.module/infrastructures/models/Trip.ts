@@ -1,4 +1,6 @@
 import mongoose, { Model, Document } from "mongoose";
+import { ITripLocation } from "../../models/ITrip";
+
 // const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -7,6 +9,7 @@ export interface ITrip {
   name: String;
   fromDate: Date;
   toDate: Date;
+  locations?: Array<ITripLocation>
 }
 
 export interface ITripModel extends ITrip, Document {}
@@ -17,6 +20,23 @@ export const TripSchema = new Schema({
   name: String,
   fromDate: Date,
   toDate: Date,
+  locations: [
+    {
+      locationId: Number,
+      location: {
+          long: Number,
+          lat: Number,
+          address: String
+      },
+      fromTime: Date,
+      toTime: Date,
+      images: [
+          {
+              url: String
+          }
+      ]
+    }
+  ]
 });
 
 export const Trip: Model<ITripModel> = mongoose.model<ITripModel>(

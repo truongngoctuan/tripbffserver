@@ -10,6 +10,7 @@ export class TripRepository implements ITripRepository {
       name: o.name,
       fromDate: moment(o.fromDate),
       toDate: moment(o.toDate),
+      locations: o.locations
     };
   }
 
@@ -41,6 +42,7 @@ export class TripRepository implements ITripRepository {
     trip.name = payload.name;
     trip.fromDate = payload.fromDate.toDate();
     trip.toDate = payload.toDate.toDate();
+    trip.locations = payload.locations;
 
     await trip.save();
   }

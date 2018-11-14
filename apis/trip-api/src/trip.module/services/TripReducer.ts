@@ -3,6 +3,7 @@ import {
   ITripEventRepository,
   TripCreatedEvent,
   TripUpdatedEvent,
+  TripImportLocationsEvent,
   TripEvent
 } from "./TripEvent";
 import moment from "moment";
@@ -19,6 +20,7 @@ export class TripReducers {
       name: "",
       fromDate: moment(),
       toDate: moment(),
+      locations: []
     };
 
     events.forEach(async (event, idx) => {
@@ -36,6 +38,9 @@ export class TripReducers {
       case "TripUpdated":
         state = await this.updateTrip(state, event);
         break;
+      case "TripImportLocations":
+        state = await this.updateTripLocations(state, event);
+        break;
       default:
         break;
     }
@@ -49,6 +54,7 @@ export class TripReducers {
       name: command.name,
       fromDate: command.fromDate,
       toDate: command.toDate,
+      locations: []
     };
   }
 
@@ -57,7 +63,14 @@ export class TripReducers {
       ...prevState,
       name: command.name,
       fromDate: command.fromDate,
-      toDate: command.toDate,
+      toDate: command.toDate
+    };
+  }
+
+  async updateTripLocations(prevState: ITrip, command: TripImportLocationsEvent): Promise<ITrip> { 
+    return {
+      ...prevState,
+      locations: command.locations
     };
   }
 }

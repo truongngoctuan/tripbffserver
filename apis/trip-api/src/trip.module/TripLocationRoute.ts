@@ -1,5 +1,18 @@
 import { Server } from "hapi";
+import { TripCommandHandler } from "./services/commands/_commandHandler";
+// import { TripQueryHandler } from "./services/TripQuery";
+import { ServiceBus } from "./services/TripServiceBus";
+import { Err } from "../_shared/utils";
+import { TripEventRepository } from "./infrastructures/repositories/TripEventRepository";
+import TripRepository from "./infrastructures/repositories/TripRepository";
 
+const tripEventRepository = new TripEventRepository();
+const tripRepository = new TripRepository();
+const tripCommandHandler = new TripCommandHandler(
+  tripEventRepository,
+  new ServiceBus(tripRepository)
+);
+//const tripQueryHandler = new TripQueryHandler(new TripRepository());
 const authService = require("../bootstraping/authentication.js");
 const config = require("../config");
 
@@ -29,31 +42,28 @@ module.exports = {
     server.route({
       method: "POST",
       path: "/trips/{id}/locations",
-      handler: function(request, h) {
-        var selectedLocations = request.payload;
-        var tripId = request.params.id;
+      handler: async function(request, h) {
+        try{
+          var selectedLocations = request.payload as any;
+          var tripId = request.params.id;
+        
+          // create import command
+          var commandResult = await tripCommandHandler.exec({
+            type: "importTrip",
+            TripId: tripId.toString(),
+            locations: selectedLocations
+          });
 
-        // selectedLocations.forEach(element => {
-        //     console.log('location long:' + element.location.long);
-        //     console.log('location lat:' + element.location.lat);
-        //     console.log('location from time :' + element.fromTime);
+          if (commandResult.isSucceed) {
+            return tripId;
+          }
 
-        //     var images = element.images;
-        //     images.forEach(image => {
-        //         console.log('image url: ' + image.url);
-        //     });
-        // });
-
-        // get trip from redis
-        //TODO improve
-        // var key = `${config.trip.keyPrefix}:${tripId}`;
-        // authService.getAsync(key).then(trip => {
-        //   trip.locations = selectedLocations;
-        //   // store trip with locations into redis
-        //   client.set(key, JSON.stringify(trip));
-        // });
-
-        return tripId;
+          return commandResult.errors;
+        }
+        catch(error) {
+          console.log(error);
+          return error;          
+        }        
       },
       options: {
         auth: "simple",

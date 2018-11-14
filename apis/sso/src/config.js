@@ -8,7 +8,7 @@ const config = {
     },
     redisStore: {
         host: "localhost",
-        port: 7001,
+        port: 6379,
         secret: "asd",
     },
     db: {
