@@ -5,6 +5,7 @@ import { ServiceBus } from "./services/TripServiceBus";
 import { Err } from "../_shared/utils";
 import { TripEventRepository } from "./infrastructures/repositories/TripEventRepository";
 import TripRepository from "./infrastructures/repositories/TripRepository";
+import { uploadImage } from "./services/commands/uploadImage";
 
 const tripEventRepository = new TripEventRepository();
 const tripRepository = new TripRepository();
@@ -92,6 +93,46 @@ module.exports = {
               .required()
               .description("the id for the todo item")
           }
+        }
+      }
+    });
+
+    server.route({
+      method: "POST",
+      path: "/trips/{id}/locations/uploadImage",
+      handler: async function(request, h) {
+        try{
+          var selectedLocations = request.payload as any;
+          var tripId = request.params.id;
+        const { name, file } = request as any;
+        
+          uploadImage({
+            file,
+            externalId
+          })
+          // // create import command
+          // var commandResult = await tripCommandHandler.exec({
+          //   type: "importTrip",
+          //   TripId: tripId.toString(),
+          //   locations: selectedLocations
+          // });
+
+          // if (commandResult.isSucceed) {
+          //   return tripId;
+          // }
+
+          // return commandResult.errors;
+        }
+        catch(error) {
+          console.log(error);
+          return error;          
+        }        
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+        validate: {
+          payload: locationsSchema
         }
       }
     });

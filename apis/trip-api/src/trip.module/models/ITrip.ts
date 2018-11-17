@@ -5,7 +5,7 @@ export interface ITrip {
   name: String,
   fromDate: Moment,
   toDate: Moment,
-  locations?: Array<ITripLocation>
+  locations: Array<ITripLocation>
 }
 
 export interface ITripLocation {
@@ -19,7 +19,8 @@ export interface ITripLocation {
     toTime: Moment,
     images: [
         {
-            url: String
+            url: String, //url stored in local mobile
+            externalId: string,
         }
     ]
 }
