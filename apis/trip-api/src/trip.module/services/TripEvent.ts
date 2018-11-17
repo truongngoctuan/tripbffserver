@@ -1,6 +1,7 @@
 import { Moment } from "moment";
+import { ITripLocation } from "../models/ITrip"
 
-export type TripEvent = TripCreatedEvent | TripUpdatedEvent;
+export type TripEvent = TripCreatedEvent | TripUpdatedEvent | TripImportLocationsEvent;
 
 export type TripCreatedEvent = {
   type: "TripCreated";
@@ -16,6 +17,12 @@ export type TripUpdatedEvent = {
   name: String;
   fromDate: Moment;
   toDate: Moment;
+};
+
+export type TripImportLocationsEvent = {
+  type: "TripImportLocations";
+  TripId: String;
+  locations?: Array<ITripLocation>
 };
 
 export class EventHandler {

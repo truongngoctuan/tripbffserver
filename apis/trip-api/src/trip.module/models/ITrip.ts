@@ -5,4 +5,21 @@ export interface ITrip {
   name: String,
   fromDate: Moment,
   toDate: Moment,
+  locations?: Array<ITripLocation>
+}
+
+export interface ITripLocation {
+    locationId: Number,
+    location: {
+        long: Number,
+        lat: Number,
+        address: String
+    },
+    fromTime: Moment,
+    toTime: Moment,
+    images: [
+        {
+            url: String
+        }
+    ]
 }
