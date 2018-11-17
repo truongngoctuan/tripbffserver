@@ -9,7 +9,7 @@ export interface ITrip {
   name: String;
   fromDate: Date;
   toDate: Date;
-  locations?: Array<ITripLocation>
+  locations: Array<ITripLocation>
 }
 
 export interface ITripModel extends ITrip, Document {}

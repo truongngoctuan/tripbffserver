@@ -1,4 +1,5 @@
 import { Server } from "hapi";
+const uuid = require('uuid/v5')
 import { TripCommandHandler } from "./services/commands/_commandHandler";
 import { TripQueryHandler } from "./services/TripQuery";
 import { ServiceBus } from "./services/TripServiceBus";
@@ -6,6 +7,7 @@ import { Err } from "../_shared/utils";
 import { TripEventRepository } from "./infrastructures/repositories/TripEventRepository";
 import TripRepository from "./infrastructures/repositories/TripRepository";
 import { uploadImage } from "./services/commands/uploadImage";
+import { FileStorageRepository } from "../image.module/FileStorageRepository";
 
 const tripEventRepository = new TripEventRepository();
 const tripRepository = new TripRepository();
@@ -14,6 +16,9 @@ const tripCommandHandler = new TripCommandHandler(
   new ServiceBus(tripRepository)
 );
 const tripQueryHandler = new TripQueryHandler(new TripRepository());
+
+const fileRepository = new FileStorageRepository();
+
 const authService = require("../bootstraping/authentication.js");
 const config = require("../config");
 
@@ -44,10 +49,10 @@ module.exports = {
       method: "POST",
       path: "/trips/{id}/locations",
       handler: async function(request, h) {
-        try{
+        try {
           var selectedLocations = request.payload as any;
           var tripId = request.params.id;
-        
+
           // create import command
           var commandResult = await tripCommandHandler.exec({
             type: "importTrip",
@@ -60,11 +65,10 @@ module.exports = {
           }
 
           return commandResult.errors;
-        }
-        catch(error) {
+        } catch (error) {
           console.log(error);
-          return error;          
-        }        
+          return error;
+        }
       },
       options: {
         auth: "simple",
@@ -101,32 +105,30 @@ module.exports = {
       method: "POST",
       path: "/trips/{id}/locations/uploadImage",
       handler: async function(request, h) {
-        try{
-          var selectedLocations = request.payload as any;
+        try {
           var tripId = request.params.id;
-        const { name, file } = request as any;
-        
-          uploadImage({
-            file,
-            externalId
-          })
-          // // create import command
-          // var commandResult = await tripCommandHandler.exec({
-          //   type: "importTrip",
-          //   TripId: tripId.toString(),
-          //   locations: selectedLocations
-          // });
+          const { file, fileName } = request.payload as any;
 
-          // if (commandResult.isSucceed) {
-          //   return tripId;
-          // }
+          var category = `upload/${tripId}/trips/locations`;
+          const {externalId} = await fileRepository.save(file, category, fileName);
 
-          // return commandResult.errors;
-        }
-        catch(error) {
+          // create import command
+          var commandResult = await tripCommandHandler.exec({
+            type: "uploadImage",
+            tripId: tripId.toString(),
+            externalId: externalId,
+            fileName
+          });
+
+          if (commandResult.isSucceed) {
+            return tripId;
+          }
+
+          return commandResult.errors;
+        } catch (error) {
           console.log(error);
-          return error;          
-        }        
+          return error;
+        }
       },
       options: {
         auth: "simple",

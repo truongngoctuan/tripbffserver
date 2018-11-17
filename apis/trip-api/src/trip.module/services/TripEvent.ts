@@ -22,7 +22,7 @@ export type TripUpdatedEvent = {
 export type TripImportLocationsEvent = {
   type: "TripImportLocations";
   TripId: String;
-  locations?: Array<ITripLocation>
+  locations: Array<ITripLocation>
 };
 
 export class EventHandler {

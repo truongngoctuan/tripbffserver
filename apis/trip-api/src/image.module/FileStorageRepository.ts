@@ -1,9 +1,9 @@
-import { IFileStorageRepository } from "../../models/IFileStorageRepository";
+import { IFileStorageRepository } from "./IFileStorageRepository";
 import { Stream } from "stream";
 import fs from "fs";
 import { read, write } from "./FileAsync";
 import path from "path";
-import { File, IFileModel } from "../models/File";
+import { File, IFileModel } from "./File";
 const uuid = require("uuid/v5");
 
 export class FileStorageRepository implements IFileStorageRepository {

@@ -1,6 +1,5 @@
 import { Stream } from "stream";
 import fs from "fs";
-import { IFileStorageRepository } from "../../models/IFileStorageRepository";
 import { EventHandler, TripEvent } from "../TripEvent";
 import { TripReducers } from "../TripReducer";
 import { ServiceBus } from "../TripServiceBus";
@@ -10,17 +9,15 @@ export type UploadImageCommand = {
   type: "uploadImage";
   tripId: string;
   externalId: string;
-  file: Stream;
   fileName: string;
 };
 export async function uploadImage(
   command: UploadImageCommand,
   eventHandler: EventHandler,
   reducers: TripReducers,
-  emitter: ServiceBus,
-  fileRepository: IFileStorageRepository
+  emitter: ServiceBus
 ) {
-  const { tripId, file, fileName, externalId } = command;
+  const { tripId, fileName, externalId } = command;
 
   //validation: external id
   const state = await reducers.getCurrentState(tripId);
@@ -33,6 +30,4 @@ export async function uploadImage(
   if (!isExternalIdExisted) throw "externalId is not found";
 
   //emit event
-  var category = `upload/${tripId}/trips/locations`;
-  await fileRepository.save(file, category, fileName);
 }

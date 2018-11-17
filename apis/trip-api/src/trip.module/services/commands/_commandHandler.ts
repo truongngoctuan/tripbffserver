@@ -6,12 +6,15 @@ import { CommandResult, Err } from "../../../_shared/utils";
 import { CreateTripCommand, createTrip } from "./createTrip";
 import { UpdateTripCommand, updateTrip } from "./updateTrip";
 import { ImportTripCommand, importTrip } from "./importTrip";
+import { UploadImageCommand, uploadImage } from "./uploadImage";
 
-type TripCommand = CreateTripCommand | UpdateTripCommand | ImportTripCommand;
+type TripCommand = CreateTripCommand | UpdateTripCommand | ImportTripCommand
+| UploadImageCommand;
 var staticHandlers = new Map<String, CommandFunc>();
 staticRegister(createTrip);
 staticRegister(updateTrip);
 staticRegister(importTrip);
+staticRegister(uploadImage);
 
 function staticRegister(func: Function) {
   staticHandlers.set(func.name, func as CommandFunc);
