@@ -4,7 +4,7 @@ import { ITripRepository } from "../models/ITripRepository";
 export class TripQueryHandler {
   constructor(private TripRepository: ITripRepository) {}
 
-  async GetById(id: String): Promise<ITrip | undefined> {
+  async GetById(id: string): Promise<ITrip | undefined> {
     return this.TripRepository.get(id);
   }
 

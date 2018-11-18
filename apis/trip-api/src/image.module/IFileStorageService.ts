@@ -1,6 +1,6 @@
 import { Stream } from "stream";
 
-export interface IFileStorageRepository {
+export interface IFileStorageService {
   save: (
     file: Stream,
     category: string,

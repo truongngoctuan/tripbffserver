@@ -10,7 +10,7 @@ import { UploadImageCommand, uploadImage } from "./uploadImage";
 
 type TripCommand = CreateTripCommand | UpdateTripCommand | ImportTripCommand
 | UploadImageCommand;
-var staticHandlers = new Map<String, CommandFunc>();
+var staticHandlers = new Map<string, CommandFunc>();
 staticRegister(createTrip);
 staticRegister(updateTrip);
 staticRegister(importTrip);
@@ -34,7 +34,7 @@ export class TripCommandHandler {
 
     this.handlers = staticHandlers;
   }
-  private handlers = new Map<String, CommandFunc>();
+  private handlers = new Map<string, CommandFunc>();
 
   // register(
   //   type: String,

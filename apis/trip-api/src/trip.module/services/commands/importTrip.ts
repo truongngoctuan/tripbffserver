@@ -6,17 +6,17 @@ import { ITripLocation } from "../../models/ITrip";
 
 export type ImportTripCommand = {
   type: "importTrip";
-  TripId: String;
+  tripId: string;
   locations: Array<ITripLocation>
 };
 
 export async function importTrip(command: ImportTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus): Promise<CommandResult> {
   //validate
 
-  const { TripId, locations } = command;
+  const { tripId, locations } = command;
   var event: TripEvent = {
     type: "TripImportLocations",
-    TripId,
+    tripId,
     locations
   };
 

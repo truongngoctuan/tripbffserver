@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 
 // this is db model, schemas
 export interface ITrip {
-  name: String;
+  name: string;
   fromDate: Date;
   toDate: Date;
   locations: Array<ITripLocation>

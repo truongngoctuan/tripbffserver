@@ -32,7 +32,7 @@ module.exports = {
 
           var commandResult = await tripCommandHandler.exec({
             type: "createTrip",
-            TripId: tripId.toString(),
+            tripId: tripId.toString(),
             name,
             fromDate,
             toDate,

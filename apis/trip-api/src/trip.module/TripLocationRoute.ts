@@ -1,5 +1,5 @@
 import { Server } from "hapi";
-const uuid = require('uuid/v5')
+const uuid = require("uuid/v5");
 import { TripCommandHandler } from "./services/commands/_commandHandler";
 import { TripQueryHandler } from "./services/TripQuery";
 import { ServiceBus } from "./services/TripServiceBus";
@@ -7,7 +7,7 @@ import { Err } from "../_shared/utils";
 import { TripEventRepository } from "./infrastructures/repositories/TripEventRepository";
 import TripRepository from "./infrastructures/repositories/TripRepository";
 import { uploadImage } from "./services/commands/uploadImage";
-import { FileStorageRepository } from "../image.module/FileStorageRepository";
+import { FileStorageOfflineService } from "../image.module/FileStorageOfflineService";
 
 const tripEventRepository = new TripEventRepository();
 const tripRepository = new TripRepository();
@@ -17,7 +17,7 @@ const tripCommandHandler = new TripCommandHandler(
 );
 const tripQueryHandler = new TripQueryHandler(new TripRepository());
 
-const fileRepository = new FileStorageRepository();
+const fileService = new FileStorageOfflineService();
 
 const authService = require("../bootstraping/authentication.js");
 const config = require("../config");
@@ -56,7 +56,7 @@ module.exports = {
           // create import command
           var commandResult = await tripCommandHandler.exec({
             type: "importTrip",
-            TripId: tripId.toString(),
+            tripId: tripId.toString(),
             locations: selectedLocations
           });
 
@@ -103,26 +103,38 @@ module.exports = {
 
     server.route({
       method: "POST",
-      path: "/trips/{id}/locations/uploadImage",
+      path: "/trips/{tripId}/uploadImage",
       handler: async function(request, h) {
         try {
-          var tripId = request.params.id;
-          const { file, fileName } = request.payload as any;
+          const { tripId } = request.params;
+          const {
+            locationId,
+            imageId,
+            file,
+            fileName
+          } = request.payload as any;
 
           var category = `upload/${tripId}/trips/locations`;
-          const {externalId} = await fileRepository.save(file, category, fileName);
+          const { externalId } = await fileService.save(
+            file,
+            category,
+            fileName
+          );
 
           // create import command
           var commandResult = await tripCommandHandler.exec({
             type: "uploadImage",
-            tripId: tripId.toString(),
-            externalId: externalId,
-            fileName
+            tripId,
+            locationId,
+            imageId,
+            externalStorageId: externalId
           });
 
           if (commandResult.isSucceed) {
             return tripId;
           }
+
+          //todo cleanup uploaded file after command failed
 
           return commandResult.errors;
         } catch (error) {

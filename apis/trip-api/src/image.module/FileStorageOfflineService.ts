@@ -1,4 +1,4 @@
-import { IFileStorageRepository } from "./IFileStorageRepository";
+import { IFileStorageService } from "./IFileStorageService";
 import { Stream } from "stream";
 import fs from "fs";
 import { read, write } from "./FileAsync";
@@ -6,7 +6,7 @@ import path from "path";
 import { File, IFileModel } from "./File";
 const uuid = require("uuid/v5");
 
-export class FileStorageRepository implements IFileStorageRepository {
+export class FileStorageOfflineService implements IFileStorageService {
   async save(file: Stream, category: string, fileName: string) {
     var fileExtension = path.parse(fileName).ext;
     await fs.mkdir(new URL(category), { recursive: true }, err =>

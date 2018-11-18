@@ -17,7 +17,7 @@ export class ServiceBus {
     console.log(
       `hi there, I am emiting a event, cheers${JSON.stringify(event)}`
     );
-    var TripId = event.TripId;
+    var TripId = event.tripId;
 
     var state = await this.TripRepository.get(TripId);
     state = await this.reducer.updateState(state as ITrip, event);

@@ -6,17 +6,17 @@ import { Moment } from "moment";
 
 export type UpdateTripCommand = {
   type: "updateTrip";
-  TripId: String;
-  name: String;
+  tripId: string;
+  name: string;
   fromDate: Moment;
   toDate: Moment;
 };
 
 export async function updateTrip(command: UpdateTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus) {
-  const { TripId, name, fromDate, toDate } = command;
+  const { tripId, name, fromDate, toDate } = command;
   
   //validate
-  const state = await reducers.getCurrentState(TripId);
+  const state = await reducers.getCurrentState(tripId);
 
   //get current state
   if (state.name == name && state.fromDate == fromDate && state.toDate == toDate) {
@@ -25,7 +25,7 @@ export async function updateTrip(command: UpdateTripCommand, eventHandler: Event
 
   var event: TripEvent = {
     type: "TripUpdated",
-    TripId,
+    tripId,
     name,
     fromDate,
     toDate,
