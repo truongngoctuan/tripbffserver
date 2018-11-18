@@ -1,5 +1,6 @@
 import { Server } from "hapi";
 const Joi = require("joi");
+import uuid from 'uuid/v1'
 import { TripCommandHandler } from "./services/commands/_commandHandler";
 import { TripQueryHandler } from "./services/TripQuery";
 import { ServiceBus } from "./services/TripServiceBus";
@@ -28,7 +29,7 @@ module.exports = {
 
         try {
           const { name, fromDate, toDate } = request.payload as any;
-          var tripId = Math.floor(Math.random() * 100);
+          var tripId = uuid();
 
           var commandResult = await tripCommandHandler.exec({
             type: "createTrip",

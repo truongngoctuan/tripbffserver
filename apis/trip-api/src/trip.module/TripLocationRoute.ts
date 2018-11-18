@@ -1,5 +1,5 @@
 import { Server } from "hapi";
-const uuid = require("uuid/v5");
+const uuid = require("uuid/v1");
 import { TripCommandHandler } from "./services/commands/_commandHandler";
 import { TripQueryHandler } from "./services/TripQuery";
 import { ServiceBus } from "./services/TripServiceBus";
@@ -66,6 +66,7 @@ module.exports = {
 
           return commandResult.errors;
         } catch (error) {
+          console.log("POST /trips/{id}/locations");
           console.log(error);
           return error;
         }
