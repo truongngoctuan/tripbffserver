@@ -15,7 +15,7 @@ export class ServiceBus {
 
   public async emit(event: TripEvent) {
     console.log(
-      `hi there, I am emiting a event, cheers${JSON.stringify(event)}`
+      `hi there, I am emiting a event, cheers ${JSON.stringify(event).slice(0, 20)}`
     );
     var TripId = event.tripId;
 

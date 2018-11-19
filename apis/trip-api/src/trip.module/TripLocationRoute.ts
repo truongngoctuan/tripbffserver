@@ -94,7 +94,7 @@ module.exports = {
         tags: ["api"],
         validate: {
           params: {
-            id: Joi.number()
+            id: Joi
               .required()
               .description("the id for the todo item")
           }

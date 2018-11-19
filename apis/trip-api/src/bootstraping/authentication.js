@@ -38,8 +38,6 @@ async function addAuth(server) {
                 };
             }
 
-            console.log(session)
-
             // here is where you validate your token
             // comparing with token from your database for example
             const isValid = true;
