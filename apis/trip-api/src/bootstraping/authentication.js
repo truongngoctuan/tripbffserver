@@ -28,6 +28,7 @@ async function addAuth(server) {
         allowQueryToken: true, // optional, false by default
         validate: async (request, token, h) => {
             console.log(token);
+            console.log(`${request.route.method} ${request.route.path}`);
 
             var session = await getAsync(`${PREFIX}:${token}`);
             if (!session) {

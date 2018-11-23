@@ -28,7 +28,7 @@ module.exports = {
   init: function(server: Server) {
     const locationsSchema = Joi.array().items(
       Joi.object({
-        locationId: Joi.number(),
+        locationId: Joi.string(),
         fromTime: Joi.string(),
         toTime: Joi.string(),
         location: Joi.object({
@@ -39,7 +39,7 @@ module.exports = {
         images: Joi.array().items(
           Joi.object({
             url: Joi.string().required(),
-            isSelected: Joi.bool().required()
+            // isSelected: Joi.bool().required()
           })
         )
       })
@@ -50,6 +50,7 @@ module.exports = {
       path: "/trips/{id}/locations",
       handler: async function(request, h) {
         try {
+          console.log("POST" + request.url)
           var selectedLocations = request.payload as any;
           var tripId = request.params.id;
 
@@ -61,14 +62,19 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            return tripId;
+            var queryResult = await tripQueryHandler.GetById(tripId.toString());
+            if (!queryResult) return Err("can't get data after import trip");
+
+            // console.log(queryResult);
+            return queryResult;
           }
 
+          console.log("err: " + commandResult.errors)
           return commandResult.errors;
         } catch (error) {
-          console.log("POST /trips/{id}/locations");
+          console.log("ERROR: POST /trips/{id}/locations");
           console.log(error);
-          return error;
+          throw error;
         }
       },
       options: {
@@ -94,9 +100,7 @@ module.exports = {
         tags: ["api"],
         validate: {
           params: {
-            id: Joi
-              .required()
-              .description("the id for the todo item")
+            id: Joi.required().description("the id for the todo item")
           }
         }
       }
