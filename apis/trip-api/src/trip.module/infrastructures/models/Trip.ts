@@ -22,7 +22,7 @@ export const TripSchema = new Schema({
   toDate: Date,
   locations: [
     {
-      locationId: Number,
+      locationId: String,
       location: {
           long: Number,
           lat: Number,
@@ -32,7 +32,8 @@ export const TripSchema = new Schema({
       toTime: Date,
       images: [
           {
-              url: String
+              imageId: String,
+              url: String,
           }
       ]
     }
