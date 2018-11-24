@@ -4,7 +4,7 @@ import { ServiceBus } from "../TripServiceBus";
 import { CommandResult, Succeed } from "../../../_shared/utils";
 import { ITripLocation } from "../../models/ITrip";
 import _ from 'lodash';
-import uuid1 from 'uuid/v1';
+import uuid4 from 'uuid/v4';
 
 export type ImportTripCommand = {
   type: "importTrip";
@@ -19,10 +19,10 @@ export async function importTrip(command: ImportTripCommand, eventHandler: Event
 
   //add ids internally
   _.each(locations, loc => {
-    loc.locationId = uuid1();
+    loc.locationId = uuid4();
 
     _.each(loc.images, img => {
-      img.imageId = uuid1();
+      img.imageId = uuid4();
     })
   })
 
