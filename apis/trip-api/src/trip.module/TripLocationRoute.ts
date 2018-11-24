@@ -28,18 +28,16 @@ module.exports = {
   init: function(server: Server) {
     const locationsSchema = Joi.array().items(
       Joi.object({
-        locationId: Joi.string(),
         fromTime: Joi.string(),
         toTime: Joi.string(),
         location: Joi.object({
           long: Joi.number().required(),
           lat: Joi.number().required(),
-          address: Joi.string()
+          address: Joi.string(),
         }),
         images: Joi.array().items(
           Joi.object({
             url: Joi.string().required(),
-            // isSelected: Joi.bool().required()
           })
         )
       })
@@ -151,7 +149,7 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          payload: locationsSchema
+          // payload: locationsSchema
         }
       }
     });

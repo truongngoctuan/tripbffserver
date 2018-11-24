@@ -1,3 +1,5 @@
+require('dotenv').config() //red config from .env file
+
 import { Server } from "hapi";
 const authService = require("./bootstraping/authentication.js");
 const swaggerUiService = require("./bootstraping/swagger-documentation");
@@ -14,16 +16,31 @@ var redis = require("redis");
 (async () => {
   // Create a server with a host and port
   const server = new Server({
-    //host: 'localhost',
-    //  host: '192.168.2.101', // local: should use IP4 of current local computer to allow call API from native app
-    host: '192.168.1.8',
-    // host: '192.168.0.109', // local: should use IP4 of current local computer to allow call API from native app
-    port: 8000
+    host: process.env.SERVER_HOST,
+    port: process.env.SERVER_PORT,
+    routes: {
+      validate: {
+        failAction: async (request, h, err) => {
+          console.error("ERR:" + JSON.stringify(err));
+
+          throw err;
+          // if (process.env.NODE_ENV === 'production') {
+          //   // In prod, log a limited error message and throw the default Bad Request error.
+          //   console.error('ValidationError:', err.message);
+          //   throw Boom.badRequest(`Invalid request payload input`);
+          // } else {
+          //   // During development, log and respond with the full error.
+          //   console.error("ERR:" + JSON.stringify(err));
+          //   throw err;
+          // }
+        }
+      }
+    }
   });
 
   var client = redis.createClient({
     host: config.redisStore.host,
-    port: config.redisStore.port
+    port: config.redisStore.port,
   });
 
   client.on("error", function(err: any) {
