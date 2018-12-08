@@ -108,6 +108,7 @@ module.exports = {
       method: "POST",
       path: "/trips/{tripId}/uploadImage",
       handler: async function(request, h) {
+        console.log("POST /trips/{tripId}/uploadImage")
         try {
           const { tripId } = request.params;
           const {
@@ -134,7 +135,7 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            return tripId;
+            return externalId;
           }
 
           //todo cleanup uploaded file after command failed
@@ -151,6 +152,47 @@ module.exports = {
         validate: {
           // payload: locationsSchema
         }
+      }
+    });
+
+    
+    server.route({
+      method: "POST",
+      path: "/uploadImage",
+      handler: async function(request, h) {
+        console.log("POST /uploadImage")
+        try {
+          const {
+            file,
+            fileName
+          } = request.payload as any;
+
+          console.log(request)
+          console.log(request.payload)
+          console.log("fileName")
+          console.log(fileName)
+          console.log("file")
+          console.log(file)
+
+          var category = "upload/images";
+          const { externalId } = await fileService.save(
+            file,
+            category,
+            fileName
+          );
+
+          return { status: "ok" };
+        } catch (error) {
+          console.log(error);
+          return error;
+        }
+      },
+      options: {
+        tags: ["api"],
+        payload: {
+          parse: false,
+          maxBytes: 50 * 1024 * 1024
+      },
       }
     });
   }
