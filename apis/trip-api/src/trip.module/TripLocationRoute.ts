@@ -8,6 +8,7 @@ import { TripEventRepository } from "./infrastructures/repositories/TripEventRep
 import TripRepository from "./infrastructures/repositories/TripRepository";
 import { uploadImage } from "./services/commands/uploadImage";
 import { FileStorageOfflineService } from "../image.module/FileStorageOfflineService";
+import * as fs from 'fs';
 
 const tripEventRepository = new TripEventRepository();
 const tripRepository = new TripRepository();
@@ -156,30 +157,75 @@ module.exports = {
     });
 
     
+    // server.route({
+    //   method: "POST",
+    //   path: "/uploadImage",
+    //   handler: async function(request, h) {
+    //     console.log("POST /uploadImage")
+    //     try {
+    //       const {
+    //         file,
+    //         fileName
+    //       } = request.payload as any;
+
+    //       console.log(request.payload)
+    //       console.log("fileName")
+    //       console.log(fileName)
+    //       console.log("file")
+    //       console.log(file)
+
+    //       var category = "upload/images";
+    //       const { externalId } = await fileService.save(
+    //         file,
+    //         category,
+    //         fileName
+    //       );
+
+    //       return { status: "ok" };
+    //     } catch (error) {
+    //       console.log(error);
+    //       return error;
+    //     }
+    //   },
+    //   options: {
+    //     tags: ["api"],
+    //     payload: {
+    //       parse: false,
+    //       maxBytes: 50 * 1024 * 1024
+    //   },
+    //   }
+    // });
+
+    
     server.route({
       method: "POST",
       path: "/uploadImage",
       handler: async function(request, h) {
         console.log("POST /uploadImage")
         try {
-          const {
-            file,
-            fileName
-          } = request.payload as any;
-
-          console.log(request)
           console.log(request.payload)
-          console.log("fileName")
-          console.log(fileName)
-          console.log("file")
-          console.log(file)
+          var buffer = request.payload.file;
+          var stream = fs.createWriteStream("uploads/" + "aaa.jpg");
+          stream.write(buffer);
+          // stream.write(null);
+          stream.close();
+          // var result = [];
+          // for(var i = 0; i < request.payload["file"].length; i++) {
+          //   console.log(request.payload["file"][i].hapi)
+          //     result.push(request.payload["file"][i].hapi);
+          //     request.payload["file"][i].pipe(fs.createWriteStream("uploads/" + "aaa.jpg"))
+          // }
 
-          var category = "upload/images";
-          const { externalId } = await fileService.save(
-            file,
-            category,
-            fileName
-          );
+          // console.log(result)
+
+          // const data = request.payload;
+          // const file = data;//data['file'];
+          // console.log(data)
+          // console.log(file)
+
+          // const UPLOAD_PATH = 'uploads';
+          // const fileOptions: FileUploaderOption = { dest: `${UPLOAD_PATH}/`, fileFilter: imageFilter };
+          // const filesDetails = await uploader(file, fileOptions);
 
           return { status: "ok" };
         } catch (error) {
@@ -190,7 +236,7 @@ module.exports = {
       options: {
         tags: ["api"],
         payload: {
-          parse: false,
+          parse: true,
           maxBytes: 50 * 1024 * 1024
       },
       }
