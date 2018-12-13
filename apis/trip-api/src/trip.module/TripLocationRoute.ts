@@ -8,7 +8,8 @@ import { TripEventRepository } from "./infrastructures/repositories/TripEventRep
 import TripRepository from "./infrastructures/repositories/TripRepository";
 import { uploadImage } from "./services/commands/uploadImage";
 import { FileStorageOfflineService } from "../image.module/FileStorageOfflineService";
-import * as fs from 'fs';
+import * as fs from "fs";
+import { IFileStorageService } from "../image.module/IFileStorageService";
 
 const tripEventRepository = new TripEventRepository();
 const tripRepository = new TripRepository();
@@ -18,7 +19,7 @@ const tripCommandHandler = new TripCommandHandler(
 );
 const tripQueryHandler = new TripQueryHandler(new TripRepository());
 
-const fileService = new FileStorageOfflineService();
+const fileService: IFileStorageService = new FileStorageOfflineService();
 
 const authService = require("../bootstraping/authentication.js");
 const config = require("../config");
@@ -34,11 +35,11 @@ module.exports = {
         location: Joi.object({
           long: Joi.number().required(),
           lat: Joi.number().required(),
-          address: Joi.string(),
+          address: Joi.string()
         }),
         images: Joi.array().items(
           Joi.object({
-            url: Joi.string().required(),
+            url: Joi.string().required()
           })
         )
       })
@@ -49,7 +50,7 @@ module.exports = {
       path: "/trips/{id}/locations",
       handler: async function(request, h) {
         try {
-          console.log("POST" + request.url)
+          console.log("POST" + request.url);
           var selectedLocations = request.payload as any;
           var tripId = request.params.id;
 
@@ -68,7 +69,7 @@ module.exports = {
             return queryResult;
           }
 
-          console.log("err: " + commandResult.errors)
+          console.log("err: " + commandResult.errors);
           return commandResult.errors;
         } catch (error) {
           console.log("ERROR: POST /trips/{id}/locations");
@@ -109,7 +110,7 @@ module.exports = {
       method: "POST",
       path: "/trips/{tripId}/uploadImage",
       handler: async function(request, h) {
-        console.log("POST /trips/{tripId}/uploadImage")
+        console.log("POST /trips/{tripId}/uploadImage");
         try {
           const { tripId } = request.params;
           const {
@@ -119,9 +120,9 @@ module.exports = {
             fileName
           } = request.payload as any;
 
-          var category = `upload/${tripId}/trips/locations`;
+          var category = `uploads/trips/${tripId}`;
           const { externalId } = await fileService.save(
-            file,
+            file as Buffer,
             category,
             fileName
           );
@@ -148,84 +149,36 @@ module.exports = {
         }
       },
       options: {
-        auth: "simple",
+        // auth: "simple",
         tags: ["api"],
-        validate: {
-          // payload: locationsSchema
+        payload: {
+          parse: true,
+          maxBytes: 50 * 1024 * 1024
         }
       }
     });
 
-    
-    // server.route({
-    //   method: "POST",
-    //   path: "/uploadImage",
-    //   handler: async function(request, h) {
-    //     console.log("POST /uploadImage")
-    //     try {
-    //       const {
-    //         file,
-    //         fileName
-    //       } = request.payload as any;
-
-    //       console.log(request.payload)
-    //       console.log("fileName")
-    //       console.log(fileName)
-    //       console.log("file")
-    //       console.log(file)
-
-    //       var category = "upload/images";
-    //       const { externalId } = await fileService.save(
-    //         file,
-    //         category,
-    //         fileName
-    //       );
-
-    //       return { status: "ok" };
-    //     } catch (error) {
-    //       console.log(error);
-    //       return error;
-    //     }
-    //   },
-    //   options: {
-    //     tags: ["api"],
-    //     payload: {
-    //       parse: false,
-    //       maxBytes: 50 * 1024 * 1024
-    //   },
-    //   }
-    // });
-
-    
     server.route({
       method: "POST",
       path: "/uploadImage",
       handler: async function(request, h) {
-        console.log("POST /uploadImage")
+        console.log("POST /uploadImage");
         try {
-          console.log(request.payload)
-          var buffer = request.payload.file;
-          var stream = fs.createWriteStream("uploads/" + "aaa.jpg");
-          stream.write(buffer);
-          // stream.write(null);
-          stream.close();
-          // var result = [];
-          // for(var i = 0; i < request.payload["file"].length; i++) {
-          //   console.log(request.payload["file"][i].hapi)
-          //     result.push(request.payload["file"][i].hapi);
-          //     request.payload["file"][i].pipe(fs.createWriteStream("uploads/" + "aaa.jpg"))
-          // }
+          const data = request.payload as any;
+          const file: Buffer = data.file;
+          const fileName: string = data.fileName;
 
-          // console.log(result)
+          console.log("fileName");
+          console.log(fileName);
+          console.log("file");
+          console.log(file);
 
-          // const data = request.payload;
-          // const file = data;//data['file'];
-          // console.log(data)
-          // console.log(file)
-
-          // const UPLOAD_PATH = 'uploads';
-          // const fileOptions: FileUploaderOption = { dest: `${UPLOAD_PATH}/`, fileFilter: imageFilter };
-          // const filesDetails = await uploader(file, fileOptions);
+          var category = "upload/images";
+          const { externalId } = await fileService.save(
+            file,
+            category,
+            fileName
+          );
 
           return { status: "ok" };
         } catch (error) {
@@ -238,7 +191,7 @@ module.exports = {
         payload: {
           parse: true,
           maxBytes: 50 * 1024 * 1024
-      },
+        }
       }
     });
   }
