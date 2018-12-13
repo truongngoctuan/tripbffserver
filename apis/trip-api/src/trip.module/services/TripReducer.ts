@@ -4,17 +4,22 @@ import {
   TripCreatedEvent,
   TripUpdatedEvent,
   TripImportLocationsEvent,
-  TripEvent
+  TripEvent,
+  TripLocationImageUploadedEvent
 } from "./TripEvent";
 import moment from "moment";
+import _ from "lodash";
 
 export class TripReducers {
   constructor(private TripEventRepository?: ITripEventRepository) {}
 
-  async getCurrentState(id: String): Promise<ITrip> {
-    if (!this.TripEventRepository) throw "are you forgot to init TripEventRepository ?";
-    
+  async getCurrentState(id: string): Promise<ITrip> {
+    if (!this.TripEventRepository)
+      throw "are you forgot to init TripEventRepository ?";
+
     var events = await this.TripEventRepository.getAll(id);
+    // console.log("events");
+    // console.log(JSON.stringify(events));
     var state: ITrip = {
       id: "",
       name: "",
@@ -23,34 +28,31 @@ export class TripReducers {
       locations: []
     };
 
-    events.forEach(async (event, idx) => {
-      state = await this.updateState(state, event);
+    events.forEach((event, idx) => {
+      state = this.updateState(state, event);
     });
 
     return state;
   }
 
-  async updateState(state: ITrip, event: TripEvent): Promise<ITrip> {
+  updateState(state: ITrip, event: TripEvent): ITrip {
     switch (event.type) {
       case "TripCreated":
-        state = await this.createTrip(event);
-        break;
+        return this.createTrip(event);
       case "TripUpdated":
-        state = await this.updateTrip(state, event);
-        break;
+      return this.updateTrip(state, event);
       case "TripImportLocations":
-        state = await this.updateTripLocations(state, event);
-        break;
+      return this.updateTripLocations(state, event);
+      case "LocationImageUploaded":
+      return this.updateTripLocationImage(state, event);
       default:
-        break;
+        return state;
     }
-
-    return state;
   }
 
-  async createTrip(command: TripCreatedEvent): Promise<ITrip> {
+  createTrip(command: TripCreatedEvent): ITrip {
     return {
-      id: command.TripId,
+      id: command.tripId,
       name: command.name,
       fromDate: command.fromDate,
       toDate: command.toDate,
@@ -58,7 +60,10 @@ export class TripReducers {
     };
   }
 
-  async updateTrip(prevState: ITrip, command: TripUpdatedEvent): Promise<ITrip> {
+  updateTrip(
+    prevState: ITrip,
+    command: TripUpdatedEvent
+  ): ITrip {
     return {
       ...prevState,
       name: command.name,
@@ -67,10 +72,51 @@ export class TripReducers {
     };
   }
 
-  async updateTripLocations(prevState: ITrip, command: TripImportLocationsEvent): Promise<ITrip> { 
+  updateTripLocations(
+    prevState: ITrip,
+    command: TripImportLocationsEvent
+  ): ITrip {
     return {
       ...prevState,
       locations: command.locations
+    };
+  }
+
+  updateTripLocationImage(
+    prevState: ITrip,
+    command: TripLocationImageUploadedEvent
+  ): ITrip {
+
+    //get location
+    var locationIdx = _.findIndex(
+      prevState.locations,
+      loc => loc.locationId == command.locationId
+    );
+
+    var location = prevState.locations[locationIdx];
+
+    //get image
+    var imageIdx = _.findIndex(
+      location.images,
+      img => img.imageId == command.imageId
+    );
+    var image = location.images[imageIdx];
+    image.externalStorageId = command.externalStorageId;
+
+    //update state
+    location.images = [
+      ...location.images.slice(0, imageIdx),
+      image,
+      ...location.images.slice(imageIdx + 1)
+    ];
+
+    return {
+      ...prevState,
+      locations: [
+        ...prevState.locations.slice(0, locationIdx),
+        location,
+        ...prevState.locations.slice(locationIdx + 1)
+      ]
     };
   }
 }

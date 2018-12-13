@@ -6,8 +6,8 @@ import { Moment } from "moment";
 
 export type CreateTripCommand = {
   type: "createTrip";
-  TripId: String;
-  name: String;
+  tripId: string;
+  name: string;
   fromDate: Moment;
   toDate: Moment;
 };
@@ -15,10 +15,10 @@ export type CreateTripCommand = {
 export async function createTrip(command: CreateTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus): Promise<CommandResult> {
   //validate
 
-  const { TripId, name, fromDate, toDate } = command;
+  const { tripId, name, fromDate, toDate } = command;
   var event: TripEvent = {
     type: "TripCreated",
-    TripId,
+    tripId,
     name,
     fromDate,
     toDate,

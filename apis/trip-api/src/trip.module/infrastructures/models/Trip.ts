@@ -6,10 +6,10 @@ const Schema = mongoose.Schema;
 
 // this is db model, schemas
 export interface ITrip {
-  name: String;
+  name: string;
   fromDate: Date;
   toDate: Date;
-  locations?: Array<ITripLocation>
+  locations: Array<ITripLocation>
 }
 
 export interface ITripModel extends ITrip, Document {}
@@ -22,7 +22,7 @@ export const TripSchema = new Schema({
   toDate: Date,
   locations: [
     {
-      locationId: Number,
+      locationId: String,
       location: {
           long: Number,
           lat: Number,
@@ -32,7 +32,8 @@ export const TripSchema = new Schema({
       toTime: Date,
       images: [
           {
-              url: String
+              imageId: String,
+              url: String,
           }
       ]
     }

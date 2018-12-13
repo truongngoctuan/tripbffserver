@@ -10,7 +10,19 @@ export class TripRepository implements ITripRepository {
       name: o.name,
       fromDate: moment(o.fromDate),
       toDate: moment(o.toDate),
-      locations: o.locations
+      locations: o.locations.map(loc => { return {
+        locationId: loc.locationId,
+        location: loc.location,
+        fromTime: moment(loc.fromTime),
+        toTime: moment(loc.toTime),
+        images: loc.images.map(img => {
+          return {
+            imageId: img.imageId,
+            url: img.url,
+            externalStorageId: img.externalStorageId,
+          }
+        })
+      }})
     };
   }
 

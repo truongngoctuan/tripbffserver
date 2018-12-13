@@ -1,25 +1,27 @@
 import { Moment } from "moment";
 
 export interface ITrip {
-  id: String,
-  name: String,
+  id: string,
+  name: string,
   fromDate: Moment,
   toDate: Moment,
-  locations?: Array<ITripLocation>
+  locations: Array<ITripLocation>
 }
 
 export interface ITripLocation {
-    locationId: Number,
+    locationId: string,
     location: {
-        long: Number,
-        lat: Number,
-        address: String
+        long: number,
+        lat: number,
+        address: string,
     },
     fromTime: Moment,
     toTime: Moment,
-    images: [
-        {
-            url: String
-        }
-    ]
+    images: Array<ITripLocationImage>
+}
+
+export interface ITripLocationImage {
+    imageId: string,
+    url: string, //url stored in local mobile
+    externalStorageId?: string, //this id will exist after image binary is uploaded to server
 }

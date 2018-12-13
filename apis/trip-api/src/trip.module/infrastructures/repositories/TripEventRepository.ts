@@ -22,13 +22,13 @@ const TripEventModel: Model<ITripEventModel> = mongoose.model<ITripEventModel>(
 export class TripEventRepository implements ITripEventRepository {
   async save(event: TripEvent) {
     var dbEvent = new TripEventModel({
-      TripId: event.TripId,
+      TripId: event.tripId,
       data: event,
     });
     dbEvent.save();
   }
 
-  async getAll(id: String): Promise<TripEvent[]> {
+  async getAll(id: string): Promise<TripEvent[]> {
     var Trips = await TripEventModel.find({ TripId: id }).exec();
     return Trips.map(item => item.data);
   }
