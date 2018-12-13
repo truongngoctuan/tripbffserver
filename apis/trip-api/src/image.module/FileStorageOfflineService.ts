@@ -1,10 +1,10 @@
 import { IFileStorageService } from "./IFileStorageService";
 import { Stream } from "stream";
-import fs from "fs";
+import fse from "fs-extra";
 import { read, write } from "./FileAsync";
 import path from "path";
 import { File, IFileModel } from "./File";
-const uuid = require("uuid/v5");
+const uuid = require("uuid/v1");
 
 export class FileStorageOfflineService implements IFileStorageService {
   async save(file: Stream | Buffer, category: string, fileName: string) {
@@ -16,9 +16,7 @@ export class FileStorageOfflineService implements IFileStorageService {
 
   async saveFromStream(file: Stream, category: string, fileName: string) {
     var fileExtension = path.parse(fileName).ext;
-    await fs.mkdir(new URL(category), { recursive: true }, err =>
-      console.log(err)
-    );
+    fse.mkdirpSync(path.resolve(category));
 
     const externalId = uuid();
     await write(path.join(category, externalId + fileExtension), file);
@@ -39,12 +37,12 @@ export class FileStorageOfflineService implements IFileStorageService {
 
   async saveFromBuffer(buffer: Buffer, category: string, fileName: string) {
     var fileExtension = path.parse(fileName).ext;
-    await fs.mkdir(new URL(category), { recursive: true }, err =>
-      console.log(err)
-    );
+    fse.mkdirpSync(path.resolve(category));
 
     const externalId = uuid();
-    var stream = fs.createWriteStream(path.join(category, externalId + fileExtension));
+    var stream = fse.createWriteStream(
+      path.join(category, externalId + fileExtension)
+    );
     stream.write(buffer);
     stream.close();
 

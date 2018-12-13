@@ -18,6 +18,8 @@ export class TripReducers {
       throw "are you forgot to init TripEventRepository ?";
 
     var events = await this.TripEventRepository.getAll(id);
+    // console.log("events");
+    // console.log(JSON.stringify(events));
     var state: ITrip = {
       id: "",
       name: "",
@@ -26,34 +28,29 @@ export class TripReducers {
       locations: []
     };
 
-    events.forEach(async (event, idx) => {
-      state = await this.updateState(state, event);
+    events.forEach((event, idx) => {
+      state = this.updateState(state, event);
     });
 
     return state;
   }
 
-  async updateState(state: ITrip, event: TripEvent): Promise<ITrip> {
+  updateState(state: ITrip, event: TripEvent): ITrip {
     switch (event.type) {
       case "TripCreated":
-        state = await this.createTrip(event);
-        break;
+        return this.createTrip(event);
       case "TripUpdated":
-        state = await this.updateTrip(state, event);
-        break;
+      return this.updateTrip(state, event);
       case "TripImportLocations":
-        state = await this.updateTripLocations(state, event);
-        break;
+      return this.updateTripLocations(state, event);
       case "LocationImageUploaded":
-        state = await this.updateTripLocationImage(state, event);
+      return this.updateTripLocationImage(state, event);
       default:
-        break;
+        return state;
     }
-
-    return state;
   }
 
-  async createTrip(command: TripCreatedEvent): Promise<ITrip> {
+  createTrip(command: TripCreatedEvent): ITrip {
     return {
       id: command.tripId,
       name: command.name,
@@ -63,10 +60,10 @@ export class TripReducers {
     };
   }
 
-  async updateTrip(
+  updateTrip(
     prevState: ITrip,
     command: TripUpdatedEvent
-  ): Promise<ITrip> {
+  ): ITrip {
     return {
       ...prevState,
       name: command.name,
@@ -75,20 +72,20 @@ export class TripReducers {
     };
   }
 
-  async updateTripLocations(
+  updateTripLocations(
     prevState: ITrip,
     command: TripImportLocationsEvent
-  ): Promise<ITrip> {
+  ): ITrip {
     return {
       ...prevState,
       locations: command.locations
     };
   }
 
-  async updateTripLocationImage(
+  updateTripLocationImage(
     prevState: ITrip,
     command: TripLocationImageUploadedEvent
-  ): Promise<ITrip> {
+  ): ITrip {
 
     //get location
     var locationIdx = _.findIndex(

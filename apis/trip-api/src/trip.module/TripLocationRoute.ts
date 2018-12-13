@@ -127,6 +127,13 @@ module.exports = {
             fileName
           );
 
+          console.log({
+            type: "uploadImage",
+            tripId,
+            locationId,
+            imageId,
+            externalStorageId: externalId
+          })
           // create import command
           var commandResult = await tripCommandHandler.exec({
             type: "uploadImage",
@@ -173,7 +180,7 @@ module.exports = {
           console.log("file");
           console.log(file);
 
-          var category = "upload/images";
+          var category = "./upload/images";
           const { externalId } = await fileService.save(
             file,
             category,

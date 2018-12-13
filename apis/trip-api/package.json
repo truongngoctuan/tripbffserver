@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/fs-extra": "^5.0.4",
     "dotenv": "^6.1.0",
+    "fs-extra": "^7.0.1",
     "hapi": "^17.6.0",
     "hapi-auth-bearer-token": "^6.1.0",
     "hapi-swagger": "^9.1.2",

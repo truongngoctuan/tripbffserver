@@ -33,6 +33,8 @@ export async function uploadImage(
 
   //validation: external id
   const state = await reducers.getCurrentState(tripId);
+  // console.log("trip state")
+  // console.log(state)
   const location = nullCheck(
     _.find(state.locations, loc => loc.locationId == locationId),
     "location not found"
