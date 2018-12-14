@@ -156,7 +156,7 @@ module.exports = {
         }
       },
       options: {
-        // auth: "simple",
+        auth: "simple",
         tags: ["api"],
         payload: {
           parse: true,
@@ -194,6 +194,7 @@ module.exports = {
         }
       },
       options: {
+        auth: "simple",
         tags: ["api"],
         payload: {
           parse: true,

@@ -28,9 +28,9 @@ function authenticationMiddleware() {
 function checkRedisStatus() {
     client.keys(`${config.auth.keyPrefix}:*`, (err, replies) => {
         console.log(`login-sessions: ${replies.length}`);
-        var lastKey = replies[replies.length - 1];
-        console.log(lastKey)
-        client.get(lastKey, (err, reply) => console.log(reply));
+        var latestKey = replies[0];
+        console.log(latestKey)
+        client.get(latestKey, (err, reply) => console.log(reply));
     });
 }
 function generateJwt(req, res) {
