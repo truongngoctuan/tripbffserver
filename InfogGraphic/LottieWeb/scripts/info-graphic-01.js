@@ -173,21 +173,30 @@ function drawLocationDecorations(svgBase, nItems, nItemsPerRow) {
         y2 = py;
 
         const locationMarginBottom = 12;
-        drawLottie(svgBase, {
-            top: y2 - w / 2,
-            left: x2 - h / 2,
+        drawText(svgBase, {
+            top: y2 - 20,
+            left: x2 - 20,
             w: w,
             h: h / 2 - locationMarginBottom,
             paddingLeftRight: 20
-        });
+        }, "13/12/2018", "black", "serif");
 
-        drawLottie(svgBase, {
-            top: y2 + locationMarginBottom,
-            left: x2 - h / 2,
+        drawText(svgBase, {
+            top: y2 + 20,
+            left: x2 - 20,
             w: w,
             h: h / 3 - locationMarginBottom,
             paddingLeftRight: 30
-        });
+        }, "Nha Trang", "black", "sans-serif");
+
+
+        drawText(svgBase, {
+            top: y2 + 50,
+            left: x2 - 20,
+            w: w,
+            h: h / 3 - locationMarginBottom,
+            paddingLeftRight: 30
+        }, "Lorem Ipsum is simply dummy text of the printing industry.", "black", "serif");
 
         x1 = px;
         y1 = py;
@@ -210,8 +219,8 @@ function drawLottie(svgBase, location) {
         .attr("width", w - paddingLeftRight * 2)
         .attr("height", h)
         ;
-
-    var animation = bodymovin.loadAnimation({
+        
+      var animation = bodymovin.loadAnimation({
         container: svgCanvas.node(),
         renderer: 'svg',
         loop: false,
@@ -230,11 +239,54 @@ function drawLottie(svgBase, location) {
     // ], true)
 }
 
-const N_ITEMS = 12;
-const N_ITEMS_PER_ROW = 4;
+function drawText(svgBase, location, text, color, font) {
+    const top = location.top;
+    const left = location.left;
+    const paddingLeftRight = location.paddingLeftRight;
+
+    var svgCanvas = svgBase.append("text");
+    svgCanvas
+        .attr("y", top)
+        .attr("x", left + paddingLeftRight)
+        .attr('text-anchor', 'middle')
+        .attr("font-size", "20px")
+        .attr("font-family", font)
+        .attr("fill", color)
+        .text(text)
+        .call(wrap, 150);
+}
+
+function wrap(text, width) {
+    text.each(function() {
+      var text = d3.select(this),
+          words = text.text().split(/\s+/).reverse(),
+          word,
+          line = [],
+          lineNumber = 0,
+          lineHeight = 1.1, // ems
+          y = text.attr("y"),
+          x = text.attr("x"),
+          dy = 0.35,
+          tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
+      while (word = words.pop()) {
+        line.push(word);
+        tspan.text(line.join(" "));
+        if (tspan.node().getComputedTextLength() > width) {
+          line.pop();
+          tspan.text(line.join(" "));
+          line = [word];
+          tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+        }
+      }
+    });
+  }
+
+
+const N_ITEMS = 20;
+const N_ITEMS_PER_ROW = 3;
 
 const w = 200,
-h = 200;
+h = 300;
 const c_paddingLeft = 50,
 c_paddingRight = 50,
 c_paddingTop = 100,
@@ -247,3 +299,4 @@ var svgBase = d3.select("#info-graphic-base")
 drawPathBetweenLocationsInTheSameRow(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
 drawLocations(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
 drawLocationDecorations(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
+
