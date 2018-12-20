@@ -7,6 +7,7 @@ import { ServiceBus } from "./services/TripServiceBus";
 import { Err } from "../_shared/utils";
 import { TripEventRepository } from "./infrastructures/repositories/TripEventRepository";
 import TripRepository from "./infrastructures/repositories/TripRepository";
+var fs = require("fs");
 
 const tripEventRepository = new TripEventRepository();
 const tripRepository = new TripRepository();
@@ -78,6 +79,31 @@ module.exports = {
         console.log("trip id :" + tripId);
         var trip = tripQueryHandler.GetById(tripId);
         return trip;
+      },
+      options: {
+        // auth: "simple",
+        tags: ["api"],
+        validate: {
+          params: {
+            id: Joi.required().description("the id for the todo item")
+          }
+        }
+      }
+    });
+
+    server.route({
+      method: "GET",
+      path: "/trips/{id}/infographic",
+      handler: function(request, h) {
+        var tripId = request.params.id;
+        console.log("trip id get infographic:" + tripId);
+
+        //TODO: trigger create infographic for this trip: date, location name, location description
+        //var trip = tripQueryHandler.GetById(tripId);
+        
+        //return infographic
+      var base64Img = fs.readFileSync('svg-info-graphic.png', 'base64');
+      return base64Img;
       },
       options: {
         // auth: "simple",
