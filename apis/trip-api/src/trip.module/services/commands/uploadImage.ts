@@ -1,7 +1,7 @@
 import { Stream } from "stream";
 import fs from "fs";
 import { EventHandler, TripEvent } from "../TripEvent";
-import { TripReducers } from "../TripReducer";
+import { TripReducers } from "../reducers/_tripReducer";
 import { ServiceBus } from "../TripServiceBus";
 import { CommandResult, Succeed } from "../../../_shared/utils";
 import _ from "lodash";

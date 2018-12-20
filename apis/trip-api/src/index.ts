@@ -9,6 +9,7 @@ const mongoService = require("./bootstraping/mongo-connection");
 const helloRoutes = require("./sample.module/route");
 const tripRoutes = require("./trip.module/TripRoute");
 const tripLocationRoutes = require("./trip.module/TripLocationRoute");
+const tripInfographicRoutes = require("./trip.module/TripInfographicRoute");
 
 const config = require("./config");
 var redis = require("redis");
@@ -55,6 +56,7 @@ var redis = require("redis");
   helloRoutes.init(server);
   tripRoutes.init(server);
   tripLocationRoutes.init(server);
+  tripInfographicRoutes.init(server);
 
   // Start the server
   async function start() {

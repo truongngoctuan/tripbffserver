@@ -1,6 +1,6 @@
 import { Succeed } from "../../../_shared/utils";
 import { TripEvent, EventHandler } from "../TripEvent";
-import { TripReducers } from "../TripReducer";
+import { TripReducers } from "../reducers/_tripReducer";
 import { ServiceBus } from "../TripServiceBus";
 import { Moment } from "moment";
 

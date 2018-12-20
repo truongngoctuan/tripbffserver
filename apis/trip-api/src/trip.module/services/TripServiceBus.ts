@@ -1,5 +1,5 @@
 import { TripEvent } from "./TripEvent";
-import { TripReducers } from "./TripReducer";
+import { TripReducers } from "./reducers/_tripReducer";
 import { ITripRepository } from "../models/ITripRepository";
 import { ITrip } from "../models/ITrip";
 

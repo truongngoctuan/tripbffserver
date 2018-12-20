@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 
 const url = "http://localhost:4050";
-(async () => {
+async function exportInfo() {
     const browser = await puppeteer.launch({
         // headless: false
     });
@@ -25,6 +25,10 @@ const url = "http://localhost:4050";
     // });
 
     const svgInfoGraphic = await page.$('#info-graphic-base');
+    var result = await page.evaluate(() => {
+        console.log("AAaa")
+        draw();
+      });
     await svgInfoGraphic.screenshot({
         path: 'svg-info-graphic.png',
         // omitBackground: true,
@@ -32,4 +36,9 @@ const url = "http://localhost:4050";
 
     await browser.close();
 
-})();
+};
+
+// await exportInfo();
+module.exports = {
+    exportInfo
+}

@@ -8,8 +8,8 @@ export class TripQueryHandler {
     return this.TripRepository.get(id);
   }
 
-  // async list(): Promise<ITrip[]> {
-  //   var results = this.TripRepository.list();
-  //   return results;
-  // }
+  async list(): Promise<ITrip[]> {
+    var results = this.TripRepository.list();
+    return results;
+  }
 };

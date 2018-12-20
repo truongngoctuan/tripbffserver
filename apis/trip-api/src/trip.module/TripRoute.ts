@@ -1,27 +1,33 @@
 import { Server } from "hapi";
 const Joi = require("joi");
-import uuid from 'uuid/v1'
-import { TripCommandHandler } from "./services/commands/_commandHandler";
-import { TripQueryHandler } from "./services/TripQuery";
-import { ServiceBus } from "./services/TripServiceBus";
+import uuid from "uuid/v1";
 import { Err } from "../_shared/utils";
-import { TripEventRepository } from "./infrastructures/repositories/TripEventRepository";
-import TripRepository from "./infrastructures/repositories/TripRepository";
+import { IoC } from "./IoC";
 
-const tripEventRepository = new TripEventRepository();
-const tripRepository = new TripRepository();
-const tripCommandHandler = new TripCommandHandler(
-  tripEventRepository,
-  new ServiceBus(tripRepository)
-);
-const tripQueryHandler = new TripQueryHandler(new TripRepository());
+const tripCommandHandler = IoC.tripCommandHandler;
+const tripQueryHandler = IoC.tripQueryHandler;
 
 module.exports = {
   init: function(server: Server) {
     server.route({
+      method: "GET",
+      path: "/trips",
+      handler: async function(request) {
+        var queryResult = await tripQueryHandler.list();
+
+        if (!queryResult) return Err("can't get data after create trip");
+        return queryResult;
+      },
+      options: {
+        // auth: "simple",
+        tags: ["api"]
+      }
+    });
+
+    server.route({
       method: "POST",
       path: "/trips",
-      handler: async function(request, h) {
+      handler: async function(request) {
         const { name, fromDate, toDate } = request.payload as any;
         console.log("trip name :" + name);
         console.log("trip from date:" + fromDate);
@@ -36,7 +42,7 @@ module.exports = {
             tripId: tripId.toString(),
             name,
             fromDate,
-            toDate,
+            toDate
           });
 
           if (commandResult.isSucceed) {
@@ -73,10 +79,11 @@ module.exports = {
     server.route({
       method: "GET",
       path: "/trips/{id}",
-      handler: function(request, h) {
+      handler: async function(request) {
         var tripId = request.params.id;
         console.log("trip id :" + tripId);
-        var trip = tripQueryHandler.GetById(tripId);
+        var trip = await tripQueryHandler.GetById(tripId);
+        if (!trip) throw "trip not found";
         return trip;
       },
       options: {

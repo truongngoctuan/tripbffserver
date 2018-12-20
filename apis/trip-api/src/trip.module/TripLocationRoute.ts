@@ -1,28 +1,13 @@
 import { Server } from "hapi";
-const uuid = require("uuid/v1");
-import { TripCommandHandler } from "./services/commands/_commandHandler";
-import { TripQueryHandler } from "./services/TripQuery";
-import { ServiceBus } from "./services/TripServiceBus";
 import { Err } from "../_shared/utils";
-import { TripEventRepository } from "./infrastructures/repositories/TripEventRepository";
-import TripRepository from "./infrastructures/repositories/TripRepository";
-import { uploadImage } from "./services/commands/uploadImage";
 import { FileStorageOfflineService } from "../image.module/FileStorageOfflineService";
-import * as fs from "fs";
 import { IFileStorageService } from "../image.module/IFileStorageService";
+import { IoC } from "./IoC";
 
-const tripEventRepository = new TripEventRepository();
-const tripRepository = new TripRepository();
-const tripCommandHandler = new TripCommandHandler(
-  tripEventRepository,
-  new ServiceBus(tripRepository)
-);
-const tripQueryHandler = new TripQueryHandler(new TripRepository());
+const tripCommandHandler = IoC.tripCommandHandler;
+const tripQueryHandler = IoC.tripQueryHandler;
 
 const fileService: IFileStorageService = new FileStorageOfflineService();
-
-const authService = require("../bootstraping/authentication.js");
-const config = require("../config");
 
 const Joi = require("joi");
 
@@ -48,7 +33,7 @@ module.exports = {
     server.route({
       method: "POST",
       path: "/trips/{id}/locations",
-      handler: async function(request, h) {
+      handler: async function(request) {
         try {
           console.log("POST" + request.url);
           var selectedLocations = request.payload as any;
@@ -89,7 +74,7 @@ module.exports = {
     server.route({
       method: "GET",
       path: "/trips/{id}/locations",
-      handler: async function(request, h) {
+      handler: async function(request) {
         var tripId = request.params.id;
         var queryResult = await tripQueryHandler.GetById(tripId.toString());
         if (!queryResult) return Err("can't get data after import trip");
@@ -109,7 +94,7 @@ module.exports = {
     server.route({
       method: "POST",
       path: "/trips/{tripId}/uploadImage",
-      handler: async function(request, h) {
+      handler: async function(request) {
         console.log("POST /trips/{tripId}/uploadImage");
         try {
           const { tripId } = request.params;
@@ -168,7 +153,7 @@ module.exports = {
     server.route({
       method: "POST",
       path: "/uploadImage",
-      handler: async function(request, h) {
+      handler: async function(request) {
         console.log("POST /uploadImage");
         try {
           const data = request.payload as any;
