@@ -3,7 +3,6 @@ const Joi = require("joi");
 import uuid from "uuid/v1";
 import { Err } from "../_shared/utils";
 import { IoC } from "./IoC"
-var fs = require("fs");
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
@@ -96,31 +95,6 @@ module.exports = {
           }
         }
       }
-    });
-
-    server.route({
-      method: "GET",
-      path: "/trips/{id}/infographic",
-      handler: function(request, h) {
-        var tripId = request.params.id;
-        console.log("trip id get infographic:" + tripId);
-
-        //TODO: trigger create infographic for this trip: date, location name, location description
-        //var trip = tripQueryHandler.GetById(tripId);
-        
-        //return infographic
-      var base64Img = fs.readFileSync('svg-info-graphic.png', 'base64');
-      return base64Img;
-      },
-      options: {
-        // auth: "simple",
-        tags: ["api"],
-        validate: {
-          params: {
-            id: Joi.required().description("the id for the todo item")
-          }
-        }
-      }
-    });
+    });    
   }
 };

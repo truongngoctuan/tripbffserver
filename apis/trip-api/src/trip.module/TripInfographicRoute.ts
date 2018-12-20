@@ -1,6 +1,8 @@
 import { Server } from "hapi";
 const uuid = require("uuid/v1");
 import { IoC } from "./IoC";
+var fs = require("fs");
+const Joi = require("joi");
 
 const tripCommandHandler = IoC.tripCommandHandler;
 
@@ -36,6 +38,30 @@ module.exports = {
         // auth: "simple",
         tags: ["api"],
         //todo add infographic type
+      }
+    });
+
+    server.route({
+      method: "GET",
+      path: "/trips/{id}/infographics",
+      handler: function(request, h) {
+        var infographicId = request.params.id;
+        console.log("infographic id :" + infographicId);
+
+        //TODO: get infographic by id
+        
+        //return infographic
+      var base64Img = fs.readFileSync('svg-info-graphic.png', 'base64');
+      return base64Img;
+      },
+      options: {
+        // auth: "simple",
+        tags: ["api"],
+        validate: {
+          params: {
+            id: Joi.required().description("the id for the todo item")
+          }
+        }
       }
     });
   }
