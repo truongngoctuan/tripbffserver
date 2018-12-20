@@ -292,11 +292,15 @@ c_paddingRight = 50,
 c_paddingTop = 100,
 c_paddingBottom = 100;
 
-var svgBase = d3.select("#info-graphic-base")
-.attr("width", c_paddingLeft + w * N_ITEMS_PER_ROW  + c_paddingRight)
-.attr("height", c_paddingTop + h * N_ITEMS / N_ITEMS_PER_ROW + c_paddingBottom);
+function draw() {
 
-drawPathBetweenLocationsInTheSameRow(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
-drawLocations(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
-drawLocationDecorations(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
+    var svgBase = d3.select("#info-graphic-base")
+    .attr("width", c_paddingLeft + w * N_ITEMS_PER_ROW  + c_paddingRight)
+    .attr("height", c_paddingTop + h * N_ITEMS / N_ITEMS_PER_ROW + c_paddingBottom);
 
+    drawPathBetweenLocationsInTheSameRow(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
+    drawLocations(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
+    drawLocationDecorations(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
+}
+
+window.draw = draw;

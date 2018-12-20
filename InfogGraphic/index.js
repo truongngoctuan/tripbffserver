@@ -1,3 +1,4 @@
+const exporter = require("./chrome-generator")
 const redisStore = {
   // host: "localhost",
   // port: 6379,
@@ -17,7 +18,7 @@ const rsmq = new RedisSMQ({
 
 var counter = 0;
 function receiveMessage() {
-  rsmq.receiveMessage({ qname: qName }, function(err, resp) {
+  rsmq.receiveMessage({ qname: qName }, async function(err, resp) {
     if (err) {
       errorHandler(err);
       SetTimeoutReceiveMessage();
@@ -27,6 +28,7 @@ function receiveMessage() {
       console.log("Message received.", resp);
       counter++;
       console.log("COUNTER", counter);
+      await actionExecAsync();
       deleteMessage(resp.id);
     } else {
       // console.log("no message received");
@@ -55,6 +57,10 @@ function SetTimeoutReceiveMessage() {
 function errorHandler(err) {
   if (err && err.queueNotFound) console.log("ERR", "queueNotFound");
   else if (err) console.log("ERR", "error on queue");
+}
+
+async function actionExecAsync() {
+  await exporter.exportInfo();
 }
 
 receiveMessage();

@@ -30,7 +30,7 @@ rsmq.deleteQueue({ qname: qName }, function(err, resp) {
       }
       if (resp === 1) {
         console.log("queue created");
-        sendMessages(20);
+        sendMessages(1);
       }
     });
   }
