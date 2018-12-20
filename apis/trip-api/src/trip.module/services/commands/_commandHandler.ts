@@ -1,20 +1,24 @@
 import { ITripRepository } from "../../models/ITripRepository";
 import { ServiceBus } from "../TripServiceBus";
 import { EventHandler, ITripEventRepository } from "../TripEvent";
-import { TripReducers } from "../TripReducer";
+import { TripReducers } from "../reducers/_tripReducer";
 import { CommandResult, Err } from "../../../_shared/utils";
 import { CreateTripCommand, createTrip } from "./createTrip";
 import { UpdateTripCommand, updateTrip } from "./updateTrip";
 import { ImportTripCommand, importTrip } from "./importTrip";
 import { UploadImageCommand, uploadImage } from "./uploadImage";
+import { exportInfographic, ExportInfographicCommand } from "./exportInfographic";
 
 type TripCommand = CreateTripCommand | UpdateTripCommand | ImportTripCommand
-| UploadImageCommand;
+| UploadImageCommand
+| ExportInfographicCommand;
+
 var staticHandlers = new Map<string, CommandFunc>();
 staticRegister(createTrip);
 staticRegister(updateTrip);
 staticRegister(importTrip);
 staticRegister(uploadImage);
+staticRegister(exportInfographic);
 
 function staticRegister(func: Function) {
   staticHandlers.set(func.name, func as CommandFunc);

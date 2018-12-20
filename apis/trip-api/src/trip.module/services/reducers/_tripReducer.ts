@@ -1,14 +1,16 @@
-import { ITrip } from "../models/ITrip";
+import { ITrip, IInfographic, InfographicStatus } from "../../models/ITrip";
 import {
   ITripEventRepository,
   TripCreatedEvent,
   TripUpdatedEvent,
   TripImportLocationsEvent,
   TripEvent,
-  TripLocationImageUploadedEvent
-} from "./TripEvent";
+  TripLocationImageUploadedEvent,
+  InfographicCreatedEvent
+} from "../TripEvent";
 import moment from "moment";
 import _ from "lodash";
+import createInfographic from "./createInfographic";
 
 export class TripReducers {
   constructor(private TripEventRepository?: ITripEventRepository) {}
@@ -25,7 +27,8 @@ export class TripReducers {
       name: "",
       fromDate: moment(),
       toDate: moment(),
-      locations: []
+      locations: [],
+      infographics: []
     };
 
     events.forEach((event, idx) => {
@@ -45,6 +48,8 @@ export class TripReducers {
       return this.updateTripLocations(state, event);
       case "LocationImageUploaded":
       return this.updateTripLocationImage(state, event);
+      case "InfographicCreated":
+      return createInfographic(state, event);
       default:
         return state;
     }
@@ -56,7 +61,8 @@ export class TripReducers {
       name: command.name,
       fromDate: command.fromDate,
       toDate: command.toDate,
-      locations: []
+      locations: [],
+      infographics: []
     };
   }
 
@@ -119,4 +125,5 @@ export class TripReducers {
       ]
     };
   }
+
 }

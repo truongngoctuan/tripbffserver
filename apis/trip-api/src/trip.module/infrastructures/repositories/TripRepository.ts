@@ -22,7 +22,8 @@ export class TripRepository implements ITripRepository {
             externalStorageId: img.externalStorageId,
           }
         })
-      }})
+      }}),
+      infographics: []
     };
   }
 

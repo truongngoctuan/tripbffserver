@@ -774,6 +774,13 @@
   resolved "https://registry.yarnpkg.com/@types/podium/-/podium-1.0.0.tgz#bfaa2151be2b1d6109cc69f7faa9dac2cba3bb20"
   integrity sha1-v6ohUb4rHWEJzGn3+qnawsujuyA=
 
+"@types/redis@^2.8.0":
+  version "2.8.8"
+  resolved "https://registry.yarnpkg.com/@types/redis/-/redis-2.8.8.tgz#70855e79a6020080cca3cb5f1f5ee7f11b49a979"
+  integrity sha512-o/1ufNVPA92uum9HFbEiXXIHBuLywSwHQtAZoACMc1FhPXS5YftybBC1EI0zjdbUb273VVWF0Ivll/bq4g+gyw==
+  dependencies:
+    "@types/node" "*"
+
 "@types/shot@*":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/shot/-/shot-4.0.0.tgz#7545500c489b65c69b5bc5446ba4fef3bd26af92"
@@ -2868,6 +2875,15 @@ rimraf@^2.6.1:
   integrity sha512-lreewLK/BlghmxtfH36YYVg1i8IAce4TI7oao75I1g245+6BctqTVQiBP3YUJ9C6DQOXJmkYR9X9fCLtCOJc5w==
   dependencies:
     glob "^7.0.5"
+
+rsmq@^0.9.3:
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/rsmq/-/rsmq-0.9.3.tgz#de1b1f795bfd845869aa3528cd11d4e5985f73a1"
+  integrity sha512-Gf0dRJ+CkzGqrZ81TRok+YOtFOJdiX9bqvz28pT0ythA5gTkMxDrFWEuj937Ogd+fpWpnu+2Yc2ro/kr7tpPTg==
+  dependencies:
+    "@types/redis" "^2.8.0"
+    lodash "^4.17.10"
+    redis "^2.8.0"
 
 safe-buffer@5.1.2, safe-buffer@^5.0.1, safe-buffer@^5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
