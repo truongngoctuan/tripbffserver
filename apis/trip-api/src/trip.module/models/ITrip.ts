@@ -34,7 +34,7 @@ export interface IInfographic {
 }
 
 export enum InfographicStatus {
-  Created,
-  Exported,
-  Failed
+  Created = "CREATED",
+  Exported = "EXPORTED",
+  Failed = "FAILED"
 }

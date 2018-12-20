@@ -10,20 +10,28 @@ export class TripRepository implements ITripRepository {
       name: o.name,
       fromDate: moment(o.fromDate),
       toDate: moment(o.toDate),
-      locations: o.locations.map(loc => { return {
-        locationId: loc.locationId,
-        location: loc.location,
-        fromTime: moment(loc.fromTime),
-        toTime: moment(loc.toTime),
-        images: loc.images.map(img => {
-          return {
-            imageId: img.imageId,
-            url: img.url,
-            externalStorageId: img.externalStorageId,
-          }
-        })
-      }}),
-      infographics: []
+      locations: o.locations.map(loc => {
+        return {
+          locationId: loc.locationId,
+          location: loc.location,
+          fromTime: moment(loc.fromTime),
+          toTime: moment(loc.toTime),
+          images: loc.images.map(img => {
+            return {
+              imageId: img.imageId,
+              url: img.url,
+              externalStorageId: img.externalStorageId
+            };
+          })
+        };
+      }),
+      infographics: o.infographics.map(infographic => {
+        return {
+          infographicId: infographic.infographicId,
+          externalStorageId:infographic.externalStorageId,
+          status: infographic.status
+        };
+      })
     };
   }
 
@@ -38,7 +46,7 @@ export class TripRepository implements ITripRepository {
       id,
       name,
       fromDate,
-      toDate,
+      toDate
     });
     await trip.save();
 
@@ -56,6 +64,7 @@ export class TripRepository implements ITripRepository {
     trip.fromDate = payload.fromDate.toDate();
     trip.toDate = payload.toDate.toDate();
     trip.locations = payload.locations;
+    trip.infographics = payload.infographics;
 
     await trip.save();
   }

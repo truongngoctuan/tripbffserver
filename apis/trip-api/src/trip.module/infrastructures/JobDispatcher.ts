@@ -22,14 +22,15 @@ export class JobDispatcher implements IJobDispatcher {
 
     rsmq.createQueue({ qname: qName }, function(err: any, resp: any) {
       if (err) {
-        console.log("Create error", err);
+        console.log("Create error");
+        // console.log("Create error", err);
         //todo better handling the service
       }
 
       // if (resp === 1) {
       //send anyway, regardless of the queue is created or not
       console.log("queue created");
-      rsmq.sendMessage({ qname: qName, message: data }, function(
+      rsmq.sendMessage({ qname: qName, message: JSON.stringify(data) }, function(
         err: any,
         resp: any
       ) {

@@ -1,6 +1,6 @@
 import { Server } from "hapi";
 const Joi = require("joi");
-import uuid from 'uuid/v1'
+import uuid from "uuid/v1";
 import { Err } from "../_shared/utils";
 import { IoC } from "./IoC";
 
@@ -9,6 +9,21 @@ const tripQueryHandler = IoC.tripQueryHandler;
 
 module.exports = {
   init: function(server: Server) {
+    server.route({
+      method: "GET",
+      path: "/trips",
+      handler: async function(request) {
+        var queryResult = await tripQueryHandler.list();
+
+        if (!queryResult) return Err("can't get data after create trip");
+        return queryResult;
+      },
+      options: {
+        // auth: "simple",
+        tags: ["api"]
+      }
+    });
+
     server.route({
       method: "POST",
       path: "/trips",
@@ -27,7 +42,7 @@ module.exports = {
             tripId: tripId.toString(),
             name,
             fromDate,
-            toDate,
+            toDate
           });
 
           if (commandResult.isSucceed) {
@@ -64,10 +79,11 @@ module.exports = {
     server.route({
       method: "GET",
       path: "/trips/{id}",
-      handler: function(request) {
+      handler: async function(request) {
         var tripId = request.params.id;
         console.log("trip id :" + tripId);
-        var trip = tripQueryHandler.GetById(tripId);
+        var trip = await tripQueryHandler.GetById(tripId);
+        if (!trip) throw "trip not found";
         return trip;
       },
       options: {

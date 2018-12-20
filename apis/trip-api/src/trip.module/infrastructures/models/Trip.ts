@@ -1,5 +1,5 @@
 import mongoose, { Model, Document } from "mongoose";
-import { ITripLocation } from "../../models/ITrip";
+import { ITripLocation, IInfographic } from "../../models/ITrip";
 
 // const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
@@ -9,7 +9,8 @@ export interface ITrip {
   name: string;
   fromDate: Date;
   toDate: Date;
-  locations: Array<ITripLocation>
+  locations: Array<ITripLocation>;
+  infographics: Array<IInfographic>;
 }
 
 export interface ITripModel extends ITrip, Document {}
@@ -24,18 +25,26 @@ export const TripSchema = new Schema({
     {
       locationId: String,
       location: {
-          long: Number,
-          lat: Number,
-          address: String
+        long: Number,
+        lat: Number,
+        address: String
       },
       fromTime: Date,
       toTime: Date,
       images: [
-          {
-              imageId: String,
-              url: String,
-          }
+        {
+          imageId: String,
+          url: String
+          //todo missing externalId ?
+        }
       ]
+    }
+  ],
+  infographics: [
+    {
+      infographicId: String,
+      externalStorageId: String,
+      status: String
     }
   ]
 });

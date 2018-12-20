@@ -33,7 +33,7 @@ module.exports = {
         }
       },
       options: {
-        auth: "simple",
+        // auth: "simple",
         tags: ["api"],
         //todo add infographic type
       }
