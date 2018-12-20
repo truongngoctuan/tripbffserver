@@ -1,13 +1,11 @@
-import { ITrip, IInfographic, InfographicStatus } from "../../models/ITrip";
+import { ITrip } from "../../models/ITrip";
 import {
   ITripEventRepository,
   TripCreatedEvent,
   TripUpdatedEvent,
   TripImportLocationsEvent,
   TripEvent,
-  TripLocationImageUploadedEvent,
-  InfographicCreatedEvent
-} from "../TripEvent";
+  TripLocationImageUploadedEvent} from "../TripEvent";
 import moment from "moment";
 import _ from "lodash";
 import createInfographic from "./createInfographic";
@@ -31,7 +29,7 @@ export class TripReducers {
       infographics: []
     };
 
-    events.forEach((event, idx) => {
+    events.forEach((event) => {
       state = this.updateState(state, event);
     });
 

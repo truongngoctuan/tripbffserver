@@ -1,12 +1,9 @@
-import { Stream } from "stream";
-import fs from "fs";
 import { EventHandler, TripEvent } from "../TripEvent";
 import { TripReducers } from "../reducers/_tripReducer";
 import { ServiceBus } from "../TripServiceBus";
-import { CommandResult, Succeed } from "../../../_shared/utils";
+import { Succeed } from "../../../_shared/utils";
 import _ from "lodash";
-import { assert } from "joi";
-import { JobDispatcher } from "../../infrastructures/JobDispatcher";
+import { IExtraParams } from "./_commandHandler";
 
 export type ExportInfographicCommand = {
   type: "exportInfographic";
@@ -18,7 +15,8 @@ export async function exportInfographic(
   command: ExportInfographicCommand,
   eventHandler: EventHandler,
   reducers: TripReducers,
-  emitter: ServiceBus
+  emitter: ServiceBus,
+  extraParams: IExtraParams
 ) {
   const { tripId, infographicId } = command;
 
@@ -28,14 +26,12 @@ export async function exportInfographic(
   var event: TripEvent = {
     type: "InfographicCreated",
     tripId,
-    infographicId,
+    infographicId
   };
 
   eventHandler.save(event);
 
-  //todo trigger job to export infographic
-  var jobDispatcher = new JobDispatcher();
-  jobDispatcher.dispatch(event);
+  extraParams.jobDispatcher.dispatch(event);
 
   //update read store synchronously
   await emitter.emit(event);
