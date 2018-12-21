@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "server": "http-server .\\LottieWeb\\ -p 4050",
-    "serve": "node .\\index.js",
+    "serve": "nodemon --delay 2500ms --watch . --exec node .\\index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
+    "nodemon": "^1.18.9",
     "puppeteer": "^1.8.0",
     "redis": "^2.8.0",
     "rsmq": "^0.9.3"
