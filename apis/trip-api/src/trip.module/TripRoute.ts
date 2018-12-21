@@ -2,7 +2,7 @@ import { Server } from "hapi";
 const Joi = require("joi");
 import uuid from "uuid/v1";
 import { Err } from "../_shared/utils";
-import { IoC } from "./IoC";
+import { IoC } from "./IoC"
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
@@ -95,6 +95,6 @@ module.exports = {
           }
         }
       }
-    });
+    });    
   }
 };
