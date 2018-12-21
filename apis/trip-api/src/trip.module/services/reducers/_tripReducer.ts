@@ -9,6 +9,7 @@ import {
 import moment from "moment";
 import _ from "lodash";
 import createInfographic from "./createInfographic";
+import finishCreateInfographic from "./finishCreateInfographic";
 
 export class TripReducers {
   constructor(private TripEventRepository?: ITripEventRepository) {}
@@ -48,7 +49,10 @@ export class TripReducers {
       return this.updateTripLocationImage(state, event);
       case "InfographicCreated":
       return createInfographic(state, event);
+      case "InfographicExported":
+      return finishCreateInfographic(state, event);
       default:
+        console.log("MISSING register event: ", (event as any).type);
         return state;
     }
   }

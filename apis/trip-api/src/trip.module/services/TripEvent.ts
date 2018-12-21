@@ -6,7 +6,8 @@ export type TripEvent =
   | TripUpdatedEvent
   | TripImportLocationsEvent
   | TripLocationImageUploadedEvent
-  | InfographicCreatedEvent;
+  | InfographicCreatedEvent
+  | InfographicExportedEvent;
 
 export type TripCreatedEvent = {
   type: "TripCreated";
@@ -42,6 +43,13 @@ export type InfographicCreatedEvent = {
   type: "InfographicCreated";
   tripId: string;
   infographicId: string;
+};
+
+export type InfographicExportedEvent = {
+  type: "InfographicExported";
+  tripId: string;
+  infographicId: string;
+  externalStorageId: string;
 };
 
 export class EventHandler {

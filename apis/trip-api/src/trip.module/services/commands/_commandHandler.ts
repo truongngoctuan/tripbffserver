@@ -7,11 +7,13 @@ import { UpdateTripCommand, updateTrip } from "./updateTrip";
 import { ImportTripCommand, importTrip } from "./importTrip";
 import { UploadImageCommand, uploadImage } from "./uploadImage";
 import { exportInfographic, ExportInfographicCommand } from "./exportInfographic";
+import { finishExportInfographic, FinishExportInfographicCommand } from "./finishExportInfographic";
 import { IJobDispatcher } from "../../models/IJobDispatcher";
 
 type TripCommand = CreateTripCommand | UpdateTripCommand | ImportTripCommand
 | UploadImageCommand
-| ExportInfographicCommand;
+| ExportInfographicCommand
+| FinishExportInfographicCommand;
 
 var staticHandlers = new Map<string, CommandFunc>();
 staticRegister(createTrip);
@@ -19,6 +21,7 @@ staticRegister(updateTrip);
 staticRegister(importTrip);
 staticRegister(uploadImage);
 staticRegister(exportInfographic);
+staticRegister(finishExportInfographic);
 
 function staticRegister(func: Function) {
   staticHandlers.set(func.name, func as CommandFunc);

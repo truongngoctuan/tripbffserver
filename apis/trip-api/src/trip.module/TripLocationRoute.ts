@@ -7,8 +7,6 @@ import { IoC } from "./IoC";
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
 
-const fileService: IFileStorageService = new FileStorageOfflineService();
-
 const Joi = require("joi");
 
 module.exports = {
@@ -106,7 +104,7 @@ module.exports = {
           } = request.payload as any;
 
           var category = `uploads/trips/${tripId}`;
-          const { externalId } = await fileService.save(
+          const { externalId } = await IoC.fileService.save(
             file as Buffer,
             category,
             fileName
@@ -166,7 +164,7 @@ module.exports = {
           console.log(file);
 
           var category = "./upload/images";
-          const { externalId } = await fileService.save(
+          const { externalId } = await IoC.fileService.save(
             file,
             category,
             fileName
