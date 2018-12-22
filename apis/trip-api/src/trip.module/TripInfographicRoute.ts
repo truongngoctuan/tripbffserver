@@ -87,16 +87,29 @@ module.exports = {
 
     server.route({
       method: "GET",
-      path: "/trips/{id}/infographics",
-      handler: function(request, h) {
-        var infographicId = request.params.id;
-        console.log("infographic id :" + infographicId);
+      path: "/trips/infographics/{id}",
+      handler: async function(request, h) {
+        var externalId = request.params.id;
+        console.log("infographic externalId :" + externalId);
 
-        //TODO: get infographic by id
+        // TODO: get infographic by externalId
+        //var infographic =  await IoC.fileService.getById(externalId);
+        //infographic.file.setEncoding("base64");
 
-        //return infographic
-        var base64Img = fs.readFileSync("svg-info-graphic.png", "base64");
-        return base64Img;
+        var imgStream = fs.createReadStream("uploads/Image03.jpg");
+        imgStream.setEncoding("base64");
+
+        return new Promise(resolve => {
+          var bufs = '';
+
+          imgStream.on('data', (chunk) => {
+            bufs += chunk;
+          });
+          imgStream.on('end', () => {
+            const response = h.response(bufs);
+            resolve(response);
+          });
+        });
       },
       options: {
         // auth: "simple",
