@@ -30,7 +30,7 @@ module.exports = {
         // return `hello logged user ${request.auth.credentials.user.name}, params: ${JSON.stringify(request.params)}`;
       },
       options: {
-        // auth: "simple",
+        auth: "simple",
         tags: ["api"],
         validate: {
           //   params: {

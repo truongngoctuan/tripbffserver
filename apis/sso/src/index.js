@@ -39,6 +39,6 @@ app.use(passport.initialize());
 
 // routes ======================================================================
 require('./routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
-require('./routes/local-user.js')(app);
+app.use(require('./routes/local-user.js'));
 
 app.listen(port, () => console.log(`Example app listening on port ${port}! http://localhost:${port}`))
