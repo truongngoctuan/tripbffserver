@@ -1,5 +1,12 @@
 const config = require('./config.js')
+require('dotenv').config() //red config from .env file
+
 const express = require('express')
+
+const mongoService = require("./bootstraping/mongo-connection");
+mongoService.init();
+
+require('./models/Users');
 // const session = require('express-session')
 // const RedisStore = require('connect-redis')(session)
 // var flash = require('connect-flash');
@@ -32,5 +39,6 @@ app.use(passport.initialize());
 
 // routes ======================================================================
 require('./routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./routes/local-user.js')(app);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}! http://localhost:${port}`))
