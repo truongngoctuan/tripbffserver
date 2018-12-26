@@ -6,7 +6,7 @@ const express = require('express')
 const mongoService = require("./bootstraping/mongo-connection");
 mongoService.init();
 
-require('./models/Users');
+require('./_core/models/Users');
 // const session = require('express-session')
 // const RedisStore = require('connect-redis')(session)
 // var flash = require('connect-flash');

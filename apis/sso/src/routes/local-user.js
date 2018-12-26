@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const auth = require('../auth');
 const Users = mongoose.model('Users');
-const customSession = require('../authenticate/custom-session');
+const customSession = require('../_core/custom-session');
 
 const router = require('express').Router();
 
