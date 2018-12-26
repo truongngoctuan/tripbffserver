@@ -1,13 +1,14 @@
-const mongoose = require('mongoose');
 import passport from 'passport';
 const auth = require('../auth');
-const Users = mongoose.model('Users');
-const customSession = require('../_core/custom-session');
 
 import express from 'express';
 const router = express.Router();
 
-router.post("/local/register", auth.optional, function(req, res) {
+import { IoC } from '../IoC';
+import { IUser } from '../_core/models/IUser';
+import Users from '../_infrastructures/models/users';
+
+router.post("/local/register", auth.optional, async function(req, res) {
   const { body: { email, password } } = req;
 
   if(!email) {
@@ -26,12 +27,14 @@ router.post("/local/register", auth.optional, function(req, res) {
     });
   }
 
-  const finalUser = new Users({ email });
+  try {
+    
+    const userAuth = await IoC.userLocalService.register(email, password);
+    return res.json(userAuth);
 
-  finalUser.setPassword(password);
-
-  return finalUser.save()
-    .then(() => res.json({ user: finalUser.toAuthJSON() }));
+  } catch (error) {
+    return res.status(400).json(error);
+  }
 });
 
 //POST login route (optional, everyone has access)
@@ -54,27 +57,19 @@ router.post('/local/login', auth.optional, (req, res, next) => {
     });
   }
 
-  return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
-    console.log("alo")
-    console.log("arguments err",err)
-    console.log("arguments passportUser",passportUser)
-    console.log("arguments info",info)
+  return passport.authenticate('local', { session: false }, async (err, passportUser: IUser, info) => {
     if(err) {
       return next(err);
     }
 
     if(passportUser) {
-      const user = passportUser;
-      user.token = passportUser.generateJWT();
-
-      const authUser = user.toAuthJSON();
-      customSession.addToSession(authUser.user, authUser.token);
+      const authUser = await IoC.userLocalService.login(passportUser.email);
 
       return res.json(authUser);
     }
 
     return res.status(400);
-  })(req, res, next); //todo ??
+  })(req, res, next);
 });
 
 //GET current route (required, only authenticated users have access)

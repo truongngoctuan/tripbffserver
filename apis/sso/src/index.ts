@@ -6,7 +6,6 @@ const express = require('express')
 const mongoService = require("./bootstraping/mongo-connection");
 mongoService.init();
 
-require('./_core/models/Users');
 // const session = require('express-session')
 // const RedisStore = require('connect-redis')(session)
 // var flash = require('connect-flash');
@@ -28,7 +27,7 @@ const port = config.app.port
 //     saveUninitialized: false
 // }))
 
-require('./authenticate/passport-local.js')(passport);
+require('./authenticate/passport-local')(passport);
 
 app.use(bodyParser()); // get information from html forms
 

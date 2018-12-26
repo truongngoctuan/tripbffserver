@@ -1,6 +1,10 @@
-const mongoose = require('mongoose');
+import mongoose, { Model, Document } from 'mongoose';
 import crypto from 'crypto';
+import { IUser } from '../../_core/models/IUser';
 const jwt = require('jsonwebtoken');
+
+
+export interface IUserModel extends IUser, Document {}
 
 const { Schema } = mongoose;
 
@@ -42,4 +46,8 @@ UsersSchema.methods.toAuthJSON = function() {
   };
 };
 
-mongoose.model('Users', UsersSchema);
+export const Users: Model<IUserModel> = mongoose.model<IUserModel>(
+  "Users",
+  UsersSchema
+);
+export default Users;

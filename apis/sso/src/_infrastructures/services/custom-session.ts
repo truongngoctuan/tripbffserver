@@ -1,4 +1,4 @@
-const config = require('../config');
+const config = require('../../config');
 const moment = require('moment');
 
 var redis = require("redis"),
@@ -22,7 +22,7 @@ function checkRedisStatus() {
         client.get(latestKey, (err, reply) => console.log(reply));
     });
 }
-function addToSession(user, token) {
+export function addToSession(user, token) {
     var expiredTime = moment().add(config.auth.TTLInSeconds, 'seconds');
     var data = {
         user,
@@ -33,8 +33,4 @@ function addToSession(user, token) {
     }
     client.set(`${config.auth.keyPrefix}:${token}`, JSON.stringify(data), "EX", config.auth.TTLInSeconds);
     checkRedisStatus();
-}
-
-module.exports = {
-  addToSession
 }
