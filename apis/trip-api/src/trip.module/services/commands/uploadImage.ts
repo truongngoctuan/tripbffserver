@@ -9,6 +9,7 @@ import { assert } from "joi";
 
 export type UploadImageCommand = {
   type: "uploadImage";
+  ownerId: string;
   tripId: string;
   locationId: string;
   imageId: string;
@@ -29,7 +30,7 @@ export async function uploadImage(
   reducers: TripReducers,
   emitter: ServiceBus
 ) {
-  const { tripId, locationId, imageId, externalStorageId } = command;
+  const { ownerId, tripId, locationId, imageId, externalStorageId } = command;
 
   //validation: external id
   const state = await reducers.getCurrentState(tripId);
@@ -46,6 +47,7 @@ export async function uploadImage(
 
   var event: TripEvent = {
     type: "LocationImageUploaded",
+    ownerId,
     tripId,
     locationId,
     imageId,

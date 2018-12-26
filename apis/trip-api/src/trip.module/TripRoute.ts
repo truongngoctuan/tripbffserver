@@ -3,6 +3,7 @@ const Joi = require("joi");
 import uuid from "uuid/v1";
 import { Err } from "../_shared/utils";
 import { IoC } from "./IoC"
+import { CUtils } from "./ControllerUtils";
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
@@ -13,13 +14,14 @@ module.exports = {
       method: "GET",
       path: "/trips",
       handler: async function(request) {
-        var queryResult = await tripQueryHandler.list();
+        const userId = CUtils.getUserId(request);
+        var queryResult = await tripQueryHandler.list(userId);
 
         if (!queryResult) return Err("can't get data after create trip");
         return queryResult;
       },
       options: {
-        // auth: "simple",
+        auth: "simple",
         tags: ["api"]
       }
     });
@@ -36,9 +38,11 @@ module.exports = {
         try {
           const { name, fromDate, toDate } = request.payload as any;
           var tripId = uuid();
+          const ownerId = CUtils.getUserId(request);
 
           var commandResult = await tripCommandHandler.exec({
             type: "createTrip",
+            ownerId,
             tripId: tripId.toString(),
             name,
             fromDate,
@@ -46,7 +50,7 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            var queryResult = await tripQueryHandler.GetById(tripId.toString());
+            var queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
 
             if (!queryResult) return Err("can't get data after create trip");
             return queryResult.id;
@@ -58,7 +62,7 @@ module.exports = {
         }
       },
       options: {
-        // auth: "simple",
+        auth: "simple",
         tags: ["api"],
         validate: {
           payload: {
@@ -81,13 +85,15 @@ module.exports = {
       path: "/trips/{id}",
       handler: async function(request) {
         var tripId = request.params.id;
+        const userId = CUtils.getUserId(request);
+
         console.log("trip id :" + tripId);
-        var trip = await tripQueryHandler.GetById(tripId);
+        var trip = await tripQueryHandler.GetById(userId, tripId);
         if (!trip) throw "trip not found";
         return trip;
       },
       options: {
-        // auth: "simple",
+        auth: "simple",
         tags: ["api"],
         validate: {
           params: {

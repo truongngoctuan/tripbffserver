@@ -6,6 +6,7 @@ import _ from "lodash";
 
 export type FinishExportInfographicCommand = {
   type: "finishExportInfographic";
+  ownerId: string;
   tripId: string;
   infographicId: string;
   externalStorageId: string;
@@ -17,13 +18,14 @@ export async function finishExportInfographic(
   reducers: TripReducers,
   emitter: ServiceBus
 ) {
-  const { tripId, infographicId, externalStorageId } = command;
+  const { ownerId, tripId, infographicId, externalStorageId } = command;
 
   const trip = await reducers.getCurrentState(tripId);
   if (!trip) throw "trip not found";
 
   var event: TripEvent = {
     type: "InfographicExported",
+    ownerId,
     tripId,
     infographicId,
     externalStorageId

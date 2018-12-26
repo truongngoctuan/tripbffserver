@@ -17,15 +17,16 @@ export class ServiceBus {
     console.log(
       `hi there, I am emiting a event, cheers ${JSON.stringify(event).slice(0, 20)}`
     );
-    var TripId = event.tripId;
+    var tripId = event.tripId;
+    var ownerId = event.ownerId;
 
-    var state = await this.TripRepository.get(TripId);
+    var state = await this.TripRepository.get(ownerId, tripId);
     state = await this.reducer.updateState(state as ITrip, event);
 
     if (event.type == "TripCreated") {
-      await this.TripRepository.create(state);
+      await this.TripRepository.create(ownerId, state);
     } else {
-      await this.TripRepository.update(state);
+      await this.TripRepository.update(ownerId, state);
     }
   }
 }

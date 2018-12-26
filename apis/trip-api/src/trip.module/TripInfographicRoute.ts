@@ -1,6 +1,7 @@
 import { Server } from "hapi";
 const uuid = require("uuid/v1");
 import { IoC } from "./IoC";
+import { CUtils } from "./ControllerUtils";
 var fs = require("fs");
 const Joi = require("joi");
 
@@ -14,10 +15,12 @@ module.exports = {
       handler: async function(request) {
         try {
           var tripId: string = request.params.id;
+          const ownerId = CUtils.getUserId(request);
 
           var infographicId = uuid();
           var commandResult = await tripCommandHandler.exec({
             type: "exportInfographic",
+            ownerId,
             tripId,
             infographicId
           });
@@ -35,9 +38,8 @@ module.exports = {
         }
       },
       options: {
-        // auth: "simple",
+        auth: "simple",
         tags: ["api"]
-        //todo add infographic type
       }
     });
 
@@ -48,6 +50,7 @@ module.exports = {
         try {
           var tripId: string = request.params.id;
           var infographicId: string = request.params.infoId;
+          const ownerId = CUtils.getUserId(request);
 
           var data: any = request.payload;
           var file: Buffer = new Buffer(JSON.parse(data.file).data);
@@ -63,6 +66,7 @@ module.exports = {
 
           var commandResult = await tripCommandHandler.exec({
             type: "finishExportInfographic",
+            ownerId,
             tripId,
             infographicId,
             externalStorageId: externalId
@@ -80,6 +84,7 @@ module.exports = {
         }
       },
       options: {
+        //todo add auth for internal communication
         // auth: "simple",
         tags: ["api"]
       }
@@ -112,7 +117,7 @@ module.exports = {
         });
       },
       options: {
-        // auth: "simple",
+        auth: "simple",
         tags: ["api"],
         validate: {
           params: {

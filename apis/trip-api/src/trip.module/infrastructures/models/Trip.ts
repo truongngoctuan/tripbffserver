@@ -1,11 +1,14 @@
 import mongoose, { Model, Document } from "mongoose";
 import { ITripLocation, IInfographic } from "../../models/ITrip";
+import { string } from "joi";
 
 // const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+//todo re-use ITrip model from core
 // this is db model, schemas
 export interface ITrip {
+  ownerId: string;
   name: string;
   fromDate: Date;
   toDate: Date;
@@ -17,6 +20,7 @@ export interface ITripModel extends ITrip, Document {}
 
 //schema definition, similar to db model
 export const TripSchema = new Schema({
+  ownerId: String,
   id: String,
   name: String,
   fromDate: Date,

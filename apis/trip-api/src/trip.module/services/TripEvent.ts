@@ -11,6 +11,7 @@ export type TripEvent =
 
 export type TripCreatedEvent = {
   type: "TripCreated";
+  ownerId: string;
   tripId: string;
   name: string;
   fromDate: Moment;
@@ -19,6 +20,7 @@ export type TripCreatedEvent = {
 
 export type TripUpdatedEvent = {
   type: "TripUpdated";
+  ownerId: string;
   tripId: string;
   name: string;
   fromDate: Moment;
@@ -27,12 +29,14 @@ export type TripUpdatedEvent = {
 
 export type TripImportLocationsEvent = {
   type: "TripImportLocations";
+  ownerId: string;
   tripId: string;
   locations: Array<ITripLocation>;
 };
 
 export type TripLocationImageUploadedEvent = {
   type: "LocationImageUploaded";
+  ownerId: string;
   tripId: string;
   locationId: string;
   imageId: string;
@@ -41,12 +45,14 @@ export type TripLocationImageUploadedEvent = {
 
 export type InfographicCreatedEvent = {
   type: "InfographicCreated";
+  ownerId: string;
   tripId: string;
   infographicId: string;
 };
 
 export type InfographicExportedEvent = {
   type: "InfographicExported";
+  ownerId: string;
   tripId: string;
   infographicId: string;
   externalStorageId: string;

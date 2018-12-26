@@ -7,6 +7,7 @@ import { IExtraParams } from "./_commandHandler";
 
 export type ExportInfographicCommand = {
   type: "exportInfographic";
+  ownerId: string;
   tripId: string;
   infographicId: string;
 };
@@ -18,13 +19,14 @@ export async function exportInfographic(
   emitter: ServiceBus,
   extraParams: IExtraParams
 ) {
-  const { tripId, infographicId } = command;
+  const { ownerId, tripId, infographicId } = command;
 
   const trip = await reducers.getCurrentState(tripId);
   if (!trip) throw "trip not found";
 
   var event: TripEvent = {
     type: "InfographicCreated",
+    ownerId,
     tripId,
     infographicId
   };

@@ -35,14 +35,15 @@ export class TripRepository implements ITripRepository {
     };
   }
 
-  public async list() {
-    var Trips = await Trip.find().exec();
+  public async list(ownerId: string) {
+    var Trips = await Trip.find({ ownerId }).exec();
     return Trips.map(item => this.toTripDto(item));
   }
 
-  public async create(payload: ITrip) {
+  public async create(ownerId: string, payload: ITrip) {
     const { id, name, fromDate, toDate } = payload;
     var trip = new Trip({
+      ownerId,
       id,
       name,
       fromDate,
@@ -53,10 +54,8 @@ export class TripRepository implements ITripRepository {
     return this.toTripDto(trip);
   }
 
-  public async update(payload: ITrip) {
-    var trip = await Trip.findOne()
-      .where("id")
-      .equals(payload.id)
+  public async update(ownerId: string, payload: ITrip) {
+    var trip = await Trip.findOne({ ownerId, id: payload.id })
       .exec();
     if (!trip) throw "can't find Trip with id = " + payload.id;
 
@@ -69,10 +68,8 @@ export class TripRepository implements ITripRepository {
     await trip.save();
   }
 
-  public async get(id: String) {
-    var trip = await Trip.findOne()
-      .where("id")
-      .equals(id)
+  public async get(ownerId: string, id: String) {
+    var trip = await Trip.findOne({ ownerId, id })
       .exec();
     if (!trip) return undefined;
 

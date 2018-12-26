@@ -8,6 +8,7 @@ import uuid4 from 'uuid/v4';
 
 export type ImportTripCommand = {
   type: "importTrip";
+  ownerId: string;
   tripId: string;
   locations: Array<ITripLocation>
 };
@@ -15,7 +16,7 @@ export type ImportTripCommand = {
 export async function importTrip(command: ImportTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus): Promise<CommandResult> {
   //validate
 
-  const { tripId, locations } = command;
+  const { ownerId, tripId, locations } = command;
 
   //add ids internally
   _.each(locations, loc => {
@@ -29,6 +30,7 @@ export async function importTrip(command: ImportTripCommand, eventHandler: Event
 
   var event: TripEvent = {
     type: "TripImportLocations",
+    ownerId,
     tripId,
     locations
   };
