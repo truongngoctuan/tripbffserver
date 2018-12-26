@@ -38,9 +38,9 @@ app.use(passport.initialize());
 // app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
-require('./routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./routes')(app, passport); // load our routes and pass in our app and fully configured passport
 
 //https://medium.freecodecamp.org/learn-how-to-handle-authentication-with-node-using-passport-js-4a56ed18e81e
-app.use(require('./routes/local-user.js'));
+app.use(require('./routes/local-user'));
 
 app.listen(port, () => console.log(`Example app listening on port ${port}! http://localhost:${port}`))

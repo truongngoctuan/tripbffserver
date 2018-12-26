@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const crypto = require('crypto');
+import crypto from 'crypto';
 const jwt = require('jsonwebtoken');
 
 const { Schema } = mongoose;

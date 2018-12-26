@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
-const passport = require('passport');
+import passport from 'passport';
 const auth = require('../auth');
 const Users = mongoose.model('Users');
 const customSession = require('../_core/custom-session');
 
-const router = require('express').Router();
+import express from 'express';
+const router = express.Router();
 
 router.post("/local/register", auth.optional, function(req, res) {
   const { body: { email, password } } = req;
@@ -27,7 +28,7 @@ router.post("/local/register", auth.optional, function(req, res) {
 
   const finalUser = new Users({ email });
 
-  finalUser.setPassword(user.password);
+  finalUser.setPassword(password);
 
   return finalUser.save()
     .then(() => res.json({ user: finalUser.toAuthJSON() }));
@@ -72,13 +73,13 @@ router.post('/local/login', auth.optional, (req, res, next) => {
       return res.json(authUser);
     }
 
-    return res.status(400).info;
+    return res.status(400);
   })(req, res, next); //todo ??
 });
 
 //GET current route (required, only authenticated users have access)
 router.get('local/current', auth.required, (req, res, next) => {
-  const { payload: { id } } = req;
+  const { body: { id } } = req;
 
   return Users.findById(id)
     .then((user) => {
