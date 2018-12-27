@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "serve": "nodemon --exec babel-node --extensions \".ts,.tsx\" ./src/index.ts",
+    "inspect": "nodemon --exec babel-node --nolazy --inspect=3001 --debug-brk --extensions \".ts,.tsx\" ./src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
