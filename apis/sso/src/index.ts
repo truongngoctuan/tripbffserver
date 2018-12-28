@@ -1,9 +1,9 @@
-const config = require('./config.js')
+import {config} from './config';
 require('dotenv').config() //red config from .env file
 
-const express = require('express')
+import express from 'express';
 
-const mongoService = require("./bootstraping/mongo-connection");
+import * as mongoService from "./bootstraping/mongo-connection";
 mongoService.init();
 
 // const session = require('express-session')
@@ -27,7 +27,8 @@ const port = config.app.port
 //     saveUninitialized: false
 // }))
 
-require('./authenticate/passport-local')(passport);
+import * as passportLocal from "./authenticate/passport-local";
+passportLocal.init(passport);
 
 app.use(bodyParser()); // get information from html forms
 
@@ -39,7 +40,9 @@ app.use(passport.initialize());
 // routes ======================================================================
 require('./routes')(app, passport); // load our routes and pass in our app and fully configured passport
 
+import * as localUserRoutes from "./routes/user-local"
+
 //https://medium.freecodecamp.org/learn-how-to-handle-authentication-with-node-using-passport-js-4a56ed18e81e
-app.use(require('./routes/local-user'));
+// localUserRoutes.init(app);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}! http://localhost:${port}`))

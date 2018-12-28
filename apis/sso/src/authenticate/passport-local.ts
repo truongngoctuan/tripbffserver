@@ -3,7 +3,7 @@ import { IoC } from "../IoC";
 const LocalStrategy = require('passport-local').Strategy
 
 // expose this function to our app using module.exports
-module.exports = function (passport) {
+export function init(passport) {
 
     passport.use(new LocalStrategy({
             // by default, local strategy uses username and password, we will override with email
