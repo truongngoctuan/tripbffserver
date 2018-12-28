@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "serve": "nodemon --delay 2500ms --watch src --exec babel-node --extensions \".ts,.tsx\" src/index.ts",
+    "serve2": "nodemon --inspect-brk=8001 --watch src --harmony --no-deprecation ./bin/index.js",
+    "inspect": "nodemon --inspect-brk=8001 --watch src --harmony --no-deprecation --exec babel-node --extensions \".ts,.tsx\" src/index.ts",
+    "build": "tsc -p .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
