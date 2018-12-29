@@ -14,12 +14,12 @@ const UsersSchema = new Schema({
   salt: String,
 });
 
-UsersSchema.methods.setPassword = function(password) {
+UsersSchema.methods.setPassword = function(password: any) {
   this.salt = crypto.randomBytes(16).toString('hex');
   this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
 };
 
-UsersSchema.methods.validatePassword = function(password) {
+UsersSchema.methods.validatePassword = function(password: any) {
   const hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
   return this.hash === hash;
 };
