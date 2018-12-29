@@ -6,6 +6,7 @@ import { ServiceBus } from "./services/TripServiceBus";
 import { TripQueryHandler } from "./services/TripQuery";
 import { IFileStorageService } from "../image.module/IFileStorageService";
 import { FileStorageOfflineService } from "../image.module/FileStorageOfflineService";
+import { TripEventQueryHandler } from "./services/TripEventQuery";
 
 const tripEventRepository = new TripEventRepository();
 const tripRepository = new TripRepository();
@@ -16,12 +17,13 @@ const tripCommandHandler = new TripCommandHandler(
   jobDispatcher
 );
 const tripQueryHandler = new TripQueryHandler(new TripRepository());
-
+const tripEventQueryHandler = new TripEventQueryHandler(new TripEventRepository());
 const fileService: IFileStorageService = new FileStorageOfflineService();
 
 
 export const IoC = {
   tripCommandHandler,
   tripQueryHandler,
-  fileService
+  fileService,
+  tripEventQueryHandler
 }
