@@ -1,5 +1,11 @@
 const config = require('./config.js')
+require('dotenv').config() //red config from .env file
+
 const express = require('express')
+
+const mongoService = require("./bootstraping/mongo-connection");
+mongoService.init();
+
 // const session = require('express-session')
 // const RedisStore = require('connect-redis')(session)
 // var flash = require('connect-flash');
@@ -21,7 +27,7 @@ const port = config.app.port
 //     saveUninitialized: false
 // }))
 
-require('./authenticate/passport-local.js')(passport);
+require('./authenticate/passport-local')(passport);
 
 app.use(bodyParser()); // get information from html forms
 
@@ -31,6 +37,9 @@ app.use(passport.initialize());
 // app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
-require('./routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./routes')(app, passport); // load our routes and pass in our app and fully configured passport
+
+//https://medium.freecodecamp.org/learn-how-to-handle-authentication-with-node-using-passport-js-4a56ed18e81e
+app.use(require('./routes/local-user'));
 
 app.listen(port, () => console.log(`Example app listening on port ${port}! http://localhost:${port}`))

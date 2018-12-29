@@ -16,6 +16,8 @@ module.exports = function (app, passport) {
         res.send(`dashboard`)
     });
 
+    
+
     // process the login form
     app.post('/login', passport.authenticate('local', {
         //failureRedirect: '/login2', // redirect back to the signup page if there is an error
