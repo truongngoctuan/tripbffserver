@@ -13,7 +13,7 @@
       "port": 8001,
       "sourceMaps": true,
       "outFiles": [
-        "${workspaceFolder}/bin/**/*.js"
+        "${workspaceFolder}/dist/**/*.js"
       ]
     }
   ]
