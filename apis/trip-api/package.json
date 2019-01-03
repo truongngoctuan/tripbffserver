@@ -4,11 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "nodemon --delay 2500ms --watch src --exec babel-node --extensions \".ts,.tsx\" src/index.ts",
-    "serve2": "nodemon --inspect-brk=8001 --watch src --harmony --no-deprecation ./bin/index.js",
-    "inspect": "nodemon --inspect-brk=8001 --watch src --harmony --no-deprecation --exec babel-node --extensions \".ts,.tsx\" src/index.ts",
-    "build": "tsc -p .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run serve",
+    "build": "npm run build-ts && npm run tslint",
+    "serve": "node dist/index.js",
+    "watch-node": "nodemon dist/index.js",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run watch-node\"",
+    "build-ts": "tsc",
+    "watch-ts": "tsc -w",
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "debug": "npm run build && npm run watch-debug",
+    "serve-debug": "nodemon --inspect-brk=8001 dist/index.js",
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\""
   },
   "author": "",
   "license": "ISC",
@@ -42,7 +48,10 @@
     "@types/moment": "^2.13.0",
     "@types/mongoose": "^5.3.1",
     "@types/uuid": "^3.4.4",
+    "concurrently": "^4.1.0",
     "nodemon": "^1.18.4",
+    "tslint": "^5.12.0",
+    "tslint-config-airbnb": "^5.11.1",
     "typescript": "^3.1.6"
   }
 }
