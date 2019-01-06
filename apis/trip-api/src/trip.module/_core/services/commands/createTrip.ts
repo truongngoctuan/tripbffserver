@@ -1,7 +1,7 @@
 import { EventHandler, TripEvent } from "../TripEvent";
 import { TripReducers } from "../reducers/_tripReducer";
 import { ServiceBus } from "../TripServiceBus";
-import { CommandResult, Succeed } from "../../../_shared/utils";
+import { CommandResult, Succeed } from "../../../../_shared/utils";
 import { Moment } from "moment";
 
 export type CreateTripCommand = {

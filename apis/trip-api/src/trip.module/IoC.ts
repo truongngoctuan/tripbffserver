@@ -14,16 +14,15 @@ const jobDispatcher = new JobDispatcher();
 const tripCommandHandler = new TripCommandHandler(
   tripEventRepository,
   new ServiceBus(tripRepository),
-  jobDispatcher
+  jobDispatcher,
 );
 const tripQueryHandler = new TripQueryHandler(new TripRepository());
 const tripEventQueryHandler = new TripEventQueryHandler(new TripEventRepository());
 const fileService: IFileStorageService = new FileStorageOfflineService();
 
-
 export const IoC = {
   tripCommandHandler,
   tripQueryHandler,
   fileService,
-  tripEventQueryHandler
-}
+  tripEventQueryHandler,
+};

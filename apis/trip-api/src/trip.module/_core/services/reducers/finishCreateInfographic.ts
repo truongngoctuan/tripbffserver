@@ -1,4 +1,4 @@
-import { ITrip, InfographicStatus } from "../../models/ITrip";
+import { ITrip } from "../../models/ITrip";
 import { InfographicExportedEvent } from "../TripEvent";
 import _ from "lodash";
 
@@ -12,7 +12,7 @@ export default function finishCreateInfographic(
   );
   var infographic = prevState.infographics[imageIdx];
   infographic.externalStorageId = command.externalStorageId;
-  infographic.status = InfographicStatus.Exported;
+  infographic.status = "EXPORTED";
 
   return {
     ...prevState,

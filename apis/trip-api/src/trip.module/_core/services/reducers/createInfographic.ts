@@ -1,4 +1,4 @@
-import { ITrip, IInfographic, InfographicStatus } from "../../models/ITrip";
+import { ITrip, IInfographic } from "../../models/ITrip";
 import { InfographicCreatedEvent } from "../TripEvent";
 
 export default function createInfographic(
@@ -7,7 +7,7 @@ export default function createInfographic(
 ): ITrip {
   var newInfographic: IInfographic = {
     infographicId: command.infographicId,
-    status: InfographicStatus.Created
+    status: "CREATED"
   };
 
   return {

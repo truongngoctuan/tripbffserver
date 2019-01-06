@@ -2,38 +2,38 @@ import { IJobDispatcher } from "../_core/models/IJobDispatcher";
 
 export class JobDispatcher implements IJobDispatcher {
   dispatch(data: any) {
-    //todo read data from store
+    // todo read data from store
     const redisStore = {
       // host: "localhost",
       // port: 6379,
       host: "127.0.1.1",
       port: 6379,
-      secret: "asd"
+      secret: "asd",
     };
 
     const qName = "myqueue";
 
-    const RedisSMQ = require("rsmq");
-    const rsmq = new RedisSMQ({
+    const redisSMQ = require("rsmq");
+    const rsmq = new redisSMQ({
       host: redisStore.host,
       port: redisStore.port,
-      ns: "rsmq"
+      ns: "rsmq",
     });
 
-    rsmq.createQueue({ qname: qName }, function(err: any, resp: any) {
+    rsmq.createQueue({ qname: qName }, (err: any, resp: any) => {
       if (err) {
         console.log("Create error");
         // console.log("Create error", err);
-        //todo better handling the service
+        // todo better handling the service
       }
 
       // if (resp === 1) {
-      //send anyway, regardless of the queue is created or not
+      // send anyway, regardless of the queue is created or not
       console.log("queue created");
-      rsmq.sendMessage({ qname: qName, message: JSON.stringify(data) }, function(
+      rsmq.sendMessage({ qname: qName, message: JSON.stringify(data) }, (
         err: any,
-        resp: any
-      ) {
+        resp: any,
+      ) => {
         if (err) {
           console.log("PUB error", err);
         }

@@ -1,7 +1,7 @@
 import { EventHandler, TripEvent } from "../TripEvent";
 import { TripReducers } from "../reducers/_tripReducer";
 import { ServiceBus } from "../TripServiceBus";
-import { Succeed } from "../../../_shared/utils";
+import { Succeed } from "../../../../_shared/utils";
 import _ from "lodash";
 
 export type FinishExportInfographicCommand = {

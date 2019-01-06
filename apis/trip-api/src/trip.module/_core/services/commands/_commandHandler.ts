@@ -1,7 +1,7 @@
 import { ServiceBus } from "../TripServiceBus";
 import { EventHandler, ITripEventRepository } from "../TripEvent";
 import { TripReducers } from "../reducers/_tripReducer";
-import { CommandResult, Err } from "../../../_shared/utils";
+import { CommandResult, Err } from "../../../../_shared/utils";
 import { CreateTripCommand, createTrip } from "./createTrip";
 import { UpdateTripCommand, updateTrip } from "./updateTrip";
 import { ImportTripCommand, importTrip } from "./importTrip";

@@ -1,25 +1,13 @@
 import mongoose, { Model, Document } from "mongoose";
-import { ITripLocation, IInfographic } from "../../_core/models/ITrip";
+import { IUserTripModel } from "./IUserTripModel";
 
 const Schema = mongoose.Schema;
 
-//todo re-use ITrip model from core
-// this is db model, schemas
-export interface ITrip {
-  ownerId: string;
-  name: string;
-  fromDate: Date;
-  toDate: Date;
-  locations: Array<ITripLocation>;
-  infographics: Array<IInfographic>;
-}
-
-export interface ITripModel extends ITrip, Document {}
+export interface IUserTripDocument extends IUserTripModel, Document {}
 
 //schema definition, similar to db model
-export const TripSchema = new Schema({
-  ownerId: String,
-  id: String,
+const TripSchema = new Schema({
+  tripId: String,
   name: String,
   fromDate: Date,
   toDate: Date,
@@ -51,8 +39,13 @@ export const TripSchema = new Schema({
   ]
 });
 
-export const Trip: Model<ITripModel> = mongoose.model<ITripModel>(
-  "Trip",
-  TripSchema
+export const UserTripSchema = new Schema({
+  userId: String,
+  trips: [TripSchema]
+});
+
+export const UserTripDocument: Model<IUserTripDocument> = mongoose.model<IUserTripDocument>(
+  "UserTrip",
+  UserTripSchema
 );
-export default Trip;
+export default UserTripDocument;

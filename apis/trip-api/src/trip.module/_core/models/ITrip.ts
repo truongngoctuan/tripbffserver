@@ -33,8 +33,4 @@ export interface IInfographic {
   externalStorageId?: string; //this id will exist after image binary is uploaded to server
 }
 
-export enum InfographicStatus {
-  Created = "CREATED",
-  Exported = "EXPORTED",
-  Failed = "FAILED"
-}
+export type InfographicStatus = "CREATED" | "EXPORTED" | "FAILED";
