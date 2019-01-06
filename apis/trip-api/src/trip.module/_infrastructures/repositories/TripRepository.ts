@@ -37,8 +37,12 @@ export class TripRepository implements ITripRepository {
     };
   }
 
+  async getUserTrips(userId: string) {
+    return await UserTripDocument.findOne({ userId }).exec();
+  }
+
   public async list(ownerId: string) {
-    var userTrips = await UserTripDocument.findOne({ ownerId }).exec();
+    var userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) return [];
 
     return userTrips.trips.map(item => this.toTripDto(item));
@@ -50,10 +54,10 @@ export class TripRepository implements ITripRepository {
     var trip: ITripModel = {
       tripId: id,
       name,
-      fromDate: fromDate.toDate(),
-      toDate: toDate.toDate()
+      fromDate: moment(fromDate).toDate(),
+      toDate: moment(toDate).toDate()
     }
-    var userTrips = await UserTripDocument.findOne({userId: ownerId}).exec();
+    var userTrips = await this.getUserTrips(ownerId);
     if(!userTrips) {
       userTrips = new UserTripDocument({
         userId: ownerId
@@ -69,10 +73,7 @@ export class TripRepository implements ITripRepository {
   }
 
   public async update(ownerId: string, payload: ITrip) {
-    var userTrips = await UserTripDocument.findOne({ 
-      userId: ownerId,
-    }).exec();
-    if (!userTrips) return undefined;
+    var userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) throw "can't find Trip from user id = " + ownerId;
 
     var trip = _.find(userTrips.trips, trip => trip.tripId === payload.tripId);
@@ -84,8 +85,8 @@ export class TripRepository implements ITripRepository {
     trip.locations = _.map(payload.locations, loc => ({
       locationId: loc.locationId,
       location: loc.location,
-      fromTime: loc.fromTime.toDate(),
-      toTime: loc.toTime.toDate(),
+      fromTime: moment(loc.fromTime).toDate(),
+      toTime: moment(loc.toTime).toDate(),
       images: loc.images
     }));
     trip.infographics = payload.infographics;
@@ -101,9 +102,7 @@ export class TripRepository implements ITripRepository {
   }
 
   async getTripModel(ownerId: string, id: String) {
-    var userTrips = await UserTripDocument.findOne({ 
-      userId: ownerId,
-    }).exec();
+    var userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) return undefined;
 
     var trip = _.find(userTrips.trips, trip => trip.tripId === id);
