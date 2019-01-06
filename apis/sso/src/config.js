@@ -1,4 +1,4 @@
-export const config = {
+const config = {
   app: {
     port: 3000
   },
@@ -19,3 +19,5 @@ export const config = {
     name: "db"
   }
 };
+
+module.exports = config;

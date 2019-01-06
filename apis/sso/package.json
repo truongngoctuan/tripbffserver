@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "serve": "nodemon --exec babel-node --extensions \".ts,.tsx\" ./src/index.ts",
-    "inspect": "nodemon --exec babel-node --nolazy --inspect-brk=3001 --extensions \".ts,.tsx\" ./src/index.ts",
-    "build": "tsc",
-    "build2": "babel-node --sourceMap --outDir bin ./src/index.ts",
+    "inspect": "nodemon --exec babel-node --nolazy --inspect=3001 --debug-brk --extensions \".ts,.tsx\" ./src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -32,7 +30,6 @@
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-typescript": "^7.1.0",
     "@types/express": "^4.16.0",
-    "@types/express-jwt": "^0.0.40",
     "@types/mongoose": "^5.3.5",
     "@types/passport": "^1.0.0",
     "nodemon": "^1.18.4",

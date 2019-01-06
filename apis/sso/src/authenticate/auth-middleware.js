@@ -1,4 +1,4 @@
-import {config} from "../config"
+const config = require('../config');
 
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
@@ -83,7 +83,7 @@ function logout() {
 
 }
 
-export {
+module.exports = {
     // isLoggedIn: authenticationMiddleware,
     login,
     logout,

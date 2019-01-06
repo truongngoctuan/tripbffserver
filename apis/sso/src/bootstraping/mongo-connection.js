@@ -1,4 +1,4 @@
-export async function init() {
+async function init() {
   const mongoose = require("mongoose");
 
   var host = process.env.MONGODB_HOST;
@@ -13,3 +13,4 @@ export async function init() {
     console.log("connected to mongodb database");
   });
 }
+module.exports.init = init;

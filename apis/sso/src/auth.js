@@ -1,4 +1,4 @@
-import jwt from 'express-jwt';
+const jwt = require('express-jwt');
 
 const getTokenFromHeaders = (req) => {
   const { headers: { authorization } } = req;
@@ -23,4 +23,4 @@ const auth = {
   }),
 };
 
-export default auth;
+module.exports = auth;

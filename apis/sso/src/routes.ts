@@ -1,4 +1,5 @@
-import * as authMiddleware from './authenticate/auth-middleware';
+const jwt = require('jsonwebtoken');
+const authMiddleware = require('./authenticate/auth-middleware');
 
 module.exports = function (app, passport) {
     // =====================================
