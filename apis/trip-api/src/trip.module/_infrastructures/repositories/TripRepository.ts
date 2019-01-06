@@ -1,12 +1,12 @@
-import { Trip, TripSchema, ITripModel } from "../models/Trip";
-import { ITripRepository } from "../../models/ITripRepository";
-import { ITrip } from "../../models/ITrip";
+import { Trip, ITripModel } from "../models/Trip";
+import { ITripRepository } from "../../_core/models/ITripRepository";
+import { ITrip } from "../../_core/models/ITrip";
 import moment from "moment";
 
 export class TripRepository implements ITripRepository {
   toTripDto(o: ITripModel): ITrip {
     return {
-      id: o.id,
+      tripId: o.id,
       name: o.name,
       fromDate: moment(o.fromDate),
       toDate: moment(o.toDate),
@@ -41,7 +41,7 @@ export class TripRepository implements ITripRepository {
   }
 
   public async create(ownerId: string, payload: ITrip) {
-    const { id, name, fromDate, toDate } = payload;
+    const { tripId: id, name, fromDate, toDate } = payload;
     var trip = new Trip({
       ownerId,
       id,
@@ -55,9 +55,9 @@ export class TripRepository implements ITripRepository {
   }
 
   public async update(ownerId: string, payload: ITrip) {
-    var trip = await Trip.findOne({ ownerId, id: payload.id })
+    var trip = await Trip.findOne({ ownerId, id: payload.tripId })
       .exec();
-    if (!trip) throw "can't find Trip with id = " + payload.id;
+    if (!trip) throw "can't find Trip with id = " + payload.tripId;
 
     trip.name = payload.name;
     trip.fromDate = payload.fromDate.toDate();

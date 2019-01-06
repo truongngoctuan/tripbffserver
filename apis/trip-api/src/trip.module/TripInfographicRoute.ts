@@ -121,7 +121,7 @@ module.exports = {
 
                       var bufs = '';
     
-                      imgStream.on('data', (chunk) => {
+                      imgStream.on('data', (chunk: any) => {
                         bufs += chunk;
                       });
                       imgStream.on('end', () => {

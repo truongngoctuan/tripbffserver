@@ -53,7 +53,7 @@ module.exports = {
             var queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
 
             if (!queryResult) return Err("can't get data after create trip");
-            return queryResult.id;
+            return queryResult.tripId;
           }
 
           return commandResult.errors;

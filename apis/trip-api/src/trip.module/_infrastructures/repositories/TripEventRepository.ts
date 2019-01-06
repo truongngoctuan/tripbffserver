@@ -1,6 +1,5 @@
-import { ITripEventRepository, TripEvent } from "../../services/TripEvent";
+import { ITripEventRepository, TripEvent } from "../../_core/services/TripEvent";
 import mongoose, { Model, Document } from "mongoose";
-// const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 interface ITripEvent {

@@ -1,7 +1,7 @@
 import { Moment } from "moment";
 
 export interface ITrip {
-  id: string;
+  tripId: string;
   name: string;
   fromDate: Moment;
   toDate: Moment;

@@ -1,8 +1,6 @@
 import mongoose, { Model, Document } from "mongoose";
-import { ITripLocation, IInfographic } from "../../models/ITrip";
-import { string } from "joi";
+import { ITripLocation, IInfographic } from "../../_core/models/ITrip";
 
-// const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 //todo re-use ITrip model from core

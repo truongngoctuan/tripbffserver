@@ -1,4 +1,4 @@
-import { IJobDispatcher } from "../models/IJobDispatcher";
+import { IJobDispatcher } from "../_core/models/IJobDispatcher";
 
 export class JobDispatcher implements IJobDispatcher {
   dispatch(data: any) {

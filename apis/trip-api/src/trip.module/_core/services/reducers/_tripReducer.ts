@@ -22,7 +22,7 @@ export class TripReducers {
     // console.log("events");
     // console.log(JSON.stringify(events));
     var state: ITrip = {
-      id: "",
+      tripId: "",
       name: "",
       fromDate: moment(),
       toDate: moment(),
@@ -59,7 +59,7 @@ export class TripReducers {
 
   createTrip(command: TripCreatedEvent): ITrip {
     return {
-      id: command.tripId,
+      tripId: command.tripId,
       name: command.name,
       fromDate: command.fromDate,
       toDate: command.toDate,
