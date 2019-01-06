@@ -1,19 +1,4 @@
-const config = {
-  // app: {
-  //   port: 3000
-  // },
-  // auth: {
-  //   TTLInSeconds: 3600,
-  //   keyPrefix: "login-session",
-  // },
-  redisStore: {
-    host: "127.0.1.1",
-    port: 6379
-  },
-  mongo: {
-    host: "127.0.1.1",
-    port: 27017
-  },
+export const config = {
   trip: {
     keyPrefix: "trip"
   }
@@ -24,4 +9,4 @@ const config = {
   // }
 };
 
-module.exports = config;
+export default config;

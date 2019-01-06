@@ -1,8 +1,6 @@
-const config = require('../config');
-
 async function init() {
   const mongoose = require("mongoose");
-  mongoose.connect(`mongodb://${config.mongo.host}:${config.mongo.port}/`)
+  mongoose.connect(`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/`)
   .catch(err => {
     console.log("error on connect to mongo db");
     console.log(err);
