@@ -1,4 +1,4 @@
-require('dotenv').config() //red config from .env file
+require("dotenv").config(); // red config from .env file
 
 import { Server } from "hapi";
 const authService = require("./bootstraping/authentication.js");
@@ -11,8 +11,7 @@ const tripRoutes = require("./trip.module/TripRoute");
 const tripLocationRoutes = require("./trip.module/TripLocationRoute");
 const tripInfographicRoutes = require("./trip.module/TripInfographicRoute");
 
-const config = require("./config");
-var redis = require("redis");
+const redis = require("redis");
 
 (async () => {
   // Create a server with a host and port
@@ -34,17 +33,17 @@ var redis = require("redis");
           //   console.error("ERR:" + JSON.stringify(err));
           //   throw err;
           // }
-        }
-      }
-    }
+        },
+      },
+    },
   });
 
-  var client = redis.createClient({
-    host: config.redisStore.host,
-    port: config.redisStore.port,
+  const client = redis.createClient({
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
   });
 
-  client.on("error", function(err: any) {
+  client.on("error", function (err: any) {
     console.log("Error " + err);
   });
 

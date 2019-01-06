@@ -3,6 +3,7 @@ import { Err } from "../_shared/utils";
 import { FileStorageOfflineService } from "../image.module/FileStorageOfflineService";
 import { IFileStorageService } from "../image.module/IFileStorageService";
 import { IoC } from "./IoC";
+import { CUtils } from "./ControllerUtils";
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
@@ -36,16 +37,18 @@ module.exports = {
           console.log("POST" + request.url);
           var selectedLocations = request.payload as any;
           var tripId = request.params.id;
+          const ownerId = CUtils.getUserId(request);
 
           // create import command
           var commandResult = await tripCommandHandler.exec({
             type: "importTrip",
+            ownerId,
             tripId: tripId.toString(),
             locations: selectedLocations
           });
 
           if (commandResult.isSucceed) {
-            var queryResult = await tripQueryHandler.GetById(tripId.toString());
+            var queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
             if (!queryResult) return Err("can't get data after import trip");
 
             // console.log(queryResult);
@@ -74,7 +77,8 @@ module.exports = {
       path: "/trips/{id}/locations",
       handler: async function(request) {
         var tripId = request.params.id;
-        var queryResult = await tripQueryHandler.GetById(tripId.toString());
+          const userId = CUtils.getUserId(request);
+          var queryResult = await tripQueryHandler.GetById(userId, tripId.toString());
         if (!queryResult) return Err("can't get data after import trip");
         return queryResult;
       },
@@ -102,6 +106,7 @@ module.exports = {
             file,
             fileName
           } = request.payload as any;
+          const ownerId = CUtils.getUserId(request);
 
           var category = `uploads/trips/${tripId}`;
           const { externalId } = await IoC.fileService.save(
@@ -120,6 +125,7 @@ module.exports = {
           // create import command
           var commandResult = await tripCommandHandler.exec({
             type: "uploadImage",
+            ownerId,
             tripId,
             locationId,
             imageId,
