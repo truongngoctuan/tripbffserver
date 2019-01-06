@@ -6,6 +6,8 @@ var fs = require("fs");
 const Joi = require("joi");
 
 const tripCommandHandler = IoC.tripCommandHandler;
+const tripEventQueryHandler = IoC.tripEventQueryHandler;
+const fileService = IoC.fileService;
 
 module.exports = {
   init: function(server: Server) {
@@ -54,7 +56,7 @@ module.exports = {
 
           var data: any = request.payload;
           var file: Buffer = new Buffer(JSON.parse(data.file).data);
-          console.log("file", file);
+          //console.log("file", file);
 
           var category = `uploads/trips/${tripId}/infographics`;
           var fileName = `${infographicId}.png`;
@@ -92,36 +94,56 @@ module.exports = {
 
     server.route({
       method: "GET",
-      path: "/trips/infographics/{id}",
+      path: "/trips/{id}/infographics/{infographicId}",
       handler: async function(request, h) {
-        var externalId = request.params.id;
-        console.log("infographic externalId :" + externalId);
+        var tripId = request.params.id;
+        var inforgraphicId = request.params.infographicId;
 
-        // TODO: get infographic by externalId
-        //var infographic =  await IoC.fileService.getById(externalId);
-        //infographic.file.setEncoding("base64");
+        return new Promise((resolve, reject) => { 
+          var getEventInterval = setInterval(async () => {
+            var tripEvents = await tripEventQueryHandler.getAll(tripId);
 
-        var imgStream = fs.createReadStream("uploads/Image03.jpg");
-        imgStream.setEncoding("base64");
+            if (tripEvents) {
+              tripEvents.forEach(event => {
+                if (event.type == 'InfographicExported' && event.infographicId == inforgraphicId) {
+                  clearInterval(getEventInterval);
 
-        return new Promise(resolve => {
-          var bufs = '';
+                  var externalId = event.externalStorageId;
+                  console.log('externalId: ' + externalId);
 
-          imgStream.on('data', (chunk) => {
-            bufs += chunk;
-          });
-          imgStream.on('end', () => {
-            const response = h.response(bufs);
-            resolve(response);
-          });
-        });
+                  var filePath = `uploads/trips/${tripId}/infographics/${externalId}.png`;
+
+                  var getFileInterval = setInterval(() => {
+                    if (fs.existsSync(filePath)) {
+                      clearInterval(getFileInterval);
+                      var imgStream = fs.createReadStream(filePath);
+                      imgStream.setEncoding("base64");
+
+                      var bufs = '';
+    
+                      imgStream.on('data', (chunk) => {
+                        bufs += chunk;
+                      });
+                      imgStream.on('end', () => {
+                        const response = h.response(bufs);
+                        resolve(response);
+                      });
+                    }
+                  }, 1000);
+                }
+              });
+            }
+          }, 500);
+        });        
+
       },
       options: {
         auth: "simple",
         tags: ["api"],
         validate: {
           params: {
-            id: Joi.required().description("the id for the todo item")
+            id: Joi.required().description("the id for the todo item"),
+            infographicId: Joi.required().description("the id for the todo item")
           }
         }
       }

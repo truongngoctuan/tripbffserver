@@ -2,9 +2,9 @@ import { IUserAuth, IUser } from "../models/IUser";
 import { IUserVM } from "../models/IUserVM";
 
 export interface IUserLocalService {
-  getById(email: string): Promise<IUserVM>;
-  register(email, password): Promise<IUserVM>;
-  authenticate(email, password): Promise<IUserVM>;
-  login(email): Promise<IUserAuth>;
+  getById(email: string): Promise<IUserVM | null>;
+  register(email: any, password: any): Promise<IUserVM>;
+  authenticate(email: any, password: any): Promise<IUserVM>;
+  login(email: any): Promise<IUserAuth>;
 
 }

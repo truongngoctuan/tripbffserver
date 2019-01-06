@@ -3,7 +3,7 @@ import Users, { IUserModel } from "../models/users";
 import { addToSession } from "./custom-session";
 import { IUserVM } from "../../_core/models/IUserVM";
 
-function toUserVM(user: IUserModel): IUserVM {
+function toUserVM(user: IUserModel | null): IUserVM | null {
   if (!user) return null;
   return {
     id: user._id,
