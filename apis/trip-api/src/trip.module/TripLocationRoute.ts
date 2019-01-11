@@ -73,6 +73,47 @@ module.exports = {
     });
 
     server.route({
+      method: "DELETE",
+      path: "/trips/{tripId}/locations/{locationId}",
+      handler: async function(request) {
+        try {
+          console.log("DELETE", request.url);
+          var tripId: string = request.params.tripId;
+          var locationId: string = request.params.locationId;
+
+          const ownerId = CUtils.getUserId(request);
+
+          // create import command
+          var commandResult = await tripCommandHandler.exec({
+            type: "RemoveLocation",
+            ownerId,
+            tripId,
+            locationId,
+          });
+
+          if (commandResult.isSucceed) {
+            var queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
+            if (!queryResult) return Err("can't get data after import trip");
+
+            // console.log(queryResult);
+            return queryResult;
+          }
+
+          console.log("err: " + commandResult.errors);
+          return commandResult.errors;
+        } catch (error) {
+          console.log("ERROR: DELETE /trips/{tripId}/locations/{locationId}");
+          console.log(error);
+          throw error;
+        }
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+      }
+    });
+
+    server.route({
       method: "GET",
       path: "/trips/{id}/locations",
       handler: async function(request) {
