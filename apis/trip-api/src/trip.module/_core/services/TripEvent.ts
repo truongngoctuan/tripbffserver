@@ -5,6 +5,7 @@ export type TripEvent =
   | TripCreatedEvent
   | TripUpdatedEvent
   | TripImportLocationsEvent
+  | TripLocationRemovedEvent
   | TripLocationImageUploadedEvent
   | InfographicCreatedEvent
   | InfographicExportedEvent;
@@ -32,6 +33,13 @@ export type TripImportLocationsEvent = {
   ownerId: string;
   tripId: string;
   locations: Array<ITripLocation>;
+};
+
+export type TripLocationRemovedEvent = {
+  type: "LocationRemoved";
+  ownerId: string;
+  tripId: string;
+  locationId: string;
 };
 
 export type TripLocationImageUploadedEvent = {

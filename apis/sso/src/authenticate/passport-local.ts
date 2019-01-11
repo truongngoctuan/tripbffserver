@@ -17,7 +17,7 @@ module.exports = function (passport) {
 
             //todo remove auto register :D
             const userDb = await IoC.userLocalService.getById(email);
-            console.log('user DB: ' + userDb);
+            console.log('user DB', userDb);
 
             if (!userDb) {
                 await IoC.userLocalService.register(email, password);

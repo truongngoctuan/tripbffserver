@@ -15,3 +15,10 @@ export function Succeed(): CommandResult {
     isSucceed: true
   };
 }
+
+export function BadRequest(message: ReturnCode): CommandResult {
+  return {
+    isSucceed: false,
+    errors: [message]
+  }
+}

@@ -4,6 +4,7 @@ import { ServiceBus } from "../TripServiceBus";
 import { Succeed } from "../../../../_shared/utils";
 import _ from "lodash";
 
+// todo move to infographic folder
 export type FinishExportInfographicCommand = {
   type: "finishExportInfographic";
   ownerId: string;
