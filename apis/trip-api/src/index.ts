@@ -1,6 +1,7 @@
 require("dotenv").config(); // red config from .env file
 
 import { Server } from "hapi";
+import { registerModules } from "./trip.module/_core/services/commands";
 const authService = require("./bootstraping/authentication.js");
 const swaggerUiService = require("./bootstraping/swagger-documentation");
 const mongoService = require("./bootstraping/mongo-connection");
@@ -56,6 +57,8 @@ const redis = require("redis");
   tripRoutes.init(server);
   tripLocationRoutes.init(server);
   tripInfographicRoutes.init(server);
+
+  registerModules();
 
   // Start the server
   async function start() {

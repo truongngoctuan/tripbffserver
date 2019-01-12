@@ -8,6 +8,7 @@ import { TripBCommand } from ".";
 var staticHandlers = new Map<string, CommandFunc>();
 
 export function staticRegister(func: CommandFunc) {
+  console.log("register command handler", func.name)
   staticHandlers.set(func.name, func as CommandFunc);
 }
 

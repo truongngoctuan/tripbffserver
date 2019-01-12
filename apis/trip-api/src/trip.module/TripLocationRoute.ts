@@ -34,7 +34,7 @@ module.exports = {
       path: "/trips/{id}/locations",
       handler: async function(request) {
         try {
-          console.log("POST" + request.url);
+          console.log("POST", request.url);
           var selectedLocations = request.payload as any;
           var tripId = request.params.id;
           const ownerId = CUtils.getUserId(request);
@@ -117,11 +117,17 @@ module.exports = {
       method: "GET",
       path: "/trips/{id}/locations",
       handler: async function(request) {
-        var tripId = request.params.id;
+        try {
+          var tripId = request.params.id;
           const userId = CUtils.getUserId(request);
           var queryResult = await tripQueryHandler.GetById(userId, tripId.toString());
-        if (!queryResult) return Err("can't get data after import trip");
-        return queryResult;
+          if (!queryResult) return Err("can't get data after import trip");
+          return queryResult;
+
+        } catch (error) {
+          console.log(error);
+          return error;
+        }
       },
       options: {
         auth: "simple",
