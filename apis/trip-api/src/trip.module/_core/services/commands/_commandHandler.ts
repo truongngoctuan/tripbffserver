@@ -2,33 +2,24 @@ import { ServiceBus } from "../TripServiceBus";
 import { EventHandler, ITripEventRepository } from "../TripEvent";
 import { TripReducers } from "../reducers/_tripReducer";
 import { CommandResult, Err } from "../../../../_shared/utils";
-import { CreateTripCommand, createTrip } from "./createTrip";
-import { UpdateTripCommand, updateTrip } from "./updateTrip";
-import { ImportTripCommand, importTrip } from "./importTrip";
-import { UploadImageCommand, uploadImage } from "./uploadImage";
-import { exportInfographic, ExportInfographicCommand } from "./exportInfographic";
-import { finishExportInfographic, FinishExportInfographicCommand } from "./finishExportInfographic";
 import { IJobDispatcher } from "../../models/IJobDispatcher";
-
-type TripCommand = CreateTripCommand | UpdateTripCommand | ImportTripCommand
-| UploadImageCommand
-| ExportInfographicCommand
-| FinishExportInfographicCommand;
+import { TripBCommand } from ".";
 
 var staticHandlers = new Map<string, CommandFunc>();
-staticRegister(createTrip);
-staticRegister(updateTrip);
-staticRegister(importTrip);
-staticRegister(uploadImage);
-staticRegister(exportInfographic);
-staticRegister(finishExportInfographic);
 
-function staticRegister(func: Function) {
+export function staticRegister(func: CommandFunc) {
+  console.log("register command handler", func.name)
   staticHandlers.set(func.name, func as CommandFunc);
 }
 
+export function staticRegisterModule(funcs: Array<CommandFunc>) {
+  funcs.forEach(func => staticRegister(func));
+}
+
 export type IExtraParams =  { jobDispatcher: IJobDispatcher}
-export type CommandFunc = (command: TripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus, extraParams?: IExtraParams) => Promise<CommandResult>;
+
+// lower the standard for simplicity, instead of ITripCommand: export type ITripCommand = {};
+export type CommandFunc = (command: any, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus, extraParams: IExtraParams) => Promise<CommandResult>;
 
 export class TripCommandHandler {
   private reducers: TripReducers;
@@ -53,7 +44,7 @@ export class TripCommandHandler {
   //   this.handlers.set(type, func);
   // }
 
-  async exec(command: TripCommand) {
+  async exec(command: TripBCommand) {
     const func = this.handlers.get(command.type);
     if (func) {
       return await func(command, this.eventHandler, this.reducers, this.emitter, { jobDispatcher: this.jobDispatcher});

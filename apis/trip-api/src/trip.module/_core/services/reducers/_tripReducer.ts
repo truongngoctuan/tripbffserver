@@ -10,6 +10,13 @@ import moment from "moment";
 import _ from "lodash";
 import createInfographic from "./createInfographic";
 import finishCreateInfographic from "./finishCreateInfographic";
+import { removeLocation } from "./removeLocation";
+
+// var staticEventHandlers = new Map<string, Function>();
+
+// export function staticRegister(eventType: string, eventHandler: Function) {
+//   staticEventHandlers.set(eventType, eventHandler);
+// }
 
 export class TripReducers {
   constructor(private TripEventRepository?: ITripEventRepository) {}
@@ -45,6 +52,8 @@ export class TripReducers {
       return this.updateTrip(state, event);
       case "TripImportLocations":
       return this.updateTripLocations(state, event);
+      case "LocationRemoved":
+      return removeLocation(state, event);
       case "LocationImageUploaded":
       return this.updateTripLocationImage(state, event);
       case "InfographicCreated":

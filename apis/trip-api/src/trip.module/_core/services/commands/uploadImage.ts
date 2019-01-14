@@ -1,11 +1,8 @@
-import { Stream } from "stream";
-import fs from "fs";
 import { EventHandler, TripEvent } from "../TripEvent";
 import { TripReducers } from "../reducers/_tripReducer";
 import { ServiceBus } from "../TripServiceBus";
-import { CommandResult, Succeed } from "../../../../_shared/utils";
+import { Succeed } from "../../../../_shared/utils";
 import _ from "lodash";
-import { assert } from "joi";
 
 export type UploadImageCommand = {
   type: "uploadImage";
@@ -15,7 +12,7 @@ export type UploadImageCommand = {
   imageId: string;
   externalStorageId: string;
 };
-
+// todo move to location folder
 //todo move this utils function to somewhere else
 function nullCheck<T>(value: T | undefined, message: string): T {
   if (value) {
@@ -39,10 +36,6 @@ export async function uploadImage(
   const location = nullCheck(
     _.find(state.locations, loc => loc.locationId == locationId),
     "location not found"
-  );
-  const image = nullCheck(
-    _.find(location.images, img => img.imageId == imageId),
-    "image not found"
   );
 
   var event: TripEvent = {

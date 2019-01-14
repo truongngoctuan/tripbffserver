@@ -15,10 +15,12 @@ module.exports = {
       path: "/trips",
       handler: async function(request) {
         const userId = CUtils.getUserId(request);
-        var queryResult = await tripQueryHandler.list(userId);
+        var trips = await tripQueryHandler.list(userId);
 
-        if (!queryResult) return Err("can't get data after create trip");
-        return queryResult;
+        if (!trips) return Err("can't get data after create trip");
+
+        console.log(trips.length)
+        return trips;
       },
       options: {
         auth: "simple",

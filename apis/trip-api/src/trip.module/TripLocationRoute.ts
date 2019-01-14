@@ -34,7 +34,7 @@ module.exports = {
       path: "/trips/{id}/locations",
       handler: async function(request) {
         try {
-          console.log("POST" + request.url);
+          console.log("POST", request.url);
           var selectedLocations = request.payload as any;
           var tripId = request.params.id;
           const ownerId = CUtils.getUserId(request);
@@ -73,14 +73,61 @@ module.exports = {
     });
 
     server.route({
+      method: "DELETE",
+      path: "/trips/{tripId}/locations/{locationId}",
+      handler: async function(request) {
+        try {
+          console.log("DELETE", request.url.path);
+          var tripId: string = request.params.tripId;
+          var locationId: string = request.params.locationId;
+
+          const ownerId = CUtils.getUserId(request);
+
+          // create import command
+          var commandResult = await tripCommandHandler.exec({
+            type: "RemoveLocation",
+            ownerId,
+            tripId,
+            locationId,
+          });
+
+          if (commandResult.isSucceed) {
+            var queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
+            if (!queryResult) return Err("can't get data after import trip");
+
+            // console.log(queryResult);
+            return queryResult;
+          }
+
+          console.log("err: " + commandResult.errors);
+          return commandResult.errors;
+        } catch (error) {
+          console.log("ERROR: DELETE /trips/{tripId}/locations/{locationId}");
+          console.log(error);
+          throw error;
+        }
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+      }
+    });
+
+    server.route({
       method: "GET",
       path: "/trips/{id}/locations",
       handler: async function(request) {
-        var tripId = request.params.id;
+        try {
+          var tripId = request.params.id;
           const userId = CUtils.getUserId(request);
           var queryResult = await tripQueryHandler.GetById(userId, tripId.toString());
-        if (!queryResult) return Err("can't get data after import trip");
-        return queryResult;
+          if (!queryResult) return Err("can't get data after import trip");
+          return queryResult;
+
+        } catch (error) {
+          console.log(error);
+          return error;
+        }
       },
       options: {
         auth: "simple",

@@ -30,7 +30,7 @@ export class TripRepository implements ITripRepository {
       infographics: _.map(o.infographics, infographic => {
         return {
           infographicId: infographic.infographicId,
-          externalStorageId:infographic.externalStorageId,
+          externalStorageId: infographic.externalStorageId,
           status: infographic.status as InfographicStatus
         };
       })
@@ -58,7 +58,7 @@ export class TripRepository implements ITripRepository {
       toDate: moment(toDate).toDate()
     }
     var userTrips = await this.getUserTrips(ownerId);
-    if(!userTrips) {
+    if (!userTrips) {
       userTrips = new UserTripDocument({
         userId: ownerId
       });
@@ -66,7 +66,7 @@ export class TripRepository implements ITripRepository {
 
     userTrips.trips.push(trip);
     await userTrips.save();
-    
+
     var tripModel = userTrips.trips[userTrips.trips.length - 1];
 
     return this.toTripDto(tripModel);

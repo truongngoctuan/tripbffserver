@@ -5,6 +5,7 @@ import { Succeed } from "../../../../_shared/utils";
 import _ from "lodash";
 import { IExtraParams } from "./_commandHandler";
 
+// todo move to infographic folder
 export type ExportInfographicCommand = {
   type: "exportInfographic";
   ownerId: string;

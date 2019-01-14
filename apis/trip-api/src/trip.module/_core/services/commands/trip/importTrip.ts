@@ -1,8 +1,8 @@
-import { EventHandler, TripEvent } from "../TripEvent";
-import { TripReducers } from "../reducers/_tripReducer";
-import { ServiceBus } from "../TripServiceBus";
-import { CommandResult, Succeed } from "../../../../_shared/utils";
-import { ITripLocation } from "../../models/ITrip";
+import { EventHandler, TripEvent } from "../../TripEvent";
+import { TripReducers } from "../../reducers/_tripReducer";
+import { ServiceBus } from "../../TripServiceBus";
+import { CommandResult, Succeed } from "../../../../../_shared/utils";
+import { ITripLocation } from "../../../models/ITrip";
 import _ from 'lodash';
 import uuid4 from 'uuid/v4';
 
