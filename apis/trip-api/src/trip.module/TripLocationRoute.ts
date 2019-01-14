@@ -77,7 +77,7 @@ module.exports = {
       path: "/trips/{tripId}/locations/{locationId}",
       handler: async function(request) {
         try {
-          console.log("DELETE", request.url);
+          console.log("DELETE", request.url.path);
           var tripId: string = request.params.tripId;
           var locationId: string = request.params.locationId;
 
