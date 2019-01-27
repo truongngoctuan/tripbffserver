@@ -6,13 +6,6 @@ const config = {
     TTLInSeconds: 3600,
     keyPrefix: "login-session"
   },
-  redisStore: {
-    // host: "localhost",
-    // port: 6379,
-    host: "127.0.1.1",
-    port: 6379,
-    secret: "asd"
-  },
   db: {
     host: "localhost",
     port: 27017,

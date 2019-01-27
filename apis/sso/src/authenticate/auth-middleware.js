@@ -5,8 +5,8 @@ const moment = require('moment');
 
 var redis = require("redis"),
     client = redis.createClient({
-        host: config.redisStore.host,
-        port: config.redisStore.port,
+        host: process.env.REDIS_HOST,
+        port: process.env.REDIS_PORT,
     })
 
 client.on("error", function (err) {
