@@ -1,16 +1,16 @@
 import { ITrip } from "../../models/ITrip";
 import {
   ITripEventRepository,
-  TripCreatedEvent,
-  TripUpdatedEvent,
   TripImportLocationsEvent,
   TripEvent,
-  TripLocationImageUploadedEvent} from "../TripEvent";
+  TripLocationImageUploadedEvent} from "../events";
 import moment from "moment";
 import _ from "lodash";
 import createInfographic from "./createInfographic";
 import finishCreateInfographic from "./finishCreateInfographic";
 import { removeLocation } from "./removeLocation";
+import { TripCreatedEvent, TripUpdatedEvent } from "../events/TripEvents";
+import { updateTripDateRange } from "./updateTripDateRange";
 
 // var staticEventHandlers = new Map<string, Function>();
 
@@ -50,6 +50,8 @@ export class TripReducers {
         return this.createTrip(event);
       case "TripUpdated":
       return this.updateTrip(state, event);
+      case "TripDateRangeUpdated":
+      return updateTripDateRange(state, event);
       case "TripImportLocations":
       return this.updateTripLocations(state, event);
       case "LocationRemoved":

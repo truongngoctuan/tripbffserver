@@ -1,4 +1,4 @@
-import { TripEvent } from "./TripEvent";
+import { TripEvent } from "./events";
 import { TripReducers } from "./reducers/_tripReducer";
 import { ITripRepository } from "../models/ITripRepository";
 import { ITrip } from "../models/ITrip";

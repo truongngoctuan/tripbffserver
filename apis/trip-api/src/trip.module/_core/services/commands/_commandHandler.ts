@@ -1,5 +1,5 @@
 import { ServiceBus } from "../TripServiceBus";
-import { EventHandler, ITripEventRepository } from "../TripEvent";
+import { EventHandler, ITripEventRepository } from "../events";
 import { TripReducers } from "../reducers/_tripReducer";
 import { CommandResult, Err } from "../../../../_shared/utils";
 import { IJobDispatcher } from "../../models/IJobDispatcher";

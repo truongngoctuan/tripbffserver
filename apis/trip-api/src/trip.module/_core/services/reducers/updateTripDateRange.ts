@@ -1,10 +1,10 @@
 import { ITrip } from "../../models/ITrip";
-import { TripLocationRemovedEvent } from "../events";
 import _ from "lodash";
+import { TripDateRangeUpdatedEvent } from "../events/TripEvents";
 
-export function removeLocation(
+export function updateTripDateRange(
   prevState: ITrip,
-  command: TripLocationRemovedEvent
+  command: TripDateRangeUpdatedEvent
 ): ITrip {
 
   //get location

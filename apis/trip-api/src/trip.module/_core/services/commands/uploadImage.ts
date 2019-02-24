@@ -1,4 +1,4 @@
-import { EventHandler, TripEvent } from "../TripEvent";
+import { EventHandler, TripEvent } from "../events";
 import { TripReducers } from "../reducers/_tripReducer";
 import { ServiceBus } from "../TripServiceBus";
 import { Succeed } from "../../../../_shared/utils";

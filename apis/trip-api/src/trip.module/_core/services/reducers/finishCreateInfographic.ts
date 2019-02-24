@@ -1,5 +1,5 @@
 import { ITrip } from "../../models/ITrip";
-import { InfographicExportedEvent } from "../TripEvent";
+import { InfographicExportedEvent } from "../events";
 import _ from "lodash";
 
 export default function finishCreateInfographic(

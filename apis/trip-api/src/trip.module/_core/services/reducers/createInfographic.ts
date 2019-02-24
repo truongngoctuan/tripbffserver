@@ -1,5 +1,5 @@
 import { ITrip, IInfographic } from "../../models/ITrip";
-import { InfographicCreatedEvent } from "../TripEvent";
+import { InfographicCreatedEvent } from "../events";
 
 export default function createInfographic(
   prevState: ITrip,

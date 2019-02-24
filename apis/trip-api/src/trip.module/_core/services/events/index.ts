@@ -1,32 +1,16 @@
 import { Moment } from "moment";
-import { ITripLocation } from "../models/ITrip";
+import { ITripLocation } from "../../models/ITrip";
+import { TripCreatedEvent, TripUpdatedEvent, TripDateRangeUpdatedEvent } from "./TripEvents";
 
 export type TripEvent =
   | TripCreatedEvent
   | TripUpdatedEvent
+  | TripDateRangeUpdatedEvent
   | TripImportLocationsEvent
   | TripLocationRemovedEvent
   | TripLocationImageUploadedEvent
   | InfographicCreatedEvent
   | InfographicExportedEvent;
-
-export type TripCreatedEvent = {
-  type: "TripCreated";
-  ownerId: string;
-  tripId: string;
-  name: string;
-  fromDate: Moment;
-  toDate: Moment;
-};
-
-export type TripUpdatedEvent = {
-  type: "TripUpdated";
-  ownerId: string;
-  tripId: string;
-  name: string;
-  fromDate: Moment;
-  toDate: Moment;
-};
 
 export type TripImportLocationsEvent = {
   type: "TripImportLocations";
