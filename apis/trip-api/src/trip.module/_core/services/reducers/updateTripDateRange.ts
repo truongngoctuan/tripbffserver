@@ -1,4 +1,4 @@
-import { ITrip } from "../../models/ITrip";
+import { ITrip, ITripLocation } from "../../models/ITrip";
 import _ from "lodash";
 import { TripDateRangeUpdatedEvent } from "../events/TripEvents";
 
@@ -7,17 +7,18 @@ export function updateTripDateRange(
   command: TripDateRangeUpdatedEvent
 ): ITrip {
 
-  //get location
-  var locationIdx = _.findIndex(
-    prevState.locations,
-    loc => loc.locationId == command.locationId
-  );
+  const { fromDate, toDate } = command;
 
+  var filteredLocations: ITripLocation[] = [];
+  if (fromDate) {
+    filteredLocations = prevState.locations.filter(loc => fromDate <= loc.fromTime );
+  }
+
+  if (toDate) {
+    filteredLocations = prevState.locations.filter(loc => loc.toTime <= toDate);
+  }
   return {
     ...prevState,
-    locations: [
-      ...prevState.locations.slice(0, locationIdx),
-      ...prevState.locations.slice(locationIdx + 1)
-    ]
+    locations: filteredLocations
   };
 }
