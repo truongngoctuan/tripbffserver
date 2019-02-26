@@ -29,6 +29,20 @@ module.exports = {
       })
     );
 
+    const locationSchema = Joi.object({
+      fromTime: Joi.string(),
+      toTime: Joi.string(),
+      location: Joi.object({
+        long: Joi.number(),
+        lat: Joi.number(),
+        address: Joi.string()
+      }),
+      images: Joi.array().items(
+        Joi.object({
+          url: Joi.string()        })
+      )
+    })
+
     server.route({
       method: "POST",
       path: "/trips/{id}/locations",
@@ -68,6 +82,49 @@ module.exports = {
         tags: ["api"],
         validate: {
           payload: locationsSchema
+        }
+      }
+    });
+
+    server.route({
+      method: "POST",
+      path: "/trips/{id}/locations/addLocation",
+      handler: async function(request) {
+        try {
+          console.log("POST", request.url);
+          var selectedLocation = request.payload as any;
+          var tripId = request.params.id;
+          const ownerId = CUtils.getUserId(request);
+
+          // create import command
+          var commandResult = await tripCommandHandler.exec({
+            type: "AddLocation",
+            ownerId,
+            tripId: tripId.toString(),
+            location: selectedLocation
+          });
+
+          if (commandResult.isSucceed) {
+            var queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
+            if (!queryResult) return Err("can't get data after add new location into trip");
+
+            // console.log(queryResult);
+            return queryResult;
+          }
+
+          console.log("err: " + commandResult.errors);
+          return commandResult.errors;
+        } catch (error) {
+          console.log("ERROR: POST /trips/{id}/locations/addLocation");
+          console.log(error);
+          throw error;
+        }
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+        validate: {
+          payload: locationSchema
         }
       }
     });
