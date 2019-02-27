@@ -15,7 +15,8 @@ export type CreateTripCommand = {
 
 export async function createTrip(command: CreateTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus): Promise<CommandResult> {
   //validate
-
+  //todo validation on fromDate, toDate
+  //todo add error code as 
   const { ownerId, tripId, name, fromDate, toDate } = command;
   var event: TripEvent = {
     type: "TripCreated",

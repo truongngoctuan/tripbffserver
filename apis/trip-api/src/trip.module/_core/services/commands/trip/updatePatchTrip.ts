@@ -8,17 +8,18 @@ export type UpdatePatchTripCommand = {
   type: "updatePatchTrip";
   ownerId: string;
   tripId: string;
-  name: string;
   fromDate: Moment;
   toDate: Moment;
 };
 
 export async function updatePatchTrip(command: UpdatePatchTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus): Promise<CommandResult> {
   //validate
+  const state = await reducers.getCurrentState(tripId);
 
   const { ownerId, tripId, fromDate, toDate } = command;
 
   if (fromDate || toDate) {
+    //todo some validations on the data
     var event: TripEvent = {
       type: "TripDateRangeUpdated",
       ownerId,
@@ -33,7 +34,6 @@ export async function updatePatchTrip(command: UpdatePatchTripCommand, eventHand
     await emitter.emit(event);
   }
 
-
-
+  //todo handle multi-event that 
   return Succeed();
 }
