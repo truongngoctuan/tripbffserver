@@ -19,6 +19,8 @@ export function updateTripDateRange(
   }
   return {
     ...prevState,
+    fromDate: fromDate ? fromDate : prevState.fromDate,
+    toDate: toDate ? toDate : prevState.toDate,
     locations: filteredLocations
   };
 }

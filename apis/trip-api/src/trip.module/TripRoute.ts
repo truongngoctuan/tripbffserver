@@ -4,6 +4,7 @@ import uuid from "uuid/v1";
 import { Err } from "../_shared/utils";
 import { IoC } from "./IoC"
 import { CUtils } from "./ControllerUtils";
+import moment = require("moment");
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
@@ -82,7 +83,7 @@ module.exports = {
     });
 
     server.route({
-      method: "PUT",
+      method: "PATCH",
       path: "/trips/{id}",
       handler: async function(request) {
         var tripId = request.params.id;
@@ -97,15 +98,15 @@ module.exports = {
             type: "updatePatchTrip",
             ownerId,
             tripId,
-            fromDate,
-            toDate
+            fromDate: moment(fromDate),
+            toDate: moment(toDate)
           });
 
           if (commandResult.isSucceed) {
             var queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
 
             if (!queryResult) return Err("can't get data after create trip");
-            return queryResult.tripId;
+            return queryResult;
           }
 
           return commandResult.errors;

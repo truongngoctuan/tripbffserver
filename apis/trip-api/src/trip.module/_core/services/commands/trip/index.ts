@@ -2,7 +2,7 @@ import { CommandFunc } from "../_commandHandler";
 import { CreateTripCommand, createTrip } from "./createTrip";
 import { UpdateTripCommand, updateTrip } from "./updateTrip";
 import { ImportTripCommand, importTrip } from "./importTrip";
-import { UpdatePatchTripCommand } from "./updatePatchTrip";
+import { UpdatePatchTripCommand, updatePatchTrip } from "./updatePatchTrip";
 
 export type TripCommand = CreateTripCommand
 | UpdateTripCommand
@@ -12,5 +12,6 @@ export type TripCommand = CreateTripCommand
 export const TripFunctions: Array<CommandFunc> = [
   createTrip,
   updateTrip,
+  updatePatchTrip,
   importTrip,
 ]
