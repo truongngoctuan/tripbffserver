@@ -39,7 +39,8 @@ module.exports = {
       }),
       images: Joi.array().items(
         Joi.object({
-          url: Joi.string()        })
+          url: Joi.string()
+        })
       )
     })
 

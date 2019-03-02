@@ -4,6 +4,7 @@ import { ServiceBus } from "../../TripServiceBus";
 import { Succeed } from "../../../../../_shared/utils";
 import _ from "lodash";
 import { ITripLocation } from "../../../models/ITrip";
+import uuid4 from 'uuid/v4';
 
 export type AddLocationCommand = {
   type: "AddLocation";
@@ -19,6 +20,8 @@ export async function AddLocation(
   emitter: ServiceBus
 ) {
   const { ownerId, tripId, location } = command;
+
+  location.locationId = uuid4();
 
   var event: TripEvent = {
     type: "LocationAdded",
