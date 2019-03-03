@@ -4,6 +4,7 @@ import { FileStorageOfflineService } from "../image.module/FileStorageOfflineSer
 import { IFileStorageService } from "../image.module/IFileStorageService";
 import { IoC } from "./IoC";
 import { CUtils } from "./ControllerUtils";
+import uuid4 from 'uuid/v4';
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
@@ -96,6 +97,8 @@ module.exports = {
           var selectedLocation = request.payload as any;
           var tripId = request.params.id;
           const ownerId = CUtils.getUserId(request);
+          
+          selectedLocation.locationId = uuid4();
 
           // create import command
           var commandResult = await tripCommandHandler.exec({
@@ -105,16 +108,8 @@ module.exports = {
             location: selectedLocation
           });
 
-          if (commandResult.isSucceed) {
-            var queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
-            if (!queryResult) return Err("can't get data after add new location into trip");
-
-            // console.log(queryResult);
-            return queryResult;
-          }
-
-          console.log("err: " + commandResult.errors);
-          return commandResult.errors;
+          commandResult.data = selectedLocation.locationId;
+          return commandResult;
         } catch (error) {
           console.log("ERROR: POST /trips/{id}/locations/addLocation");
           console.log(error);
