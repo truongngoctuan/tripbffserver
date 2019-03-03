@@ -1,4 +1,4 @@
-import { EventHandler, TripEvent } from "../../TripEvent";
+import { EventHandler, TripEvent } from "../../events";
 import { TripReducers } from "../../reducers/_tripReducer";
 import { ServiceBus } from "../../TripServiceBus";
 import { CommandResult, Succeed } from "../../../../../_shared/utils";
@@ -15,7 +15,8 @@ export type CreateTripCommand = {
 
 export async function createTrip(command: CreateTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus): Promise<CommandResult> {
   //validate
-
+  //todo validation on fromDate, toDate
+  //todo add error code as 
   const { ownerId, tripId, name, fromDate, toDate } = command;
   var event: TripEvent = {
     type: "TripCreated",

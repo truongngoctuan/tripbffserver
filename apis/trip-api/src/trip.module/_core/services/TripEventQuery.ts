@@ -1,4 +1,4 @@
-import { ITripEventRepository, TripEvent } from "../services/TripEvent";
+import { ITripEventRepository, TripEvent } from "./events";
 
 export class TripEventQueryHandler {
   constructor(private TripEventRepository: ITripEventRepository) {}

@@ -1,5 +1,5 @@
 import { ITrip } from "../../models/ITrip";
-import { TripLocationRemovedEvent } from "../TripEvent";
+import { TripLocationRemovedEvent } from "../events";
 import _ from "lodash";
 
 export function removeLocation(
