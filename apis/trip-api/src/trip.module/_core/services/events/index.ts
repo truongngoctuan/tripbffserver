@@ -8,6 +8,7 @@ export type TripEvent =
   | TripDateRangeUpdatedEvent
   | TripImportLocationsEvent
   | TripLocationRemovedEvent
+  | TripLocationAddedEvent
   | TripLocationImageUploadedEvent
   | InfographicCreatedEvent
   | InfographicExportedEvent;
@@ -24,6 +25,13 @@ export type TripLocationRemovedEvent = {
   ownerId: string;
   tripId: string;
   locationId: string;
+};
+
+export type TripLocationAddedEvent = {
+  type: "LocationAdded";
+  ownerId: string;
+  tripId: string;
+  location: ITripLocation;
 };
 
 export type TripLocationImageUploadedEvent = {

@@ -9,8 +9,10 @@ import _ from "lodash";
 import createInfographic from "./createInfographic";
 import finishCreateInfographic from "./finishCreateInfographic";
 import { removeLocation } from "./removeLocation";
+import { addLocation } from "./addLocation";
 import { TripCreatedEvent, TripUpdatedEvent } from "../events/TripEvents";
 import { updateTripDateRange } from "./updateTripDateRange";
+
 
 // var staticEventHandlers = new Map<string, Function>();
 
@@ -56,6 +58,8 @@ export class TripReducers {
       return this.updateTripLocations(state, event);
       case "LocationRemoved":
       return removeLocation(state, event);
+      case "LocationAdded":
+      return addLocation(state, event);
       case "LocationImageUploaded":
       return this.updateTripLocationImage(state, event);
       case "InfographicCreated":
