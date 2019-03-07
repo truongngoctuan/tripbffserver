@@ -167,6 +167,43 @@ module.exports = {
     });
 
     server.route({
+      method: "PUT",
+      path: "/trips/{tripId}/locations/{locationId}/feeling",
+      handler: async function(request) {
+        try {
+          var tripId: string = request.params.tripId;
+          var locationId: string = request.params.locationId;
+          var { feelingId, feelingLabel } = request.payload as any;
+
+          const ownerId = CUtils.getUserId(request);
+
+          // create import command
+          var commandResult = await tripCommandHandler.exec({
+            type: "UpdateLocationFeeling",
+            ownerId,
+            tripId,
+            locationId,
+            feelingId,
+            feelingLabel
+          });
+
+          if (commandResult.isSucceed) return "Success!";
+
+          console.log("err: " + commandResult.errors);
+          return commandResult.errors;
+        } catch (error) {
+          console.log("ERROR: UPDATE /trips/{tripId}/locations/{locationId}/feeling");
+          console.log(error);
+          throw error;
+        }
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+      }
+    });
+
+    server.route({
       method: "GET",
       path: "/trips/{id}/locations",
       handler: async function(request) {

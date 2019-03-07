@@ -12,6 +12,7 @@ import { removeLocation } from "./removeLocation";
 import { addLocation } from "./addLocation";
 import { TripCreatedEvent, TripUpdatedEvent } from "../events/TripEvents";
 import { updateTripDateRange } from "./updateTripDateRange";
+import { updateLocationFeeling } from "./addLocationFeeling";
 
 
 // var staticEventHandlers = new Map<string, Function>();
@@ -51,21 +52,23 @@ export class TripReducers {
       case "TripCreated":
         return this.createTrip(event);
       case "TripUpdated":
-      return this.updateTrip(state, event);
+        return this.updateTrip(state, event);
       case "TripDateRangeUpdated":
-      return updateTripDateRange(state, event);
+        return updateTripDateRange(state, event);
       case "TripImportLocations":
-      return this.updateTripLocations(state, event);
+        return this.updateTripLocations(state, event);
       case "LocationRemoved":
-      return removeLocation(state, event);
+        return removeLocation(state, event);
       case "LocationAdded":
-      return addLocation(state, event);
+        return addLocation(state, event);
+      case "LocationFeelingUpdated":
+        return updateLocationFeeling(state, event)
       case "LocationImageUploaded":
-      return this.updateTripLocationImage(state, event);
+        return this.updateTripLocationImage(state, event);
       case "InfographicCreated":
-      return createInfographic(state, event);
+        return createInfographic(state, event);
       case "InfographicExported":
-      return finishCreateInfographic(state, event);
+        return finishCreateInfographic(state, event);
       default:
         console.log("MISSING register event: ", (event as any).type);
         return state;
