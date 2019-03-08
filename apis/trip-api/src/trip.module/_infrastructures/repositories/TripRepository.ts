@@ -24,7 +24,8 @@ export class TripRepository implements ITripRepository {
               url: img.url,
               externalStorageId: img.externalStorageId
             };
-          })
+          }),
+          feeling: loc.feeling
         };
       }),
       infographics: _.map(o.infographics, infographic => {
@@ -87,7 +88,8 @@ export class TripRepository implements ITripRepository {
       location: loc.location,
       fromTime: moment(loc.fromTime).toDate(),
       toTime: moment(loc.toTime).toDate(),
-      images: loc.images
+      images: loc.images,
+      feeling: loc.feeling
     }));
     trip.infographics = payload.infographics;
 

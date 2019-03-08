@@ -1,3 +1,5 @@
+import { IFeelingModel } from "./IFeelingModel"
+
 export interface IUserTripModel {
   userId: string;
   trips: Array<ITripModel>;
@@ -22,6 +24,7 @@ export interface ITripLocationModel {
   fromTime: Date;
   toTime: Date;
   images: Array<ITripLocationImageModel>;
+  feeling: IFeelingModel;
 }
 
 export interface ITripLocationImageModel {

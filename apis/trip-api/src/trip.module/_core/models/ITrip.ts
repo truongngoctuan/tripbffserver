@@ -37,6 +37,6 @@ export interface IInfographic {
 export type InfographicStatus = "CREATED" | "EXPORTED" | "FAILED";
 
 export interface IFeeling {
-  feelingId: string,
+  feelingId: number,
   label: string
 }

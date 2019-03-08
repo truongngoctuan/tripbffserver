@@ -27,7 +27,11 @@ const TripSchema = new Schema({
           url: String
           //todo missing externalId ?
         }
-      ]
+      ],
+      feeling: {
+        feelingId: String,
+        label: String
+      }
     }
   ],
   infographics: [
