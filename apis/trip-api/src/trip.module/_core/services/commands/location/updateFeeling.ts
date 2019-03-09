@@ -4,15 +4,15 @@ import { ServiceBus } from "../../TripServiceBus";
 import { Succeed } from "../../../../../_shared/utils";
 
 export type UpdateLocationFeelingCommand = {
-  type: "UpdateLocationFeeling";
-  ownerId: string;
-  tripId: string;
-  locationId: string;
-  feelingId: string;
+  type: "UpdateLocationFeeling",
+  ownerId: string,
+  tripId: string,
+  locationId: string,
+  feelingId: number,
   feelingLabel: string
 };
 
-export async function UpdateFeeling(
+export async function UpdateLocationFeeling(
   command: UpdateLocationFeelingCommand,
   eventHandler: EventHandler,
   reducers: TripReducers,

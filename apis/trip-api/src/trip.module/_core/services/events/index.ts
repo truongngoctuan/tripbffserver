@@ -49,7 +49,7 @@ export type TripLocationUpdatedFeelingEvent = {
   ownerId: string;
   tripId: string;
   locationId: string;
-  feelingId: string,
+  feelingId: number,
   feelingLabel: string
 }
 

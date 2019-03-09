@@ -1,4 +1,4 @@
-import { ITrip } from "../../models/ITrip";
+import { ITrip, IFeeling } from "../../models/ITrip";
 import { TripLocationUpdatedFeelingEvent } from "../events";
 import _ from "lodash";
 

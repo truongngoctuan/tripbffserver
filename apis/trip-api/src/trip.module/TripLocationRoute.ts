@@ -5,10 +5,12 @@ import { IFileStorageService } from "../image.module/IFileStorageService";
 import { IoC } from "./IoC";
 import { CUtils } from "./ControllerUtils";
 import uuid4 from 'uuid/v4';
+import { FeelingRepository } from "./_infrastructures/repositories/FeelingRepository";
+import { IFeeling } from "./_core/models/ITrip";
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
-
+const dataSourceQueryHandler = IoC.dataSourceQueryHandler;
 const Joi = require("joi");
 
 module.exports = {
@@ -200,6 +202,36 @@ module.exports = {
       options: {
         auth: "simple",
         tags: ["api"],
+      }
+    });
+
+    server.route({
+        method: "GET",
+        path: "/trips/feelings",
+        handler: async function(request) {
+          var feelings = dataSourceQueryHandler.getFeelings();
+          return feelings;
+        }
+    });
+
+    //TODO: Insert feelings route will be removed later
+    server.route({
+      method: "POST",
+      path: "/trips/feelings/insert",
+      handler: async function(request) {
+        var feelingRepo =  new FeelingRepository();
+        var feelings: Array<IFeeling> = [
+          {
+            feelingId: 1,
+            label: "Happy"
+          },
+          {
+            feelingId: 2,
+            label: "Sad"
+          }
+        ];
+        feelingRepo.insertMany(feelings);
+        return true;
       }
     });
 

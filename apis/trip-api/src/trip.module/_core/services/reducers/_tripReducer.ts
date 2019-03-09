@@ -12,7 +12,7 @@ import { removeLocation } from "./removeLocation";
 import { addLocation } from "./addLocation";
 import { TripCreatedEvent, TripUpdatedEvent } from "../events/TripEvents";
 import { updateTripDateRange } from "./updateTripDateRange";
-import { updateLocationFeeling } from "./addLocationFeeling";
+import { updateLocationFeeling } from "./updateLocationFeeling";
 
 
 // var staticEventHandlers = new Map<string, Function>();

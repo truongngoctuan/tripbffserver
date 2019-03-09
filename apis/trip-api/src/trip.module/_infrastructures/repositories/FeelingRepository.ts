@@ -16,7 +16,7 @@ export class FeelingRepository implements IFeelingRepository {
         return feelings.map(f => this.toFeeling(f));
     } 
 
-    public async get(id: String) {
+    public async get(id: number) {
         var feeling = await FeelingDocument.findOne(id);
 
         if (!feeling)
@@ -25,35 +25,35 @@ export class FeelingRepository implements IFeelingRepository {
         return this.toFeeling(feeling);
     }
 
-    // public async insert(feeling: IFeeling) {
-    //     var { feelingId, label } = feeling;
-    //     var feelingDocument = new FeelingDocument({
-    //         feelingId: feelingId,
-    //         label: label
-    //     });
+    public async insert(feeling: IFeeling) {
+        var { feelingId, label } = feeling;
+        var feelingDocument = new FeelingDocument({
+            feelingId: feelingId,
+            label: label
+        });
 
-    //     feelingDocument.save();
-    // }
+        feelingDocument.save();
+    }
 
-    // public async insertMany(feelings: Array<IFeeling>) {
-    //     var feelingDocuments = feelings.map(f => {
-    //         return new FeelingDocument({
-    //             feelingId: f.feelingId,
-    //             label: f.label
-    //         });
-    //     });
-    //     FeelingDocument.insertMany(feelingDocuments);
-    // }
+    public async insertMany(feelings: Array<IFeeling>) {
+        var feelingDocuments = feelings.map(f => {
+            return new FeelingDocument({
+                feelingId: f.feelingId,
+                label: f.label
+            });
+        });
+        FeelingDocument.insertMany(feelingDocuments);
+    }
 
-    // public async update(payload: IFeeling) {
-    //     var { feelingId, label } = payload;
-    //     var feeling = await FeelingDocument.findOne(feelingId);
+    public async update(payload: IFeeling) {
+        var { feelingId, label } = payload;
+        var feeling = await FeelingDocument.findOne(feelingId);
 
-    //     if (feeling) {
-    //         feeling.label = label;
-    //         feeling.save();
-    //     }
-    // }
+        if (feeling) {
+            feeling.label = label;
+            feeling.save();
+        }
+    }
 }
 
 export default FeelingRepository
