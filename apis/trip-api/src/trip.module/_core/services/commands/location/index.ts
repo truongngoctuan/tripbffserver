@@ -1,12 +1,12 @@
 import { RemoveLocationCommand, RemoveLocation } from "./removeLocation";
 import { AddLocationCommand, AddLocation } from "./addLocation";
-import { AddFeelingCommand, AddFeeling } from "./addFeeling"
+import { UpdateLocationFeelingCommand, UpdateFeeling } from "./updateFeeling"
 import { CommandFunc } from "../_commandHandler";
 
-export type LocationCommand = RemoveLocationCommand | AddLocationCommand | AddFeelingCommand;
+export type LocationCommand = RemoveLocationCommand | AddLocationCommand | UpdateLocationFeelingCommand;
 
 export const LocationFunctions: Array<CommandFunc> = [
   RemoveLocation,
   AddLocation,
-  AddFeeling
+  UpdateFeeling
 ]
