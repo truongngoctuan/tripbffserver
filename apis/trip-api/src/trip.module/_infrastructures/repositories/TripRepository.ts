@@ -1,4 +1,4 @@
-import { UserTripDocument, IUserTripDocument } from "../models/UserTripModel";
+import { UserTripDocument, IUserTripDocument, UserTripSchema } from "../models/UserTripModel";
 import { ITripRepository } from "../../_core/models/ITripRepository";
 import { ITrip, InfographicStatus } from "../../_core/models/ITrip";
 import moment from "moment";
@@ -99,12 +99,13 @@ export class TripRepository implements ITripRepository {
   public async get(ownerId: string, id: String) {
     var trip = await this.getTripModel(ownerId, id);
     if (!trip) return undefined;
-
+   
     return this.toTripDto(trip);
   }
 
   async getTripModel(ownerId: string, id: String) {
     var userTrips = await this.getUserTrips(ownerId);
+    
     if (!userTrips) return undefined;
 
     var trip = _.find(userTrips.trips, trip => trip.tripId === id);

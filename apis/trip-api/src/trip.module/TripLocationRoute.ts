@@ -175,9 +175,10 @@ module.exports = {
         try {
           var tripId: string = request.params.tripId;
           var locationId: string = request.params.locationId;
-          var { feelingId, feelingLabel } = request.payload as any;
+          var { feelingId, feelingLabel, feelingIcon } = request.payload as any;
 
           const ownerId = CUtils.getUserId(request);
+          console.log('feeling icon: ' + feelingIcon);
 
           // create import command
           var commandResult = await tripCommandHandler.exec({
@@ -186,7 +187,8 @@ module.exports = {
             tripId,
             locationId,
             feelingId,
-            feelingLabel
+            feelingLabel,
+            feelingIcon
           });
 
           if (commandResult.isSucceed) return "Success!";
@@ -223,11 +225,13 @@ module.exports = {
         var feelings: Array<IFeeling> = [
           {
             feelingId: 1,
-            label: "Happy"
+            label: "Happy",
+            icon: "smile-o"
           },
           {
             feelingId: 2,
-            label: "Sad"
+            label: "Sad",
+            icon: "frown-o"
           }
         ];
         feelingRepo.insertMany(feelings);
@@ -241,7 +245,7 @@ module.exports = {
       handler: async function(request) {
         try {
           var tripId = request.params.id;
-          const userId = CUtils.getUserId(request);
+          const userId = CUtils.getUserId(request);          
           var queryResult = await tripQueryHandler.GetById(userId, tripId.toString());
           if (!queryResult) return Err("can't get data after import trip");
           return queryResult;

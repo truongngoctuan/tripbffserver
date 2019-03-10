@@ -14,7 +14,8 @@ export function updateLocationFeeling(
             ...item,
             feeling: {
                 feelingId: event.feelingId,
-                label: event.feelingLabel
+                label: event.feelingLabel,
+                icon: event.feelingIcon
             }
         }
     })

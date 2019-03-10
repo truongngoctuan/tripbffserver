@@ -7,7 +7,8 @@ export interface IFeelingDocument extends IFeelingModel, Document {}
 
 const FeelingSchema = new Schema({
     feelingId: String,
-    label: String
+    label: String,
+    icon: String
 });
 
 export const FeelingDocument: Model<IFeelingDocument> = mongoose.model<IFeelingDocument>(

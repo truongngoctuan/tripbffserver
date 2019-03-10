@@ -7,7 +7,8 @@ export class FeelingRepository implements IFeelingRepository {
     toFeeling(o: IFeelingModel): IFeeling {
         return {
             feelingId: o.feelingId,
-            label: o.label
+            label: o.label,
+            icon: o.icon
         }
     }
 
@@ -26,10 +27,11 @@ export class FeelingRepository implements IFeelingRepository {
     }
 
     public async insert(feeling: IFeeling) {
-        var { feelingId, label } = feeling;
+        var { feelingId, label, icon } = feeling;
         var feelingDocument = new FeelingDocument({
             feelingId: feelingId,
-            label: label
+            label: label,
+            icon: icon
         });
 
         feelingDocument.save();
@@ -39,18 +41,20 @@ export class FeelingRepository implements IFeelingRepository {
         var feelingDocuments = feelings.map(f => {
             return new FeelingDocument({
                 feelingId: f.feelingId,
-                label: f.label
+                label: f.label,
+                icon: f.icon
             });
         });
         FeelingDocument.insertMany(feelingDocuments);
     }
 
     public async update(payload: IFeeling) {
-        var { feelingId, label } = payload;
+        var { feelingId, label, icon } = payload;
         var feeling = await FeelingDocument.findOne(feelingId);
 
         if (feeling) {
             feeling.label = label;
+            feeling.icon = icon;
             feeling.save();
         }
     }

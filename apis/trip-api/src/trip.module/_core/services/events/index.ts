@@ -50,7 +50,8 @@ export type TripLocationUpdatedFeelingEvent = {
   tripId: string;
   locationId: string;
   feelingId: number,
-  feelingLabel: string
+  feelingLabel: string,
+  feelingIcon: string
 }
 
 export type InfographicCreatedEvent = {
