@@ -213,7 +213,11 @@ module.exports = {
         handler: async function(request) {
           var feelings = dataSourceQueryHandler.getFeelings();
           return feelings;
-        }
+        },
+        options: {
+          auth: "simple",
+          tags: ["api"]
+      }
     });
 
     //TODO: Insert feelings route will be removed later
