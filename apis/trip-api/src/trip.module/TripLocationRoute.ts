@@ -169,12 +169,14 @@ module.exports = {
     });
 
     server.route({
-      method: "PUT",
+      method: "PATCH",
       path: "/trips/{tripId}/locations/{locationId}/feeling",
       handler: async function(request) {
         try {
           var tripId: string = request.params.tripId;
           var locationId: string = request.params.locationId;
+
+          //TODO: should receive feelingId only. Then query from DB to get feeling label and icon
           var { feelingId, feelingLabel, feelingIcon } = request.payload as any;
 
           const ownerId = CUtils.getUserId(request);
