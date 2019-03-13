@@ -25,8 +25,8 @@ export interface ITripLocationModel {
   fromTime: Date;
   toTime: Date;
   images: Array<ITripLocationImageModel>;
-  feeling: IFeelingModel;
-  activity: IActivityModel;
+  feeling?: IFeelingModel;
+  activity?: IActivityModel;
 }
 
 export interface ITripLocationImageModel {

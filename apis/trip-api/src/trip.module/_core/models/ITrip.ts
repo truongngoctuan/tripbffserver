@@ -19,8 +19,8 @@ export interface ITripLocation {
   fromTime: Moment;
   toTime: Moment;
   images: Array<ITripLocationImage>;
-  feeling: IFeeling;
-  activity: IActivity;
+  feeling?: IFeeling;
+  activity?: IActivity;
 }
 
 export interface ITripLocationImage {

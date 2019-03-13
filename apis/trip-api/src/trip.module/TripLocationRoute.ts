@@ -257,7 +257,34 @@ module.exports = {
       path: "/trips/{tripId}/locations/{locationId}/activity",
       handler: async function(request) {
         try {
-            //TODO: 
+          var tripId: string = request.params.tripId;
+          var locationId: string = request.params.locationId;
+          var { activityId } = request.payload as any;
+
+          var activity = await dataSourceQueryHandler.getActivityById(activityId);
+
+          if (activity) {
+            const ownerId = CUtils.getUserId(request);
+
+            var commandResult = await tripCommandHandler.exec({
+              type: "UpdateLocationActivity",
+              ownerId,
+              tripId,
+              locationId,
+              activityId,
+              activityLabel: activity.label,
+              activityIcon: activity.icon
+            });
+  
+            if (commandResult.isSucceed) 
+              return "Success!";
+
+            console.log("err: " + commandResult.errors);
+            return commandResult.errors;
+          }
+          else {
+            return "Selected activity does not exists!";
+          }
         } catch (error) {
           console.log("ERROR: UPDATE /trips/{tripId}/locations/{locationId}/activity");
           console.log(error);

@@ -18,7 +18,7 @@ export class ActivityRepository implements IActivityRepository {
     } 
 
     public async get(id: number) {
-        var activity = await ActivityDocument.findOne(id);
+        var activity = await ActivityDocument.findOne({activityId: id});
 
         if (!activity)
             return undefined;
