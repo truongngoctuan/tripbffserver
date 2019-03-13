@@ -101,9 +101,6 @@ export class TripRepository implements ITripRepository {
   public async get(ownerId: string, id: String) {
     var trip = await this.getTripModel(ownerId, id);
     if (!trip) return undefined;
-   
-
-    console.log('come here');
     
     return this.toTripDto(trip);
   }
