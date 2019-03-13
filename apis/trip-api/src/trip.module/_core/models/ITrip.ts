@@ -20,6 +20,7 @@ export interface ITripLocation {
   toTime: Moment;
   images: Array<ITripLocationImage>;
   feeling: IFeeling;
+  activity: IActivity;
 }
 
 export interface ITripLocationImage {
@@ -38,6 +39,12 @@ export type InfographicStatus = "CREATED" | "EXPORTED" | "FAILED";
 
 export interface IFeeling {
   feelingId: number,
+  label: string,
+  icon: string
+}
+
+export interface IActivity {
+  activityId: number,
   label: string,
   icon: string
 }

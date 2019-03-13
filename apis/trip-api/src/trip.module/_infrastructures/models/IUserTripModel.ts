@@ -1,4 +1,5 @@
 import { IFeelingModel } from "./IFeelingModel"
+import { IActivityModel } from "./IActivityModel";
 
 export interface IUserTripModel {
   userId: string;
@@ -25,6 +26,7 @@ export interface ITripLocationModel {
   toTime: Date;
   images: Array<ITripLocationImageModel>;
   feeling: IFeelingModel;
+  activity: IActivityModel;
 }
 
 export interface ITripLocationImageModel {
