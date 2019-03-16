@@ -237,12 +237,12 @@ module.exports = {
           {
             feelingId: 1,
             label: "Happy",
-            icon: "smile-o"
+            icon: "smile"
           },
           {
             feelingId: 2,
             label: "Sad",
-            icon: "frown-o"
+            icon: "frown"
           }
         ];
         feelingRepo.insertMany(feelings);
