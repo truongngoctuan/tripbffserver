@@ -18,7 +18,7 @@ export class FeelingRepository implements IFeelingRepository {
     } 
 
     public async get(id: number) {
-        var feeling = await FeelingDocument.findOne(id);
+        var feeling = await FeelingDocument.findOne({feelingId: id});
 
         if (!feeling)
             return undefined;

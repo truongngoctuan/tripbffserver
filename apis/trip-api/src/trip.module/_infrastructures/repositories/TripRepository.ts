@@ -25,7 +25,8 @@ export class TripRepository implements ITripRepository {
               externalStorageId: img.externalStorageId
             };
           }),
-          feeling: loc.feeling
+          feeling: loc.feeling,
+          activity: loc.activity
         };
       }),
       infographics: _.map(o.infographics, infographic => {
@@ -89,7 +90,8 @@ export class TripRepository implements ITripRepository {
       fromTime: moment(loc.fromTime).toDate(),
       toTime: moment(loc.toTime).toDate(),
       images: loc.images,
-      feeling: loc.feeling
+      feeling: loc.feeling,
+      activity: loc.activity
     }));
     trip.infographics = payload.infographics;
 
@@ -99,7 +101,7 @@ export class TripRepository implements ITripRepository {
   public async get(ownerId: string, id: String) {
     var trip = await this.getTripModel(ownerId, id);
     if (!trip) return undefined;
-   
+    
     return this.toTripDto(trip);
   }
 

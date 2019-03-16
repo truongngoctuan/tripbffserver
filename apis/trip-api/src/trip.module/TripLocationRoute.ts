@@ -6,7 +6,8 @@ import { IoC } from "./IoC";
 import { CUtils } from "./ControllerUtils";
 import uuid4 from 'uuid/v4';
 import { FeelingRepository } from "./_infrastructures/repositories/FeelingRepository";
-import { IFeeling } from "./_core/models/ITrip";
+import { IFeeling, IActivity } from "./_core/models/ITrip";
+import { ActivityRepository } from "./_infrastructures/repositories/ActivityRepository";
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
@@ -175,28 +176,32 @@ module.exports = {
         try {
           var tripId: string = request.params.tripId;
           var locationId: string = request.params.locationId;
+          var { feelingId } = request.payload as any;
 
-          //TODO: should receive feelingId only. Then query from DB to get feeling label and icon
-          var { feelingId, feelingLabel, feelingIcon } = request.payload as any;
+          var feeling = await dataSourceQueryHandler.getFeelingById(feelingId);
 
-          const ownerId = CUtils.getUserId(request);
-          console.log('feeling icon: ' + feelingIcon);
+          if (feeling) {
+            const ownerId = CUtils.getUserId(request);
+  
+            var commandResult = await tripCommandHandler.exec({
+              type: "UpdateLocationFeeling",
+              ownerId,
+              tripId,
+              locationId,
+              feelingId,
+              feelingLabel: feeling.label,
+              feelingIcon: feeling.icon
+            });
+  
+            if (commandResult.isSucceed) 
+              return "Success!";
 
-          // create import command
-          var commandResult = await tripCommandHandler.exec({
-            type: "UpdateLocationFeeling",
-            ownerId,
-            tripId,
-            locationId,
-            feelingId,
-            feelingLabel,
-            feelingIcon
-          });
-
-          if (commandResult.isSucceed) return "Success!";
-
-          console.log("err: " + commandResult.errors);
-          return commandResult.errors;
+            console.log("err: " + commandResult.errors);
+            return commandResult.errors;
+          }
+          else {
+            return "Selected feeling does not exists!";
+          }
         } catch (error) {
           console.log("ERROR: UPDATE /trips/{tripId}/locations/{locationId}/feeling");
           console.log(error);
@@ -232,15 +237,98 @@ module.exports = {
           {
             feelingId: 1,
             label: "Happy",
-            icon: "smile-o"
+            icon: "smile"
           },
           {
             feelingId: 2,
             label: "Sad",
-            icon: "frown-o"
+            icon: "frown"
           }
         ];
         feelingRepo.insertMany(feelings);
+        return true;
+      }
+    });
+
+    //////////////  ACTIVITY ROUTES /////////////////
+    
+    server.route({
+      method: "PATCH",
+      path: "/trips/{tripId}/locations/{locationId}/activity",
+      handler: async function(request) {
+        try {
+          var tripId: string = request.params.tripId;
+          var locationId: string = request.params.locationId;
+          var { activityId } = request.payload as any;
+
+          var activity = await dataSourceQueryHandler.getActivityById(activityId);
+
+          if (activity) {
+            const ownerId = CUtils.getUserId(request);
+
+            var commandResult = await tripCommandHandler.exec({
+              type: "UpdateLocationActivity",
+              ownerId,
+              tripId,
+              locationId,
+              activityId,
+              activityLabel: activity.label,
+              activityIcon: activity.icon
+            });
+  
+            if (commandResult.isSucceed) 
+              return "Success!";
+
+            console.log("err: " + commandResult.errors);
+            return commandResult.errors;
+          }
+          else {
+            return "Selected activity does not exists!";
+          }
+        } catch (error) {
+          console.log("ERROR: UPDATE /trips/{tripId}/locations/{locationId}/activity");
+          console.log(error);
+          throw error;
+        }
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+      }
+    });
+
+    server.route({
+      method: "GET",
+      path: "/trips/activities",
+      handler: async function(request) {
+        var activities = dataSourceQueryHandler.getActivities();
+        return activities;
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"]
+       }
+      });
+
+    //TODO: Insert activities route will be removed later
+    server.route({
+      method: "POST",
+      path: "/trips/activities/insert",
+      handler: async function(request) {
+        var activityRepo =  new ActivityRepository();
+        var activities: Array<IActivity> = [
+          {
+            activityId: 1,
+            label: "Swimming",
+            icon: "swimmer"
+          },
+          {
+            activityId: 2,
+            label: "Listening Music",
+            icon: "music"
+          }
+        ];
+        activityRepo.insertMany(activities);
         return true;
       }
     });

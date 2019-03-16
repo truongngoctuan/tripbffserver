@@ -32,6 +32,11 @@ const TripSchema = new Schema({
         feelingId: Number,
         label: String,
         icon: String
+      },
+      activity: {
+        activityId: Number,
+        label: String,
+        icon: String
       }
     }
   ],
