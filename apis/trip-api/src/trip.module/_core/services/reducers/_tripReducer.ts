@@ -12,6 +12,7 @@ import { removeLocation } from "./removeLocation";
 import { addLocation } from "./addLocation";
 import { TripCreatedEvent, TripUpdatedEvent } from "../events/TripEvents";
 import { updateTripDateRange } from "./updateTripDateRange";
+import { updateTripName } from "./updateTripName";
 import { updateLocationFeeling } from "./updateLocationFeeling";
 import { updateLocationActivity } from "./updateLocationActivity";
 
@@ -56,6 +57,8 @@ export class TripReducers {
         return this.updateTrip(state, event);
       case "TripDateRangeUpdated":
         return updateTripDateRange(state, event);
+      case "TripNameUpdated":
+        return updateTripName(state, event);
       case "TripImportLocations":
         return this.updateTripLocations(state, event);
       case "LocationRemoved":

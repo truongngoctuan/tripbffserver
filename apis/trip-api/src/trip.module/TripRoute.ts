@@ -87,9 +87,10 @@ module.exports = {
       path: "/trips/{id}",
       handler: async function(request) {
         var tripId = request.params.id;
-        const { fromDate, toDate } = request.payload as any;
-        console.log("trip from date:" + fromDate);
-        console.log("trip to date:" + toDate);
+        const { name, fromDate, toDate } = request.payload as any;
+        console.log("trip name", name);
+        console.log("trip from date:", fromDate);
+        console.log("trip to date:", toDate);
 
         try {
           const ownerId = CUtils.getUserId(request);
@@ -98,6 +99,7 @@ module.exports = {
             type: "updatePatchTrip",
             ownerId,
             tripId,
+            name,
             fromDate: moment(fromDate),
             toDate: moment(toDate)
           });
@@ -105,7 +107,7 @@ module.exports = {
           if (commandResult.isSucceed) {
             var queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
 
-            if (!queryResult) return Err("can't get data after create trip");
+            if (!queryResult) return Err("can't get data after patch trip");
             return queryResult;
           }
 
@@ -122,6 +124,8 @@ module.exports = {
             id: Joi.required().description("the id for the todo item")
           },
           payload: {
+            name: Joi.string()
+              .description("the id for the todo item"),
             fromDate: Joi.string()
               .description("the fromDate"),
             toDate: Joi.string()

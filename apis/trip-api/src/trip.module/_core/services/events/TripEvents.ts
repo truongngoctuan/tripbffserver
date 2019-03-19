@@ -25,3 +25,10 @@ export type TripDateRangeUpdatedEvent = {
   fromDate: Moment;
   toDate: Moment;
 };
+
+export type TripNameUpdatedEvent = {
+  type: "TripNameUpdated";
+  ownerId: string;
+  tripId: string;
+  name: string;
+};

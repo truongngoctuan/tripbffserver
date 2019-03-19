@@ -1,11 +1,12 @@
 import { Moment } from "moment";
 import { ITripLocation } from "../../models/ITrip";
-import { TripCreatedEvent, TripUpdatedEvent, TripDateRangeUpdatedEvent } from "./TripEvents";
+import { TripCreatedEvent, TripUpdatedEvent, TripDateRangeUpdatedEvent, TripNameUpdatedEvent } from "./TripEvents";
 
 export type TripEvent =
   | TripCreatedEvent
   | TripUpdatedEvent
   | TripDateRangeUpdatedEvent
+  | TripNameUpdatedEvent
   | TripImportLocationsEvent
   | TripLocationRemovedEvent
   | TripLocationAddedEvent
