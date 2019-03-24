@@ -19,6 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "boom": "^7.3.0",
     "dotenv": "^6.1.0",
     "fs-extra": "^7.0.1",
     "hapi": "^17.6.0",
@@ -35,8 +36,10 @@
     "vision": "^5.4.0"
   },
   "devDependencies": {
+    "@types/boom": "^7.2.1",
     "@types/fs-extra": "^5.0.4",
     "@types/hapi": "^17.6.3",
+    "@types/inert": "^5.1.2",
     "@types/lodash": "^4.14.118",
     "@types/moment": "^2.13.0",
     "@types/mongoose": "^5.3.1",

@@ -3,9 +3,9 @@ const Schema = mongoose.Schema;
 
 // this is db model, schemas
 export interface IFile {
-  externalId: String;
-  category: String;
-  fileName: String;
+  externalId: string;
+  category: string;
+  fileName: string;
 }
 
 export interface IFileModel extends IFile, Document {}
