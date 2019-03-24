@@ -1,6 +1,6 @@
 import { IFileStorageService, IFileInfo } from "./IFileStorageService";
 import { Stream } from "stream";
-import fse, { createReadStream } from "fs-extra";
+import fse from "fs-extra";
 import { read, write } from "./FileAsync";
 import path from "path";
 import { File, IFileModel } from "./File";
@@ -88,6 +88,7 @@ export class FileStorageOfflineService implements IFileStorageService {
   }
 }
 
+//todo can use this https://www.npmjs.com/package/mime-types to lookup mime type
 function mimeMapping(fileExtension: string) {
   if (!fileExtension.startsWith(".")) fileExtension = "." + fileExtension;
   return _mappings[fileExtension];
