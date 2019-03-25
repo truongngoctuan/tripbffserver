@@ -1,23 +1,19 @@
 import { IImageService } from "./IImageService";
-import { Stream, Writable } from "stream";
-import { IFileInfo } from "./IFileStorageService";
 const sharp = require('sharp');
 import path from "path";
+import { fileExists, writeBuffer } from "./FileAsync";
 
 export class ImageService implements IImageService {
 
-  async createThumbnail(buffer: Buffer, w: number, h: number) {
-    return await sharp(buffer)
-      .resize(w, h)
-      .toBuffer();
-  }
+  async saveThumbnail(filePath: string, w: number, h: number): Promise<void> {
 
-  async saveThumbnail(filePath: string, w: number, h: number): Promise<Buffer> {
-    var fileResult = await sharp(filePath).resize(w, h).toBuffer();
-    return fileResult;
-  }
-  async getThumbnailById(externalId: string, w: number, h: number): Promise<{ file: Stream, fileInfo: IFileInfo }> {
+    const fileExtension = path.parse(filePath).ext;
+    const fileThumbnailPath = filePath.replace(fileExtension, `_${w}_${h}${fileExtension}`);
 
+    if (!fileExists(fileThumbnailPath)) {
+      var fileThumbnail = await sharp(filePath).resize(w, h).toBuffer();
+      await writeBuffer(fileThumbnailPath, fileThumbnail);
+    }
   }
 
 }

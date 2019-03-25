@@ -1,7 +1,6 @@
 import fs from "fs";
 import { Stream, Readable } from "stream";
 import fse from "fs-extra";
-import path from "path";
 
 export function read(file1: string): Promise<Stream> {
   return new Promise(function (resolve, reject) {
@@ -29,12 +28,20 @@ export function write(fileName: string, dataDemo1: Stream) {
   });
 }
 
-//todo convert this function to async
 export function writeBuffer(fileName: string, buffer: Buffer) {
   var stream = fse.createWriteStream(fileName);
-  stream.write(buffer);
-  stream.close();
 
+  return new Promise(function (resolve, reject) {
+
+    stream.write(buffer, (err) => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
+      stream.close();
+
+    });
+  });
 }
 
 export function fileExists(filePath: string) {
