@@ -1,6 +1,8 @@
 import { Server } from "hapi";
 import { IoC } from "./IoC";
+import { read, write, fileExists, writeBuffer } from "../image.module/FileAsync";
 const Joi = require("joi");
+import path from "path";
 
 module.exports = {
   init: function (server: Server) {
@@ -44,6 +46,55 @@ module.exports = {
         }
       }
     });
+
+    server.route({
+      method: "GET",
+      path: "/images/{id}/thumbnail",
+      handler: async function (request, h) {
+        console.log("GET /images/{id}/thumbnail");
+        try {
+          var imageId = request.params.id;
+          //either size(s) or width + height (w, h)
+          const { s, wi, he } = request.query as any;
+
+          if (s) {
+            var { fileInfo } = await IoC.fileService.getInfoById(imageId);
+            console.log(fileInfo);
+
+            const fileExtension = path.parse(fileInfo.fileName).ext;
+            const fileThumbnailPath = path.join(fileInfo.category, fileInfo.externalId + `_${s}_${s}` + fileExtension)
+
+            if (!fileExists(fileThumbnailPath))
+            {
+              var fileThumbnail = await IoC.imageService.saveThumbnail(fileInfo.path, s, s);
+              await writeBuffer(fileThumbnailPath, fileThumbnail);
+
+            }
+
+            return h.file(fileThumbnailPath);
+          }
+
+        } catch (error) {
+          console.log(error);
+          return error;
+        }
+      },
+      options: {
+        // auth: "simple",
+        tags: ["api"],
+        validate: {
+          params: {
+            id: Joi.required().description("the external id")
+          },
+          query: {
+            s: Joi.number().description("size"),
+          }
+        },
+        response: {
+        }
+      }
+    });
+
 
     server.route({
       method: "GET",

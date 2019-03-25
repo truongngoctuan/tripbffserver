@@ -62,7 +62,9 @@ export class FileStorageOfflineService implements IFileStorageService {
   getFileInfo(fileObject: IFileModel): IFileInfo {
     const fileExtension = path.parse(fileObject.fileName).ext;
     return {
-      ...fileObject,
+      externalId: fileObject.externalId,
+      fileName: fileObject.fileName,
+      category: fileObject.category,
       mimeType: mimeMapping(fileExtension),
       path: path.join(fileObject.category.toString(), fileObject.externalId + fileExtension),
     }
