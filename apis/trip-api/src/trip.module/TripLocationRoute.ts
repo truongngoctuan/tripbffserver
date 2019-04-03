@@ -18,6 +18,7 @@ module.exports = {
   init: function(server: Server) {
     const locationsSchema = Joi.array().items(
       Joi.object({
+        name: Joi.string(),
         fromTime: Joi.string(),
         toTime: Joi.string(),
         location: Joi.object({
@@ -34,11 +35,13 @@ module.exports = {
     );
 
     const locationSchema = Joi.object({
+      name: Joi.string(),
       fromTime: Joi.string(),
       toTime: Joi.string(),
       location: Joi.object({
         long: Joi.number(),
         lat: Joi.number(),
+        
         address: Joi.string()
       }),
       images: Joi.array().items(

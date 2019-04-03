@@ -15,6 +15,7 @@ export class TripRepository implements ITripRepository {
       locations: _.map(o.locations, loc => {
         return {
           locationId: loc.locationId,
+          name: loc.name,
           location: loc.location,
           fromTime: moment(loc.fromTime),
           toTime: moment(loc.toTime),
@@ -86,6 +87,7 @@ export class TripRepository implements ITripRepository {
     trip.toDate = payload.toDate.toDate();
     trip.locations = _.map(payload.locations, loc => ({
       locationId: loc.locationId,
+      name: loc.name,
       location: loc.location,
       fromTime: moment(loc.fromTime).toDate(),
       toTime: moment(loc.toTime).toDate(),
