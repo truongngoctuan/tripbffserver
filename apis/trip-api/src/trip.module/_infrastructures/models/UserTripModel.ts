@@ -14,6 +14,7 @@ const TripSchema = new Schema({
   locations: [
     {
       locationId: String,
+      name: String,
       location: {
         long: Number,
         lat: Number,

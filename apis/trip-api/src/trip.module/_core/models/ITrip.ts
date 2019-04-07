@@ -11,6 +11,7 @@ export interface ITrip {
 
 export interface ITripLocation {
   locationId: string;
+  name: string,
   location: {
     long: number;
     lat: number;
