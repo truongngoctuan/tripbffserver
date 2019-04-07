@@ -1,4 +1,4 @@
-import { UserTripDocument, IUserTripDocument, UserTripSchema } from "../models/UserTripModel";
+import { UserTripDocument } from "../models/UserTripModel";
 import { ITripRepository } from "../../_core/models/ITripRepository";
 import { ITrip, InfographicStatus } from "../../_core/models/ITrip";
 import moment from "moment";
@@ -22,7 +22,9 @@ export class TripRepository implements ITripRepository {
             return {
               imageId: img.imageId,
               url: img.url,
-              externalStorageId: img.externalStorageId
+              externalStorageId: img.externalStorageId,
+              externalUrl: "",
+              thumbnailExternalUrl: ""
             };
           }),
           feeling: loc.feeling,
@@ -33,6 +35,7 @@ export class TripRepository implements ITripRepository {
         return {
           infographicId: infographic.infographicId,
           externalStorageId: infographic.externalStorageId,
+          externalUrl: "",
           status: infographic.status as InfographicStatus
         };
       })
