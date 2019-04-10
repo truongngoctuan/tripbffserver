@@ -63,7 +63,7 @@ module.exports = {
 
             await IoC.imageService.saveThumbnail(fileInfo.path, s, s);
 
-            return h.file(fileThumbnailPath);
+            return (h as any).file(fileThumbnailPath);
           }
 
           if (wi && he) {
@@ -73,7 +73,7 @@ module.exports = {
 
             await IoC.imageService.saveThumbnail(fileInfo.path, wi, he);
 
-            return h.file(fileThumbnailPath);
+            return (h as any).file(fileThumbnailPath);
           }
 
           throw "need s or w&h";
@@ -108,7 +108,7 @@ module.exports = {
         try {
           var imageId = request.params.id;
           var { fileInfo } = await IoC.fileService.getInfoById(imageId);
-          return h.file(fileInfo.path);
+          return (h as any).file(fileInfo.path);
 
         } catch (error) {
           console.log(error);
