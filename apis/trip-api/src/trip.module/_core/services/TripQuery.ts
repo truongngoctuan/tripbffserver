@@ -16,21 +16,24 @@ export class TripQueryHandler {
   async list(ownerId: string): Promise<ITrip[]> {
     return this.TripRepository.list(ownerId)
       .then(trips => {
-        trips.forEach(trip => this.updateTripImageExternalUrl(trip));
-        return trips
+        return trips.map(trip => this.updateTripImageExternalUrl(trip));
       });
   }
 
   private updateTripImageExternalUrl(trip: ITrip) {
     if (!trip) return trip;
-    trip.locations.forEach(location => {
-      location.images.forEach(image => {
+    trip.locations = trip.locations.map(location => {
+      location.images = location.images.map(image => {
         if (image.externalStorageId) {
           image.externalUrl = resolveImageUrlFromExternalStorageId(image.externalStorageId);
           image.thumbnailExternalUrl = resolveThumbnailImageUrlFromExternalStorageId(image.externalStorageId);
         }
+        return image;
       });
+
+      return location;
     });
+    console.log("trip location", trip.locations[0]);
     return trip;
   }
 };

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get event 1`] = `
+Object {
+  "fromDate": "2018-12-31T17:00:00.000Z",
+  "infographics": Array [],
+  "locations": Array [],
+  "name": "name",
+  "toDate": "2019-01-09T17:00:00.000Z",
+  "tripId": "tripId",
+}
+`;
