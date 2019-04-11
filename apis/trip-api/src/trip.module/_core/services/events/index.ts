@@ -13,6 +13,7 @@ export type TripEvent =
   | TripLocationImageUploadedEvent
   | TripLocationUpdatedFeelingEvent
   | TripLocationUpdatedActivityEvent
+  | TripLocationUpdatedAddressEvent
   | InfographicCreatedEvent
   | InfographicExportedEvent;
 
@@ -64,6 +65,18 @@ export type TripLocationUpdatedActivityEvent = {
   activityId: number,
   activityLabel: string,
   activityIcon: string
+}
+
+
+export type TripLocationUpdatedAddressEvent = {
+  type: "LocationAddressUpdated";
+  ownerId: string;
+  tripId: string;
+  locationId: string;
+  name: string,
+  address: string,
+  long: number,
+  lat: number
 }
 
 export type InfographicCreatedEvent = {

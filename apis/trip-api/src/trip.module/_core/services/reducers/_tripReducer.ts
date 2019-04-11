@@ -15,6 +15,7 @@ import { updateTripDateRange } from "./updateTripDateRange";
 import { updateTripName } from "./updateTripName";
 import { updateLocationFeeling } from "./updateLocationFeeling";
 import { updateLocationActivity } from "./updateLocationActivity";
+import { updateLocationAddress } from "./updateLocationAddress";
 
 
 // var staticEventHandlers = new Map<string, Function>();
@@ -69,6 +70,8 @@ export class TripReducers {
         return updateLocationFeeling(state, event)
       case "LocationActivityUpdated":
         return updateLocationActivity(state, event)
+      case "LocationAddressUpdated":
+        return updateLocationAddress(state, event);
       case "LocationImageUploaded":
         return this.updateTripLocationImage(state, event);
       case "InfographicCreated":
