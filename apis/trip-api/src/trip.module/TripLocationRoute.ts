@@ -461,5 +461,45 @@ module.exports = {
         }
       }
     });
+
+    server.route({
+      method: "PATCH",
+      path: "/trips/{tripId}/locations/{locationId}/address",
+      handler: async function(request) {
+        try {
+          var tripId: string = request.params.tripId;
+          var locationId: string = request.params.locationId;
+          var { name, address, long, lat } = request.payload as any;
+
+          const ownerId = CUtils.getUserId(request);
+
+          var commandResult = await tripCommandHandler.exec({
+            type: "UpdateLocationAddress",
+            ownerId,
+            tripId,
+            locationId,
+            name,
+            address,
+            long,
+            lat
+          });
+
+          if (commandResult.isSucceed) 
+            return "Success!";
+
+          console.log("err: " + commandResult.errors);
+          return commandResult.errors;
+        }
+        catch (error) {
+          console.log("ERROR: UPDATE /trips/{tripId}/locations/{locationId}/address");
+          console.log(error);
+          throw error;
+        }
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+      }
+    });
   }
 };
