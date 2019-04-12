@@ -20,10 +20,10 @@ beforeAll(async () => {
   // console.log("mongo config: ", global.__MONGO_DB_NAME__);
 
   mongoosed = await mongoose.connect((global as any).__MONGO_URI__)
-  .catch(err => {
-    console.log("error on connect to mongo db");
-    console.log(err);
-  });
+    .catch(err => {
+      console.log("error on connect to mongo db");
+      console.log(err);
+    });
   // console.log("n connections", mongoosed.connections.length);
   // console.log("connection", mongoosed.connection);
 
@@ -53,7 +53,7 @@ beforeEach(async () => {
         }),
       );
     }
-    
+
   }
 
   await clearDB();
@@ -77,10 +77,10 @@ it('create trip', async () => {
   await serviceBus.emit(event);
 
   expect(await tripRepository.get("ownerId", "tripId"))
-  .toMatchSnapshot();
+    .toMatchSnapshot();
 });
 
-it('update trip', async () => {
+it('update trip name', async () => {
   var tripRepository = new TripRepository(schemas);
   // console.log("schemas", connection);
   var serviceBus = new ServiceBus(tripRepository);
@@ -96,7 +96,108 @@ it('update trip', async () => {
 
   await serviceBus.emit(createEvent);
 
+  var updateEvent: TripEvent = {
+    type: "TripNameUpdated",
+    ownerId: "ownerId",
+    tripId: "tripId",
+    name: "name 2",
+  };
+  await serviceBus.emit(updateEvent);
 
   expect(await tripRepository.get("ownerId", "tripId"))
-  .toMatchSnapshot();
+    .toMatchSnapshot();
+});
+
+
+test('import trip location', async () => {
+  var tripRepository = new TripRepository(schemas);
+  // console.log("schemas", connection);
+  var serviceBus = new ServiceBus(tripRepository);
+
+  var createEvent: TripEvent = {
+    type: "TripCreated",
+    ownerId: "ownerId",
+    tripId: "tripId",
+    name: "name",
+    fromDate: moment('2019-01-01'),
+    toDate: moment('2019-01-10')
+  };
+
+  await serviceBus.emit(createEvent);
+
+  var importEvent: TripEvent = {
+    type: "TripImportLocations",
+    ownerId: "ownerId",
+    tripId: "tripId",
+    locations: [{
+      locationId: "locationId01",
+      name: "name",
+      location: {
+        long: 1,
+        lat: 1,
+        address: "address",
+      },
+      fromTime: moment('2019-01-01'),
+      toTime: moment('2019-01-10'),
+      images: [],
+    }]
+  };
+  await serviceBus.emit(importEvent);
+
+  expect(await tripRepository.get("ownerId", "tripId"))
+    .toMatchSnapshot();
+});
+
+test('upload location image', async () => {
+  var tripRepository = new TripRepository(schemas);
+  // console.log("schemas", connection);
+  var serviceBus = new ServiceBus(tripRepository);
+
+  var createEvent: TripEvent = {
+    type: "TripCreated",
+    ownerId: "ownerId",
+    tripId: "tripId",
+    name: "name",
+    fromDate: moment('2019-01-01'),
+    toDate: moment('2019-01-10')
+  };
+
+  await serviceBus.emit(createEvent);
+
+  var importEvent: TripEvent = {
+    type: "TripImportLocations",
+    ownerId: "ownerId",
+    tripId: "tripId",
+    locations: [{
+      locationId: "locationId01",
+      name: "name",
+      location: {
+        long: 1,
+        lat: 1,
+        address: "address",
+      },
+      fromTime: moment('2019-01-01'),
+      toTime: moment('2019-01-10'),
+      images: [{
+        imageId: "imageId01",
+        url: "url",
+        externalUrl: "", //todo why do I require this data ?
+        thumbnailExternalUrl: "" //todo why do I require this data ?
+      }],
+    }]
+  };
+  await serviceBus.emit(importEvent);
+
+  var uploadImageEvent: TripEvent = {
+    type: "LocationImageUploaded",
+    ownerId: "ownerId",
+    tripId: "tripId",
+    locationId: "locationId01",
+    imageId: "imageId01",
+    externalStorageId: "guid01",
+  };
+  await serviceBus.emit(uploadImageEvent);
+
+  expect(await tripRepository.get("ownerId", "tripId"))
+    .toMatchSnapshot();
 });
