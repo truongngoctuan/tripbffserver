@@ -1,11 +1,15 @@
-import { UserTripDocument } from "../models/UserTripModel";
 import { ITripRepository } from "../../_core/models/ITripRepository";
 import { ITrip, InfographicStatus } from "../../_core/models/ITrip";
 import moment from "moment";
 import _ from "lodash";
 import { ITripModel } from "../models/IUserTripModel";
+import { IMongooseSchemas } from "../models/mongoosed";
 
 export class TripRepository implements ITripRepository {
+  constructor(private _mg: IMongooseSchemas) {
+
+  }
+
   toTripDto(o: ITripModel): ITrip {
     return {
       tripId: o.tripId,
@@ -44,7 +48,7 @@ export class TripRepository implements ITripRepository {
   }
 
   async getUserTrips(userId: string) {
-    return await UserTripDocument.findOne({ userId }).exec();
+    return await this._mg.UserTripDocument.findOne({ userId }).exec();
   }
 
   public async list(ownerId: string) {
@@ -65,7 +69,7 @@ export class TripRepository implements ITripRepository {
     }
     var userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) {
-      userTrips = new UserTripDocument({
+      userTrips = new this._mg.UserTripDocument({
         userId: ownerId
       });
     }

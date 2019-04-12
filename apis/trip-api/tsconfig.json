@@ -20,6 +20,6 @@
       "outDir": "./dist"
     },
     "include": [
-      "src"
+      "src", "__tests__/mongo-environment.js", "__tests__"
     ]
   }

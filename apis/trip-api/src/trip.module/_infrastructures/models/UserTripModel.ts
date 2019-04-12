@@ -55,8 +55,10 @@ export const UserTripSchema = new Schema({
   trips: [TripSchema]
 });
 
-export const UserTripDocument: Model<IUserTripDocument> = mongoose.model<IUserTripDocument>(
-  "UserTrip",
-  UserTripSchema
-);
-export default UserTripDocument;
+// export const UserTripDocument: Model<IUserTripDocument> = mongoose.model<IUserTripDocument>(
+//   "UserTrip",
+//   UserTripSchema
+// );
+// console.log("should have new schemas UserTripDocument from here");
+// // console.log(mongoose.connection);
+// export default UserTripDocument;
