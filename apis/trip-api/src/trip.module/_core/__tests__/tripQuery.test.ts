@@ -4,6 +4,7 @@ import { ServiceBus } from "../services/TripServiceBus";
 import { TripRepository } from "../../_infrastructures/repositories/TripRepository";
 import moment from "moment";
 import { initSchemas } from "../../_infrastructures/models/mongoosed";
+import { TripEvent } from "../services/events";
 
 //test mongodb connection
 mongoose.connection.once("open", () => {
@@ -18,7 +19,7 @@ beforeAll(async () => {
   // console.log("mongo config: ", global.__MONGO_URI__);
   // console.log("mongo config: ", global.__MONGO_DB_NAME__);
 
-  mongoosed = await mongoose.connect(global.__MONGO_URI__)
+  mongoosed = await mongoose.connect((global as any).__MONGO_URI__)
   .catch(err => {
     console.log("error on connect to mongo db");
     console.log(err);
@@ -28,7 +29,7 @@ beforeAll(async () => {
 
   connection = mongoosed.connection;
   // console.log("connection db", mongoose.connection.db);
-  console.log(mongoose.Schema);
+  // console.log(mongoose.Schema);
   db = connection.db;
 
   //setup db schemas
@@ -58,12 +59,13 @@ beforeEach(async () => {
   await clearDB();
 
 });
+
 it('create trip', async () => {
   var tripRepository = new TripRepository(schemas);
   // console.log("schemas", connection);
   var serviceBus = new ServiceBus(tripRepository);
 
-  var event = {
+  var event: TripEvent = {
     type: "TripCreated",
     ownerId: "ownerId",
     tripId: "tripId",
@@ -72,8 +74,29 @@ it('create trip', async () => {
     toDate: moment('2019-01-10')
   };
 
-  serviceBus.emit(event);
+  await serviceBus.emit(event);
 
-  expect(tripRepository.get("ownerId", "tripId"))
+  expect(await tripRepository.get("ownerId", "tripId"))
+  .toMatchSnapshot();
+});
+
+it('update trip', async () => {
+  var tripRepository = new TripRepository(schemas);
+  // console.log("schemas", connection);
+  var serviceBus = new ServiceBus(tripRepository);
+
+  var createEvent: TripEvent = {
+    type: "TripCreated",
+    ownerId: "ownerId",
+    tripId: "tripId",
+    name: "name",
+    fromDate: moment('2019-01-01'),
+    toDate: moment('2019-01-10')
+  };
+
+  await serviceBus.emit(createEvent);
+
+
+  expect(await tripRepository.get("ownerId", "tripId"))
   .toMatchSnapshot();
 });

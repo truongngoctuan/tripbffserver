@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create trip 1`] = `
+Object {
+  "fromDate": "2018-12-31T17:00:00.000Z",
+  "infographics": Array [],
+  "locations": Array [],
+  "name": "name",
+  "toDate": "2019-01-09T17:00:00.000Z",
+  "tripId": "tripId",
+}
+`;
+
+exports[`update trip 1`] = `
+Object {
+  "fromDate": "2018-12-31T17:00:00.000Z",
+  "infographics": Array [],
+  "locations": Array [],
+  "name": "name",
+  "toDate": "2019-01-09T17:00:00.000Z",
+  "tripId": "tripId",
+}
+`;
