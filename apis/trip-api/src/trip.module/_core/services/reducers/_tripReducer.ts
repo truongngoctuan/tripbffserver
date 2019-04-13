@@ -26,6 +26,10 @@ import { updateLocationAddress } from "./updateLocationAddress";
 
 export class TripReducers {
   constructor(private TripEventRepository?: ITripEventRepository) {}
+  
+  helloWorld() {
+    return "hello world";
+  }
 
   async getCurrentState(id: string): Promise<ITrip> {
     if (!this.TripEventRepository)

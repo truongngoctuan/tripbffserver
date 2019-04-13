@@ -2,3 +2,5 @@
 /uploads
 /upload
 /dist
+/coverage
+/tests/globalConfig.json
