@@ -25,8 +25,8 @@ const TripSchema = new Schema({
       images: [
         {
           imageId: String,
-          url: String
-          //todo missing externalId ?
+          url: String,
+          externalStorageId: String,
         }
       ],
       feeling: {

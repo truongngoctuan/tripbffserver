@@ -46,6 +46,15 @@ module.exports = {
       }
     });
 
+    async function returnFileFromWH(imageId, wi, he, h) {
+      var { fileInfo } = await IoC.fileService.getInfoById(imageId);
+      const fileExtension = path.parse(fileInfo.fileName).ext;
+      const fileThumbnailPath = path.join(fileInfo.category, `${fileInfo.externalId}_${wi}_${he}${fileExtension}`)
+
+      await IoC.imageService.saveThumbnail(fileInfo.path, wi, he);
+
+      return (h as any).file(fileThumbnailPath);
+    }
     server.route({
       method: "GET",
       path: "/images/{id}/thumbnail",
@@ -57,26 +66,14 @@ module.exports = {
           const { s, wi, he } = request.query as any;
 
           if (s) {
-            var { fileInfo } = await IoC.fileService.getInfoById(imageId);
-            const fileExtension = path.parse(fileInfo.fileName).ext;
-            const fileThumbnailPath = path.join(fileInfo.category, `${fileInfo.externalId}_${s}_${s}${fileExtension}`)
-
-            await IoC.imageService.saveThumbnail(fileInfo.path, s, s);
-
-            return (h as any).file(fileThumbnailPath);
+            return returnFileFromWH(imageId, s, s, h);
           }
 
           if (wi && he) {
-            var { fileInfo } = await IoC.fileService.getInfoById(imageId);
-            const fileExtension = path.parse(fileInfo.fileName).ext;
-            const fileThumbnailPath = path.join(fileInfo.category, `${fileInfo.externalId}_${wi}_${he}${fileExtension}`)
-
-            await IoC.imageService.saveThumbnail(fileInfo.path, wi, he);
-
-            return (h as any).file(fileThumbnailPath);
+            return returnFileFromWH(imageId, wi, he, h);
           }
 
-          throw "need s or w&h";
+          return returnFileFromWH(imageId, 200, 200, h);
 
         } catch (error) {
           console.log(error);
@@ -84,6 +81,7 @@ module.exports = {
         }
       },
       options: {
+        //todo: need another way to handle authentication
         // auth: "simple",
         tags: ["api"],
         validate: {

@@ -1,8 +1,8 @@
 export function resolveImageUrlFromExternalStorageId(externalStorageId: string) {
-  return `${process.env.SERVER_HOST}/images/${externalStorageId}`;
+  return `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/images/${externalStorageId}`;
 }
 
 //todo improve with multiple thumbnail size url
 export function resolveThumbnailImageUrlFromExternalStorageId(externalStorageId: string) {
-  return `${process.env.SERVER_HOST}/images/${externalStorageId}/thumbnail`;
+  return `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/images/${externalStorageId}/thumbnail`;
 }

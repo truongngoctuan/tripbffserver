@@ -33,7 +33,6 @@ export class TripQueryHandler {
 
       return location;
     });
-    console.log("trip location", trip.locations[0]);
     return trip;
   }
 };

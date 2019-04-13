@@ -12,16 +12,18 @@ import { TripEventQueryHandler } from "./_core/services/TripEventQuery";
 import { DataSourceQueryHandler } from "./_core/services/DataSourceQueryHandler";
 import FeelingRepository from "./_infrastructures/repositories/FeelingRepository";
 import ActivityRepository from "./_infrastructures/repositories/ActivityRepository";
-
+import mongoose from "mongoose";
+import {initSchemas} from "./_infrastructures/models/mongoosed";
+const mg = initSchemas(mongoose);
 const tripEventRepository = new TripEventRepository();
-const tripRepository = new TripRepository();
+const tripRepository = new TripRepository(mg);
 const jobDispatcher = new JobDispatcher();
 const tripCommandHandler = new TripCommandHandler(
   tripEventRepository,
   new ServiceBus(tripRepository),
   jobDispatcher,
 );
-const tripQueryHandler = new TripQueryHandler(new TripRepository());
+const tripQueryHandler = new TripQueryHandler(tripRepository);
 const tripEventQueryHandler = new TripEventQueryHandler(new TripEventRepository());
 const fileService: IFileStorageService = new FileStorageOfflineService();
 const imageService: IImageService = new ImageService();

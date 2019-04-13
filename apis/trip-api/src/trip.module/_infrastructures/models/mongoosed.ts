@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { Model, Mongoose } from "mongoose";
 import { IUserTripDocument, UserTripSchema } from "./UserTripModel";
 
 
@@ -8,7 +8,7 @@ export interface IMongooseSchemas {
 }
 
 export function initSchemas(mongoose: any) {
-  const UserTripDocument: Model<IUserTripDocument> = mongoose.model<IUserTripDocument>(
+  const UserTripDocument: Model<IUserTripDocument> = (mongoose as Mongoose).model<IUserTripDocument>(
     "UserTrip",
     UserTripSchema
   );

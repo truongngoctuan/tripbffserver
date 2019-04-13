@@ -50,34 +50,10 @@ Object {
 
 exports[`upload location image 1`] = `
 Object {
-  "fromDate": "2018-12-31T17:00:00.000Z",
-  "infographics": Array [],
-  "locations": Array [
-    Object {
-      "activity": Object {},
-      "feeling": Object {},
-      "fromTime": "2018-12-31T17:00:00.000Z",
-      "images": CoreMongooseArray [
-        Object {
-          "externalStorageId": undefined,
-          "externalUrl": "",
-          "imageId": "imageId01",
-          "thumbnailExternalUrl": "",
-          "url": "url",
-        },
-      ],
-      "location": Object {
-        "address": "address",
-        "lat": 1,
-        "long": 1,
-      },
-      "locationId": "locationId01",
-      "name": "name",
-      "toTime": "2019-01-09T17:00:00.000Z",
-    },
-  ],
-  "name": "name",
-  "toDate": "2019-01-09T17:00:00.000Z",
-  "tripId": "tripId",
+  "externalStorageId": "guid01",
+  "externalUrl": "",
+  "imageId": "imageId01",
+  "thumbnailExternalUrl": "",
+  "url": "url",
 }
 `;

@@ -3,8 +3,9 @@ import mongoose from "mongoose";
 import { ServiceBus } from "../services/TripServiceBus";
 import { TripRepository } from "../../_infrastructures/repositories/TripRepository";
 import moment from "moment";
-import { initSchemas } from "../../_infrastructures/models/mongoosed";
+import { initSchemas, IMongooseSchemas } from "../../_infrastructures/models/mongoosed";
 import { TripEvent } from "../services/events";
+import { ITrip } from "../models/ITrip";
 
 //test mongodb connection
 mongoose.connection.once("open", () => {
@@ -13,7 +14,7 @@ mongoose.connection.once("open", () => {
 let mongoosed;
 let connection;
 let db;
-let schemas;
+let schemas: IMongooseSchemas;
 
 beforeAll(async () => {
   // console.log("mongo config: ", global.__MONGO_URI__);
@@ -197,7 +198,8 @@ test('upload location image', async () => {
     externalStorageId: "guid01",
   };
   await serviceBus.emit(uploadImageEvent);
-
-  expect(await tripRepository.get("ownerId", "tripId"))
-    .toMatchSnapshot();
+  var trip = await tripRepository.get("ownerId", "tripId");
+  expect(trip).toBeDefined();
+  var img = (trip as ITrip).locations[0].images[0];
+  expect(img).toMatchSnapshot();
 });
