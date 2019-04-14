@@ -12,6 +12,7 @@ import { TripEventQueryHandler } from "./_core/services/TripEventQuery";
 import { DataSourceQueryHandler } from "./_core/services/DataSourceQueryHandler";
 import FeelingRepository from "./_infrastructures/repositories/FeelingRepository";
 import ActivityRepository from "./_infrastructures/repositories/ActivityRepository";
+import { HighlightRepository } from "./_infrastructures/repositories/HighlightRepository";
 
 const tripEventRepository = new TripEventRepository();
 const tripRepository = new TripRepository();
@@ -26,7 +27,10 @@ const tripEventQueryHandler = new TripEventQueryHandler(new TripEventRepository(
 const fileService: IFileStorageService = new FileStorageOfflineService();
 const imageService: IImageService = new ImageService();
 
-const dataSourceQueryHandler = new DataSourceQueryHandler(new FeelingRepository(), new ActivityRepository());
+const dataSourceQueryHandler = new DataSourceQueryHandler(
+  new FeelingRepository(),
+  new ActivityRepository(),
+  new HighlightRepository());
 
 export const IoC = {
   tripCommandHandler,
