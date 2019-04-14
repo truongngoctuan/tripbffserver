@@ -52,3 +52,9 @@ export interface IActivity {
   label: string,
   icon: string
 }
+
+export interface IHighlight {
+  highlightId: number,
+  label: string,
+  type: string
+}
