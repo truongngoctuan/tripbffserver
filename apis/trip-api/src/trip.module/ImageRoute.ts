@@ -1,4 +1,4 @@
-import { Server } from "hapi";
+import { Server, ResponseToolkit } from "hapi";
 import { IoC } from "./IoC";
 const Joi = require("joi");
 import path from "path";
@@ -46,7 +46,7 @@ module.exports = {
       }
     });
 
-    async function returnFileFromWH(imageId, wi, he, h) {
+    async function returnFileFromWH(imageId: string, wi: number, he: number, h: ResponseToolkit) {
       var { fileInfo } = await IoC.fileService.getInfoById(imageId);
       const fileExtension = path.parse(fileInfo.fileName).ext;
       const fileThumbnailPath = path.join(fileInfo.category, `${fileInfo.externalId}_${wi}_${he}${fileExtension}`)

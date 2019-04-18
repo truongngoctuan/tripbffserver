@@ -35,6 +35,15 @@ Object {
 }
 `;
 
+exports[`remove location images 1`] = `Array []`;
+
+exports[`remove location multi mages 1`] = `
+Array [
+  "imageId02",
+  "imageId04",
+]
+`;
+
 exports[`update trip name 1`] = `
 Object {
   "fromDate": "2018-12-31T17:00:00.000Z",
