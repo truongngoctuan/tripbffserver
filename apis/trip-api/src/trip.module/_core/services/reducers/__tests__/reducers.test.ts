@@ -269,3 +269,104 @@ test('remove location multi mages', async () => {
       expect(data.locations[0].images.map(img => img.imageId)).toMatchSnapshot();
     });
 });
+
+test('favorite location image', async () => {
+  var tripEventRepository = new MockTripEventRepository([
+    {
+      type: "TripCreated",
+      ownerId: "ownerId",
+      tripId: "tripId",
+      name: "name",
+      fromDate: moment('2019-01-01'),
+      toDate: moment('2019-01-10')
+    },
+    {
+      type: "TripImportLocations",
+      ownerId: "ownerId",
+      tripId: "tripId",
+      locations: [{
+        locationId: "locationId01",
+        name: "name",
+        location: {
+          long: 1,
+          lat: 1,
+          address: "address",
+        },
+        fromTime: moment('2019-01-01'),
+        toTime: moment('2019-01-10'),
+        images: [{
+          imageId: "imageId01",
+          url: "url",
+          externalUrl: "",
+          thumbnailExternalUrl: "",
+          isFavorite: false,
+        }],
+      }] as ITripLocation[]
+    },
+    {
+      type: "LocationImagesFavored",
+      ownerId: "ownerId",
+      tripId: "tripId",
+      locationId: "locationId01",
+      imageId: "imageId01",
+      isFavorite: true
+    }
+  ]);
+
+  var tripReducer = new TripReducers(tripEventRepository);
+  return tripReducer.getCurrentState("tripId")
+    .then(data => {
+      expect(data.locations[0].images[0].isFavorite).toBe(true);
+    });
+});
+
+
+test('un-favorite location image', async () => {
+  var tripEventRepository = new MockTripEventRepository([
+    {
+      type: "TripCreated",
+      ownerId: "ownerId",
+      tripId: "tripId",
+      name: "name",
+      fromDate: moment('2019-01-01'),
+      toDate: moment('2019-01-10')
+    },
+    {
+      type: "TripImportLocations",
+      ownerId: "ownerId",
+      tripId: "tripId",
+      locations: [{
+        locationId: "locationId01",
+        name: "name",
+        location: {
+          long: 1,
+          lat: 1,
+          address: "address",
+        },
+        fromTime: moment('2019-01-01'),
+        toTime: moment('2019-01-10'),
+        images: [{
+          imageId: "imageId01",
+          url: "url",
+          externalUrl: "",
+          thumbnailExternalUrl: "",
+          isFavorite: true,
+        }],
+      }] as ITripLocation[]
+    },
+    {
+      type: "LocationImagesFavored",
+      ownerId: "ownerId",
+      tripId: "tripId",
+      locationId: "locationId01",
+      imageId: "imageId01",
+      isFavorite: false
+    }
+  ]);
+
+  var tripReducer = new TripReducers(tripEventRepository);
+  return tripReducer.getCurrentState("tripId")
+    .then(data => {
+      expect(data.locations[0].images[0].isFavorite).toBe(false);
+    });
+});

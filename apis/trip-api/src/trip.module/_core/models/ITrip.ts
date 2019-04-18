@@ -30,6 +30,7 @@ export interface ITripLocationImage {
   externalUrl: string;
   thumbnailExternalUrl: string;
   externalStorageId?: string; //this id will exist after image binary is uploaded to server
+  isFavorite: boolean;
 }
 
 export interface IInfographic {
