@@ -70,7 +70,7 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            var queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
+            var queryResult = await tripQueryHandler.GetById(ownerId, tripId);
             if (!queryResult) return Err("can't get data after import trip");
 
             // console.log(queryResult);
@@ -418,6 +418,47 @@ module.exports = {
         }
         catch (error) {
           console.log("ERROR: UPDATE /trips/{tripId}/locations/{locationId}/address");
+          console.log(error);
+          throw error;
+        }
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+      }
+    });
+
+
+    server.route({
+      method: "DELETE",
+      path: "/trips/{tripId}/locations/{locationId}/images",
+      handler: async function(request) {
+        try {
+          var tripId: string = request.params.tripId;
+          var locationId: string = request.params.locationId;
+          var { imageIds } = request.payload as any;
+
+          const ownerId = CUtils.getUserId(request);
+
+          var commandResult = await tripCommandHandler.exec({
+            type: "removeLocationImages",
+            ownerId,
+            tripId,
+            locationId,
+            imageIds,
+          });
+
+          if (commandResult.isSucceed) {
+            var queryResult = await tripQueryHandler.GetById(ownerId, tripId);
+            if (!queryResult) return Err("can't get data after import trip");
+            return queryResult;
+          }
+
+          console.log("err: " + commandResult.errors);
+          return commandResult.errors;
+        }
+        catch (error) {
+          console.log("ERROR: DELETE /trips/{tripId}/locations/{locationId}/images");
           console.log(error);
           throw error;
         }

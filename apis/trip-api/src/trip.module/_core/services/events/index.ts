@@ -11,6 +11,7 @@ export type TripEvent =
   | TripLocationRemovedEvent
   | TripLocationAddedEvent
   | TripLocationImageUploadedEvent
+  | TripLocationImagesRemovedEvent
   | TripLocationUpdatedFeelingEvent
   | TripLocationUpdatedActivityEvent
   | TripLocationUpdatedAddressEvent
@@ -45,6 +46,14 @@ export type TripLocationImageUploadedEvent = {
   locationId: string;
   imageId: string;
   externalStorageId: string;
+};
+
+export type TripLocationImagesRemovedEvent = {
+  type: "LocationImagesRemoved";
+  ownerId: string;
+  tripId: string;
+  locationId: string;
+  imageIds: string[];
 };
 
 export type TripLocationUpdatedFeelingEvent = {

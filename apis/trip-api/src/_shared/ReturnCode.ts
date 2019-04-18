@@ -1,1 +1,3 @@
-type ReturnCode = "LocationNotFound";
+type ReturnCode = 
+"LocationNotFound"
+| "LocationImageNotFound";
