@@ -137,7 +137,7 @@ test('import trip location', async () => {
       location: {
         long: 1,
         lat: 1,
-        address: "address",
+        address: "address", //todo: need address here ?
       },
       fromTime: moment('2019-01-01'),
       toTime: moment('2019-01-10'),
@@ -183,9 +183,6 @@ test('upload location image', async () => {
       images: [{
         imageId: "imageId01",
         url: "url",
-        externalUrl: "", //todo why do I require this data ?
-        thumbnailExternalUrl: "", //todo why do I require this data ?
-        isFavorite: false, //todo: shouldn't force to input this...
       }],
     }]
   };

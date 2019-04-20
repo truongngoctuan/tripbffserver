@@ -37,7 +37,6 @@ export interface IInfographic {
   infographicId: string;
   status: InfographicStatus;
   externalStorageId?: string; //this id will exist after image binary is uploaded to server
-  externalUrl: string;
 }
 
 export type InfographicStatus = "CREATED" | "EXPORTED" | "FAILED";
