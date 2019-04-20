@@ -67,6 +67,7 @@ Object {
           "externalStorageId": "guid01",
           "externalUrl": "",
           "imageId": "imageId01",
+          "isFavorite": false,
           "thumbnailExternalUrl": "",
           "url": "url",
         },

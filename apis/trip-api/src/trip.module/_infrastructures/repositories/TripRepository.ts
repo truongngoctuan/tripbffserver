@@ -29,7 +29,8 @@ export class TripRepository implements ITripRepository {
               url: img.url,
               externalStorageId: img.externalStorageId,
               externalUrl: "",
-              thumbnailExternalUrl: ""
+              thumbnailExternalUrl: "",
+              isFavorite: img.isFavorite,
             };
           }),
           feeling: loc.feeling,

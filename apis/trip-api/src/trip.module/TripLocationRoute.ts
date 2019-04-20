@@ -1,13 +1,8 @@
 import { Server } from "hapi";
 import { Err } from "../_shared/utils";
-import { FileStorageOfflineService } from "../image.module/FileStorageOfflineService";
-import { IFileStorageService } from "../image.module/IFileStorageService";
 import { IoC } from "./IoC";
 import { CUtils } from "./ControllerUtils";
 import uuid4 from 'uuid/v4';
-import { FeelingRepository } from "./_infrastructures/repositories/FeelingRepository";
-import { IFeeling, IActivity } from "./_core/models/ITrip";
-import { ActivityRepository } from "./_infrastructures/repositories/ActivityRepository";
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
@@ -428,6 +423,53 @@ module.exports = {
       }
     });
 
+    server.route({
+      method: "DELETE",
+      path: "/trips/{tripId}/locations/{locationId}/images/{imageId}",
+      handler: async function(request) {
+        try {
+          var tripId: string = request.params.tripId;
+          var locationId: string = request.params.locationId;
+          var imageId: string = request.params.imageId;
+
+          var { isFavorite } = request.payload as any;
+
+          const ownerId = CUtils.getUserId(request);
+
+          var commandResult = await tripCommandHandler.exec({
+            type: "favoriteLocationImage",
+            ownerId,
+            tripId,
+            locationId,
+            imageId,
+            isFavorite,
+          });
+
+          if (commandResult.isSucceed) {
+            var queryResult = await tripQueryHandler.GetById(ownerId, tripId);
+            if (!queryResult) return Err("can't get data after update trip location image");
+            return queryResult;
+          }
+
+          console.log("err: " + commandResult.errors);
+          return commandResult.errors;
+        }
+        catch (error) {
+          console.log("ERROR: PATCH /trips/{tripId}/locations/{locationId}/images/{imageId}");
+          console.log(error);
+          throw error;
+        }
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+        validate: {
+        payload: {
+          isFavorite: Joi.boolean().description("mark the image favorite/highlighted or not"),
+          }
+        }
+      }
+    });
 
     server.route({
       method: "DELETE",

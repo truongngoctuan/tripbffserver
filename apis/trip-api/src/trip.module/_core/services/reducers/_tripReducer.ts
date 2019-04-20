@@ -17,7 +17,7 @@ import { updateLocationFeeling } from "./updateLocationFeeling";
 import { updateLocationActivity } from "./updateLocationActivity";
 import { updateLocationAddress } from "./updateLocationAddress";
 import { removeTripLocationImages } from "./removeTripLocationImages";
-
+import { favorTripLocationImage } from "./favorTripLocationImage";
 
 // var staticEventHandlers = new Map<string, Function>();
 
@@ -81,6 +81,8 @@ export class TripReducers {
         return this.updateTripLocationImage(state, event);
       case "LocationImagesRemoved":
         return removeTripLocationImages(state, event);
+        case "LocationImagesFavored":
+        return favorTripLocationImage(state, event);
       case "InfographicCreated":
         return createInfographic(state, event);
       case "InfographicExported":
@@ -114,13 +116,29 @@ export class TripReducers {
     };
   }
 
-  updateTripLocations(
+  private defaultImageValue = {
+    externalUrl: "",
+    thumbnailExternalUrl: "",
+    isFavorite: false
+  }
+  private updateTripLocations(
     prevState: ITrip,
     command: TripImportLocationsEvent
   ): ITrip {
+
     return {
       ...prevState,
-      locations: command.locations
+      locations: command.locations.map(location => {
+        return {
+          ...location,
+          images: location.images.map(img => {
+            return {
+              ...this.defaultImageValue,
+              ...img
+            }
+        })
+        }
+      })
     };
   }
 

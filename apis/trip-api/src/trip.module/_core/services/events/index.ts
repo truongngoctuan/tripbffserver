@@ -12,6 +12,7 @@ export type TripEvent =
   | TripLocationAddedEvent
   | TripLocationImageUploadedEvent
   | TripLocationImagesRemovedEvent
+  | TripLocationImageFavoredEvent
   | TripLocationUpdatedFeelingEvent
   | TripLocationUpdatedActivityEvent
   | TripLocationUpdatedAddressEvent
@@ -22,7 +23,21 @@ export type TripImportLocationsEvent = {
   type: "TripImportLocations";
   ownerId: string;
   tripId: string;
-  locations: Array<ITripLocation>;
+  locations: {
+    locationId: string;
+    name: string,
+    location: {
+      long: number;
+      lat: number;
+      address: string;
+    };
+    fromTime: Moment;
+    toTime: Moment;
+    images: {
+      imageId: string;
+      url: string; //url stored in local mobile
+    }[];
+  }[];
 };
 
 export type TripLocationRemovedEvent = {
@@ -54,6 +69,15 @@ export type TripLocationImagesRemovedEvent = {
   tripId: string;
   locationId: string;
   imageIds: string[];
+};
+
+export type TripLocationImageFavoredEvent = {
+  type: "LocationImagesFavored";
+  ownerId: string;
+  tripId: string;
+  locationId: string;
+  imageId: string;
+  isFavorite: boolean;
 };
 
 export type TripLocationUpdatedFeelingEvent = {
