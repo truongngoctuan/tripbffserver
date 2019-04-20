@@ -13,7 +13,7 @@ export type FavoriteLocationImageCommand = {
   isFavorite: boolean;
 };
 
-export async function RemoveLocationImages(
+export async function FavoriteLocationImage(
   command: FavoriteLocationImageCommand,
   eventHandler: EventHandler,
   reducers: TripReducers,

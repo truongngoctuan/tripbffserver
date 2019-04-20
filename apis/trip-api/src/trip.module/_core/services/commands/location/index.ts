@@ -5,13 +5,16 @@ import { CommandFunc } from "../_commandHandler";
 import { UpdateLocationActivityCommand, UpdateLocationActivity } from "./updateActivity";
 import { UpdateLocationAddressCommand, UpdateLocationAddress } from "./updateLocationAddress";
 import { RemoveLocationImagesCommand, RemoveLocationImages } from "./removeLocationImages";
+import { FavoriteLocationImageCommand, FavoriteLocationImage } from "./favoriteLocationImage";
 
-export type LocationCommand = RemoveLocationCommand | 
-                              AddLocationCommand | 
-                              UpdateLocationFeelingCommand |
-                              UpdateLocationActivityCommand |
-                              UpdateLocationAddressCommand
-                              | RemoveLocationImagesCommand;
+export type LocationCommand = RemoveLocationCommand 
+                              | AddLocationCommand
+                              | UpdateLocationFeelingCommand
+                              | UpdateLocationActivityCommand
+                              | UpdateLocationAddressCommand
+                              | RemoveLocationImagesCommand
+                              | FavoriteLocationImageCommand
+                              ;
 
 export const LocationFunctions: Array<CommandFunc> = [
   RemoveLocation,
@@ -19,5 +22,6 @@ export const LocationFunctions: Array<CommandFunc> = [
   UpdateLocationFeeling,
   UpdateLocationActivity,
   UpdateLocationAddress,
-  RemoveLocationImages
+  RemoveLocationImages,
+  FavoriteLocationImage,
 ]
