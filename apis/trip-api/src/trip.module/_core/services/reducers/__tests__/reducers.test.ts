@@ -227,8 +227,6 @@ test('remove location multi mages', async () => {
         images: [{
           imageId: "imageId01",
           url: "url",
-          externalUrl: "", //todo why do I require this data ?
-          thumbnailExternalUrl: "" //todo why do I require this data ?
         },
         {
           imageId: "imageId02",
@@ -293,9 +291,6 @@ test('favorite location image', async () => {
         images: [{
           imageId: "imageId01",
           url: "url",
-          externalUrl: "",
-          thumbnailExternalUrl: "",
-          isFavorite: false,
         }],
       }] as ITripLocation[]
     },
@@ -344,11 +339,16 @@ test('un-favorite location image', async () => {
         images: [{
           imageId: "imageId01",
           url: "url",
-          externalUrl: "",
-          thumbnailExternalUrl: "",
-          isFavorite: true,
         }],
       }] as ITripLocation[]
+    },
+    {
+      type: "LocationImagesFavored",
+      ownerId: "ownerId",
+      tripId: "tripId",
+      locationId: "locationId01",
+      imageId: "imageId01",
+      isFavorite: true
     },
     {
       type: "LocationImagesFavored",

@@ -58,7 +58,6 @@ it('update trip name', async () => {
     .toMatchSnapshot();
 });
 
-
 test('import trip location', async () => {
   var importEvent: TripEvent = {
     type: "TripImportLocations",
@@ -120,7 +119,6 @@ test('upload location image', async () => {
   var img = (trip as ITrip).locations[0].images[0];
   expect(img).toMatchSnapshot();
 });
-
 
 test('favorite location image', async () => {
   var importEvent: TripEvent = {
