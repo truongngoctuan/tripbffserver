@@ -3,5 +3,6 @@ module.exports = {
   globalTeardown: '../tests/teardown.js',
   testEnvironment: '../tests/mongo-environment.js',
   rootDir: 'dist/',
-  snapshotResolver: "../customSnapshotResolver.js"
+  snapshotResolver: "../customSnapshotResolver.js",
+  testMatch: ["**/__tests__/**/*.test.[jt]s?(x)"]
 };

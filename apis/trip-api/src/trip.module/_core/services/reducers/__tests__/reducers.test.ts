@@ -133,8 +133,6 @@ test('upload location image', async () => {
         images: [{
           imageId: "imageId01",
           url: "url",
-          externalUrl: "", //todo why do I require this data ?
-          thumbnailExternalUrl: "" //todo why do I require this data ?
         }],
       }] as ITripLocation[]
     },
@@ -182,8 +180,6 @@ test('remove location images', async () => {
         images: [{
           imageId: "imageId01",
           url: "url",
-          externalUrl: "", //todo why do I require this data ?
-          thumbnailExternalUrl: "" //todo why do I require this data ?
         }],
       }] as ITripLocation[]
     },
