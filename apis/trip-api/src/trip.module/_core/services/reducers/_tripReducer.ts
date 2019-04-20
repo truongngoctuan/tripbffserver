@@ -116,13 +116,29 @@ export class TripReducers {
     };
   }
 
-  updateTripLocations(
+  private defaultImageValue = {
+    externalUrl: "",
+    thumbnailExternalUrl: "",
+    isFavorite: false
+  }
+  private updateTripLocations(
     prevState: ITrip,
     command: TripImportLocationsEvent
   ): ITrip {
+
     return {
       ...prevState,
-      locations: command.locations
+      locations: command.locations.map(location => {
+        return {
+          ...location,
+          images: location.images.map(img => {
+            return {
+              ...this.defaultImageValue,
+              ...img
+            }
+        })
+        }
+      })
     };
   }
 

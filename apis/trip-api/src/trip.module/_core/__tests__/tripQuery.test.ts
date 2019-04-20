@@ -240,9 +240,6 @@ test('favorite location image', async () => {
       images: [{
         imageId: "imageId01",
         url: "url",
-        externalUrl: "", //todo why do I require this data ?
-        thumbnailExternalUrl: "", //todo why do I require this data ?
-        isFavorite: false, //todo: shouldn't force to input this...
       }],
     }]
   };

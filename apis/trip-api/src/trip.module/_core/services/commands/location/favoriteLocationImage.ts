@@ -30,7 +30,7 @@ export async function RemoveLocationImages(
   if (image.isFavorite != isFavorite) {
 
     var event: TripEvent = {
-      type: "LocationImageFavorite",
+      type: "LocationImagesFavored",
       ownerId,
       tripId,
       locationId,

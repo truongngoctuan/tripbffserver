@@ -27,6 +27,7 @@ const TripSchema = new Schema({
           imageId: String,
           url: String,
           externalStorageId: String,
+          isFavorite: Boolean,
         }
       ],
       feeling: {
