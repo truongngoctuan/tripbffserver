@@ -6,6 +6,7 @@ import moment from "moment";
 import { IMongooseSchemas } from "../../_infrastructures/models/mongoosed";
 import { TripEvent } from "../services/events";
 import { ITrip } from "../models/ITrip";
+import { ITripRepository } from "../models/ITripRepository";
 
 let schemas: IMongooseSchemas;
 
@@ -17,14 +18,14 @@ afterAll(async () => {
   await mongoUtil.afterAll();
 });
 
+
+var tripRepository: ITripRepository;
+var serviceBus: ServiceBus;
+
 beforeEach(async () => {
   await mongoUtil.beforeEach();
-});
-
-it('create trip', async () => {
-  var tripRepository = new TripRepository(schemas);
-  // console.log("schemas", connection);
-  var serviceBus = new ServiceBus(tripRepository);
+  tripRepository = new TripRepository(schemas);
+  serviceBus = new ServiceBus(tripRepository);
 
   var event: TripEvent = {
     type: "TripCreated",
@@ -37,26 +38,14 @@ it('create trip', async () => {
 
   await serviceBus.emit(event);
 
+});
+
+it('create trip', async () => {
   expect(await tripRepository.get("ownerId", "tripId"))
     .toMatchSnapshot();
 });
 
 it('update trip name', async () => {
-  var tripRepository = new TripRepository(schemas);
-  // console.log("schemas", connection);
-  var serviceBus = new ServiceBus(tripRepository);
-
-  var createEvent: TripEvent = {
-    type: "TripCreated",
-    ownerId: "ownerId",
-    tripId: "tripId",
-    name: "name",
-    fromDate: moment('2019-01-01'),
-    toDate: moment('2019-01-10')
-  };
-
-  await serviceBus.emit(createEvent);
-
   var updateEvent: TripEvent = {
     type: "TripNameUpdated",
     ownerId: "ownerId",
@@ -71,21 +60,6 @@ it('update trip name', async () => {
 
 
 test('import trip location', async () => {
-  var tripRepository = new TripRepository(schemas);
-  // console.log("schemas", connection);
-  var serviceBus = new ServiceBus(tripRepository);
-
-  var createEvent: TripEvent = {
-    type: "TripCreated",
-    ownerId: "ownerId",
-    tripId: "tripId",
-    name: "name",
-    fromDate: moment('2019-01-01'),
-    toDate: moment('2019-01-10')
-  };
-
-  await serviceBus.emit(createEvent);
-
   var importEvent: TripEvent = {
     type: "TripImportLocations",
     ownerId: "ownerId",
@@ -110,21 +84,6 @@ test('import trip location', async () => {
 });
 
 test('upload location image', async () => {
-  var tripRepository = new TripRepository(schemas);
-  // console.log("schemas", connection);
-  var serviceBus = new ServiceBus(tripRepository);
-
-  var createEvent: TripEvent = {
-    type: "TripCreated",
-    ownerId: "ownerId",
-    tripId: "tripId",
-    name: "name",
-    fromDate: moment('2019-01-01'),
-    toDate: moment('2019-01-10')
-  };
-
-  await serviceBus.emit(createEvent);
-
   var importEvent: TripEvent = {
     type: "TripImportLocations",
     ownerId: "ownerId",
@@ -164,21 +123,6 @@ test('upload location image', async () => {
 
 
 test('favorite location image', async () => {
-  var tripRepository = new TripRepository(schemas);
-  // console.log("schemas", connection);
-  var serviceBus = new ServiceBus(tripRepository);
-
-  var createEvent: TripEvent = {
-    type: "TripCreated",
-    ownerId: "ownerId",
-    tripId: "tripId",
-    name: "name",
-    fromDate: moment('2019-01-01'),
-    toDate: moment('2019-01-10')
-  };
-
-  await serviceBus.emit(createEvent);
-
   var importEvent: TripEvent = {
     type: "TripImportLocations",
     ownerId: "ownerId",
