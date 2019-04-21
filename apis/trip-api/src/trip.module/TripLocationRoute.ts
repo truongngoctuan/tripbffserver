@@ -3,6 +3,7 @@ import { Err } from "../_shared/utils";
 import { IoC } from "./IoC";
 import { CUtils } from "./ControllerUtils";
 import uuid4 from 'uuid/v4';
+import { IHighlight } from "./_core/models/ITrip";
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
@@ -247,6 +248,63 @@ module.exports = {
           }
         } catch (error) {
           console.log("ERROR: UPDATE /trips/{tripId}/locations/{locationId}/activity");
+          console.log(error);
+          throw error;
+        }
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+      }
+    });    
+
+    server.route({
+      method: "PATCH",
+      path: "/trips/{tripId}/locations/{locationId}/highlights",
+      handler: async function(request) {
+        try {
+          var tripId: string = request.params.tripId;
+          var locationId: string = request.params.locationId;
+          var highlights = request.payload as Array<IHighlight>;
+
+          if (highlights) {
+            var preDefinedHighlights = await dataSourceQueryHandler.getHighlights();
+            var newAddedPreDefinedHighlights = highlights.filter(item => !preDefinedHighlights.includes(item));
+
+            // if (newAddedPreDefinedHighlights) {
+            //     let existedHighlights = highlights.filter(item => preDefinedHighlights.includes(item));
+            //     let highlightIds = preDefinedHighlights.map(item => item.highlightId);
+            //     let maxHighlightId = Math.max(...highlightIds);
+            //     let newPreDefinedItems = newAddedPreDefinedHighlights.map((item, index) => {
+            //       return {
+            //           ...item,
+            //           highlightId: maxHighlightId + 1 + index
+            //       }
+            //     });
+            //     //TODO: add new pre-defined highlights
+            //     highlights = existedHighlights.concat(newPreDefinedItems);
+            // }
+  
+            const ownerId = CUtils.getUserId(request);
+    
+            var commandResult = await tripCommandHandler.exec({
+              type: "UpdateLocationHighlight",
+              ownerId,
+              tripId,
+              locationId,
+              highlights
+            });
+  
+            if (commandResult.isSucceed) 
+              return "Success!";
+  
+            console.log("err: " + commandResult.errors);
+            return commandResult.errors;
+          }
+          else 
+            return "Please select at least 1 highlight!";
+        } catch (error) {
+          console.log("ERROR: UPDATE /trips/{tripId}/locations/{locationId}/highlights");
           console.log(error);
           throw error;
         }
