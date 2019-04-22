@@ -39,7 +39,14 @@ const TripSchema = new Schema({
         activityId: Number,
         label: String,
         icon: String
-      }
+      },
+      highlights: [
+        {
+          highlightId: String,
+          label: String,
+          highlightType: String
+        }
+      ]
     }
   ],
   infographics: [

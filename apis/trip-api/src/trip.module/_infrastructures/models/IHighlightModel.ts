@@ -1,6 +1,6 @@
 
 export interface IHighlightModel {
-    highlightId: number
+    highlightId: string
     label: string,
-    type: string
+    highlightType: string
 }

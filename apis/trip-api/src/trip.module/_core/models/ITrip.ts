@@ -22,6 +22,7 @@ export interface ITripLocation {
   images: Array<ITripLocationImage>;
   feeling?: IFeeling;
   activity?: IActivity;
+  highlights?: Array<IHighlight>;
 }
 
 export interface ITripLocationImage {
@@ -54,7 +55,7 @@ export interface IActivity {
 }
 
 export interface IHighlight {
-  highlightId: number,
+  highlightId: string,
   label: string,
-  type: string
+  highlightType: string
 }
