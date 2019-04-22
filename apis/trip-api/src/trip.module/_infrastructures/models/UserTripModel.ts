@@ -42,9 +42,9 @@ const TripSchema = new Schema({
       },
       highlights: [
         {
-          highlightId: Number,
+          highlightId: String,
           label: String,
-          type: String
+          highlightType: String
         }
       ]
     }

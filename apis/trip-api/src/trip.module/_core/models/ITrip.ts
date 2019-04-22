@@ -55,7 +55,7 @@ export interface IActivity {
 }
 
 export interface IHighlight {
-  highlightId: number,
+  highlightId: string,
   label: string,
-  type: string
+  highlightType: string
 }

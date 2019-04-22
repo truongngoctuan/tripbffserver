@@ -266,24 +266,23 @@ module.exports = {
           var tripId: string = request.params.tripId;
           var locationId: string = request.params.locationId;
           var highlights = request.payload as Array<IHighlight>;
-
+          console.log('selected highlights: ' + JSON.stringify(highlights));
+          
           if (highlights) {
             var preDefinedHighlights = await dataSourceQueryHandler.getHighlights();
             var newAddedPreDefinedHighlights = highlights.filter(item => !preDefinedHighlights.includes(item));
 
-            // if (newAddedPreDefinedHighlights) {
-            //     let existedHighlights = highlights.filter(item => preDefinedHighlights.includes(item));
-            //     let highlightIds = preDefinedHighlights.map(item => item.highlightId);
-            //     let maxHighlightId = Math.max(...highlightIds);
-            //     let newPreDefinedItems = newAddedPreDefinedHighlights.map((item, index) => {
-            //       return {
-            //           ...item,
-            //           highlightId: maxHighlightId + 1 + index
-            //       }
-            //     });
-            //     //TODO: add new pre-defined highlights
-            //     highlights = existedHighlights.concat(newPreDefinedItems);
-            // }
+            if (newAddedPreDefinedHighlights) {
+                let existedHighlights = highlights.filter(item => preDefinedHighlights.includes(item));
+                let newPreDefinedItems = newAddedPreDefinedHighlights.map(item => {
+                  return {
+                      ...item,
+                      highlightId: uuid4()
+                  }
+                });
+                
+                highlights = existedHighlights.concat(newPreDefinedItems);
+            }
   
             const ownerId = CUtils.getUserId(request);
     
