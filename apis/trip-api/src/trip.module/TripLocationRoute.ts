@@ -315,6 +315,42 @@ module.exports = {
     });    
 
     server.route({
+      method: "PATCH",
+      path: "/trips/{tripId}/locations/{locationId}/description",
+      handler: async function(request) {
+        try {
+          var tripId: string = request.params.tripId;
+          var locationId: string = request.params.locationId;
+          var { description } = request.payload as any;    
+
+          const ownerId = CUtils.getUserId(request);
+    
+          var commandResult = await tripCommandHandler.exec({
+            type: "UpdateLocationDescription",
+            ownerId,
+            tripId,
+            locationId,
+            description
+          });
+  
+          if (commandResult.isSucceed) 
+            return "Success!";
+
+          console.log("err: " + commandResult.errors);
+          return commandResult.errors;           
+        } catch (error) {
+          console.log("ERROR: UPDATE /trips/{tripId}/locations/{locationId}/description");
+          console.log(error);
+          throw error;
+        }
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+      }
+    });    
+
+    server.route({
       method: "GET",
       path: "/trips/{id}/locations",
       handler: async function(request) {

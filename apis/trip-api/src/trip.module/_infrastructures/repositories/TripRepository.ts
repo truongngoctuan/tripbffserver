@@ -33,6 +33,7 @@ export class TripRepository implements ITripRepository {
               isFavorite: img.isFavorite,
             };
           }),
+          description: loc.description,
           feeling: loc.feeling,
           activity: loc.activity,
           highlights: loc.highlights != undefined ? loc.highlights.map(item => {
@@ -107,6 +108,7 @@ export class TripRepository implements ITripRepository {
       fromTime: moment(loc.fromTime).toDate(),
       toTime: moment(loc.toTime).toDate(),
       images: loc.images,
+      description: loc.description,
       feeling: loc.feeling,
       activity: loc.activity,
       highlights: loc.highlights

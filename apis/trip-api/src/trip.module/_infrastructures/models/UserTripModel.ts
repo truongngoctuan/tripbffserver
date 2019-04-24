@@ -22,6 +22,7 @@ const TripSchema = new Schema({
       },
       fromTime: Date,
       toTime: Date,
+      description: String,
       images: [
         {
           imageId: String,

@@ -20,6 +20,7 @@ export interface ITripLocation {
   fromTime: Moment;
   toTime: Moment;
   images: Array<ITripLocationImage>;
+  description?: string;
   feeling?: IFeeling;
   activity?: IActivity;
   highlights?: Array<IHighlight>;

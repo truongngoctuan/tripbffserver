@@ -30,6 +30,7 @@ export interface ITripLocationModel {
   feeling?: IFeelingModel;
   activity?: IActivityModel;
   highlights?: Array<IHighlightModel>;
+  description?: string;
 }
 
 export interface ITripLocationImageModel {
