@@ -17,6 +17,7 @@ export type TripEvent =
   | TripLocationUpdatedActivityEvent
   | TripLocationUpdatedAddressEvent
   | TripLocationUpdatedHighlightEvent
+  | TripLocationUpdatedDescriptionEvent
   | InfographicCreatedEvent
   | InfographicExportedEvent;
 
@@ -118,6 +119,14 @@ export type TripLocationUpdatedAddressEvent = {
   address: string,
   long: number,
   lat: number
+}
+
+export type TripLocationUpdatedDescriptionEvent = {
+  type: "LocationDescriptionUpdated";
+  ownerId: string;
+  tripId: string;
+  locationId: string;
+  description: string
 }
 
 export type InfographicCreatedEvent = {
