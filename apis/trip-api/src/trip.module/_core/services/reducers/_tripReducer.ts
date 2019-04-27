@@ -18,6 +18,8 @@ import { updateLocationActivity } from "./updateLocationActivity";
 import { updateLocationAddress } from "./updateLocationAddress";
 import { removeTripLocationImages } from "./removeTripLocationImages";
 import { favorTripLocationImage } from "./favorTripLocationImage";
+import { updateLocationHighlight } from "./updateLocationHighlight";
+import { updateLocationDescription } from "./updateLocationDescription";
 
 // var staticEventHandlers = new Map<string, Function>();
 
@@ -77,6 +79,10 @@ export class TripReducers {
         return updateLocationActivity(state, event)
       case "LocationAddressUpdated":
         return updateLocationAddress(state, event);
+      case "LocationHighlightUpdated":
+        return updateLocationHighlight(state, event);
+      case "LocationDescriptionUpdated":
+        return updateLocationDescription(state, event);
       case "LocationImageUploaded":
         return this.updateTripLocationImage(state, event);
       case "LocationImagesRemoved":

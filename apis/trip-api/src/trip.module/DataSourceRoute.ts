@@ -4,6 +4,7 @@ import { FeelingRepository } from "./_infrastructures/repositories/FeelingReposi
 import { IFeeling, IActivity, IHighlight } from "./_core/models/ITrip";
 import { ActivityRepository } from "./_infrastructures/repositories/ActivityRepository";
 import { HighlightRepository } from "./_infrastructures/repositories/HighlightRepository";
+import uuid4 from 'uuid/v4';
 
 const dataSourceQueryHandler = IoC.dataSourceQueryHandler;
 
@@ -108,34 +109,34 @@ module.exports = {
           var highlightRepo =  new HighlightRepository();
           var highlights: Array<IHighlight> = [
             {
-                highlightId: 1,
+                highlightId: uuid4(),
                 label: "Beautiful",
-                type: "Like"
+                highlightType: "Like"
             },
             {
-                highlightId: 2,
+                highlightId: uuid4(),
                 label: "Bad Services",
-                type: "Dislike"
+                highlightType: "Dislike"
             },
             {
-                highlightId: 3,
+                highlightId: uuid4(),
                 label: "Good Foods",
-                type: "Like"
+                highlightType: "Like"
             },
             {
-                highlightId: 4,
+                highlightId: uuid4(),
                 label: "Very Noise",
-                type: "Dislike"
+                highlightType: "Dislike"
             },
             {
-                highlightId: 5,
+                highlightId: uuid4(),
                 label: "Good Drinks",
-                type: "Like"
+                highlightType: "Like"
             },
             {
-                highlightId: 6,
+                highlightId: uuid4(),
                 label: "A Lot of Dogs ",
-                type: "Like"
+                highlightType: "Like"
             }
           ];
           highlightRepo.insertMany(highlights);

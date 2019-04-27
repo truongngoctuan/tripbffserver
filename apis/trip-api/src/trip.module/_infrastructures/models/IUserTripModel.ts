@@ -1,5 +1,6 @@
 import { IFeelingModel } from "./IFeelingModel"
 import { IActivityModel } from "./IActivityModel";
+import { IHighlightModel } from "./IHighlightModel";
 
 export interface IUserTripModel {
   userId: string;
@@ -28,6 +29,8 @@ export interface ITripLocationModel {
   images: Array<ITripLocationImageModel>;
   feeling?: IFeelingModel;
   activity?: IActivityModel;
+  highlights?: Array<IHighlightModel>;
+  description?: string;
 }
 
 export interface ITripLocationImageModel {

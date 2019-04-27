@@ -1,5 +1,5 @@
 import { Moment } from "moment";
-import { ITripLocation } from "../../models/ITrip";
+import { ITripLocation, IHighlight } from "../../models/ITrip";
 import { TripCreatedEvent, TripUpdatedEvent, TripDateRangeUpdatedEvent, TripNameUpdatedEvent } from "./TripEvents";
 
 export type TripEvent =
@@ -16,6 +16,8 @@ export type TripEvent =
   | TripLocationUpdatedFeelingEvent
   | TripLocationUpdatedActivityEvent
   | TripLocationUpdatedAddressEvent
+  | TripLocationUpdatedHighlightEvent
+  | TripLocationUpdatedDescriptionEvent
   | InfographicCreatedEvent
   | InfographicExportedEvent;
 
@@ -100,6 +102,13 @@ export type TripLocationUpdatedActivityEvent = {
   activityIcon: string
 }
 
+export type TripLocationUpdatedHighlightEvent = {
+  type: "LocationHighlightUpdated";
+  ownerId: string;
+  tripId: string;
+  locationId: string;
+  highlights: Array<IHighlight>
+}
 
 export type TripLocationUpdatedAddressEvent = {
   type: "LocationAddressUpdated";
@@ -110,6 +119,14 @@ export type TripLocationUpdatedAddressEvent = {
   address: string,
   long: number,
   lat: number
+}
+
+export type TripLocationUpdatedDescriptionEvent = {
+  type: "LocationDescriptionUpdated";
+  ownerId: string;
+  tripId: string;
+  locationId: string;
+  description: string
 }
 
 export type InfographicCreatedEvent = {

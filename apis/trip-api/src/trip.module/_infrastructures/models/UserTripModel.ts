@@ -22,6 +22,7 @@ const TripSchema = new Schema({
       },
       fromTime: Date,
       toTime: Date,
+      description: String,
       images: [
         {
           imageId: String,
@@ -39,7 +40,14 @@ const TripSchema = new Schema({
         activityId: Number,
         label: String,
         icon: String
-      }
+      },
+      highlights: [
+        {
+          highlightId: String,
+          label: String,
+          highlightType: String
+        }
+      ]
     }
   ],
   infographics: [
