@@ -517,7 +517,7 @@ module.exports = {
     });
 
     server.route({
-      method: "DELETE",
+      method: "PATCH",
       path: "/trips/{tripId}/locations/{locationId}/images/{imageId}",
       handler: async function(request) {
         try {
@@ -530,7 +530,7 @@ module.exports = {
           const ownerId = CUtils.getUserId(request);
 
           var commandResult = await tripCommandHandler.exec({
-            type: "favoriteLocationImage",
+            type: "FavoriteLocationImage",
             ownerId,
             tripId,
             locationId,
@@ -557,36 +557,39 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-        payload: {
-          isFavorite: Joi.boolean().description("mark the image favorite/highlighted or not"),
+          payload: {
+            isFavorite: Joi.boolean().description("mark the image favorite/highlighted or not"),
           }
         }
       }
     });
 
     server.route({
-      method: "DELETE",
+      method: "PATCH",
       path: "/trips/{tripId}/locations/{locationId}/images",
       handler: async function(request) {
         try {
           var tripId: string = request.params.tripId;
           var locationId: string = request.params.locationId;
-          var { imageIds } = request.payload as any;
+          console.log(request.payload);
+          var { deletingIds } = request.payload as any;
 
           const ownerId = CUtils.getUserId(request);
 
           var commandResult = await tripCommandHandler.exec({
-            type: "removeLocationImages",
+            type: "RemoveLocationImages",
             ownerId,
             tripId,
             locationId,
-            imageIds,
+            imageIds: deletingIds,
           });
 
           if (commandResult.isSucceed) {
             var queryResult = await tripQueryHandler.GetById(ownerId, tripId);
             if (!queryResult) return Err("can't get data after import trip");
-            return queryResult;
+            const newLoc = queryResult.locations.find(loc => loc.locationId == locationId);
+            console.log(newLoc && newLoc.images.length)
+            return newLoc;
           }
 
           console.log("err: " + commandResult.errors);
@@ -601,6 +604,11 @@ module.exports = {
       options: {
         auth: "simple",
         tags: ["api"],
+        validate: {
+          payload: {
+            deletingIds: Joi.array().description("delete image with list of ids"),
+          }
+        }
       }
     });
   }

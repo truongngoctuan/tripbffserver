@@ -5,7 +5,7 @@ import { Succeed, BadRequest } from "../../../../../_shared/utils";
 import _ from "lodash";
 
 export type FavoriteLocationImageCommand = {
-  type: "favoriteLocationImage";
+  type: "FavoriteLocationImage";
   ownerId: string;
   tripId: string;
   locationId: string;

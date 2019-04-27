@@ -5,7 +5,7 @@ import { Succeed, BadRequest } from "../../../../../_shared/utils";
 import _ from "lodash";
 
 export type RemoveLocationImagesCommand = {
-  type: "removeLocationImages";
+  type: "RemoveLocationImages";
   ownerId: string;
   tripId: string;
   locationId: string;
