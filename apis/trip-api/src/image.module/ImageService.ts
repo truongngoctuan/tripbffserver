@@ -1,5 +1,5 @@
 import { IImageService } from "./IImageService";
-const sharp = require('sharp');
+import sharp from 'sharp';
 import path from "path";
 import { fileExists, writeBuffer } from "./FileAsync";
 
@@ -11,8 +11,10 @@ export class ImageService implements IImageService {
     const fileThumbnailPath = filePath.replace(fileExtension, `_${w}_${h}${fileExtension}`);
 
     if (!fileExists(fileThumbnailPath)) {
-      var fileThumbnail = await sharp(filePath).resize(w, h).toBuffer();
-      await writeBuffer(fileThumbnailPath, fileThumbnail);
+      await sharp(filePath)
+      .resize(w, h)
+      .withMetadata()
+      .toFile(fileThumbnailPath);
     }
   }
 
