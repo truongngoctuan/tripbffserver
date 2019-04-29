@@ -417,7 +417,8 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            return externalId;
+            var thumbnailExternalUrl = await tripQueryHandler.getThumbnailUrlByExternalId(externalId);
+            return { externalId, thumbnailExternalUrl };
           }
 
           //todo cleanup uploaded file after command failed
