@@ -27,6 +27,7 @@ export class TripRepository implements ITripRepository {
             return {
               imageId: img.imageId,
               url: img.url,
+              time: moment(img.time),
               externalStorageId: img.externalStorageId,
               externalUrl: "",
               thumbnailExternalUrl: "",
@@ -105,9 +106,12 @@ export class TripRepository implements ITripRepository {
       locationId: loc.locationId,
       name: loc.name,
       location: loc.location,
-      fromTime: moment(loc.fromTime).toDate(),
-      toTime: moment(loc.toTime).toDate(),
-      images: loc.images,
+      fromTime: loc.fromTime.toDate(),
+      toTime: loc.toTime.toDate(),
+      images: loc.images.map(img => ({
+        ...img,
+        time: img.time.toDate(),
+      })),
       description: loc.description,
       feeling: loc.feeling,
       activity: loc.activity,

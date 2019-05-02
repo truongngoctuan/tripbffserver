@@ -47,6 +47,7 @@ module.exports = {
       )
     })
 
+    //todo merge 2 addLocation into one endpoint
     server.route({
       method: "POST",
       path: "/trips/{id}/locations",
@@ -564,6 +565,53 @@ module.exports = {
         }
       }
     });
+
+    server.route({
+      method: "POST",
+      path: "/trips/{tripId}/locations/{locationId}/images",
+      handler: async function(request) {
+        try {
+          const tripId: string = request.params.tripId;
+          const locationId: string = request.params.locationId;
+          const { url, time } = request.payload as any;
+
+          const ownerId = CUtils.getUserId(request);
+          const imageId = uuid4();
+
+
+          var commandResult = await tripCommandHandler.exec({
+            type: "AddLocationImage",
+            ownerId,
+            tripId,
+            locationId,
+            imageId, url, time
+          });
+
+          if (commandResult.isSucceed) {
+            return imageId;
+          }
+
+          console.log("err: " + commandResult.errors);
+          return commandResult.errors;
+        }
+        catch (error) {
+          console.log("ERROR: POST /trips/{tripId}/locations/{locationId}/images");
+          console.log(error);
+          throw error;
+        }
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+        validate: {
+          payload: {
+            url: Joi.string().description("storage url in mobile device"),
+            time: Joi.string().description("time taken"),
+          }
+        }
+      }
+    });
+
 
     server.route({
       method: "PATCH",

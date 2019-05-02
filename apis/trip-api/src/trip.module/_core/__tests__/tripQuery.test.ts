@@ -100,6 +100,7 @@ test('upload location image', async () => {
       images: [{
         imageId: "imageId01",
         url: "url",
+        time: moment('2019-01-01'),
       }],
     }]
   };
@@ -138,6 +139,7 @@ test('favorite location image', async () => {
       images: [{
         imageId: "imageId01",
         url: "url",
+        time: moment('2019-01-01'),
       }],
     }]
   };

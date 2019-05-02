@@ -36,6 +36,7 @@ export interface ITripLocationModel {
 export interface ITripLocationImageModel {
   imageId: string;
   url: string; //url stored in local mobile
+  time: Date;
   externalStorageId?: string; //this id will exist after image binary is uploaded to server
   isFavorite: boolean;
 }
