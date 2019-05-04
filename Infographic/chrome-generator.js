@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 
 const url = "http://localhost:8080";
-async function exportInfo() {
+async function exportInfo(trip) {
     const browser = await puppeteer.launch({
          headless: false
     });
@@ -9,10 +9,9 @@ async function exportInfo() {
     await page.goto(url);
 
     const svgInfoGraphic = await page.$('#info-graphic-base');
-    var result = await page.evaluate(() => {
-        console.log("AAaa")
-        draw();
-      });
+    var result = await page.evaluate((trip) => {        
+        draw(trip);
+      }, trip);
     await svgInfoGraphic.screenshot({
         path: 'svg-info-graphic.png',
         // omitBackground: true,

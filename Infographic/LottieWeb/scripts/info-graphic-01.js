@@ -142,8 +142,9 @@ function drawPathBetweenLocationsInTheSameRow(svgBase, nItems, nItemsPerRow) {
 
 }
 
-function drawLocationDecorations(svgBase, nItems, nItemsPerRow) {
+function drawLocationDecorations(trip, svgBase, nItems, nItemsPerRow) {
     var svgCanvas = document.getElementById('info-graphic-base');
+    let locations = trip.locations;
 
     const w = 200,
         h = 200;
@@ -173,6 +174,9 @@ function drawLocationDecorations(svgBase, nItems, nItemsPerRow) {
         y2 = py;
 
         const locationMarginBottom = 12;
+
+        var location = locations[idx];
+
         drawText(svgBase, {
             top: y2 - 20,
             left: x2 - 20,
@@ -187,16 +191,16 @@ function drawLocationDecorations(svgBase, nItems, nItemsPerRow) {
             w: w,
             h: h / 3 - locationMarginBottom,
             paddingLeftRight: 30
-        }, "Nha Trang", "black", "sans-serif");
+        }, location.name, "black", "sans-serif");
 
 
-        drawText(svgBase, {
-            top: y2 + 50,
-            left: x2 - 20,
-            w: w,
-            h: h / 3 - locationMarginBottom,
-            paddingLeftRight: 30
-        }, "Lorem Ipsum is simply dummy text of the printing industry.", "black", "serif");
+        // drawText(svgBase, {
+        //     top: y2 + 50,
+        //     left: x2 - 20,
+        //     w: w,
+        //     h: h / 3 - locationMarginBottom,
+        //     paddingLeftRight: 30
+        // }, "Lorem Ipsum is simply dummy text of the printing industry.", "black", "serif");
 
         x1 = px;
         y1 = py;
@@ -282,7 +286,7 @@ function wrap(text, width) {
   }
 
 
-const N_ITEMS = 20;
+var N_ITEMS = 20;
 const N_ITEMS_PER_ROW = 3;
 
 const w = 200,
@@ -292,7 +296,9 @@ c_paddingRight = 50,
 c_paddingTop = 100,
 c_paddingBottom = 100;
 
-function draw() {
+function draw(trip) {
+
+    N_ITEMS = trip.locations.length;
 
     var svgBase = d3.select("#info-graphic-base")
     .attr("width", c_paddingLeft + w * N_ITEMS_PER_ROW  + c_paddingRight)
@@ -300,7 +306,7 @@ function draw() {
 
     drawPathBetweenLocationsInTheSameRow(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
     drawLocations(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
-    drawLocationDecorations(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
+    drawLocationDecorations(trip, svgBase, N_ITEMS, N_ITEMS_PER_ROW);
 }
 
 window.draw = draw;
