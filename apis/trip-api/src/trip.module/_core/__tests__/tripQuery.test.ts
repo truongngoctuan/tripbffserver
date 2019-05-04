@@ -82,6 +82,37 @@ test('import trip location', async () => {
     .toMatchSnapshot();
 });
 
+
+test('import trip location with images', async () => {
+  var importEvent: TripEvent = {
+    type: "TripImportLocations",
+    ownerId: "ownerId",
+    tripId: "tripId",
+    locations: [{
+      locationId: "locationId01",
+      name: "name",
+      location: {
+        long: 1,
+        lat: 1,
+        address: "address",
+      },
+      fromTime: moment('2019-01-01'),
+      toTime: moment('2019-01-10'),
+      images: [{
+        imageId: "imageId01",
+        url: "url",
+        time: moment('2019-01-01'),
+      }],
+    }]
+  };
+  await serviceBus.emit(importEvent);
+
+  var trip = await tripRepository.get("ownerId", "tripId");
+  expect(trip).toBeDefined();
+  var img = (trip as ITrip).locations[0].images[0];
+  expect(img).toMatchSnapshot();
+});
+
 test('upload location image', async () => {
   var importEvent: TripEvent = {
     type: "TripImportLocations",
