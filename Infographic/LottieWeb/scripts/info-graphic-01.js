@@ -233,7 +233,7 @@ function drawLottie(svgBase, location) {
     });
 
     animation.goToAndStop(60, true);
-    console.log(animation);
+    //console.log(animation);
     // animation.playSegments([
     //     [5, 6]
     // ], true)
