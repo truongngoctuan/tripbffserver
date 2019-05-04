@@ -1,5 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`add a location image 1`] = `
+Array [
+  Object {
+    "externalUrl": "",
+    "imageId": "imageId01",
+    "isFavorite": false,
+    "thumbnailExternalUrl": "",
+    "time": "2018-12-31T17:00:00.000Z",
+    "url": "url",
+  },
+  Object {
+    "externalUrl": "",
+    "imageId": "imageId02",
+    "isFavorite": false,
+    "thumbnailExternalUrl": "",
+    "time": "2019-01-01T17:00:00.000Z",
+    "url": "url2",
+  },
+]
+`;
+
 exports[`create trip 1`] = `
 Object {
   "fromDate": "2018-12-31T17:00:00.000Z",
