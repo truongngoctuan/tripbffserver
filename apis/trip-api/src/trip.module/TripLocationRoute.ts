@@ -4,6 +4,7 @@ import { IoC } from "./IoC";
 import { CUtils } from "./ControllerUtils";
 import uuid4 from 'uuid/v4';
 import { IHighlight } from "./_core/models/ITrip";
+import moment = require("moment");
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
@@ -24,7 +25,8 @@ module.exports = {
         }),
         images: Joi.array().items(
           Joi.object({
-            url: Joi.string().required()
+            url: Joi.string().required(),
+            time: Joi.date().required()
           })
         )
       })
@@ -53,8 +55,9 @@ module.exports = {
       path: "/trips/{id}/locations",
       handler: async function(request) {
         try {
-          console.log("POST", request.url);
+          console.log("POST", request.url.path);
           var selectedLocations = request.payload as any;
+          // console.log("selectedLocations", selectedLocations);
           var tripId = request.params.id;
           const ownerId = CUtils.getUserId(request);
 
@@ -62,7 +65,7 @@ module.exports = {
           var commandResult = await tripCommandHandler.exec({
             type: "importTrip",
             ownerId,
-            tripId: tripId.toString(),
+            tripId: tripId,
             locations: selectedLocations
           });
 
@@ -584,7 +587,7 @@ module.exports = {
             ownerId,
             tripId,
             locationId,
-            imageId, url, time
+            imageId, url, time: moment(time)
           });
 
           if (commandResult.isSucceed) {
