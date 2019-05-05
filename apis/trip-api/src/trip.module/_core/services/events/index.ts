@@ -10,6 +10,7 @@ export type TripEvent =
   | TripImportLocationsEvent
   | TripLocationRemovedEvent
   | TripLocationAddedEvent
+  | TripLocationImageAddedEvent
   | TripLocationImageUploadedEvent
   | TripLocationImagesRemovedEvent
   | TripLocationImageFavoredEvent
@@ -38,6 +39,7 @@ export type TripImportLocationsEvent = {
     images: {
       imageId: string;
       url: string; //url stored in local mobile
+      time: Moment;
     }[];
   }[];
 };
@@ -54,6 +56,17 @@ export type TripLocationAddedEvent = {
   ownerId: string;
   tripId: string;
   location: ITripLocation;
+};
+
+
+export type TripLocationImageAddedEvent = {
+  type: "LocationImageAdded";
+  ownerId: string;
+  tripId: string;
+  locationId: string;
+  imageId: string;
+  url: string;
+  time: Moment;
 };
 
 export type TripLocationImageUploadedEvent = {

@@ -16,6 +16,7 @@ import { updateTripName } from "./updateTripName";
 import { updateLocationFeeling } from "./updateLocationFeeling";
 import { updateLocationActivity } from "./updateLocationActivity";
 import { updateLocationAddress } from "./updateLocationAddress";
+import { addTripLocationImage } from "./addTripLocationImage";
 import { removeTripLocationImages } from "./removeTripLocationImages";
 import { favorTripLocationImage } from "./favorTripLocationImage";
 import { updateLocationHighlight } from "./updateLocationHighlight";
@@ -83,6 +84,8 @@ export class TripReducers {
         return updateLocationHighlight(state, event);
       case "LocationDescriptionUpdated":
         return updateLocationDescription(state, event);
+        case "LocationImageAdded":
+        return addTripLocationImage(state, event);
       case "LocationImageUploaded":
         return this.updateTripLocationImage(state, event);
       case "LocationImagesRemoved":

@@ -82,6 +82,37 @@ test('import trip location', async () => {
     .toMatchSnapshot();
 });
 
+
+test('import trip location with images', async () => {
+  var importEvent: TripEvent = {
+    type: "TripImportLocations",
+    ownerId: "ownerId",
+    tripId: "tripId",
+    locations: [{
+      locationId: "locationId01",
+      name: "name",
+      location: {
+        long: 1,
+        lat: 1,
+        address: "address",
+      },
+      fromTime: moment('2019-01-01'),
+      toTime: moment('2019-01-10'),
+      images: [{
+        imageId: "imageId01",
+        url: "url",
+        time: moment('2019-01-01'),
+      }],
+    }]
+  };
+  await serviceBus.emit(importEvent);
+
+  var trip = await tripRepository.get("ownerId", "tripId");
+  expect(trip).toBeDefined();
+  var img = (trip as ITrip).locations[0].images[0];
+  expect(img).toMatchSnapshot();
+});
+
 test('upload location image', async () => {
   var importEvent: TripEvent = {
     type: "TripImportLocations",
@@ -100,6 +131,7 @@ test('upload location image', async () => {
       images: [{
         imageId: "imageId01",
         url: "url",
+        time: moment('2019-01-01'),
       }],
     }]
   };
@@ -138,6 +170,7 @@ test('favorite location image', async () => {
       images: [{
         imageId: "imageId01",
         url: "url",
+        time: moment('2019-01-01'),
       }],
     }]
   };
@@ -156,4 +189,45 @@ test('favorite location image', async () => {
   expect(trip).toBeDefined();
   var img = (trip as ITrip).locations[0].images[0];
   expect(img.isFavorite).toBe(true);
+});
+
+
+test('add a location image', async () => {
+  var importEvent: TripEvent = {
+    type: "TripImportLocations",
+    ownerId: "ownerId",
+    tripId: "tripId",
+    locations: [{
+      locationId: "locationId01",
+      name: "name",
+      location: {
+        long: 1,
+        lat: 1,
+        address: "address",
+      },
+      fromTime: moment('2019-01-01'),
+      toTime: moment('2019-01-10'),
+      images: [{
+        imageId: "imageId01",
+        url: "url",
+        time: moment('2019-01-01'),
+      }],
+    }]
+  };
+  await serviceBus.emit(importEvent);
+
+  var uploadImageEvent: TripEvent = {
+    type: "LocationImageAdded",
+    ownerId: "ownerId",
+    tripId: "tripId",
+    locationId: "locationId01",
+    imageId: "imageId02",
+    url: "url2",
+    time: moment("2019-01-02")
+  };
+  await serviceBus.emit(uploadImageEvent);
+  var trip = await tripRepository.get("ownerId", "tripId");
+  expect(trip).toBeDefined();
+  var location = (trip as ITrip).locations[0];
+  expect(location.images).toMatchSnapshot();
 });

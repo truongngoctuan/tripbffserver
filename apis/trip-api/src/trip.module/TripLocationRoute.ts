@@ -4,6 +4,7 @@ import { IoC } from "./IoC";
 import { CUtils } from "./ControllerUtils";
 import uuid4 from 'uuid/v4';
 import { IHighlight } from "./_core/models/ITrip";
+import moment = require("moment");
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
@@ -24,7 +25,8 @@ module.exports = {
         }),
         images: Joi.array().items(
           Joi.object({
-            url: Joi.string().required()
+            url: Joi.string().required(),
+            time: Joi.date().required()
           })
         )
       })
@@ -47,13 +49,15 @@ module.exports = {
       )
     })
 
+    //todo merge 2 addLocation into one endpoint
     server.route({
       method: "POST",
       path: "/trips/{id}/locations",
       handler: async function(request) {
         try {
-          console.log("POST", request.url);
+          console.log("POST", request.url.path);
           var selectedLocations = request.payload as any;
+          // console.log("selectedLocations", selectedLocations);
           var tripId = request.params.id;
           const ownerId = CUtils.getUserId(request);
 
@@ -61,7 +65,7 @@ module.exports = {
           var commandResult = await tripCommandHandler.exec({
             type: "importTrip",
             ownerId,
-            tripId: tripId.toString(),
+            tripId: tripId,
             locations: selectedLocations
           });
 
@@ -564,6 +568,53 @@ module.exports = {
         }
       }
     });
+
+    server.route({
+      method: "POST",
+      path: "/trips/{tripId}/locations/{locationId}/images",
+      handler: async function(request) {
+        try {
+          const tripId: string = request.params.tripId;
+          const locationId: string = request.params.locationId;
+          const { url, time } = request.payload as any;
+
+          const ownerId = CUtils.getUserId(request);
+          const imageId = uuid4();
+
+
+          var commandResult = await tripCommandHandler.exec({
+            type: "AddLocationImage",
+            ownerId,
+            tripId,
+            locationId,
+            imageId, url, time: moment(time)
+          });
+
+          if (commandResult.isSucceed) {
+            return imageId;
+          }
+
+          console.log("err: " + commandResult.errors);
+          return commandResult.errors;
+        }
+        catch (error) {
+          console.log("ERROR: POST /trips/{tripId}/locations/{locationId}/images");
+          console.log(error);
+          throw error;
+        }
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+        validate: {
+          payload: {
+            url: Joi.string().description("storage url in mobile device"),
+            time: Joi.string().description("time taken"),
+          }
+        }
+      }
+    });
+
 
     server.route({
       method: "PATCH",

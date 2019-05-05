@@ -3,6 +3,7 @@ import { TripReducers } from "../../reducers/_tripReducer";
 import { ServiceBus } from "../../TripServiceBus";
 import { CommandResult, Succeed } from "../../../../../_shared/utils";
 import { ITripLocation } from "../../../models/ITrip";
+import moment from "moment";
 import _ from 'lodash';
 import uuid4 from 'uuid/v4';
 
@@ -21,9 +22,12 @@ export async function importTrip(command: ImportTripCommand, eventHandler: Event
   //add ids internally
   _.each(locations, loc => {
     loc.locationId = uuid4();
+    loc.fromTime = moment(loc.fromTime);
+    loc.toTime = moment(loc.toTime);
 
     _.each(loc.images, img => {
       img.imageId = uuid4();
+      img.time = moment(img.time);
     })
   })
 

@@ -28,7 +28,8 @@ export interface ITripLocation {
 
 export interface ITripLocationImage {
   imageId: string;
-  url: string; //url stored in local mobile
+  time: Moment;
+  url: string; //url stored in local mobile, if it failed in upload, it can start to upload again
   externalUrl: string;
   thumbnailExternalUrl: string;
   externalStorageId?: string; //this id will exist after image binary is uploaded to server
