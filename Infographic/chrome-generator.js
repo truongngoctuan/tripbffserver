@@ -12,6 +12,7 @@ async function exportInfo(trip) {
 
     trip = {
         ...trip,
+        numberOfDays: moment(trip.toDate).diff(moment(trip.fromDate), 'days') + 1,
         locations: trip.locations.map(item => {
             return {
                 ...item,

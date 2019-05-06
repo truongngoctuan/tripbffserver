@@ -38,6 +38,7 @@ export async function exportInfographic(
     ownerId,
     tripId,
     infographicId,
+    name: trip.name,
     toDate: trip.toDate,
     fromDate: trip.fromDate,
     locations: trip.locations.map(item => {
@@ -51,6 +52,7 @@ export async function exportInfographic(
       }
     })
   }
+  
   extraParams.jobDispatcher.dispatch(jobExportInfo);
 
   //update read store synchronously

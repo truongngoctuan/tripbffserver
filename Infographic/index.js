@@ -4,9 +4,10 @@ const fileUploader = require("./_services/upload-file");
 
 async function actionExecAsync(data) {
   //console.log("actionExecAsync", JSON.stringify(data));
-  const { tripId, infographicId, ownerId, toDate, fromDate, locations } = JSON.parse(data.message);
+  const { tripId, infographicId, ownerId, name, toDate, fromDate, locations } = JSON.parse(data.message);
 
   var trip = {
+    name,
     fromDate,
     toDate,
     locations
