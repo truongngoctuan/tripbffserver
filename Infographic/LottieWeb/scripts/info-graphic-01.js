@@ -4,30 +4,42 @@
 // draw basic shape
 // https://www.dashingd3js.com/svg-basic-shapes-and-d3js
 
-function drawLocations(svgBase, nItems, nItemsPerRow) {
+function drawHeader(svgBase, trip) {
 
-    // var jsonCircles = [{
-    //     "x_axis": 30,
-    //     "y_axis": 30,
-    //     "radius": 20,
-    //     "color": "green"
-    // },
-    // {
-    //     "x_axis": 70,
-    //     "y_axis": 70,
-    //     "radius": 20,
-    //     "color": "purple"
-    // },
-    // {
-    //     "x_axis": 110,
-    //     "y_axis": 100,
-    //     "radius": 20,
-    //     "color": "red"
-    // }
-    // ];
+    let tripNameNode = drawText(svgBase, {
+        top: 50,
+        left: 100,
+        paddingLeftRight: 20
+    }, trip.name, { 
+        color: "black",
+        font: "serif",
+        fontSize: "40px",
+        textAnchor: "left",
+        wrapNumber: 600 
+    });
+    let tripNameNodeBbox = tripNameNode.node().getBBox();
 
-    const w = 200,
-        h = 200;
+    let numberOfLocations = trip.locations.length,
+        basicTripInfo = trip.numberOfDays + " days, " + numberOfLocations + " locations";
+
+    drawText(svgBase, {
+        top: tripNameNodeBbox.height + 50,
+        left: 100,
+        paddingLeftRight: 20
+    }, basicTripInfo, { 
+        color: "black",
+        font: "serif",
+        fontSize: "30px",
+        textAnchor: "left",
+        wrapNumber: 400 
+    });
+
+}
+
+function drawLocations(svgBase, nItems, nItemsPerRow) {    
+
+    const w = 300,
+        h = 300;
     const c_paddingLeft = 50,
         c_paddingRight = 50,
         c_paddingTop = 100,
@@ -85,8 +97,8 @@ function drawLocations(svgBase, nItems, nItemsPerRow) {
 
 function drawPathBetweenLocationsInTheSameRow(svgBase, nItems, nItemsPerRow) {
 
-    const w = 200,
-        h = 200;
+    const w = 300,
+        h = 300;
     const c_paddingLeft = 50,
         c_paddingRight = 50,
         c_paddingTop = 100,
@@ -142,11 +154,12 @@ function drawPathBetweenLocationsInTheSameRow(svgBase, nItems, nItemsPerRow) {
 
 }
 
-function drawLocationDecorations(svgBase, nItems, nItemsPerRow) {
+function drawLocationDecorations(trip, svgBase, nItems, nItemsPerRow) {
     var svgCanvas = document.getElementById('info-graphic-base');
+    let locations = trip.locations;
 
-    const w = 200,
-        h = 200;
+    const w = 300,
+        h = 300;
     const c_paddingLeft = 50,
         c_paddingRight = 50,
         c_paddingTop = 100,
@@ -173,30 +186,98 @@ function drawLocationDecorations(svgBase, nItems, nItemsPerRow) {
         y2 = py;
 
         const locationMarginBottom = 12;
-        drawText(svgBase, {
-            top: y2 - 20,
+
+        let location = locations[idx],
+            locationName = location.name,
+            feeling = location.feeling ? 'Feeling ' + location.feeling : "",
+            activity = location.activity,
+            nodeFeelingActivity = "";
+
+        if (activity) nodeFeelingActivity = activity.toLowerCase();
+        if (feeling) {
+            feeling = feeling.toLowerCase();
+            nodeFeelingActivity = nodeFeelingActivity ? nodeFeelingActivity + ', ' + feeling : feeling;
+        }
+        if (locationName) nodeFeelingActivity += ' at ';
+
+        let feelingActivityNodeFirstDraw = drawText(svgBase, {
+            top: y2 - 50,
             left: x2 - 20,
             w: w,
             h: h / 2 - locationMarginBottom,
             paddingLeftRight: 20
-        }, "13/12/2018", "black", "serif");
+        }, nodeFeelingActivity, { 
+            color: "black",
+            font: "serif",
+            fontSize: "20px",
+            textAnchor: "middle",
+            wrapNumber: 200 
+        });
+
+        let feelingActivityNodeFirstDrawBbox = feelingActivityNodeFirstDraw.node().getBBox();
+        feelingActivityNodeFirstDraw.remove();
+
+        let feelingActivityNode = drawText(svgBase, {
+            top: y2 - feelingActivityNodeFirstDrawBbox.height,
+            left: x2 - 20,
+            w: w,
+            h: h / 2 - locationMarginBottom,
+            paddingLeftRight: 20
+        }, nodeFeelingActivity, { 
+            color: "black",
+            font: "serif",
+            fontSize: "20px",
+            textAnchor: "middle",
+            wrapNumber: 200 
+        });
+
+        let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
 
         drawText(svgBase, {
+            top: y2 - feelingActivityNodeBbox.height - 30,
+            left: x2 - 20,
+            w: w,
+            h: h / 2 - locationMarginBottom,
+            paddingLeftRight: 20
+        }, location.fromTime, { 
+            color: "black",
+            font: "serif",
+            fontSize: "20px",
+            textAnchor: "middle",
+            wrapNumber: 200 
+        });
+
+        let nameElementWrapNumber = (idx + 1) % nItemsPerRow == 0 ? 130 : 200;
+
+        let locationNameNode = drawText(svgBase, {
             top: y2 + 20,
             left: x2 - 20,
             w: w,
             h: h / 3 - locationMarginBottom,
             paddingLeftRight: 30
-        }, "Nha Trang", "black", "sans-serif");
+        }, locationName, { 
+            color: "black",
+            font: "serif",
+            fontSize: "20px",
+            textAnchor: "middle",
+            wrapNumber: nameElementWrapNumber
+        });
 
+        let locationNameBbox = locationNameNode.node().getBBox();
 
         drawText(svgBase, {
-            top: y2 + 50,
+            top: y2 + locationNameBbox.height + 30,
             left: x2 - 20,
             w: w,
             h: h / 3 - locationMarginBottom,
             paddingLeftRight: 30
-        }, "Lorem Ipsum is simply dummy text of the printing industry.", "black", "serif");
+        }, location.highlights.toLowerCase(), { 
+            color: "black",
+            font: "serif",
+            fontSize: "20px",
+            textAnchor: "middle",
+            wrapNumber: 200 
+        });
 
         x1 = px;
         y1 = py;
@@ -233,13 +314,13 @@ function drawLottie(svgBase, location) {
     });
 
     animation.goToAndStop(60, true);
-    console.log(animation);
+    //console.log(animation);
     // animation.playSegments([
     //     [5, 6]
     // ], true)
 }
 
-function drawText(svgBase, location, text, color, font) {
+function drawText(svgBase, location, text, config) {
     const top = location.top;
     const left = location.left;
     const paddingLeftRight = location.paddingLeftRight;
@@ -248,12 +329,14 @@ function drawText(svgBase, location, text, color, font) {
     svgCanvas
         .attr("y", top)
         .attr("x", left + paddingLeftRight)
-        .attr('text-anchor', 'middle')
-        .attr("font-size", "20px")
-        .attr("font-family", font)
-        .attr("fill", color)
+        .attr('text-anchor', config.textAnchor)
+        .attr("font-size", config.fontSize)
+        .attr("font-family", config.font)
+        .attr("fill", config.color)
+        .attr("name", config.name)
         .text(text)
-        .call(wrap, 150);
+        .call(wrap, config.wrapNumber);
+    return svgCanvas;
 }
 
 function wrap(text, width) {
@@ -282,25 +365,28 @@ function wrap(text, width) {
   }
 
 
-const N_ITEMS = 20;
+var N_ITEMS = 20;
 const N_ITEMS_PER_ROW = 3;
 
-const w = 200,
+const w = 300,
 h = 300;
 const c_paddingLeft = 50,
 c_paddingRight = 50,
 c_paddingTop = 100,
-c_paddingBottom = 100;
+c_paddingBottom = 200;
 
-function draw() {
+function draw(trip) {
+
+    N_ITEMS = trip.locations.length;
 
     var svgBase = d3.select("#info-graphic-base")
     .attr("width", c_paddingLeft + w * N_ITEMS_PER_ROW  + c_paddingRight)
     .attr("height", c_paddingTop + h * N_ITEMS / N_ITEMS_PER_ROW + c_paddingBottom);
 
+    drawHeader(svgBase, trip);
     drawPathBetweenLocationsInTheSameRow(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
     drawLocations(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
-    drawLocationDecorations(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
+    drawLocationDecorations(trip, svgBase, N_ITEMS, N_ITEMS_PER_ROW);
 }
 
 window.draw = draw;

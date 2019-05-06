@@ -30,7 +30,7 @@ function receiveMessage(callBack) {
       return;
     }
     if (resp.id) {
-      console.log("Message received.", resp);
+      //console.log("Message received.", resp);
       counter++;
       console.log("COUNTER", counter);
       await callBack(resp);

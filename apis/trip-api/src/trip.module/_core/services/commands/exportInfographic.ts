@@ -34,7 +34,26 @@ export async function exportInfographic(
 
   eventHandler.save(event);
 
-  extraParams.jobDispatcher.dispatch(event);
+  var jobExportInfo = {
+    ownerId,
+    tripId,
+    infographicId,
+    name: trip.name,
+    toDate: trip.toDate,
+    fromDate: trip.fromDate,
+    locations: trip.locations.map(item => {
+      return {
+        name: item.name,
+        fromTime: item.fromTime,
+        toTime: item.toTime,
+        feeling: item.feeling ? item.feeling.label : "",
+        activity: item.activity ? item.activity.label : "",
+        highlights: item.highlights ? item.highlights.map(h => h.label) : []
+      }
+    })
+  }
+  
+  extraParams.jobDispatcher.dispatch(jobExportInfo);
 
   //update read store synchronously
   await emitter.emit(event);

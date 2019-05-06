@@ -19,7 +19,12 @@ export function staticRegisterModule(funcs: Array<CommandFunc>) {
 export type IExtraParams =  { jobDispatcher: IJobDispatcher}
 
 // lower the standard for simplicity, instead of ITripCommand: export type ITripCommand = {};
-export type CommandFunc = (command: any, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus, extraParams: IExtraParams) => Promise<CommandResult>;
+export type CommandFunc = (
+  command: any,
+  eventHandler: EventHandler,
+  reducers: TripReducers,
+  emitter: ServiceBus,
+  extraParams: IExtraParams) => Promise<CommandResult>;
 
 export class TripCommandHandler {
   private reducers: TripReducers;

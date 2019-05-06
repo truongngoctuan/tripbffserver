@@ -19,7 +19,8 @@ module.exports = {
           var tripId: string = request.params.id;
           const ownerId = CUtils.getUserId(request);
 
-          var infographicId = uuid();
+          var infographicId = uuid();     
+
           var commandResult = await tripCommandHandler.exec({
             type: "exportInfographic",
             ownerId,
@@ -52,9 +53,9 @@ module.exports = {
         try {
           var tripId: string = request.params.id;
           var infographicId: string = request.params.infoId;
-          const ownerId = CUtils.getUserId(request);
-
+          
           var data: any = request.payload;
+          const ownerId = data.ownerId;
           var file: Buffer = new Buffer(JSON.parse(data.file).data);
           //console.log("file", file);
 
@@ -87,16 +88,16 @@ module.exports = {
       },
       options: {
         //todo add auth for internal communication
-        // auth: "simple",
+        //auth: "simple",
         tags: ["api"]
       }
     });
 
     server.route({
       method: "GET",
-      path: "/trips/{id}/infographics/{infographicId}",
+      path: "/trips/{tripId}/infographics/{infographicId}",
       handler: async function(request, h) {
-        var tripId = request.params.id;
+        var tripId = request.params.tripId;
         var inforgraphicId = request.params.infographicId;
 
         return new Promise((resolve, reject) => { 
@@ -133,6 +134,8 @@ module.exports = {
                 }
               });
             }
+
+            clearInterval(getEventInterval);
           }, 500);
         });        
 
@@ -142,7 +145,7 @@ module.exports = {
         tags: ["api"],
         validate: {
           params: {
-            id: Joi.required().description("the id for the todo item"),
+            tripId: Joi.required().description("the tripId for the todo item"),
             infographicId: Joi.required().description("the id for the todo item")
           }
         }

@@ -2,14 +2,15 @@ module.exports = {
   uploadFile
 };
 
-function uploadFile(fileLocation, toUrl) {
+function uploadFile(fileLocation, toUrl, ownerId) {
   const axios = require("axios");
   var fs = require("fs");
 
   const fileContent = JSON.stringify(fs.readFileSync(fileLocation));
 
   return axios.put(toUrl, {
-    file: fileContent
+    file: fileContent,
+    ownerId
   })
   .then(function (response) {
     console.log("upload file suceeded");
