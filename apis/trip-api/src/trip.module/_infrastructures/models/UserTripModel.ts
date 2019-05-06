@@ -27,6 +27,7 @@ const TripSchema = new Schema({
         {
           imageId: String,
           url: String,
+          time: Date,
           externalStorageId: String,
           isFavorite: Boolean,
         }

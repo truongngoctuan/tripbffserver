@@ -1,5 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`add a location image 1`] = `
+CoreMongooseArray [
+  Object {
+    "externalStorageId": undefined,
+    "externalUrl": "",
+    "imageId": "imageId01",
+    "isFavorite": false,
+    "thumbnailExternalUrl": "",
+    "time": "2018-12-31T17:00:00.000Z",
+    "url": "url",
+  },
+  Object {
+    "externalStorageId": undefined,
+    "externalUrl": "",
+    "imageId": "imageId02",
+    "isFavorite": false,
+    "thumbnailExternalUrl": "",
+    "time": "2019-01-01T17:00:00.000Z",
+    "url": "url2",
+  },
+]
+`;
+
 exports[`create trip 1`] = `
 Object {
   "fromDate": "2018-12-31T17:00:00.000Z",
@@ -18,8 +41,10 @@ Object {
   "locations": Array [
     Object {
       "activity": Object {},
+      "description": undefined,
       "feeling": Object {},
       "fromTime": "2018-12-31T17:00:00.000Z",
+      "highlights": CoreMongooseArray [],
       "images": CoreMongooseArray [],
       "location": Object {
         "address": "address",
@@ -34,6 +59,18 @@ Object {
   "name": "name",
   "toDate": "2019-01-09T17:00:00.000Z",
   "tripId": "tripId",
+}
+`;
+
+exports[`import trip location with images 1`] = `
+Object {
+  "externalStorageId": undefined,
+  "externalUrl": "",
+  "imageId": "imageId01",
+  "isFavorite": false,
+  "thumbnailExternalUrl": "",
+  "time": "2018-12-31T17:00:00.000Z",
+  "url": "url",
 }
 `;
 
@@ -55,6 +92,7 @@ Object {
   "imageId": "imageId01",
   "isFavorite": false,
   "thumbnailExternalUrl": "",
+  "time": "2018-12-31T17:00:00.000Z",
   "url": "url",
 }
 `;
