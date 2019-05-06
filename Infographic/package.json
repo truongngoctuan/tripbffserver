@@ -6,6 +6,7 @@
   "scripts": {
     "server": "http-server .\\LottieWeb\\ -p 4050",
     "serve": "nodemon --delay 2500ms --watch . --exec node .\\index.js",
+    "serve2": "nodemon exec index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -15,6 +16,7 @@
     "nodemon": "^1.18.9",
     "puppeteer": "^1.8.0",
     "redis": "^2.8.0",
-    "rsmq": "^0.9.3"
+    "rsmq": "^0.9.3",
+    "moment": "^2.22.2"  
   }
 }

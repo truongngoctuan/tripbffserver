@@ -1,4 +1,6 @@
+const moment = require("moment");
 const puppeteer = require('puppeteer');
+
 
 const url = "http://localhost:8080";
 async function exportInfo(trip) {
@@ -7,6 +9,17 @@ async function exportInfo(trip) {
     });
     const page = await browser.newPage();
     await page.goto(url);
+
+    trip = {
+        ...trip,
+        locations: trip.locations.map(item => {
+            return {
+                ...item,
+                fromTime: moment(item.fromTime).format('LL'),
+                highlights: item.highlights.join(', ')
+            }
+        })
+    };
 
     const svgInfoGraphic = await page.$('#info-graphic-base');
     var result = await page.evaluate((trip) => {        

@@ -26,8 +26,8 @@ function drawLocations(svgBase, nItems, nItemsPerRow) {
     // }
     // ];
 
-    const w = 200,
-        h = 200;
+    const w = 300,
+        h = 300;
     const c_paddingLeft = 50,
         c_paddingRight = 50,
         c_paddingTop = 100,
@@ -85,8 +85,8 @@ function drawLocations(svgBase, nItems, nItemsPerRow) {
 
 function drawPathBetweenLocationsInTheSameRow(svgBase, nItems, nItemsPerRow) {
 
-    const w = 200,
-        h = 200;
+    const w = 300,
+        h = 300;
     const c_paddingLeft = 50,
         c_paddingRight = 50,
         c_paddingTop = 100,
@@ -146,8 +146,8 @@ function drawLocationDecorations(trip, svgBase, nItems, nItemsPerRow) {
     var svgCanvas = document.getElementById('info-graphic-base');
     let locations = trip.locations;
 
-    const w = 200,
-        h = 200;
+    const w = 300,
+        h = 300;
     const c_paddingLeft = 50,
         c_paddingRight = 50,
         c_paddingTop = 100,
@@ -175,32 +175,65 @@ function drawLocationDecorations(trip, svgBase, nItems, nItemsPerRow) {
 
         const locationMarginBottom = 12;
 
-        var location = locations[idx];
+        let location = locations[idx],
+            locationName = location.name,
+            feeling = location.feeling ? 'Feeling ' + location.feeling : "",
+            activity = location.activity,
+            nodeFeelingActivity = "";
 
-        drawText(svgBase, {
-            top: y2 - 20,
+        if (activity) nodeFeelingActivity = activity.toLowerCase();
+        if (feeling) {
+            feeling = feeling.toLowerCase();
+            nodeFeelingActivity = nodeFeelingActivity ? nodeFeelingActivity + ', ' + feeling : feeling;
+        }
+        if (locationName) nodeFeelingActivity += ' at ';
+
+        let feelingActivityNodeFirstDraw = drawText(svgBase, {
+            top: y2 - 50,
             left: x2 - 20,
             w: w,
             h: h / 2 - locationMarginBottom,
             paddingLeftRight: 20
-        }, "13/12/2018", "black", "serif");
+        }, nodeFeelingActivity, "black", "serif");
+
+        let feelingActivityNodeFirstDrawBbox = feelingActivityNodeFirstDraw.node().getBBox();
+        feelingActivityNodeFirstDraw.remove();
+
+        let feelingActivityNode = drawText(svgBase, {
+            top: y2 - feelingActivityNodeFirstDrawBbox.height,
+            left: x2 - 20,
+            w: w,
+            h: h / 2 - locationMarginBottom,
+            paddingLeftRight: 20
+        }, nodeFeelingActivity, "black", "serif");
+
+        let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
 
         drawText(svgBase, {
+            top: y2 - feelingActivityNodeBbox.height - 30,
+            left: x2 - 20,
+            w: w,
+            h: h / 2 - locationMarginBottom,
+            paddingLeftRight: 20
+        }, location.fromTime, "black", "serif");
+
+        let locationNameNode = drawText(svgBase, {
             top: y2 + 20,
             left: x2 - 20,
             w: w,
             h: h / 3 - locationMarginBottom,
             paddingLeftRight: 30
-        }, location.name, "black", "sans-serif");
+        }, locationName, "black", "sans-serif");
 
+        let locationNameBbox = locationNameNode.node().getBBox();
 
-        // drawText(svgBase, {
-        //     top: y2 + 50,
-        //     left: x2 - 20,
-        //     w: w,
-        //     h: h / 3 - locationMarginBottom,
-        //     paddingLeftRight: 30
-        // }, "Lorem Ipsum is simply dummy text of the printing industry.", "black", "serif");
+        drawText(svgBase, {
+            top: y2 + locationNameBbox.height + 30,
+            left: x2 - 20,
+            w: w,
+            h: h / 3 - locationMarginBottom,
+            paddingLeftRight: 30
+        }, location.highlights.toLowerCase(), "black", "serif");
 
         x1 = px;
         y1 = py;
@@ -243,7 +276,7 @@ function drawLottie(svgBase, location) {
     // ], true)
 }
 
-function drawText(svgBase, location, text, color, font) {
+function drawText(svgBase, location, text, color, font, name) {
     const top = location.top;
     const left = location.left;
     const paddingLeftRight = location.paddingLeftRight;
@@ -256,8 +289,10 @@ function drawText(svgBase, location, text, color, font) {
         .attr("font-size", "20px")
         .attr("font-family", font)
         .attr("fill", color)
+        .attr("name", name)
         .text(text)
         .call(wrap, 150);
+    return svgCanvas;
 }
 
 function wrap(text, width) {
@@ -289,7 +324,7 @@ function wrap(text, width) {
 var N_ITEMS = 20;
 const N_ITEMS_PER_ROW = 3;
 
-const w = 200,
+const w = 300,
 h = 300;
 const c_paddingLeft = 50,
 c_paddingRight = 50,
