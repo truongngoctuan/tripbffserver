@@ -1,5 +1,4 @@
 import mongoose, { Model, Document } from 'mongoose';
-import crypto from 'crypto';
 import { IUser } from '../../_core/models/IUser';
 const jwt = require('jsonwebtoken');
 
@@ -8,39 +7,42 @@ export interface IUserModel extends IUser, Document {}
 
 const { Schema } = mongoose;
 
-const UsersSchema = new Schema({
-  email: String,
-  hash: String,
-  salt: String,
+const LoginsSchema = new Schema({
+  loginType: String,
+  local: {
+    email: String,
+    hash: String,
+    salt: String,
+  },
+  facebook: Object,
 });
 
-UsersSchema.methods.setPassword = function(password: any) {
-  this.salt = crypto.randomBytes(16).toString('hex');
-  this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
-};
-
-UsersSchema.methods.validatePassword = function(password: any) {
-  const hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
-  return this.hash === hash;
-};
+const UsersSchema = new Schema({
+  userId: String,
+  userName: String,
+  logins: [LoginsSchema]
+});
 
 UsersSchema.methods.generateJWT = function() {
   const today = new Date();
   const expirationDate = new Date(today);
   expirationDate.setDate(today.getDate() + 60);
 
+  //todo use another secret that read from a private.key generated from RSA 256
   return jwt.sign({
-    email: this.email,
-    id: this._id,
+    userName: this.userName,
+    id: this.userId,
     exp: expirationDate.getTime() / 1000 // parseInt(expirationDate.getTime() / 1000, 10),
-  }, 'secret');
+  }, 'secret',{
+    // algorithm: 'RS256',
+  });
 }
 
 UsersSchema.methods.toAuthJSON = function() {
   return {
     user: {
-      id: this._id,
-      email: this.email
+      id: this.userId,
+      email: this.userName
     },
     token: this.generateJWT()
   };
