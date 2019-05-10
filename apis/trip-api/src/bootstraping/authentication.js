@@ -1,23 +1,59 @@
 const AuthBearer = require('hapi-auth-bearer-token');
-const PREFIX = "login-session";
-var redis = require("redis"),
-    client = redis.createClient({
-        host: process.env.REDIS_HOST,
-        port: process.env.REDIS_PORT
-    })
+const jwt = require("jsonwebtoken");
 
-client.on("error", function (err) {
-    console.log("Error " + err);
-});
+// const PREFIX = "login-session";
+// var redis = require("redis"),
+//     client = redis.createClient({
+//         host: process.env.REDIS_HOST,
+//         port: process.env.REDIS_PORT
+//     })
 
-async function getAsync(key) {
-    return new Promise((resolve, reject) => {
-        client.get(key, (err, reply) => {
-            if (err) return reject(err);
-            resolve(JSON.parse(reply));
-        });
-    });
-}
+// client.on("error", function (err) {
+//     console.log("Error " + err);
+// });
+
+// async function getAsync(key) {
+//     return new Promise((resolve, reject) => {
+//         client.get(key, (err, reply) => {
+//             if (err) return reject(err);
+//             resolve(JSON.parse(reply));
+//         });
+//     });
+// }
+
+// function verifyWhiteList(request, token, h) {
+//     console.log(token);
+//     console.log(`${request.route.method} ${request.route.path}`);
+
+//     var session = await getAsync(`${PREFIX}:${token}`);
+
+//     if (!session) {
+//         return {
+//             isValid: false,
+//             credentials: null,
+//             artifacts: null
+//         };
+//     }
+
+//     // here is where you validate your token
+//     // comparing with token from your database for example
+//     const isValid = true;
+
+//     const credentials = {
+//         token: session.token.access_token,
+//         user: session.user,
+//     };
+//     const artifacts = {
+//         test: 'info'
+//     };
+
+//     return {
+//         isValid,
+//         credentials,
+//         artifacts
+//     };
+// }
+
 async function addAuth(server) {
 
     await server.register(AuthBearer)
@@ -29,8 +65,11 @@ async function addAuth(server) {
             console.log(token);
             console.log(`${request.route.method} ${request.route.path}`);
 
-            var session = await getAsync(`${PREFIX}:${token}`);
-            if (!session) {
+            try {
+                var decoded = jwt.verify(token, "secret");
+                console.log("decoded", decoded);
+            } catch(err) {
+                console.log("verify error", err);
                 return {
                     isValid: false,
                     credentials: null,
@@ -38,13 +77,13 @@ async function addAuth(server) {
                 };
             }
 
-            // here is where you validate your token
-            // comparing with token from your database for example
             const isValid = true;
 
+            const { userName, id } = decoded;
+
             const credentials = {
-                token: session.token.access_token,
-                user: session.user,
+                token,
+                user: { id, userName },
             };
             const artifacts = {
                 test: 'info'
@@ -63,4 +102,4 @@ async function addAuth(server) {
 }
 
 module.exports.addAuth = addAuth;
-module.exports.getAsync = getAsync;
+// module.exports.getAsync = getAsync;

@@ -73,7 +73,7 @@ export class UserLocalService implements IUserLocalService {
     }
 
     const authUser = user.toAuthJSON();
-    addToSession(authUser.user, authUser.token);
+    // addToSession(authUser.user, authUser.token);
 
     return authUser;
   }
