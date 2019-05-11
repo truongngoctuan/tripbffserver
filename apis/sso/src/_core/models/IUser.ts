@@ -28,8 +28,7 @@ export type ILoginLocal = {
 export type ILoginFacebook = {
   loginType: "FACEBOOK",
   facebook: {
-    userId: string,
-    email: string,
+    facebookUserId: string,
   }
 };
 

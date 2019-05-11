@@ -14,7 +14,9 @@ const LoginsSchema = new Schema({
     hash: String,
     salt: String,
   },
-  facebook: Object,
+  facebook: {
+    facebookUserId: String,
+  },
 });
 
 const UsersSchema = new Schema({
