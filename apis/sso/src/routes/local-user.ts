@@ -7,6 +7,7 @@ const router = express.Router();
 import { IoC } from '../IoC';
 import { IUser } from '../_core/models/IUser';
 import Users from '../_infrastructures/models/users';
+import { IUserVM } from '../_core/models/IUserVM';
 
 router.post("/local/register", auth.optional, async function(req, res) {
   const { body: { email, password } } = req;
@@ -57,13 +58,15 @@ router.post('/local/login', auth.optional, (req, res, next) => {
     });
   }
 
-  return passport.authenticate('local', { session: false }, async (err, passportUser: IUser, info) => {
+  return passport.authenticate('local', { session: false }, async (err, passportUser: IUserVM, info) => {
     if(err) {
-      return next(err);
+      console.log("err on authen", err);
+      return res.status(400)
+      .json({ error: err })
     }
 
     if(passportUser) {
-      const authUser = await IoC.userLocalService.login(passportUser.email);
+      const authUser = await IoC.userLocalService.login(passportUser.userName);
 
       return res.json(authUser);
     }

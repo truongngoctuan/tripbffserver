@@ -27,6 +27,8 @@ module.exports = function (passport) {
             .then(user => {
                 return done(null, user);
             }).catch(err => {
+                console.log("done authen with err", err);
+
                 return done(null, false, { errors: err });
             });
 
