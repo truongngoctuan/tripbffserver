@@ -106,8 +106,8 @@ export class TripRepository implements ITripRepository {
       locationId: loc.locationId,
       name: loc.name,
       location: loc.location,
-      fromTime: loc.fromTime.toDate(),
-      toTime: loc.toTime.toDate(),
+      fromTime: moment(loc.fromTime).toDate(),
+      toTime: moment(loc.toTime).toDate(),
       images: loc.images.map(img => ({
         ...img,
         time: img.time.toDate(),
