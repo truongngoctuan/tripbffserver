@@ -16,6 +16,7 @@ const LoginsSchema = new Schema({
   },
   facebook: {
     facebookUserId: String,
+    accessToken: String,
   },
 });
 

@@ -29,6 +29,7 @@ export type ILoginFacebook = {
   loginType: "FACEBOOK",
   facebook: {
     facebookUserId: string,
+    accessToken: string,
   }
 };
 
