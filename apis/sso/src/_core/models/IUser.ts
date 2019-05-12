@@ -14,6 +14,7 @@ type ILogin = {
 }
 | ILoginLocal
 | ILoginFacebook
+| ILoginDevice
 ;
 
 export type ILoginLocal = {
@@ -30,6 +31,13 @@ export type ILoginFacebook = {
   facebook: {
     facebookUserId: string,
     accessToken: string,
+  }
+};
+
+export type ILoginDevice = {
+  loginType: "DEVICE",
+  device: {
+    uniqueDeviceId: string,
   }
 };
 

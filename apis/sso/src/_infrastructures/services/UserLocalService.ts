@@ -1,6 +1,5 @@
 import { IUserLocalService } from "../../_core/services/IUserLocalService";
 import Users, { IUserModel } from "../models/users";
-import { addToSession } from "./custom-session";
 import { IUserVM } from "../../_core/models/IUserVM";
 import uuid from "uuid/v4";
 import crypto from 'crypto';
