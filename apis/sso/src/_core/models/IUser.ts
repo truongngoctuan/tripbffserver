@@ -2,20 +2,15 @@ export interface IUser {
   userId: string;
   userName: string;
   logins: ILogin[];
-
-  setPassword(password: string);
-  validatePassword(password: string): boolean;
-  generateJWT(): string;
-  toAuthJSON(): IUserAuth;
 }
 
 type ILogin = {
   loginType: "login type..."
 }
-| ILoginLocal
-| ILoginFacebook
-| ILoginDevice
-;
+  | ILoginLocal
+  | ILoginFacebook
+  | ILoginDevice
+  ;
 
 export type ILoginLocal = {
   loginType: "LOCAL",
@@ -45,6 +40,9 @@ export interface IUserAuth {
   user: {
     id: string;
     userName: string;
+    facebook?: {
+      accessToken
+    }
   },
   token: string;
 }

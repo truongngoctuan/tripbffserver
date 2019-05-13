@@ -1,4 +1,4 @@
-import { IUserAuth, IUser } from "../models/IUser";
+import { IUserAuth } from "../models/IUser";
 import { IUserVM } from "../models/IUserVM";
 
 export interface IUserLocalService {

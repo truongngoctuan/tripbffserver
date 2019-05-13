@@ -3,6 +3,7 @@ import uuid from "uuid/v4";
 import { ILoginDevice } from "../../_core/models/IUser";
 import _ from "lodash";
 import { toUserVM } from "./utils";
+import { UserService } from "./UserService";
 
 function getUserName(uniqueDeviceId: string) {
   return `device:${uniqueDeviceId}`;
@@ -12,7 +13,11 @@ function validatePassword(userLogin: ILoginDevice, uniqueDeviceId: string) {
   return userLogin.device.uniqueDeviceId === uniqueDeviceId;
 };
 
-export class UserDeviceService { 
+export class UserDeviceService {
+
+  constructor(private _userService: UserService) {
+
+  }
 
   async getById(uniqueDeviceId: string) {
     const userDb = await Users.findOne({ userName: getUserName(uniqueDeviceId) });
@@ -57,6 +62,6 @@ export class UserDeviceService {
       throw "uniqueDeviceId is invalid";
     }
 
-    return user.toAuthJSON();
+    return this._userService.getAuthObject(user);
   }
 }

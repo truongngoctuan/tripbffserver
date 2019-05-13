@@ -1,0 +1,5 @@
+export const LOGIN_TYPE = {
+  FACEBOOK: "FACEBOOK",
+  LOCAL: "LOCAL",
+  DEVICE: "DEVICE"
+}
