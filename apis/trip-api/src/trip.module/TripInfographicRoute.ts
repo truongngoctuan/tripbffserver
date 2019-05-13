@@ -105,37 +105,39 @@ module.exports = {
             var tripEvents = await tripEventQueryHandler.getAll(tripId);
 
             if (tripEvents) {
-              tripEvents.forEach(event => {
-                if (event.type == 'InfographicExported' && event.infographicId == inforgraphicId) {
-                  clearInterval(getEventInterval);
+              let exportedInfoEvent = tripEvents.find(event => 
+                event.type == 'InfographicExported' && event.infographicId == inforgraphicId) as any;
 
-                  var externalId = event.externalStorageId;
-                  console.log('externalId: ' + externalId);
+              if (exportedInfoEvent) {
+                clearInterval(getEventInterval);
 
-                  var filePath = `uploads/trips/${tripId}/infographics/${externalId}.png`;
+                var externalId = exportedInfoEvent.externalStorageId;
+                var filePath = `uploads/trips/${tripId}/infographics/${externalId}.png`;
 
-                  var getFileInterval = setInterval(() => {
-                    if (fs.existsSync(filePath)) {
-                      clearInterval(getFileInterval);
-                      var imgStream = fs.createReadStream(filePath);
-                      imgStream.setEncoding("base64");
+                var getFileInterval = setInterval(() => {
+                  if (fs.existsSync(filePath)) {
+                    clearInterval(getFileInterval);
+                    var imgStream = fs.createReadStream(filePath);
+                    imgStream.setEncoding("base64");
 
-                      var bufs = '';
-    
-                      imgStream.on('data', (chunk: any) => {
-                        bufs += chunk;
-                      });
-                      imgStream.on('end', () => {
-                        const response = h.response(bufs);
-                        resolve(response);
-                      });
-                    }
-                  }, 1000);
-                }
-              });
+                    var bufs = '';
+  
+                    imgStream.on('data', (chunk: any) => {
+                      bufs += chunk;
+                    });
+                    imgStream.on('end', () => {
+                      const response = h.response(bufs);
+                      resolve(response);
+                    });
+                  }
+                }, 500);
+              }
             }
-
-            clearInterval(getEventInterval);
+            else {
+              clearInterval(getEventInterval);
+              var error = new Error("Could not found any trip events.");
+              reject(error);
+            }
           }, 500);
         });        
 
