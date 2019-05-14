@@ -1,20 +1,14 @@
-import Users, { IUserModel } from "../models/users";
-import { IUserVM } from "../../_core/models/IUserVM";
+import Users from "../models/users";
 import uuid from "uuid/v4";
 import { ILoginFacebook } from "../../_core/models/IUser";
 import _ from "lodash";
 import axios from "axios";
+import { UserService } from "./UserService";
+import { toUserVM } from "./utils";
+import { LOGIN_TYPE } from "../../_core/models/constants";
 
 const FACEBOOK_APP_ID = '2341289862566899';
 const FACEBOOK_APP_SECRET = 'fb968c05bbcda85d56acd9c50304750f';
-
-function toUserVM(user: IUserModel | null): IUserVM | null {
-  if (!user) return null;
-  return {
-    id: user.userId,
-    userName: user.userName,
-  };
-}
 
 function getUserName(facebookUserId: string) {
   return "facebook:" + facebookUserId;
@@ -27,6 +21,11 @@ type FbDebugTokenReturn = {
 }
 
 export class UserFacebookService {
+
+  constructor(private _userService: UserService) {
+
+  }
+
   async getById(facebookUserId: string) {
     const userDb = await Users.findOne({ userName: getUserName(facebookUserId) });
     return toUserVM(userDb);
@@ -58,7 +57,7 @@ export class UserFacebookService {
 
     const finalUser = new Users({
       userId: uuid(),
-      userName: getUserName(facebookUserId),   
+      userName: getUserName(facebookUserId),
       logins: [userLogin]
     });
 
@@ -67,7 +66,7 @@ export class UserFacebookService {
 
   async authenticate(facebookUserId: string, app_id: string, user_id: string, is_valid: boolean) {
     const user = await Users.findOne({ userName: getUserName(facebookUserId) });
-    const userLoginFacebook: ILoginFacebook = _.find(user.logins, login => login.loginType == "FACEBOOK");
+    const userLoginFacebook = _.find(user.logins, login => login.loginType == LOGIN_TYPE.FACEBOOK) as ILoginFacebook;
 
     if (app_id == FACEBOOK_APP_ID
       && userLoginFacebook
@@ -75,7 +74,7 @@ export class UserFacebookService {
       && is_valid) {
       return true;
     }
-    
+
     console.log("facebook authentication failed");
     return false;
   }
@@ -83,13 +82,13 @@ export class UserFacebookService {
   async login(facebookUserId: string, new_access_token: string) {
     const userDb = await Users.findOne({ userName: getUserName(facebookUserId) });
     // console.log("user db", userDb);
-    const loginIndex = _.findIndex(userDb.logins, login => login.loginType == "FACEBOOK");
+    const loginIndex = _.findIndex(userDb.logins, login => login.loginType == LOGIN_TYPE.FACEBOOK);
     let login = userDb.logins[loginIndex] as ILoginFacebook;
     // console.log("user db login " + loginIndex, login);
     login.facebook.accessToken = new_access_token;
     userDb.logins[loginIndex] = login;
 
-    return userDb.save().then(() => userDb.toAuthJSON());
+    return userDb.save().then(() => this._userService.getAuthObject(userDb));
   }
 
   async getVerification(access_token: string): Promise<FbDebugTokenReturn> {
@@ -108,6 +107,6 @@ export class UserFacebookService {
     var verifyResult = await axios.get(verifyLink);
     console.log("verifyResult", verifyResult.data.data);
     return verifyResult.data.data;
-  } 
+  }
 
 }

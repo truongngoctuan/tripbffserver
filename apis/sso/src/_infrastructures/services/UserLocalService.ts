@@ -1,20 +1,11 @@
 import { IUserLocalService } from "../../_core/services/IUserLocalService";
-import Users, { IUserModel } from "../models/users";
-import { addToSession } from "./custom-session";
-import { IUserVM } from "../../_core/models/IUserVM";
+import { UserService } from "./UserService";
+import Users from "../models/users";
 import uuid from "uuid/v4";
 import crypto from 'crypto';
 import { ILoginLocal } from "../../_core/models/IUser";
 import _ from "lodash";
-
-function toUserVM(user: IUserModel | null): IUserVM | null {
-  if (!user) return null;
-  return {
-    id: user.userId,
-    userName: user.userName,
-  };
-}
-
+import { toUserVM } from "./utils";
 
 function getUserLoginLocal(email: string, password: string): ILoginLocal {
 
@@ -35,6 +26,11 @@ function validatePassword(userLogin: ILoginLocal, password: string) {
 };
 
 export class UserLocalService implements IUserLocalService {
+
+  constructor(private _userService: UserService) {
+
+  }
+
   async getById(email: string) {
     const userDb = await Users.findOne({ userName: email });
     return toUserVM(userDb);
@@ -58,7 +54,7 @@ export class UserLocalService implements IUserLocalService {
 
   async authenticate(email, password) {
     const user = await Users.findOne({ userName: email });
-    const userLoginLocal = _.find(user.logins, login => login.loginType == "LOCAL");
+    const userLoginLocal = _.find(user.logins, login => login.loginType == "LOCAL") as ILoginLocal;
 
     if (!user || !validatePassword(userLoginLocal, password)) {
       throw { "email or password": "is invalid" };
@@ -72,7 +68,7 @@ export class UserLocalService implements IUserLocalService {
       throw "email is invalid";
     }
 
-    const authUser = user.toAuthJSON();
+    const authUser = this._userService.getAuthObject(user);
     // addToSession(authUser.user, authUser.token);
 
     return authUser;
