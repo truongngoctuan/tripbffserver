@@ -42,5 +42,6 @@ require('./routes')(app, passport); // load our routes and pass in our app and f
 //https://medium.freecodecamp.org/learn-how-to-handle-authentication-with-node-using-passport-js-4a56ed18e81e
 app.use(require('./routes/local-user'));
 app.use(require('./routes/facebook-user'));
+app.use(require('./routes/device-user'));
 
 app.listen(port, () => console.log(`Example app listening on port ${port}! http://localhost:${port}`))

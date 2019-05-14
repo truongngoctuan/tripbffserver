@@ -6,7 +6,7 @@ import _ from "lodash";
 
 export class UserService {
   getAuthObject(userObject: IUser): IUserAuth {
-    const facebookLogin: ILoginFacebook = _.first(userObject.logins, login => login.loginType == LOGIN_TYPE.FACEBOOK);
+    const facebookLogin = _.find(userObject.logins, login => login.loginType == LOGIN_TYPE.FACEBOOK) as ILoginFacebook;
     return {
       user: {
         id: userObject.userId,

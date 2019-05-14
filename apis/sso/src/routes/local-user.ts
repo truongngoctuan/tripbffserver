@@ -75,18 +75,18 @@ router.post('/local/login', auth.optional, (req, res, next) => {
   })(req, res, next);
 });
 
-//GET current route (required, only authenticated users have access)
-router.get('local/current', auth.required, (req, res, next) => {
-  const { body: { id } } = req;
+// //GET current route (required, only authenticated users have access)
+// router.get('local/current', auth.required, (req, res, next) => {
+//   const { body: { id } } = req;
 
-  return Users.findById(id)
-    .then((user) => {
-      if(!user) {
-        return res.sendStatus(400);
-      }
+//   return Users.findById(id)
+//     .then((user) => {
+//       if(!user) {
+//         return res.sendStatus(400);
+//       }
 
-      return res.json({ user: user.toAuthJSON() });
-    });
-});
+//       return res.json({ user: user.toAuthJSON() });
+//     });
+// });
 
 module.exports = router;

@@ -1,6 +1,6 @@
 import Users from "../models/users";
 import uuid from "uuid/v4";
-import { ILoginDevice } from "../../_core/models/IUser";
+import { ILoginDevice, ILoginLocal } from "../../_core/models/IUser";
 import _ from "lodash";
 import { toUserVM } from "./utils";
 import { UserService } from "./UserService";
@@ -41,13 +41,12 @@ export class UserDeviceService {
       logins: [userLogin]
     });
 
-
     return finalUser.save().then(() => toUserVM(finalUser));
   }
 
   async authenticate(uniqueDeviceId) {
     const user = await Users.findOne({ userName: getUserName(uniqueDeviceId) });
-    const userLoginLocal = _.find(user.logins, login => login.loginType == "DEVICE");
+    const userLoginLocal = _.find(user.logins, login => login.loginType == "DEVICE") as ILoginDevice;
 
     if (!user || !validatePassword(userLoginLocal, uniqueDeviceId)) {
       throw { "uniqueDeviceId": "is invalid" };
@@ -57,7 +56,7 @@ export class UserDeviceService {
 
   //generate jwt
   async login(uniqueDeviceId: any) {
-    const user = await Users.findOne({ userName: uniqueDeviceId });
+    const user = await Users.findOne({ userName: getUserName(uniqueDeviceId) });
     if (!user) {
       throw "uniqueDeviceId is invalid";
     }

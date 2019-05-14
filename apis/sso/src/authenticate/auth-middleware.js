@@ -1,90 +1,90 @@
-const config = require('../config');
+// const config = require('../config');
 
-const jwt = require('jsonwebtoken');
-const moment = require('moment');
+// const jwt = require('jsonwebtoken');
+// const moment = require('moment');
 
-var redis = require("redis"),
-    client = redis.createClient({
-        host: process.env.REDIS_HOST,
-        port: process.env.REDIS_PORT,
-    })
+// var redis = require("redis"),
+//     client = redis.createClient({
+//         host: process.env.REDIS_HOST,
+//         port: process.env.REDIS_PORT,
+//     })
 
-client.on("error", function (err) {
-    console.log("Error " + err);
-});
+// client.on("error", function (err) {
+//     console.log("Error " + err);
+// });
 
 
-checkRedisStatus();
+// checkRedisStatus();
 
-function authenticationMiddleware() {
-    return function (req, res, next) {
-        if (req.isAuthenticated()) {
-            return next()
-        }
-        res.redirect('/')
-    }
-}
+// function authenticationMiddleware() {
+//     return function (req, res, next) {
+//         if (req.isAuthenticated()) {
+//             return next()
+//         }
+//         res.redirect('/')
+//     }
+// }
 
-function checkRedisStatus() {
-    client.keys(`${config.auth.keyPrefix}:*`, (err, replies) => {
-        console.log(`login-sessions: ${replies.length}`);
-        var latestKey = replies[0];
-        console.log(latestKey)
-        client.get(latestKey, (err, reply) => console.log(reply));
-    });
-}
-function generateJwt(req, res) {
-    console.log("generateJwt")
-    console.log("user")
-    console.log(req.user)
+// function checkRedisStatus() {
+//     client.keys(`${config.auth.keyPrefix}:*`, (err, replies) => {
+//         console.log(`login-sessions: ${replies.length}`);
+//         var latestKey = replies[0];
+//         console.log(latestKey)
+//         client.get(latestKey, (err, reply) => console.log(reply));
+//     });
+// }
+// function generateJwt(req, res) {
+//     console.log("generateJwt")
+//     console.log("user")
+//     console.log(req.user)
 
-    const user = req.user;
+//     const user = req.user;
 
-    const token = jwt.sign(user, 'your_jwt_secret'); //TODO get secret from config file something
+//     const token = jwt.sign(user, 'your_jwt_secret'); //TODO get secret from config file something
 
-    var expiredTime = moment().add(config.auth.TTLInSeconds, 'seconds');
-    var data = {
-        user,
-        token: {
-            access_token: token,
-            expired: expiredTime,
-        }
-    }
-    client.set(`${config.auth.keyPrefix}:${token}`, JSON.stringify(data), "EX", config.auth.TTLInSeconds);
-    checkRedisStatus();
+//     var expiredTime = moment().add(config.auth.TTLInSeconds, 'seconds');
+//     var data = {
+//         user,
+//         token: {
+//             access_token: token,
+//             expired: expiredTime,
+//         }
+//     }
+//     client.set(`${config.auth.keyPrefix}:${token}`, JSON.stringify(data), "EX", config.auth.TTLInSeconds);
+//     checkRedisStatus();
 
-    return res.json({
-        user,
-        token
-    });
+//     return res.json({
+//         user,
+//         token
+//     });
 
-    // todo somehow add function `login` and `logout`, similar to the one from `session`
-    // req.login(user, {
-    //     session: false,
-    // }, err => {
-    //     if (err) {
-    //         res.send(err);
-    //     }
+//     // todo somehow add function `login` and `logout`, similar to the one from `session`
+//     // req.login(user, {
+//     //     session: false,
+//     // }, err => {
+//     //     if (err) {
+//     //         res.send(err);
+//     //     }
 
-    //     // generate a signed son web token with the contents of user object and return it in the response
-    //     const token = jwt.sign(user, 'your_jwt_secret');
-    //     return res.json({
-    //         user,
-    //         token
-    //     });
-    // })
-}
+//     //     // generate a signed son web token with the contents of user object and return it in the response
+//     //     const token = jwt.sign(user, 'your_jwt_secret');
+//     //     return res.json({
+//     //         user,
+//     //         token
+//     //     });
+//     // })
+// }
 
-function login(req, res) {
-    return generateJwt(req, res); // return { user: {}, token: "" }
-}
+// function login(req, res) {
+//     return generateJwt(req, res); // return { user: {}, token: "" }
+// }
 
-function logout() {
+// function logout() {
 
-}
+// }
 
-module.exports = {
-    // isLoggedIn: authenticationMiddleware,
-    login,
-    logout,
-}
+// module.exports = {
+//     // isLoggedIn: authenticationMiddleware,
+//     login,
+//     logout,
+// }
