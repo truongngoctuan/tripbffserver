@@ -4,7 +4,10 @@ import uuid from "uuid/v1";
 import { Err } from "../_shared/utils";
 import { IoC } from "./IoC"
 import { CUtils } from "./ControllerUtils";
-import moment = require("moment");
+import moment = require("moment-timezone");
+
+console.log("checking current time in server", moment().format());
+
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;

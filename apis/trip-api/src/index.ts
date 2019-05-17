@@ -1,5 +1,16 @@
 require("dotenv").config(); // red config from .env file
 
+//-------------------
+//setup timezone to utc
+import moment from "moment-timezone";
+console.log("checking current time in server", moment().format());
+
+moment.tz.setDefault("Zulu");
+
+console.log("checking current time in server", moment().format());
+console.log(moment.tz.guess());
+//-------------------
+
 import { Server } from "hapi";
 import { registerModules } from "./trip.module/_core/services/commands";
 const authService = require("./bootstraping/authentication.js");
