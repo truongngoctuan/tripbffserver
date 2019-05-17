@@ -422,7 +422,8 @@ module.exports = {
 
           if (commandResult.isSucceed) {
             var thumbnailExternalUrl = await tripQueryHandler.getThumbnailUrlByExternalId(externalId);
-            return { externalId, thumbnailExternalUrl };
+            var externalUrl = await tripQueryHandler.getExternalUrlByExternalId(externalId);
+            return { externalId, thumbnailExternalUrl, externalUrl };
           }
 
           //todo cleanup uploaded file after command failed

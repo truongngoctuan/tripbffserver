@@ -24,6 +24,10 @@ export class TripQueryHandler {
     return resolveThumbnailImageUrlFromExternalStorageId(externalId);
   }
 
+  async getExternalUrlByExternalId(externalId: string) : Promise<string> {
+    return resolveImageUrlFromExternalStorageId(externalId);
+  }
+
   private updateTripImageExternalUrl(trip: ITrip) {
     if (!trip) return trip;
     trip.locations = trip.locations.map(location => {
