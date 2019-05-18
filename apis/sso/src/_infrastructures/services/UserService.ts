@@ -11,6 +11,7 @@ export class UserService {
       user: {
         id: userObject.userId,
         userName: userObject.userName,
+        fullName: userObject.fullName,
         facebook: facebookLogin == null ? undefined : {
           accessToken: facebookLogin.facebook.accessToken
         }

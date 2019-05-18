@@ -1,6 +1,7 @@
 export interface IUser {
   userId: string;
   userName: string;
+  fullName: string;
   logins: ILogin[];
 }
 
@@ -26,6 +27,10 @@ export type ILoginFacebook = {
   facebook: {
     facebookUserId: string,
     accessToken: string,
+    id?: string;
+    name?: string;
+    first_name?: string;
+    last_name?: string;
   }
 };
 
@@ -40,6 +45,7 @@ export interface IUserAuth {
   user: {
     id: string;
     userName: string;
+    fullName: string;
     facebook?: {
       accessToken
     }

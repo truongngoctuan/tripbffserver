@@ -15,12 +15,17 @@ const LoginsSchema = new Schema({
   facebook: {
     facebookUserId: String,
     accessToken: String,
+    id: String,
+    name: String,
+    first_name: String,
+    last_name: String,
   },
 });
 
 const UsersSchema = new Schema({
   userId: String,
   userName: String,
+  fullName: String,
   logins: [LoginsSchema]
 });
 

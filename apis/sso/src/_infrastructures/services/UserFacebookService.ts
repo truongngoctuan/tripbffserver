@@ -20,6 +20,13 @@ type FbDebugTokenReturn = {
   is_valid: boolean,
 }
 
+type FbProfileReturn = {
+  id: string;
+  name: string;
+  first_name: string;
+  last_name: string;
+}
+
 export class UserFacebookService {
 
   constructor(private _userService: UserService) {
@@ -88,6 +95,15 @@ export class UserFacebookService {
     login.facebook.accessToken = new_access_token;
     userDb.logins[loginIndex] = login;
 
+    if (!login.facebook.name) {
+      const facebookProfile = await this.getUserProfile(new_access_token);
+      login.facebook = {
+        ...login.facebook,
+        ...facebookProfile
+      }
+      userDb.fullName = facebookProfile.name;
+    }
+
     return userDb.save().then(() => this._userService.getAuthObject(userDb));
   }
 
@@ -100,13 +116,31 @@ export class UserFacebookService {
     // console.log("appResult", appResult.data);
 
     const appToken = appResult.data.access_token;
-    // console.log("appToken", appToken);
+    console.log("appToken", appToken);
 
     const verifyLink = 'https://graph.facebook.com/debug_token?input_token=' + access_token + '&access_token=' + appToken;
 
     var verifyResult = await axios.get(verifyLink);
     console.log("verifyResult", verifyResult.data.data);
     return verifyResult.data.data;
+  }
+
+  async getUserProfile(accessToken: string) {
+    var profileResult: FbProfileReturn = await axios.get(`https://graph.facebook.com/me?fields=id,name,first_name,last_name&access_token=${accessToken}`)
+      .then(json => json.data);
+
+    console.log("user data from graph", profileResult);
+    // var user = {
+    //   // Some user object has been set up somewhere, build that user here
+    //   email: profileResult.email ? profileResult.email : profileResult.id,
+    //   password: '123456',
+    //   username: profileResult.name,
+    //   lastName: "",
+    //   firstName: "",
+    //   fullName: profileResult.name
+    // };
+    // console.log(user);
+    return profileResult
   }
 
 }
