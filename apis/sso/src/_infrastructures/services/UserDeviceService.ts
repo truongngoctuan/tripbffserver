@@ -38,6 +38,7 @@ export class UserDeviceService {
     const finalUser = new Users({
       userId: uuid(),
       userName: getUserName(uniqueDeviceId),
+      fullName: "Quest",
       logins: [userLogin]
     });
 

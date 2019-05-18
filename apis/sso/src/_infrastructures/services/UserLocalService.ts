@@ -45,6 +45,7 @@ export class UserLocalService implements IUserLocalService {
     const finalUser = new Users({
       userId: uuid(),
       userName: email,
+      fullName: "Quest",
       logins: [userLogin]
     });
 
