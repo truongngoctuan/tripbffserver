@@ -1,9 +1,11 @@
 import { TripEventRepository } from "./_infrastructures/repositories/TripEventRepository";
 import TripRepository from "./_infrastructures/repositories/TripRepository";
+import TripsRepository from "./_infrastructures/repositories/TripsRepository";
 import { JobDispatcher } from "./_infrastructures/JobDispatcher";
 import { TripCommandHandler } from "./_core/services/commands/_commandHandler";
 import { ServiceBus } from "./_core/services/TripServiceBus";
 import { TripQueryHandler } from "./_core/services/TripQuery";
+import { MinimizedTripQueryHandler } from "./_core/services/MinimizedTripQueryHandler";
 import { IFileStorageService } from "../image.module/IFileStorageService";
 import { FileStorageOfflineService } from "../image.module/FileStorageOfflineService";
 import { IImageService } from "../image.module/IImageService";
@@ -20,13 +22,16 @@ const mg = initSchemas(mongoose);
 
 const tripEventRepository = new TripEventRepository();
 const tripRepository = new TripRepository(mg);
+const tripsRepository = new TripsRepository(mg);
+
 const jobDispatcher = new JobDispatcher();
 const tripCommandHandler = new TripCommandHandler(
   tripEventRepository,
-  new ServiceBus(tripRepository),
+  new ServiceBus(tripRepository, tripsRepository),
   jobDispatcher,
 );
 const tripQueryHandler = new TripQueryHandler(tripRepository);
+const minimizedTripsQueryHandler = new MinimizedTripQueryHandler(tripsRepository);
 const tripEventQueryHandler = new TripEventQueryHandler(new TripEventRepository());
 const fileService: IFileStorageService = new FileStorageOfflineService();
 const imageService: IImageService = new ImageService();
@@ -39,6 +44,7 @@ const dataSourceQueryHandler = new DataSourceQueryHandler(
 export const IoC = {
   tripCommandHandler,
   tripQueryHandler,
+  minimizedTripsQueryHandler,
   fileService,
   imageService,
   tripEventQueryHandler,

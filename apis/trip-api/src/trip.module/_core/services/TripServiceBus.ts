@@ -1,16 +1,29 @@
 import { TripEvent } from "./events";
 import { TripReducers } from "./reducers/_tripReducer";
 import { ITripRepository } from "../models/ITripRepository";
+import { TripsMinimizedReducer } from "./mirroredReducers/TripsMinimizedReducer";
 import { ITrip } from "../models/ITrip";
+import { ITripsRepository } from "../models/ITripsRepository";
 
+
+/**
+ * todo use kafka to stream events or gRPC
+ * todo can rerun events
+ *
+ * @export
+ * @class ServiceBus
+ */
 export class ServiceBus {
   // eventHandlers: (() => void)[] = [];
   // public addEventHandler(handler: () => void) {
   //   this.eventHandlers.push(handler);
   // }
   private reducer: TripReducers;
-  constructor(private TripRepository: ITripRepository) {
+  private _tripMinimizedReducer: TripsMinimizedReducer
+  constructor(private TripRepository: ITripRepository,
+    private TripsRepository: ITripsRepository) {
     this.reducer = new TripReducers();
+    this._tripMinimizedReducer = new TripsMinimizedReducer();
   }
 
   public async emit(event: TripEvent) {
@@ -20,6 +33,7 @@ export class ServiceBus {
     var tripId = event.tripId;
     var ownerId = event.ownerId;
 
+    //the first subscriber consume our event
     var state = await this.TripRepository.get(ownerId, tripId);
     state = await this.reducer.updateState(state as ITrip, event);
 
@@ -27,6 +41,15 @@ export class ServiceBus {
       await this.TripRepository.create(ownerId, state);
     } else {
       await this.TripRepository.update(ownerId, state);
+    }
+
+    //todo the second subscriber consume our event
+    var minimizedState = await this._tripMinimizedReducer.transform(state);
+
+    if (event.type == "TripCreated") {
+      await this.TripsRepository.create(ownerId, minimizedState);
+    } else {
+      await this.TripsRepository.update(ownerId, minimizedState);
     }
   }
 }
