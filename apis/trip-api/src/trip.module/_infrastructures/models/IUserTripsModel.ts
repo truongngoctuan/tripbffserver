@@ -12,5 +12,10 @@ export interface ITripsModel {
   name: string;
   fromDate: Date;
   toDate: Date;
-  locationImages: Array<string>;
+  locationImages: {
+    name: string;
+    address: string;
+    description: string;
+    imageUrl: string;
+  }[];
 }

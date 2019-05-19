@@ -17,9 +17,13 @@ export class TripsMinimizedReducer {
         returnId = favoredImages[0].externalStorageId;
       if (loc.images.length > 0)
         returnId = loc.images[0].externalStorageId;
-        
-      if (returnId) return returnId;
-      return "";
+
+      return {
+        name: loc.name,
+        address: loc.location.address,
+        description: loc.description as string,
+        imageUrl: returnId ? returnId : "",
+      }
     });
 
 

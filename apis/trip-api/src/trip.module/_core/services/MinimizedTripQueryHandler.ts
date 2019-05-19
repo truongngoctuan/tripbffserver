@@ -14,7 +14,12 @@ export class MinimizedTripQueryHandler {
   private updateTripImageExternalUrl(trip: ITripMinimized) {
     if (!trip) return trip;
     trip.locationImages = trip.locationImages.map(locationImage => {
-      return locationImage === "" ? "" : resolveThumbnailImageUrlFromExternalStorageId(locationImage);
+      return {
+        name: locationImage.name,
+        address: locationImage.address,
+        description: locationImage.description,
+        imageUrl: locationImage.imageUrl === "" ? "" : resolveThumbnailImageUrlFromExternalStorageId(locationImage.imageUrl),
+      }
     });
     return trip;
   }

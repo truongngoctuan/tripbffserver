@@ -5,7 +5,12 @@ export interface ITripMinimized {
   name: string;
   fromDate: Moment;
   toDate: Moment;
-  locationImages: string[]
+  locationImages: {
+    name: string;
+    address: string;
+    description: string;
+    imageUrl: string;
+  }[];
 }
 
 export interface ITripsRepository {
