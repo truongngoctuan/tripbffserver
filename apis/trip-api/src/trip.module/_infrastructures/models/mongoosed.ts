@@ -1,10 +1,10 @@
 import { Model, Mongoose } from "mongoose";
 import { IUserTripDocument, UserTripSchema } from "./UserTripModel";
-
-
+import { IUserTripsDocument, UserTripsSchema } from "./UserTripsModel";
 
 export interface IMongooseSchemas {
   UserTripDocument: Model<IUserTripDocument>
+  UserTripsDocument: Model<IUserTripsDocument>
 }
 
 export function initSchemas(mongoose: any) {
@@ -12,9 +12,14 @@ export function initSchemas(mongoose: any) {
     "UserTrip",
     UserTripSchema
   );
+  const UserTripsDocument: Model<IUserTripsDocument> = (mongoose as Mongoose).model<IUserTripsDocument>(
+    "UserMinimizedTrips",
+    UserTripsSchema
+  );
 
   const SchemaCollections: IMongooseSchemas = {
-    UserTripDocument
+    UserTripDocument,
+    UserTripsDocument
   }
 
   return SchemaCollections;

@@ -7,6 +7,8 @@ import { IMongooseSchemas } from "../../_infrastructures/models/mongoosed";
 import { TripEvent } from "../services/events";
 import { ITrip } from "../models/ITrip";
 import { ITripRepository } from "../models/ITripRepository";
+import { ITripsRepository } from "../models/ITripsRepository";
+import TripsRepository from "../../_infrastructures/repositories/TripsRepository";
 
 let schemas: IMongooseSchemas;
 
@@ -20,12 +22,14 @@ afterAll(async () => {
 
 
 var tripRepository: ITripRepository;
+var tripsRepository: ITripsRepository;
 var serviceBus: ServiceBus;
 
 beforeEach(async () => {
   await mongoUtil.beforeEach();
   tripRepository = new TripRepository(schemas);
-  serviceBus = new ServiceBus(tripRepository);
+  tripsRepository = new TripsRepository(schemas);
+  serviceBus = new ServiceBus(tripRepository, tripsRepository);
 
   var event: TripEvent = {
     type: "TripCreated",

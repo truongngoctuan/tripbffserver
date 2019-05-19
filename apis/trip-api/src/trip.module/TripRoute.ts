@@ -11,6 +11,7 @@ console.log("checking current time in server", moment().format());
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
+const minimizedTripQueryHandler = IoC.minimizedTripsQueryHandler;
 
 module.exports = {
   init: function(server: Server) {
@@ -19,7 +20,7 @@ module.exports = {
       path: "/trips",
       handler: async function(request) {
         const userId = CUtils.getUserId(request);
-        var trips = await tripQueryHandler.list(userId);
+        var trips = await minimizedTripQueryHandler.list(userId);
 
         if (!trips) return Err("can't get data after create trip");
 
