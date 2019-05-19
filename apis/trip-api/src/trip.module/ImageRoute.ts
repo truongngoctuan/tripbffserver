@@ -73,7 +73,7 @@ module.exports = {
             return returnFileFromWH(imageId, wi, he, h);
           }
 
-          return returnFileFromWH(imageId, 200, 200, h);
+          return returnFileFromWH(imageId, 400, 400, h);
 
         } catch (error) {
           console.log(error);

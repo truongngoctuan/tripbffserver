@@ -1,5 +1,5 @@
 import { ITripsRepository, ITripMinimized } from "../models/ITripsRepository";
-import { resolveImageUrlFromExternalStorageId } from "./ImageUrlResolver";
+import { resolveThumbnailImageUrlFromExternalStorageId } from "./ImageUrlResolver";
 
 export class MinimizedTripQueryHandler {
   constructor(private TripsRepository: ITripsRepository) { }
@@ -14,7 +14,7 @@ export class MinimizedTripQueryHandler {
   private updateTripImageExternalUrl(trip: ITripMinimized) {
     if (!trip) return trip;
     trip.locationImages = trip.locationImages.map(locationImage => {
-      return locationImage === "" ? "" : resolveImageUrlFromExternalStorageId(locationImage);
+      return locationImage === "" ? "" : resolveThumbnailImageUrlFromExternalStorageId(locationImage);
     });
     return trip;
   }
