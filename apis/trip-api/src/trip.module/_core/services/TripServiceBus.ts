@@ -43,6 +43,7 @@ export class ServiceBus {
       await this.TripRepository.update(ownerId, state);
     }
 
+    //TODO: should we do it every update ? Or we will do it when user load profile page ?
     //todo the second subscriber consume our event
     var minimizedState = await this._tripMinimizedReducer.transform(state);
 

@@ -163,30 +163,36 @@ export class TripReducers {
     );
 
     var location = prevState.locations[locationIdx];
+    if (location) {
+      //get image
+      var imageIdx = _.findIndex(
+        location.images,
+        img => img.imageId == command.imageId
+      );
+      var image = location.images[imageIdx];
 
-    //get image
-    var imageIdx = _.findIndex(
-      location.images,
-      img => img.imageId == command.imageId
-    );
-    var image = location.images[imageIdx];
-    image.externalStorageId = command.externalStorageId;
+      if (image) {
+        image.externalStorageId = command.externalStorageId;
 
-    //update state
-    location.images = [
-      ...location.images.slice(0, imageIdx),
-      image,
-      ...location.images.slice(imageIdx + 1)
-    ];
-
-    return {
-      ...prevState,
-      locations: [
-        ...prevState.locations.slice(0, locationIdx),
-        location,
-        ...prevState.locations.slice(locationIdx + 1)
-      ]
-    };
+        //update state
+        location.images = [
+          ...location.images.slice(0, imageIdx),
+          image,
+          ...location.images.slice(imageIdx + 1)
+        ];
+  
+        return {
+          ...prevState,
+          locations: [
+            ...prevState.locations.slice(0, locationIdx),
+            location,
+            ...prevState.locations.slice(locationIdx + 1)
+          ]
+        };
+      }      
+    }
+    
+    return prevState;
   }
 
 }
