@@ -6,18 +6,8 @@ export function removeLocation(
   prevState: ITrip,
   command: TripLocationRemovedEvent
 ): ITrip {
-
-  //get location
-  var locationIdx = _.findIndex(
-    prevState.locations,
-    loc => loc.locationId == command.locationId
-  );
-
   return {
     ...prevState,
-    locations: [
-      ...prevState.locations.slice(0, locationIdx),
-      ...prevState.locations.slice(locationIdx + 1)
-    ]
+    locations: prevState.locations.filter(lo => lo.locationId != command.locationId)
   };
 }

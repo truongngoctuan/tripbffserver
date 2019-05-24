@@ -16,15 +16,19 @@ export function removeTripLocationImages(
 
   var location = prevState.locations[locationIdx];
 
-  location.images = _.remove(location.images, 
-    img => _.indexOf(command.imageIds, img.imageId) == -1);
-
-  return {
-    ...prevState,
-    locations: [
-      ...prevState.locations.slice(0, locationIdx),
-      location,
-      ...prevState.locations.slice(locationIdx + 1)
-    ]
-  };
+  if (location) {
+    location.images = _.remove(location.images, 
+      img => _.indexOf(command.imageIds, img.imageId) == -1);
+  
+    return {
+      ...prevState,
+      locations: [
+        ...prevState.locations.slice(0, locationIdx),
+        location,
+        ...prevState.locations.slice(locationIdx + 1)
+      ]
+    };
+  }
+  
+  return prevState;
 }
