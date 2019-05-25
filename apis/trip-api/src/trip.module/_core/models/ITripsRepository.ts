@@ -5,6 +5,7 @@ export interface ITripMinimized {
   name: string;
   fromDate: Moment;
   toDate: Moment;
+  isDeleted: boolean;
   locationImages: {
     name: string;
     address: string;

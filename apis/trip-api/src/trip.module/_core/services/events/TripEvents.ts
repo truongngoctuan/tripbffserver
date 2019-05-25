@@ -32,3 +32,10 @@ export type TripNameUpdatedEvent = {
   tripId: string;
   name: string;
 };
+
+export type TripDeletedEvent = {
+  type: "TripDeleted";
+  ownerId: string;
+  tripId: string;
+  isDeleted: boolean;
+};

@@ -53,7 +53,8 @@ export class TripRepository implements ITripRepository {
           externalUrl: "",
           status: infographic.status as InfographicStatus
         };
-      })
+      }),
+      isDeleted: o.isDeleted
     };
   }
 
@@ -69,13 +70,14 @@ export class TripRepository implements ITripRepository {
   }
 
   public async create(ownerId: string, payload: ITrip) {
-    const { tripId: id, name, fromDate, toDate } = payload;
+    const { tripId: id, name, fromDate, toDate, isDeleted } = payload;
 
     var trip: ITripModel = {
       tripId: id,
       name,
       fromDate: moment(fromDate).toDate(),
-      toDate: moment(toDate).toDate()
+      toDate: moment(toDate).toDate(),
+      isDeleted: isDeleted
     }
     var userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) {
@@ -118,6 +120,7 @@ export class TripRepository implements ITripRepository {
       highlights: loc.highlights
     }));
     trip.infographics = payload.infographics;
+    trip.isDeleted = payload.isDeleted;
 
     await userTrips.save();
   }
