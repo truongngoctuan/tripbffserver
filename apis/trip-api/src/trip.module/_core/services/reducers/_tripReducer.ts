@@ -21,6 +21,7 @@ import { removeTripLocationImages } from "./removeTripLocationImages";
 import { favorTripLocationImage } from "./favorTripLocationImage";
 import { updateLocationHighlight } from "./updateLocationHighlight";
 import { updateLocationDescription } from "./updateLocationDescription";
+import { deleteTrip } from "./deleteTrip";
 
 // var staticEventHandlers = new Map<string, Function>();
 
@@ -48,7 +49,8 @@ export class TripReducers {
       fromDate: moment(),
       toDate: moment(),
       locations: [],
-      infographics: []
+      infographics: [],
+      isDeleted: false
     };
 
     events.forEach((event) => {
@@ -96,6 +98,8 @@ export class TripReducers {
         return createInfographic(state, event);
       case "InfographicExported":
         return finishCreateInfographic(state, event);
+      case "TripDeleted":
+        return deleteTrip(state, event);
       default:
         console.log("MISSING register event: ", (event as any).type);
         return state;
@@ -109,7 +113,8 @@ export class TripReducers {
       fromDate: command.fromDate,
       toDate: command.toDate,
       locations: [],
-      infographics: []
+      infographics: [],
+      isDeleted: false
     };
   }
 

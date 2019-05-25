@@ -1,6 +1,6 @@
 import { Moment } from "moment";
 import { ITripLocation, IHighlight } from "../../models/ITrip";
-import { TripCreatedEvent, TripUpdatedEvent, TripDateRangeUpdatedEvent, TripNameUpdatedEvent } from "./TripEvents";
+import { TripCreatedEvent, TripUpdatedEvent, TripDateRangeUpdatedEvent, TripNameUpdatedEvent, TripDeletedEvent } from "./TripEvents";
 
 export type TripEvent =
   | TripCreatedEvent
@@ -20,7 +20,8 @@ export type TripEvent =
   | TripLocationUpdatedHighlightEvent
   | TripLocationUpdatedDescriptionEvent
   | InfographicCreatedEvent
-  | InfographicExportedEvent;
+  | InfographicExportedEvent
+  | TripDeletedEvent;
 
 export type TripImportLocationsEvent = {
   type: "TripImportLocations";
