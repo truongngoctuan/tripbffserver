@@ -382,43 +382,58 @@ module.exports = {
     });
 
     //todo change the way we handle uploadImage
-    //todo + add preUploadImage - sign s3 url
+    //todo + add preUploadImage - return to s3 with signed url
     //todo + uploadImage is only for UPDATE EXTERNAL STORAGE ID
-    //todo + get image now return a signed url instead of data!
-    //todo + the same for thumbnail
-    //todo + get image should redirect to s3 url with signed url
+    //todo + get image now redirect to a s3 signed url
+    //todo + the same for thumbnail:
+    //       + download the image
+    //       + build a thumbnail
+    //       + upload thumbnail image
+    //       + then return s3 signed url
 
-    //todo first step cover the same mechanism but using the obsoleted offline image uploader
-    //todo the created url will be built that redirect to ImageRoute with
+    server.route({
+      method: "GET",
+      path: "/trips/{tripId}/preUploadImage",
+      handler: async function(request) {
+        console.log("GET /trips/{tripId}/preUploadImage");
+
+        try {
+          const { tripId } = request.params;
+          const { fileName } = request.payload as any;
+
+          var category = `trips/${tripId}`;
+          const result = IoC.fileService.signUpload(category, fileName);
+
+          return result;
+
+        } catch (error) {
+          console.log(error);
+          return error;
+        }
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"]
+      }
+    });
+
     server.route({
       method: "POST",
       path: "/trips/{tripId}/uploadImage",
       handler: async function(request) {
         console.log("POST /trips/{tripId}/uploadImage");
+
         try {
           const { tripId } = request.params;
           const {
             locationId,
             imageId,
-            file,
-            fileName
+            fullPath
           } = request.payload as any;
           const ownerId = CUtils.getUserId(request);
 
-          var category = `uploads/trips/${tripId}`;
-          const { externalId } = await IoC.fileService.save(
-            file as Buffer,
-            category,
-            fileName
-          );
+          const { externalId } = await IoC.fileService.save(fullPath);
 
-          console.log({
-            type: "uploadImage",
-            tripId,
-            locationId,
-            imageId,
-            externalStorageId: externalId
-          })
           // create import command
           var commandResult = await tripCommandHandler.exec({
             type: "uploadImage",
@@ -434,10 +449,9 @@ module.exports = {
             var externalUrl = await tripQueryHandler.getExternalUrlByExternalId(externalId);
             return { externalId, thumbnailExternalUrl, externalUrl };
           }
-
-          //todo cleanup uploaded file after command failed
-
+    
           return commandResult.errors;
+
         } catch (error) {
           console.log(error);
           return error;
@@ -445,13 +459,22 @@ module.exports = {
       },
       options: {
         auth: "simple",
-        tags: ["api"],
-        payload: {
-          parse: true,
-          maxBytes: 50 * 1024 * 1024
-        }
+        tags: ["api"]
       }
     });
+
+    // server.route({
+    //   method: "GET",
+    //   path: "/trips/{tripId}/images/{imageId}",
+    //   handler: async function (request, h) {
+    //     console.log("/asd");
+    //     const { tripId, imageId } = request.params;
+
+    //     var category = `trips/${tripId}/${imageId}.jpg`;
+    //     const result = await IoC.fileService.signGet(category);
+    //     return h.redirect(result);
+    //   }
+    // });
 
     server.route({
       method: "PATCH",
@@ -586,7 +609,6 @@ module.exports = {
         }
       }
     });
-
 
     server.route({
       method: "PATCH",
