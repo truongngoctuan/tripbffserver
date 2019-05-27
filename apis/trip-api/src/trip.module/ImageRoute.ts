@@ -125,5 +125,76 @@ module.exports = {
         }
       }
     });
+
+
+    server.route({
+      method: "GET",
+      path: "/asd",
+      handler: async function (request, h) {
+        console.log("/asd");
+        const s3Return = await signGetUrl("redcat.png", "image/jpeg");
+        console.log(s3Return.signedRequest)
+        return h.redirect(s3Return.signedRequest);
+      }
+    });
+
+    server.route({
+      method: "GET",
+      path: "/dfg",
+      handler: async function (request, h) {
+        console.log("/dfg");
+        return { status: "ok" };
+        
+      }
+    });
+
   }
 };
+
+const aws = require("aws-sdk");
+
+//todo need to setup AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+// using dev-access account with S3FullAccess only
+const AWS_ACCESS_KEY_ID = "AKIA43HXFY3XFFFG5GRX"
+const AWS_SECRET_ACCESS_KEY = "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"
+const S3_BUCKET = "tripbff-dev-trips"
+const S3_REGION = "ap-southeast-1" //singapore
+
+async function signGetUrl(fileName, fileType) {
+  const s3 = new aws.S3({
+    accessKeyId: AWS_ACCESS_KEY_ID,
+    secretAccessKey: AWS_SECRET_ACCESS_KEY,
+    region: S3_REGION,
+  });
+  const s3Params = {
+    Bucket: S3_BUCKET,
+    Key: fileName,
+    Expires: 60,
+    // ContentType: fileType,
+    // ACL: 'public-read' //todo
+  };
+
+  const pros = new Promise((resolve, reject) => {
+    s3.getSignedUrl('getObject', s3Params, (err, data) => {
+      if (err) {
+
+        console.log(err);
+        reject(err);
+        return;
+        // return res.end();
+      }
+      const returnData = {
+        signedRequest: data,
+        url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`
+      };
+      console.log("signed request");
+      // console.log(returnData);
+      resolve(returnData);
+      return returnData;
+      // res.write(JSON.stringify(returnData));
+      // res.end();
+    });
+  })
+
+  return pros;
+}

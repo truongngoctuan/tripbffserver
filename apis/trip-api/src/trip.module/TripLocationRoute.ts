@@ -381,6 +381,15 @@ module.exports = {
       }
     });
 
+    //todo change the way we handle uploadImage
+    //todo + add preUploadImage - sign s3 url
+    //todo + uploadImage is only for UPDATE EXTERNAL STORAGE ID
+    //todo + get image now return a signed url instead of data!
+    //todo + the same for thumbnail
+    //todo + get image should redirect to s3 url with signed url
+
+    //todo first step cover the same mechanism but using the obsoleted offline image uploader
+    //todo the created url will be built that redirect to ImageRoute with
     server.route({
       method: "POST",
       path: "/trips/{tripId}/uploadImage",
@@ -429,44 +438,6 @@ module.exports = {
           //todo cleanup uploaded file after command failed
 
           return commandResult.errors;
-        } catch (error) {
-          console.log(error);
-          return error;
-        }
-      },
-      options: {
-        auth: "simple",
-        tags: ["api"],
-        payload: {
-          parse: true,
-          maxBytes: 50 * 1024 * 1024
-        }
-      }
-    });
-
-    server.route({
-      method: "POST",
-      path: "/uploadImage",
-      handler: async function(request) {
-        console.log("POST /uploadImage");
-        try {
-          const data = request.payload as any;
-          const file: Buffer = data.file;
-          const fileName: string = data.fileName;
-
-          console.log("fileName");
-          console.log(fileName);
-          console.log("file");
-          console.log(file);
-
-          var category = "./upload/images";
-          const { externalId } = await IoC.fileService.save(
-            file,
-            category,
-            fileName
-          );
-
-          return { status: "ok" };
         } catch (error) {
           console.log(error);
           return error;
