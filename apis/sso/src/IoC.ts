@@ -12,6 +12,7 @@ const userFacebookService = new UserFacebookService(userService);
 const userDeviceService = new UserDeviceService(userService);
 
 export const IoC = {
+  userService,
   userLocalService,
   userFacebookService,
   userDeviceService,

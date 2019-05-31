@@ -3,8 +3,16 @@ import { IUser, IUserAuth, ILoginFacebook } from "../../_core/models/IUser";
 import { LOGIN_TYPE } from "../../_core/models/constants";
 const jwt = require('jsonwebtoken');
 import _ from "lodash";
+import Users from "../models/users";
+import { toUserVM } from "./utils";
 
 export class UserService {
+
+  async getById(userId: string) {
+    const userDb = await Users.findOne({ userId: userId });
+    return userDb;
+  }
+
   getAuthObject(userObject: IUser): IUserAuth {
     const facebookLogin = _.find(userObject.logins, login => login.loginType == LOGIN_TYPE.FACEBOOK) as ILoginFacebook;
     return {
