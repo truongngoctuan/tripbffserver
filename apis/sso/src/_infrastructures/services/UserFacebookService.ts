@@ -6,6 +6,7 @@ import axios from "axios";
 import { UserService } from "./UserService";
 import { toUserVM } from "./utils";
 import { LOGIN_TYPE } from "../../_core/models/constants";
+import { IoC } from "../../IoC";
 
 const FACEBOOK_APP_ID = '2341289862566899';
 const FACEBOOK_APP_SECRET = 'fb968c05bbcda85d56acd9c50304750f';
@@ -38,7 +39,7 @@ export class UserFacebookService {
     return toUserVM(userDb);
   }
 
-  async register(facebookUserId: string, access_token: string) {
+  async register(facebookUserId: string, access_token: string, logged_user_id: string) {
     const userDb = await Users.findOne({ userName: getUserName(facebookUserId) });
     if (userDb) throw "user existed";
 
@@ -62,11 +63,20 @@ export class UserFacebookService {
       }
     }
 
-    const finalUser = new Users({
-      userId: uuid(),
-      userName: getUserName(facebookUserId),
-      logins: [userLogin]
-    });
+    let finalUser;
+
+    if (logged_user_id) {
+      finalUser = await IoC.userService.getById(logged_user_id);
+      finalUser.logins.push(userLogin);
+      finalUser.userName = getUserName(facebookUserId);
+    }
+    else {
+      finalUser = new Users({
+        userId: uuid(),
+        userName: getUserName(facebookUserId),
+        logins: [userLogin]
+      });
+    }
 
     return finalUser.save().then(() => toUserVM(finalUser));
   }

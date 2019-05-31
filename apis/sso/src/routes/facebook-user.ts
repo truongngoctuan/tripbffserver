@@ -6,7 +6,7 @@ import { IoC } from '../IoC';
 router.post('/facebook/verify',
   //  passport.authenticate('facebook', { failureRedirect: '/login' }),
   async (req, res, next) => {
-    const { body: { access_token, user_id } } = req;
+    const { body: { access_token, user_id, logged_user_id } } = req;
 
     const dbUser = await IoC.userFacebookService.getById(user_id);
     console.log("db user", dbUser);
@@ -23,8 +23,9 @@ router.post('/facebook/verify',
       return res.json({ error: "authen_failed"});
     }
 
-    const newUser = await IoC.userFacebookService.register(user_id, access_token);
-    console.log("new user", newUser);
+    const user = await IoC.userFacebookService.register(user_id, access_token, logged_user_id);
+    console.log("new user", user);
+
     const result = await IoC.userFacebookService.login(user_id, access_token);
     return res.json(result);
   });
