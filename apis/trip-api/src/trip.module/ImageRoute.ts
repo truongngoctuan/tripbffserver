@@ -60,13 +60,15 @@ module.exports = {
 
     async function returnFileFromWH(imageId: string, wi: number, he: number, h: ResponseToolkit) {
       var { fileInfo } = await IoC.fileService.getInfoById(imageId);
-      const fileExtension = path.parse(fileInfo.fileName).ext;
-      const fileThumbnailPath = path.join(fileInfo.category, `${fileInfo.externalId}_${wi}_${he}${fileExtension}`)
 
       await IoC.imageService.saveThumbnail(fileInfo.path, wi, he);
 
-      return (h as any).file(fileThumbnailPath);
+      const imageThumbnail = IoC.imageService.generateThumbnailUri(fileInfo.fileName, wi, he);
+      const signedUrl = await IoC.fileService.signGet(imageThumbnail);
+      console.log("signed thumbnail", signedUrl);
+      return signedUrl;
     }
+
     server.route({
       method: "GET",
       path: "/images/{id}/thumbnail",
@@ -75,32 +77,28 @@ module.exports = {
 
         var imageId = request.params.id;
 
-        var { fileInfo } = await IoC.fileService.getInfoById(imageId);
+        try {
+          var imageId = request.params.id;
+          //either size(s) or width + height (w, h)
+          const { s, wi, he } = request.query as any;
 
-        const signedUrl = await IoC.fileService.signGet(fileInfo.fileName);
+          let signedUrl = "";
+          if (s) {
+            signedUrl = await returnFileFromWH(imageId, s, s, h);
+          }
+
+          if (wi && he) {
+            signedUrl = await returnFileFromWH(imageId, wi, he, h);
+          }
+
+          signedUrl = await returnFileFromWH(imageId, 400, 400, h);
+
         return h.redirect(signedUrl);
 
-        //todo need to to stuff here
-        //todo: download from s3, build thumbnail, upload it back
-        // try {
-        //   var imageId = request.params.id;
-        //   //either size(s) or width + height (w, h)
-        //   const { s, wi, he } = request.query as any;
-
-        //   if (s) {
-        //     return returnFileFromWH(imageId, s, s, h);
-        //   }
-
-        //   if (wi && he) {
-        //     return returnFileFromWH(imageId, wi, he, h);
-        //   }
-
-        //   return returnFileFromWH(imageId, 400, 400, h);
-
-        // } catch (error) {
-        //   console.log(error);
-        //   return error;
-        // }
+        } catch (error) {
+          console.log(error);
+          return error;
+        }
       },
       options: {
         //todo: need another way to handle authentication

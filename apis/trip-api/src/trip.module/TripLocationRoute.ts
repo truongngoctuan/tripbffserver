@@ -399,10 +399,10 @@ module.exports = {
 
         try {
           const { tripId } = request.params;
-          const { fileName } = request.payload as any;
+          const { mimeType } = request.query as any;
 
           var category = `trips/${tripId}`;
-          const result = IoC.fileService.signUpload(category, fileName);
+          const result = IoC.fileService.signUpload(category, mimeType);
 
           return result;
 
