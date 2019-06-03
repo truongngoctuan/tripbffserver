@@ -402,7 +402,7 @@ module.exports = {
           const { mimeType } = request.query as any;
 
           var category = `trips/${tripId}`;
-          const result = IoC.fileService.signUpload(category, mimeType);
+          const result = await IoC.fileService.signUpload(category, mimeType);
 
           return result;
 
