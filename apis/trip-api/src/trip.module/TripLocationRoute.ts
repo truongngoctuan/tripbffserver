@@ -403,7 +403,7 @@ module.exports = {
 
           var category = `trips/${tripId}`;
           const result = await IoC.fileService.signUpload(category, mimeType);
-
+          console.log("signed result", result);
           return result;
 
         } catch (error) {
