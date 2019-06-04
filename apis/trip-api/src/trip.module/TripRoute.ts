@@ -161,5 +161,36 @@ module.exports = {
         }
       }
     });    
+
+    server.route({
+      method: "DELETE",
+      path: "/trips/{id}",
+      handler: async function(request) {
+        var tripId = request.params.id;
+        const ownerId = CUtils.getUserId(request);
+
+        var commandResult = await tripCommandHandler.exec({
+          type: "deleteTrip",
+          ownerId,
+          tripId,
+          isDeleted: true
+        });
+
+        if (commandResult.isSucceed) {
+          return true;
+        }
+
+        return commandResult.errors;
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+        validate: {
+          params: {
+            id: Joi.required().description("the id for the todo item")
+          }
+        }
+      }
+    });  
   }
 };

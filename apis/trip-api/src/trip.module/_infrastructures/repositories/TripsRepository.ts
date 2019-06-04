@@ -18,6 +18,7 @@ export class TripsRepository implements ITripsRepository {
       fromDate: moment(o.fromDate),
       toDate: moment(o.toDate),
       locationImages: o.locationImages,
+      isDeleted: o.isDeleted
     };
   }
 
@@ -33,14 +34,15 @@ export class TripsRepository implements ITripsRepository {
   }
 
   public async create(ownerId: string, payload: ITripMinimized) {
-    const { tripId, name, fromDate, toDate, locationImages } = payload;
+    const { tripId, name, fromDate, toDate, locationImages, isDeleted } = payload;
 
     var trip: ITripsModel = {
       tripId,
       name,
       fromDate: moment(fromDate).toDate(),
       toDate: moment(toDate).toDate(),
-      locationImages
+      locationImages,
+      isDeleted: isDeleted
     }
 
     var userTrips = await this.getUserTrips(ownerId);
@@ -69,6 +71,7 @@ export class TripsRepository implements ITripsRepository {
     trip.fromDate = payload.fromDate.toDate();
     trip.toDate = payload.toDate.toDate();
     trip.locationImages = payload.locationImages;
+    trip.isDeleted = payload.isDeleted;
 
     await userTrips.save();
   }

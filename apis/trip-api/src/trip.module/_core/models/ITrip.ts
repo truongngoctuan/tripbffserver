@@ -7,6 +7,7 @@ export interface ITrip {
   toDate: Moment;
   locations: Array<ITripLocation>;
   infographics: Array<IInfographic>;
+  isDeleted: boolean
 }
 
 export interface ITripLocation {

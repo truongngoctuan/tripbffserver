@@ -57,7 +57,8 @@ const TripSchema = new Schema({
       externalStorageId: String,
       status: String
     }
-  ]
+  ],
+  isDeleted: Boolean
 });
 
 export const UserTripSchema = new Schema({
