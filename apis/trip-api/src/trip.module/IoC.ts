@@ -6,10 +6,10 @@ import { TripCommandHandler } from "./_core/services/commands/_commandHandler";
 import { ServiceBus } from "./_core/services/TripServiceBus";
 import { TripQueryHandler } from "./_core/services/TripQuery";
 import { MinimizedTripQueryHandler } from "./_core/services/MinimizedTripQueryHandler";
-import { IFileStorageService } from "../image.module/IFileStorageService";
-import { FileStorageOfflineService } from "../image.module/FileStorageOfflineService";
-import { IImageService } from "../image.module/IImageService";
-import { ImageService } from "../image.module/ImageService";
+import { IFileStorageService2 } from "../image.module/IFileStorageService2";
+import { FileStorageS3Service } from "../image.module/FileStorageS3Service";
+import { IImageService } from "../image.module/_core/IImageService";
+import { ImageS3Service } from "../image.module/_infrastructures/ImageS3Service";
 import { TripEventQueryHandler } from "./_core/services/TripEventQuery";
 import { DataSourceQueryHandler } from "./_core/services/DataSourceQueryHandler";
 import FeelingRepository from "./_infrastructures/repositories/FeelingRepository";
@@ -33,8 +33,8 @@ const tripCommandHandler = new TripCommandHandler(
 const tripQueryHandler = new TripQueryHandler(tripRepository);
 const minimizedTripsQueryHandler = new MinimizedTripQueryHandler(tripsRepository);
 const tripEventQueryHandler = new TripEventQueryHandler(new TripEventRepository());
-const fileService: IFileStorageService = new FileStorageOfflineService();
-const imageService: IImageService = new ImageService();
+const fileService: IFileStorageService2 = new FileStorageS3Service();
+const imageService: IImageService = new ImageS3Service();
 
 const dataSourceQueryHandler = new DataSourceQueryHandler(
   new FeelingRepository(),

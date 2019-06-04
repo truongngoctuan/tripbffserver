@@ -6,7 +6,6 @@ export interface IFileStorageService {
     category: string,
     fileName: string,
   ) => Promise<{ externalId: string; slug: string }>;
-  getById: (externalId: string) => Promise<{ file: Stream, fileInfo: IFileInfo }>;
   getInfoById: (externalId: string) => Promise<{ fileInfo: IFileInfo }>;
 }
 
