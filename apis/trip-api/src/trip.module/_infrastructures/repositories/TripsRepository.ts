@@ -26,6 +26,15 @@ export class TripsRepository implements ITripsRepository {
     return await this._mg.UserTripsDocument.findOne({ userId }).exec();
   }
 
+  public async getById(ownerId: string, tripId: string) {
+    var userTrips = await this.getUserTrips(ownerId);
+    if (!userTrips) return undefined;
+
+    var trip = _.find(userTrips.trips, trip => trip.tripId === tripId);
+    if (!trip) return undefined;
+    return this.toTripDto(trip);    
+  }
+
   public async list(ownerId: string) {
     var userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) return [];
