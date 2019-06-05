@@ -11,6 +11,13 @@ export class MinimizedTripQueryHandler {
       });
   }
 
+  async getById(ownerId: string, tripId: string): Promise<ITripMinimized | undefined> {
+    return this.TripsRepository.getById(ownerId, tripId)
+      .then(trip => {
+        return trip ? this.updateTripImageExternalUrl(trip) : undefined;
+      });
+  }
+
   private updateTripImageExternalUrl(trip: ITripMinimized) {
     if (!trip) return trip;
     trip.locationImages = trip.locationImages.map(locationImage => {

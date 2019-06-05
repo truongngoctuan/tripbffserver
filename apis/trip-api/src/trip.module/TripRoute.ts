@@ -35,6 +35,29 @@ module.exports = {
     });
 
     server.route({
+      method: "GET",
+      path: "/trips/minimized/{id}",
+      handler: async function(request) {
+        var tripId = request.params.id;
+        const userId = CUtils.getUserId(request);
+
+        console.log("trip id :" + tripId);
+        var trip = await minimizedTripQueryHandler.getById(userId, tripId);
+        if (!trip) throw "trip not found";
+        return trip;
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+        validate: {
+          params: {
+            id: Joi.required().description("the id for the todo item")
+          }
+        }
+      }
+    });    
+
+    server.route({
       method: "POST",
       path: "/trips",
       handler: async function(request) {
