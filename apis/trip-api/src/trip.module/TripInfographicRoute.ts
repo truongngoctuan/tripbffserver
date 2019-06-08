@@ -46,6 +46,38 @@ module.exports = {
       }
     });
 
+    //todo add preUpload
+    //todo change PUT to simply save externalId...
+    //todo change GET to redirect
+
+    server.route({
+      method: "GET",
+      path: "/trips/{id}/infographics/{infoId}/preUploadImage",
+      handler: async function(request) {
+        console.log("GET /images/preUploadImage");
+
+        try {
+          const { mimeType } = request.query as any;
+          console.log(mimeType);
+          var tripId: string = request.params.id;
+
+          var category = `trips/${tripId}/infographics`;
+          const result = await IoC.fileService.signUpload(category ? category : "images", mimeType);
+
+          return result;
+
+        } catch (error) {
+          console.log(error);
+          return error;
+        }
+      },
+      options: {
+        //todo add auth for internal communication
+        // auth: "simple",
+        tags: ["api"]
+      }
+    });
+    
     server.route({
       method: "PUT",
       path: "/trips/{id}/infographics/{infoId}",
@@ -54,18 +86,12 @@ module.exports = {
           var tripId: string = request.params.id;
           var infographicId: string = request.params.infoId;
           
-          var data: any = request.payload;
-          const ownerId = data.ownerId;
-          var file: Buffer = new Buffer(JSON.parse(data.file).data);
-          //console.log("file", file);
+          const {
+            ownerId,
+            fullPath
+          } = request.payload as any;
 
-          var category = `uploads/trips/${tripId}/infographics`;
-          var fileName = `${infographicId}.png`;
-          const { externalId } = await IoC.fileService.save(
-            file,
-            category,
-            fileName
-          );
+          const { externalId } = await IoC.fileService.save(fullPath);
 
           var commandResult = await tripCommandHandler.exec({
             type: "finishExportInfographic",
@@ -93,6 +119,7 @@ module.exports = {
       }
     });
 
+    //todo this setInternal should be handled in client-side to avoid too many processing in server-side
     server.route({
       method: "GET",
       path: "/trips/{tripId}/infographics/{infographicId}",
@@ -112,25 +139,31 @@ module.exports = {
                 clearInterval(getEventInterval);
 
                 var externalId = exportedInfoEvent.externalStorageId;
-                var filePath = `uploads/trips/${tripId}/infographics/${externalId}.png`;
+                var filePath = `trips/${tripId}/infographics/${externalId}.png`;
 
-                var getFileInterval = setInterval(() => {
-                  if (fs.existsSync(filePath)) {
-                    clearInterval(getFileInterval);
-                    var imgStream = fs.createReadStream(filePath);
-                    imgStream.setEncoding("base64");
+                const signedUrl = await IoC.fileService.signGet(filePath);
+                console.log("infographic signed request", signedUrl);
+                resolve(h.redirect(signedUrl));
+                
+                // var filePath = `uploads/trips/${tripId}/infographics/${externalId}.png`;
 
-                    var bufs = '';
+                // var getFileInterval = setInterval(() => {
+                //   if (fs.existsSync(filePath)) {
+                //     clearInterval(getFileInterval);
+                //     var imgStream = fs.createReadStream(filePath);
+                //     imgStream.setEncoding("base64");
+
+                //     var bufs = '';
   
-                    imgStream.on('data', (chunk: any) => {
-                      bufs += chunk;
-                    });
-                    imgStream.on('end', () => {
-                      const response = h.response(bufs);
-                      resolve(response);
-                    });
-                  }
-                }, 500);
+                //     imgStream.on('data', (chunk: any) => {
+                //       bufs += chunk;
+                //     });
+                //     imgStream.on('end', () => {
+                //       const response = h.response(bufs);
+                //       resolve(response);
+                //     });
+                //   }
+                // }, 500);
               }
             }
             else {
