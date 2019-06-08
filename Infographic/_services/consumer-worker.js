@@ -3,9 +3,9 @@ module.exports = {
 };
 
 const redisStore = {
-  // host: "localhost",
+  host: "192.168.1.4",
   // port: 6379,
-  host: "127.0.1.1",
+  // host: "127.0.1.1",
   port: 6379,
   secret: "asd"
 };

@@ -62,12 +62,12 @@ async function addAuth(server) {
 
         allowQueryToken: true, // optional, false by default
         validate: async (request, token, h) => {
-            console.log(token);
+            // console.log(token);
             console.log(`${request.route.method} ${request.route.path}`);
 
             try {
                 var decoded = jwt.verify(token, "secret");
-                console.log("decoded", decoded);
+                console.log("decoded", decoded.userName);
             } catch(err) {
                 console.log("verify error", err);
                 return {

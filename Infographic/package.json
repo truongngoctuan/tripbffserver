@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "http-server .\\LottieWeb\\ -p 4050",
-    "serve": "nodemon --delay 2500ms --watch . --exec node .\\index.js",
+    "server": "http-server ./LottieWeb/ -p 4050",
+    "serve": "nodemon --delay 2500ms --watch . --exec node index.js",
     "serve2": "nodemon exec index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,10 +13,11 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "http-server": "^0.11.1",
+    "moment": "^2.22.2",
     "nodemon": "^1.18.9",
     "puppeteer": "^1.8.0",
     "redis": "^2.8.0",
-    "rsmq": "^0.9.3",
-    "moment": "^2.22.2"  
+    "rsmq": "^0.9.3"
   }
 }

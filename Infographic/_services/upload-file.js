@@ -2,20 +2,30 @@ module.exports = {
   uploadFile
 };
 
-function uploadFile(fileLocation, toUrl, ownerId) {
-  const axios = require("axios");
-  var fs = require("fs");
+const axios = require("axios");
+function uploadFile(signedUrl, path, mimeType) {
 
-  const fileContent = JSON.stringify(fs.readFileSync(fileLocation));
+  var fs = require('fs');
+  // var fileStream = fs.createReadStream(path);
+  // fileStream.on('error', function (err) {
+  //   console.log('File Error', err);
+  // });
+  // console.log(fileStream)
+  // console.log(fileStream.readableLength);
+  const file = fs.readFileSync(path);
 
-  return axios.put(toUrl, {
-    file: fileContent,
-    ownerId
+
+  var options = {
+    headers: {
+      'Content-Type': mimeType
+    }
+  };
+
+  return axios.put(signedUrl, file, options)
+  .then(res => {
+    console.log("Success axios");
   })
-  .then(function (response) {
-    console.log("upload file suceeded");
-  })
-  .catch(function (error) {
-    console.log(error);
+  .catch(err => {
+    console.log("Err axios", err.response);
   });
 }

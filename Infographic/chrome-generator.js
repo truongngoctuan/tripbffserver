@@ -2,10 +2,10 @@ const moment = require("moment");
 const puppeteer = require('puppeteer');
 
 
-const url = "http://localhost:8080";
+const url = "http://localhost:4050";
 async function exportInfo(trip) {
     const browser = await puppeteer.launch({
-         headless: false
+         headless: true
     });
     const page = await browser.newPage();
     await page.goto(url);
