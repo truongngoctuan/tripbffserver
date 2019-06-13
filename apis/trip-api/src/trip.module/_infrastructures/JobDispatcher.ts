@@ -4,7 +4,7 @@ export class JobDispatcher implements IJobDispatcher {
   dispatch(data: any) {
     // todo read data from store
     const redisStore = {
-      host: "192.168.1.4",
+      host: "192.168.42.236",
       // port: 6379,
       // host: "127.0.1.1",
       port: 6379,
