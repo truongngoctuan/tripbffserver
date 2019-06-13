@@ -10,7 +10,7 @@ export class ImageS3Service implements IImageService {
     return path.join(parsedPath.dir, `${parsedPath.name}_${w}_${h}${parsedPath.ext}`);
   }
 
-  isExist(relativeImageUri): Promise<boolean> {
+  isExist(relativeImageUri: string): Promise<boolean> {
     throw "Not implemented";
   }
 

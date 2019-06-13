@@ -2,48 +2,147 @@
 # Check our guides at https://confluence.atlassian.com/x/14UWN for more examples.
 # Only use spaces to indent your .yml configuration.
 # -----
-# You can specify a custom docker image from Docker Hub as your build environment.
+# You can specify a custom docker image from Docker Hub as your build environment.wadwadwawdad
 image: node:10.15.3
 
 pipelines:
-  default:
-    - step:
-            name: Build
-            script:
-              - cd apis/sso && zip -r ../sso.zip *
-            artifacts:
-              - sso.zip
+  branches:
+    release/sso-*:
+      - step:
+          name: Build
+          script:
+            - apt-get update
+            - apt-get install zip
+            - cd apis/sso && yarn && npm run build-ts && npm run tslint && zip -r ../../sso.zip *
+          artifacts:
+            - sso.zip
 
-    - step:
-        name: Upload to S3
-        services:
-          - docker
-        script:
-          # Test upload
-          - pipe: atlassian/aws-code-deploy:0.2.3
-            variables:
-              AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-              AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-              AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
-              COMMAND: 'upload'
-              S3_BUCKET: $S3_BUCKET
-              APPLICATION_NAME: ${APPLICATION_NAME}
-              ZIP_FILE: 'sso.zip'
+      - step:
+          name: Upload to S3
+          trigger: manual
+          services:
+            - docker
+          script:
+            - pipe: atlassian/aws-code-deploy:0.2.5
+              variables:
+                AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                COMMAND: 'upload'
+                APPLICATION_NAME: $APPLICATION_NAME_SSO
+                ZIP_FILE: 'sso.zip'
+                S3_BUCKET: $S3_BUCKET_SSO
 
-    - step:
-        name: Deploy with CodeDeploy
-        services:
-          - docker
-        script:
-          # Test upload
-          - pipe: atlassian/aws-code-deploy:0.2.3
-            variables:
-              AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-              AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-              AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
-              COMMAND: 'deploy'
-              APPLICATION_NAME: ${APPLICATION_NAME}
-              DEPLOYMENT_GROUP: ${DEPLOYMENT_GROUP}
-              IGNORE_APPLICATION_STOP_FAILURES: 'true'
-              FILE_EXISTS_BEHAVIOR: 'OVERWRITE'
-              WAIT: 'true'
+      - step:
+          name: Deploy with CodeDeploy
+          trigger: manual
+          services:
+            - docker
+          script:
+            # Test upload
+            - pipe: atlassian/aws-code-deploy:0.2.5
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                COMMAND: 'deploy'
+                APPLICATION_NAME: $APPLICATION_NAME_SSO
+                DEPLOYMENT_GROUP: $DEPLOYMENT_GROUP_SSO
+                S3_BUCKET: $S3_BUCKET_SSO
+                IGNORE_APPLICATION_STOP_FAILURES: 'true'
+                FILE_EXISTS_BEHAVIOR: 'OVERWRITE'
+                WAIT: 'true'
+    release/trip-*:
+      - step:
+          name: Build
+          script:
+            - apt-get update
+            - apt-get install zip
+            - cd apis/trip-api && yarn && npm run build-ts && npm run tslint && zip -r ../../trip.zip *
+          artifacts:
+            - trip.zip
+
+      - step:
+          name: Upload to S3
+          trigger: manual
+          services:
+            - docker
+          script:
+            - pipe: atlassian/aws-code-deploy:0.2.5
+              variables:
+                AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                COMMAND: 'upload'
+                APPLICATION_NAME: $APPLICATION_NAME_TRIP
+                ZIP_FILE: 'trip.zip'
+                S3_BUCKET: $S3_BUCKET_TRIP
+
+      - step:
+          name: Deploy with CodeDeploy
+          trigger: manual
+          services:
+            - docker
+          script:
+            # Test upload
+            - pipe: atlassian/aws-code-deploy:0.2.5
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                COMMAND: 'deploy'
+                APPLICATION_NAME: $APPLICATION_NAME_TRIP
+                DEPLOYMENT_GROUP: $DEPLOYMENT_GROUP_TRIP
+                S3_BUCKET: $S3_BUCKET_TRIP
+                IGNORE_APPLICATION_STOP_FAILURES: 'true'
+                FILE_EXISTS_BEHAVIOR: 'OVERWRITE'
+                WAIT: 'true'
+    release/infographic-*:
+      - step:
+          name: Build
+          script:
+            - apt-get update
+            - apt-get install zip
+            - cd Infographic/LottieWeb && yarn
+            - cd ../ && yarn
+            - zip -r ../infographic.zip *
+          artifacts:
+            - infographic.zip
+
+      - step:
+          name: Upload to S3
+          trigger: manual
+          services:
+            - docker
+          script:
+            - pipe: atlassian/aws-code-deploy:0.2.5
+              variables:
+                AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                COMMAND: 'upload'
+                APPLICATION_NAME: $APPLICATION_NAME_INFOGRAPHIC
+                ZIP_FILE: 'infographic.zip'
+                S3_BUCKET: $S3_BUCKET_INFOGRAPHIC
+
+      - step:
+          name: Deploy with CodeDeploy
+          trigger: manual
+          services:
+            - docker
+          script:
+            # Test upload
+            - pipe: atlassian/aws-code-deploy:0.2.5
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                COMMAND: 'deploy'
+                APPLICATION_NAME: $APPLICATION_NAME_INFOGRAPHIC
+                DEPLOYMENT_GROUP: $DEPLOYMENT_GROUP_INFOGRAPHIC
+                S3_BUCKET: $S3_BUCKET_INFOGRAPHIC
+                IGNORE_APPLICATION_STOP_FAILURES: 'true'
+                FILE_EXISTS_BEHAVIOR: 'OVERWRITE'
+                WAIT: 'true'
+
+      
