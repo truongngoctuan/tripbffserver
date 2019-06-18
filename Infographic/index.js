@@ -4,7 +4,7 @@ const fileUploader = require("./_services/upload-file");
 const axios = require("axios");
 
 //todo put it into env file
-const BASE_URL = "http://192.168.1.4:8000";
+const BASE_URL = "http://192.168.42.236:8000";
 const fileLocation = "svg-info-graphic.png";
 
 async function actionExecAsync(data) {
