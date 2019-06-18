@@ -715,7 +715,7 @@ module.exports = {
             },
             {
               highlightId: uuid4(),
-              label: "Food like crap",
+              label: "Bad Food ",
               highlightType: "Dislike"
             },
             {
