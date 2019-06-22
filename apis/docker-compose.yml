@@ -1,0 +1,35 @@
+version: '3'
+services:
+  mongo:
+      image: mongo:4.1.4-xenial
+      container_name: db-mongo
+      hostname: mongo
+      restart: always
+      ports:
+        - "27017:27017"
+      # networks:
+      #   - api_network
+      volumes:
+        - ../../data/db-mongo:/data/db
+        - ./dockers/mongo/mongod.conf:/etc/mongod.conf
+      # command: mongod --dbpath /data/db
+  sso:
+    image: "tripbff/sso"
+    ports:
+      - "3000:80"
+    # networks:
+    #   - api_network
+    environment: # read from .env file
+      - SERVER_HOST=localhost
+      - SERVER_PORT=80
+      - REDIS_HOST=192.168.1.4
+      - REDIS_PORT=6379
+      - MONGODB_HOST=mongo
+      - MONGODB_PORT=27017
+      - WAIT_HOSTS=mongo:27017
+    depends_on:
+      - mongo
+# networks:
+#   api_network:
+#     external:
+#       name: mnet

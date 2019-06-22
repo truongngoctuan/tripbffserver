@@ -1,5 +1,5 @@
 const config = require('./config.js')
-require('dotenv').config() //red config from .env file
+require('dotenv').config() //read config from .env file
 
 const express = require('express')
 
@@ -15,7 +15,7 @@ var passport = require('passport');
 var bodyParser   = require('body-parser');
 
 const app = express()
-const port = config.app.port
+const port = process.env.SERVER_PORT;
 
 // app.use(session({
 //     store: new RedisStore({
