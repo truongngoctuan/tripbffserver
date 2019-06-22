@@ -4,4 +4,8 @@ npm-debug.log
 Dockerfile
 .dockerignore
 
+dist
+upload
+uploads
+coverage
 .vscode
