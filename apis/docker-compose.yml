@@ -64,6 +64,21 @@ services:
       - WAIT_HOSTS=mongo:27017
     depends_on:
       - mongo
+  infographic:
+    image: "tripbff/infographic"
+    # networks:
+    #   - api_network
+    environment: # read from .env file
+      - TRIP_API_HOST=192.168.1.4
+      - TRIP_API_PORT=8000
+    depends_on: 
+     - redis
+  lottie-web:
+    image: "tripbff/lottie-web"
+    ports:
+      - "4050:80"
+    # networks:
+    #   - api_network
 # networks:
 #   api_network:
 #     external:
