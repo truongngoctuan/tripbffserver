@@ -2,7 +2,7 @@ version: '3'
 services:
   mongo:
       image: mongo:4.1.4-xenial
-      container_name: db-mongo
+      container_name: tripbff-mongo
       hostname: mongo
       restart: always
       ports:
@@ -16,7 +16,7 @@ services:
   redis:
     image: redis
     restart: always
-    container_name: redis
+    container_name: tripbff-redis
     ports:
       - 6379:6379
   # mongo-express:
@@ -34,6 +34,7 @@ services:
   #     - mongo
   sso:
     image: "tripbff/sso"
+    container_name: tripbff-sso
     ports:
       - "3000:80"
     # networks:
@@ -50,6 +51,7 @@ services:
       - mongo
   trip-api:
     image: "tripbff/trip-api"
+    container_name: tripbff-trip-api
     ports:
       - "8000:8000"
     # networks:
@@ -66,6 +68,7 @@ services:
       - mongo
   infographic:
     image: "tripbff/infographic"
+    container_name: tripbff-infographic
     # networks:
     #   - api_network
     environment: # read from .env file
@@ -75,6 +78,7 @@ services:
      - redis
   lottie-web:
     image: "tripbff/lottie-web"
+    container_name: tripbff-lottie-web
     ports:
       - "4050:80"
     # networks:
