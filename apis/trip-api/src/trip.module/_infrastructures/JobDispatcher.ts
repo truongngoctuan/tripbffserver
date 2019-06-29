@@ -2,13 +2,10 @@ import { IJobDispatcher } from "../_core/models/IJobDispatcher";
 
 export class JobDispatcher implements IJobDispatcher {
   dispatch(data: any) {
-    // todo read data from store
     const redisStore = {
-      host: "192.168.42.236",
-      // port: 6379,
-      // host: "127.0.1.1",
-      port: 6379,
-      secret: "asd",
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+      secret: process.env.REDIS_SECRET,
     };
 
     const qName = "myqueue";

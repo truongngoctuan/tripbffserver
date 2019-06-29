@@ -26,7 +26,7 @@ ENV NODE_ENV=production
 WORKDIR /home/node/app
 
 # Install deps for production only
-COPY ./package* ./
+COPY ./package*  yarn.lock ./
 RUN yarn install  --frozen-lockfile --production; \
   yarn cache clean;
 # Copy builded source from the upper builder stage

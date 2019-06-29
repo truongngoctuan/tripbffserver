@@ -1,24 +1,24 @@
 version: '3'
 services:
-  mongo:
-      image: mongo:4.1.4-xenial
-      container_name: tripbff-mongo
-      hostname: mongo
-      restart: always
-      ports:
-        - "27017:27017"
-      # networks:
-      #   - api_network
-      volumes:
-        - ../../data/db-mongo:/data/db
-        - ./dockers/mongo/mongod.conf:/etc/mongod.conf
-      # command: mongod --dbpath /data/db
-  redis:
-    image: redis
-    restart: always
-    container_name: tripbff-redis
-    ports:
-      - 6379:6379
+  # mongo:
+  #     image: mongo:4.1.4-xenial
+  #     container_name: tripbff-mongo
+  #     hostname: mongo
+  #     restart: always
+  #     ports:
+  #       - "27017:27017"
+  #     # networks:
+  #     #   - api_network
+  #     volumes:
+  #       - ../../data/db-mongo:/data/db
+  #       - ./dockers/mongo/mongod.conf:/etc/mongod.conf
+  #     # command: mongod --dbpath /data/db
+  # redis:
+  #   image: redis
+  #   restart: always
+  #   container_name: tripbff-redis
+  #   ports:
+  #     - 6379:6379
   # mongo-express:
   #   container_name: mongo-express
   #   image: mongo-express
@@ -47,8 +47,8 @@ services:
       - MONGODB_HOST=mongo
       - MONGODB_PORT=27017
       - WAIT_HOSTS=mongo:27017
-    depends_on:
-      - mongo
+    # depends_on:
+    #   - mongo
   trip-api:
     image: "tripbff/trip-api"
     container_name: tripbff-trip-api
@@ -57,15 +57,16 @@ services:
     # networks:
     #   - api_network
     environment: # read from .env file
-      # - SERVER_HOST=localhost
+      - SERVER_HOST=192.168.1.4
       - SERVER_PORT=8000
       - REDIS_HOST=192.168.1.4
       - REDIS_PORT=6379
+      - REDIS_SECRET=asd
       - MONGO_HOST=mongo
       - MONGO_PORT=27017
       - WAIT_HOSTS=mongo:27017
-    depends_on:
-      - mongo
+    # depends_on:
+    #   - mongo
   infographic:
     image: "tripbff/infographic"
     container_name: tripbff-infographic
@@ -74,8 +75,13 @@ services:
     environment: # read from .env file
       - TRIP_API_HOST=192.168.1.4
       - TRIP_API_PORT=8000
-    depends_on: 
-     - redis
+      - REDIS_HOST=192.168.1.4
+      - REDIS_PORT=6379
+      # - REDIS_SECRET=asd
+      - LOTTIE_WEB_HOST=192.168.1.4
+      - LOTTIE_WEB_PORT=4050
+    # depends_on: 
+    #  - redis
   lottie-web:
     image: "tripbff/lottie-web"
     container_name: tripbff-lottie-web

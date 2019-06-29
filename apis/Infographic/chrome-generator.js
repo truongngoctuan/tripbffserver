@@ -2,10 +2,14 @@ const moment = require("moment");
 const puppeteer = require('puppeteer');
 
 
-const url = "http://localhost:4050";
+const url = "http://" + process.env.LOTTIE_WEB_HOST + ":" + process.env.LOTTIE_WEB_PORT;
+console.log(url);
 async function exportInfo(trip) {
+    try {
+
     const browser = await puppeteer.launch({
-         headless: true
+         headless: true,
+         args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     const page = await browser.newPage();
     await page.goto(url);
@@ -32,6 +36,10 @@ async function exportInfo(trip) {
     });
 
     await browser.close();
+    }
+    catch(err) {
+        console.log("ERR on process chrome", err);
+    }
 
 };
 
