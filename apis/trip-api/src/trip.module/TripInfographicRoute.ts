@@ -15,6 +15,7 @@ module.exports = {
       method: "POST",
       path: "/trips/{id}/infographics",
       handler: async function(request) {
+        console.log("POST /trips/{id}/infographics");
         try {
           var tripId: string = request.params.id;
           const ownerId = CUtils.getUserId(request);

@@ -3,12 +3,12 @@ module.exports = {
 };
 
 const redisStore = {
-  host: "192.168.42.236",
-  // port: 6379,
-  // host: "127.0.1.1",
-  port: 6379,
-  secret: "asd"
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+  secret: process.env.REDIS_SECRET
 };
+
+console.log("redisStore", redisStore);
 
 const qName = "myqueue";
 
@@ -17,6 +17,17 @@ const rsmq = new RedisSMQ({
   host: redisStore.host,
   port: redisStore.post,
   ns: "rsmq"
+});
+
+
+rsmq.createQueue({ qname: qName }, (err, resp) => {
+  if (err) {
+    console.log("Create error", err);
+    // console.log("Create error", err);
+    // todo better handling the service
+  }
+
+  console.log("queue created");
 });
 
 var counter = 0;
@@ -33,8 +44,8 @@ function receiveMessage(callBack) {
       //console.log("Message received.", resp);
       counter++;
       console.log("COUNTER", counter);
-      await callBack(resp);
       deleteMessage(resp.id);
+      await callBack(resp);
     } else {
       // console.log("no message received");
       SetTimeoutReceiveMessage();
@@ -60,6 +71,9 @@ function SetTimeoutReceiveMessage() {
 }
 
 function errorHandler(err) {
-  if (err && err.queueNotFound) console.log("ERR", "queueNotFound");
-  else if (err) console.log("ERR", "error on queue");
+  if (err && err.toString().startsWith("queueNotFound")) console.log("ERR", "queueNotFound");
+  else if (err) {
+    console.log("ERR", "error on queue");
+    console.log(err);
+  }
 }

@@ -1,14 +1,17 @@
+require("dotenv").config(); // red config from .env file
+
 const exporter = require("./chrome-generator");
 const consumer = require("./_services/consumer-worker");
 const fileUploader = require("./_services/upload-file");
 const axios = require("axios");
 
 //todo put it into env file
-const BASE_URL = "http://192.168.42.236:8000";
+const BASE_URL = `http://${process.env.TRIP_API_HOST}:${process.env.TRIP_API_PORT}`;
+console.log("BASE_URL", BASE_URL)
 const fileLocation = "svg-info-graphic.png";
 
 async function actionExecAsync(data) {
-  //console.log("actionExecAsync", JSON.stringify(data));
+  console.log("actionExecAsync", data);
   const {
     tripId,
     infographicId,
@@ -51,7 +54,7 @@ async function actionExecAsync(data) {
     })
 
   } catch (err) {
-    console.log("ERR", err.response);
+    console.log("ERR on upload file", err);
     throw err;
   }
 }
