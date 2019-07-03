@@ -4,6 +4,10 @@
 // draw basic shape
 // https://www.dashingd3js.com/svg-basic-shapes-and-d3js
 
+function drawBackground(svgBase, backgroundColor) {
+    svgBase.style('background-color', backgroundColor);
+}
+
 function drawHeader(svgBase, trip) {
     svgBase.append("rect")
         .attr("width", w)
@@ -105,7 +109,8 @@ function drawContent(svgBase, trip) {
             descriptionFontFamily: "Times Neue Roman",
             descriptionColor: "#121113",
             imageWidth: 220,
-            imageHeight: 220
+            imageHeight: 220,
+            imageClipPath: "circle(38%)"
         }  
     };
 
@@ -171,7 +176,8 @@ function drawContent(svgBase, trip) {
                 x: locationName_px - globalConfig.location.paddingPath * 4 - globalConfig.location.imageWidth 
             }, './data/images/02.jpg', {
                 width: globalConfig.location.imageWidth,
-                height: globalConfig.location.imageHeight
+                height: globalConfig.location.imageHeight,
+                imageClipPath: globalConfig.location.imageClipPath
             });
         }
         else {
@@ -220,7 +226,8 @@ function drawContent(svgBase, trip) {
                 x: locationName_px + globalConfig.location.paddingPath * 4 
             }, './data/images/02.jpg', {
                 width: globalConfig.location.imageWidth,
-                height: globalConfig.location.imageHeight
+                height: globalConfig.location.imageHeight,
+                imageClipPath: globalConfig.location.imageClipPath
             });
         }
     }
@@ -249,11 +256,6 @@ function drawFooter(svgBase) {
     });
 }
 
-// function drawBackground(svgBase) {
-//     svgBase.style('background-color', '#2E97A1');
-//     drawSvg(svgBase, "./data/images/rawLocationComponent.svg");
-// }
-
 // function drawSvg(svgBase, uri, coordinate, config) {
 //     d3.xml(uri).then(data => {
 //         var svgNode = data.documentElement;
@@ -273,7 +275,7 @@ function drawImage(svgBase, coordinate, uri, config) {
     .attr('width', config.width)
     .attr('height', config.height)
     .attr("xlink:href", uri)
-    .attr("clip-path", "circle(38%)")
+    .attr("clip-path", config.imageClipPath)
 }
 
 function capitalizeFirstLetter(string) {
@@ -352,9 +354,9 @@ function draw(trip) {
 
     var svgBase = d3.select("#info-graphic-base")
     .attr("width", w)
-    .attr("height", h)
-    .style('background-color', '#e3d1a2');
+    .attr("height", h);
 
+    drawBackground(svgBase, "#e3d1a2");
     drawHeader(svgBase, trip);
     drawPathBetweenLocations(svgBase);
     drawContent(svgBase, trip);
