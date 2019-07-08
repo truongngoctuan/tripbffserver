@@ -98,21 +98,7 @@ function drawPathBetweenLocations(svgBase) {
 
 function drawContent(svgBase, trip) {
     let startPoint_px = w / 2,
-        startPoint_py = header_height + c_paddingTop;
-    let globalConfig = {
-        location: {
-            paddingPath: 20,
-            nameFontSize: "40px",
-            nameFontFamily: "Sans Serif",
-            nameColor: "#d0363b",
-            descriptionFontSize: "32px",
-            descriptionFontFamily: "Times Neue Roman",
-            descriptionColor: "#121113",
-            imageWidth: 220,
-            imageHeight: 220,
-            imageClipPath: "circle(38%)"
-        }  
-    };
+        startPoint_py = header_height + c_paddingTop;   
 
     for (let idx = 0; idx < N_ITEMS; idx++) {
         let location = trip.locations[idx],
@@ -347,6 +333,21 @@ const c_paddingTop = 60,
 
 const w = 940;
 var h = header_height + c_paddingTop + c_itemHeight * N_ITEMS + c_paddingBottom + footer_height;
+
+var globalConfig = {
+    location: {
+        paddingPath: 20,
+        nameFontSize: "40px",
+        nameFontFamily: "Sans Serif",
+        nameColor: "#d0363b",
+        descriptionFontSize: "32px",
+        descriptionFontFamily: "Times Neue Roman",
+        descriptionColor: "#121113",
+        imageWidth: 220,
+        imageHeight: 220,
+        imageClipPath: "circle(38%)"
+    }  
+};
 
 function draw(trip) {
 
