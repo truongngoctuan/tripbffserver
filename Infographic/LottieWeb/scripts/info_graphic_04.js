@@ -98,6 +98,7 @@ function drawContent(svgBase, location, startPointCoordinate) {
         textAnchor: "start",
         wrapNumber: w / 2 - paddingBetweenImage 
     });
+    return hightlightNode;
 }
 
 function drawImageContainer(svgBase, coordinate, uri) {
@@ -216,7 +217,7 @@ const footer_height = 70;
 const paddingBetweenImage = 5;
 const paddingLeftRight = 20;
 const c_paddingTop = 20,
-      c_paddingBottom = 20;
+      c_paddingBottom = 10;
 
 var w = 1280;
 var h = 1500;
@@ -259,15 +260,24 @@ function draw(trip) {
         y: 170 + c_paddingTop
     }, "./data/images/03.jpg");
    
-    drawContent(svgBase, trip.locations[0], {
+    let lastElementOfFirstLocationNode = drawContent(svgBase, trip.locations[0], {
         x: paddingLeftRight,
         y: 1100
     });
 
-    drawContent(svgBase, trip.locations[1], {
+    let lastElementOfSecondLocationNode = drawContent(svgBase, trip.locations[1], {
         x: w / 2 + paddingBetweenImage,
         y: 1100
     });
+
+    let firstBbox = lastElementOfFirstLocationNode.node().getBBox(),
+        secondBbox = lastElementOfSecondLocationNode.node().getBBox(),
+        firstLatestHeight = firstBbox.y + firstBbox.height,
+        secondLatestHeight = secondBbox.y + secondBbox.height;
+    h = firstLatestHeight >= secondLatestHeight
+                 ? firstLatestHeight + c_paddingBottom + footer_height 
+                 : secondLatestHeight + c_paddingBottom + footer_height;
+    svgBase.attr("height", h);
 
     drawFooter(svgBase);
 }
