@@ -4,12 +4,30 @@ import { FeelingRepository } from "./_infrastructures/repositories/FeelingReposi
 import { IFeeling, IActivity, IHighlight } from "./_core/models/ITrip";
 import { ActivityRepository } from "./_infrastructures/repositories/ActivityRepository";
 import { HighlightRepository } from "./_infrastructures/repositories/HighlightRepository";
+import { RegisterNotifyRepository } from "./_infrastructures/repositories/RegisterNotifyRepository";
 import uuid4 from 'uuid/v4';
+import moment = require("moment");
 
 const dataSourceQueryHandler = IoC.dataSourceQueryHandler;
 
 module.exports = {
   init: function(server: Server) {   
+
+    server.route({
+      method: "POST",
+      path: "/registerNotify",
+      handler: async function(request) {   
+        var data = request.payload as string;    
+        let registeredItem = JSON.parse(data);       
+        let repository = new RegisterNotifyRepository();
+        registeredItem.createdDate = moment();
+        repository.insert(registeredItem);
+        return true;
+      },
+      options: {
+        tags: ["api"]
+    }
+  });
 
     server.route({
         method: "GET",
