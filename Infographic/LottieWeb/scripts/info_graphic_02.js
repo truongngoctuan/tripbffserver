@@ -99,6 +99,7 @@ function drawPathBetweenLocations(svgBase) {
 function drawContent(svgBase, trip) {
     let startPoint_px = w / 2,
         startPoint_py = header_height + c_paddingTop;   
+    let urlOriginal = './data/images/';
 
     for (let idx = 0; idx < N_ITEMS; idx++) {
         let location = trip.locations[idx],
@@ -107,6 +108,7 @@ function drawContent(svgBase, trip) {
             activity = location.activity,
             highlights = location.highlights.toLowerCase(),
             nodeFeelingActivity = "";
+        let url = urlOriginal + (idx + 1) + ".jpg";
 
         if (activity) nodeFeelingActivity = capitalizeFirstLetter(activity.toLowerCase());
         if (feeling) {
@@ -160,7 +162,7 @@ function drawContent(svgBase, trip) {
             drawImage(svgBase, {
                 y: locationName_py - 20,
                 x: locationName_px - globalConfig.location.paddingPath * 4 - globalConfig.location.imageWidth 
-            }, './data/images/02.jpg', {
+            }, url, {
                 width: globalConfig.location.imageWidth,
                 height: globalConfig.location.imageHeight,
                 imageClipPath: globalConfig.location.imageClipPath
@@ -210,7 +212,7 @@ function drawContent(svgBase, trip) {
             drawImage(svgBase, {
                 y: locationName_py - 20,
                 x: locationName_px + globalConfig.location.paddingPath * 4 
-            }, './data/images/02.jpg', {
+            }, url, {
                 width: globalConfig.location.imageWidth,
                 height: globalConfig.location.imageHeight,
                 imageClipPath: globalConfig.location.imageClipPath

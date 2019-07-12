@@ -253,12 +253,12 @@ function draw(trip) {
     drawImageContainer(svgBase, {
         x: 0,
         y: 170 + c_paddingTop
-    }, "./data/images/02.jpg");
+    }, "./data/images/2.jpg");
 
     drawImageContainer(svgBase, {
         x: w / 2 + paddingBetweenImage,
         y: 170 + c_paddingTop
-    }, "./data/images/03.jpg");
+    }, "./data/images/3.jpg");
    
     let lastElementOfFirstLocationNode = drawContent(svgBase, trip.locations[0], {
         x: paddingLeftRight,
