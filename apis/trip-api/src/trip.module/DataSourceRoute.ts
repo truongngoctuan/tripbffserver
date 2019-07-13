@@ -17,17 +17,33 @@ module.exports = {
       method: "POST",
       path: "/registerNotify",
       handler: async function(request) {   
-        var data = request.payload as string;    
-        let registeredItem = JSON.parse(data);       
+        var { email } = request.payload as any;
         let repository = new RegisterNotifyRepository();
-        registeredItem.createdDate = moment();
-        repository.insert(registeredItem);
+        let createdDate = moment();
+        repository.insert({
+          email,
+          createdDate
+        });
         return true;
       },
       options: {
         tags: ["api"]
-    }
-  });
+      }
+    });
+
+
+    server.route({
+      method: "GET",
+      path: "/registerNotify/list",
+      handler: async function(request) {
+        let repository = new RegisterNotifyRepository();
+        let registeredItems = await repository.list();
+        return registeredItems;
+      },
+      options: {
+        tags: ["api"]
+      }
+    });
 
     server.route({
         method: "GET",
