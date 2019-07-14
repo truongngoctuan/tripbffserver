@@ -1,7 +1,4 @@
 const config = {
-  app: {
-    port: 3000
-  },
   auth: {
     TTLInSeconds: 3600,
     keyPrefix: "login-session"
