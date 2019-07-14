@@ -12,8 +12,8 @@ async function exportInfo(trip) {
          args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     const page = await browser.newPage();
-    await page.goto(url);
-
+    await page.goto(url, {waitUntil: 'networkidle2'});  
+    
     trip = {
         ...trip,
         numberOfDays: moment(trip.toDate).diff(moment(trip.fromDate), 'days') + 1,

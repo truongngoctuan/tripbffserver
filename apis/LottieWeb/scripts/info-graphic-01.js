@@ -4,6 +4,44 @@
 // draw basic shape
 // https://www.dashingd3js.com/svg-basic-shapes-and-d3js
 
+function drawBackground(svgBase) {
+    svgBase.style('background-color', '#2E97A1');
+}
+
+async function drawSvg(svgBase, coordinate, uri, config) {
+    var top = coordinate.top,
+        left = coordinate.left,
+        paddingLeftRight= coordinate.paddingLeftRight;
+
+    d3.xml(uri).then(data => {
+        var svgNode1 = data.documentElement;
+        svgNode1.setAttribute("id", "svg1");
+        svgBase.node().append(svgNode1);
+
+        var innnerItem = svgBase.select("svg#svg1 circle");
+        //var circle = innnerItem.select("circle");
+        innnerItem
+        .attr("cy", top)
+        .attr("cx", left + paddingLeftRight + 100)
+        .attr("r", 50)
+        .attr("fill", "red"); 
+    });
+}
+
+function drawImage(svgBase, coordinate, uri, config) {
+    var top = coordinate.top,
+        left = coordinate.left,
+        paddingLeftRight= coordinate.paddingLeftRight;
+
+    var svgCanvas = svgBase.append("svg:image");
+    svgCanvas
+    .attr('x', left + paddingLeftRight)
+    .attr('y', top)
+    .attr('width', config.width)
+    .attr('height', config.height)
+    .attr("xlink:href", uri)
+}
+
 function drawHeader(svgBase, trip) {
 
     let tripNameNode = drawText(svgBase, {
@@ -23,9 +61,9 @@ function drawHeader(svgBase, trip) {
         basicTripInfo = trip.numberOfDays + " days, " + numberOfLocations + " locations";
 
     drawText(svgBase, {
-        top: tripNameNodeBbox.height + 50,
-        left: 100,
-        paddingLeftRight: 20
+        top: tripNameNodeBbox.y + tripNameNodeBbox.height + 30,
+        left: tripNameNodeBbox.x,
+        paddingLeftRight: 0
     }, basicTripInfo, { 
         color: "black",
         font: "serif",
@@ -34,6 +72,23 @@ function drawHeader(svgBase, trip) {
         wrapNumber: 400 
     });
 
+    drawImage(svgBase, {
+        top: tripNameNodeBbox.y,
+        left: tripNameNodeBbox.x + tripNameNodeBbox.width,
+        paddingLeftRight: 20
+    }, './data/images/amazing.png', {
+        width: 36,
+        height: 36
+    });
+
+    drawSvg(svgBase, {
+        top: tripNameNodeBbox.y,
+        left: tripNameNodeBbox.x + tripNameNodeBbox.width + 100,
+        paddingLeftRight: 20
+    }, './data/images/rawDateComponent.svg',  {
+        width: 72,
+        height: 72
+    });
 }
 
 function drawLocations(svgBase, nItems, nItemsPerRow) {    
@@ -383,6 +438,7 @@ function draw(trip) {
     .attr("width", c_paddingLeft + w * N_ITEMS_PER_ROW  + c_paddingRight)
     .attr("height", c_paddingTop + h * N_ITEMS / N_ITEMS_PER_ROW + c_paddingBottom);
 
+    drawBackground(svgBase);
     drawHeader(svgBase, trip);
     drawPathBetweenLocationsInTheSameRow(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
     drawLocations(svgBase, N_ITEMS, N_ITEMS_PER_ROW);
