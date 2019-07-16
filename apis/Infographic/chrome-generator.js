@@ -28,7 +28,7 @@ async function exportInfo(trip) {
 
     const svgInfoGraphic = await page.$('#info-graphic-base');
     var result = await page.evaluate((trip) => {        
-        draw(trip);
+        draw(trip, INFOGRAPHIC_TYPE.FIRST_RELEASED);
       }, trip);
     await svgInfoGraphic.screenshot({
         path: 'svg-info-graphic.png',
