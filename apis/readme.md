@@ -115,6 +115,13 @@ current running instance
 | Public DNS (IPv4) | ec2-18-139-115-172.ap-southeast-1.compute.amazonaws.com |
 | IPv4 Public IP    | 18.139.115.172                                          |
 
+## Auto deployment
+aws ecs update-service --cluster tripbff-inte-cluster --service tripbff-trip-api --force-new-deployment
+ecs-cli ps --cluster tripbff-inte-cluster
+
+remember to config `service` to have minimum health == 0 so that it can stop the current service before deploy a new one
+[reference](https://stackoverflow.com/a/48952145/3161505)
+
 # Redis
 
 Cannot know which ec2 expose port due to elastic EC2 scaling
