@@ -84,11 +84,47 @@ AWS_PROFILE=dog
 echo $AWS_PROFILE
 
 $(aws ecr get-login --no-include-email --region ap-southeast-1 --profile tripbff)
-docker build -t tripbff/sso .
-docker tag tripbff/sso:latest 883134154478.dkr.ecr.ap-southeast-1.amazonaws.com/tripbff/sso:latest
-docker push 883134154478.dkr.ecr.ap-southeast-1.amazonaws.com/tripbff/sso:latest
+docker build -t tripbff/sso ./sso
+docker tag tripbff/sso:latest 866404760327.dkr.ecr.ap-southeast-1.amazonaws.com/tripbff/sso:latest
+docker push 866404760327.dkr.ecr.ap-southeast-1.amazonaws.com/tripbff/sso:latest
+
+docker build -t tripbff/trip-api ./trip-api
+docker tag tripbff/trip-api:latest 866404760327.dkr.ecr.ap-southeast-1.amazonaws.com/tripbff/trip-api:latest
+docker push 866404760327.dkr.ecr.ap-southeast-1.amazonaws.com/tripbff/trip-api:latest
+
+docker build -t tripbff/infographic ./Infographic
+docker tag tripbff/infographic:latest 866404760327.dkr.ecr.ap-southeast-1.amazonaws.com/tripbff/infographic:latest
+docker push 866404760327.dkr.ecr.ap-southeast-1.amazonaws.com/tripbff/infographic:latest
+
+docker build -t tripbff/lottie-web ./LottieWeb
+docker tag tripbff/lottie-web:latest 866404760327.dkr.ecr.ap-southeast-1.amazonaws.com/tripbff/lottie-web:latest
+docker push 866404760327.dkr.ecr.ap-southeast-1.amazonaws.com/tripbff/lottie-web:latest
 
 # Setup mongoDB
 username/pass dev-mongodb-access u7NFj4hB2YkNjyF
 connection string
 `mongodb+srv://dev-mongodb-access:u7NFj4hB2YkNjyF@cluster0-uvltq.mongodb.net/test?retryWrites=true&w=majority`
+
+# ECS & EC2
+ssh into ec2 instance
+ssh -i "tripbff-inte-kp.pem" ec2-user@ec2-18-139-115-172.ap-southeast-1.compute.amazonaws.com
+
+current running instance
+| name              | desc                                                    |
+| ----------------- | ------------------------------------------------------- |
+| Public DNS (IPv4) | ec2-18-139-115-172.ap-southeast-1.compute.amazonaws.com |
+| IPv4 Public IP    | 18.139.115.172                                          |
+
+# Redis
+
+Cannot know which ec2 expose port due to elastic EC2 scaling
+```bash
+redis-cli -h 18.139.115.172 ping
+redis-cli -h ec2-18-139-115-172.ap-southeast-1.compute.amazonaws.com ping
+```
+
+Solutions:
+* hard-coded into env of task
+* study route53 to add A record -> fixed hosted namespace that convert to a EC2 public IP
+  * if this record can be change elastically
+* What happens if there are multiple EC2 instances, how would route53 behave ?
