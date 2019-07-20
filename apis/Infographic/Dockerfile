@@ -17,4 +17,4 @@ EXPOSE 8000
 
 # Start the app
 # CMD /wait && yarn start
-CMD yarn serve
+CMD yarn serve:production

@@ -116,11 +116,20 @@ current running instance
 | IPv4 Public IP    | 18.139.115.172                                          |
 
 ## Auto deployment
-aws ecs update-service --cluster tripbff-inte-cluster --service tripbff-trip-api --force-new-deployment
+aws ecs update-service --cluster tripbff-inte-cluster --service tripbff-trip-api-service --force-new-deployment
 ecs-cli ps --cluster tripbff-inte-cluster
 
 remember to config `service` to have minimum health == 0 so that it can stop the current service before deploy a new one
 [reference](https://stackoverflow.com/a/48952145/3161505)
+## Current infrastructure:
+cluster: tripbff-inte-cluster
+services:
+* tripbff-sso-service
+* tripbff-trip-api-service
+* tripbff-info-lottie-web-service
+* tripbff-redis-service
+tasks:
+
 
 # Redis
 

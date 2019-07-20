@@ -30,8 +30,7 @@ const redis = require("redis");
 (async () => {
   // Create a server with a host and port
   const server = new Server({
-    // host: process.env.SERVER_HOST,
-    port: process.env.SERVER_PORT,
+    port: process.env.INTERNAL_SERVER_PORT,
     routes: {
       validate: {
         failAction: async (request, h, err) => {
