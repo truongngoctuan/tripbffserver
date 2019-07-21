@@ -144,3 +144,10 @@ Solutions:
 * study route53 to add A record -> fixed hosted namespace that convert to a EC2 public IP
   * if this record can be change elastically
 * What happens if there are multiple EC2 instances, how would route53 behave ?
+
+# Deploy website to S3
+Follow this [link](https://medium.com/@wolovim/deploying-create-react-app-to-s3-or-cloudfront-48dae4ce0af) to deploy react app to s3
+
+s3 bucket `www.tripbff.com`, Current website http://www.tripbff.com.s3-website-ap-southeast-1.amazonaws.com/
+
+[setup domain forward](https://medium.com/front-end-weekly/connecting-a-domain-to-an-aws-ec2-instance-using-route53-69faffddda39)
