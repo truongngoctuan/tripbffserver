@@ -17,11 +17,12 @@ module.exports = {
       method: "POST",
       path: "/registerNotify",
       handler: async function(request) {   
-        var { email } = request.payload as any;
+        var rawData = request.payload as any;
+        var data = JSON.parse(rawData);
         let repository = new RegisterNotifyRepository();
         let createdDate = moment();
         repository.insert({
-          email,
+          email: data.email,
           createdDate
         });
         return true;
