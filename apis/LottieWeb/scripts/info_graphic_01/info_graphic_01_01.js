@@ -1,9 +1,3 @@
-//follow this demo
-//      https://blog.adioma.com/how-to-create-timeline-infographic/
-
-// draw basic shape
-// https://www.dashingd3js.com/svg-basic-shapes-and-d3js
-
 var draw_01_01 = (function () {
 
     function drawContent(svgBase, trip) {
@@ -33,12 +27,12 @@ var draw_01_01 = (function () {
                 y: locationName_py,
                 x: locationName_px
             }, locationName, { 
-                color: globalConfig.location.nameColor,
-                font: globalConfig.location.nameFontFamily,
-                fontSize: globalConfig.location.nameFontSize,
-                fontWeight: "bold",
-                textAnchor: "start",
-                textTransform: "uppercase",
+                color: globalConfig.location.name.color,
+                font: globalConfig.location.name.fontFamily,
+                fontSize: globalConfig.location.name.fontSize,
+                fontWeight: globalConfig.location.name.fontWeight,
+                textAnchor: globalConfig.location.name.textAnchor,
+                textTransform: globalConfig.location.name.textTransform,
                 wrapNumber: w - paddingLeftRight
             });
         let locationNameNodeBbox = locationNameNode.node().getBBox();
@@ -47,10 +41,10 @@ var draw_01_01 = (function () {
             y: locationNameNodeBbox.y + locationNameNodeBbox.height + globalConfig.location.paddingTop,
             x: locationName_px
         }, nodeFeelingActivity, { 
-            color: globalConfig.location.descriptionColor,
-            font: globalConfig.location.descriptionFontFamily,
-            fontSize: globalConfig.location.descriptionFontSize,
-            textAnchor: "start",
+            color: globalConfig.location.description.color,
+            font: globalConfig.location.description.fontFamily,
+            fontSize: globalConfig.location.description.fontSize,
+            textAnchor: globalConfig.location.description.textAnchor,
             wrapNumber: w - paddingLeftRight 
         });
         let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
@@ -58,10 +52,10 @@ var draw_01_01 = (function () {
             y: feelingActivityNodeBbox.y + feelingActivityNodeBbox.height + globalConfig.location.paddingTop,
             x: locationName_px
         }, highlights, { 
-            color: globalConfig.location.descriptionColor,
-            font: globalConfig.location.descriptionFontFamily,
-            fontSize: globalConfig.location.descriptionFontSize,
-            textAnchor: "start",
+            color: globalConfig.location.description.color,
+            font: globalConfig.location.description.fontFamily,
+            fontSize: globalConfig.location.description.fontSize,
+            textAnchor: globalConfig.location.description.textAnchor,
             wrapNumber: w - paddingLeftRight 
         });
 
@@ -70,10 +64,10 @@ var draw_01_01 = (function () {
             y: hightlightNodeBbox.y + hightlightNodeBbox.height + globalConfig.location.paddingTop,
             x: locationName_px
         }, "MORE INFO: WWW.TRIPBFF.COM", { 
-            color: globalConfig.location.descriptionColor,
-            font: globalConfig.location.descriptionFontFamily,
-            fontSize: "30px",
-            textAnchor: "start",
+            color: globalConfig.footer.color,
+            font: globalConfig.footer.fontFamily,
+            fontSize: globalConfig.footer.fontSize,
+            textAnchor: globalConfig.footer.textAnchor,
             wrapNumber: w - paddingLeftRight 
         });
     }
@@ -143,30 +137,48 @@ var draw_01_01 = (function () {
         });
     }
 
-
-    var N_ITEMS = 1;
-
-    const content_height = 300;
-    const footer_height = 0;
-    const paddingLeftRight = 20;
-    const c_paddingTop = 60,
-        c_paddingBottom = 20;
-
-    var w = 1280;
-    var h = 1280;
-
     var globalConfig = {
+        infographic: {
+            width: 1280,
+            height: 1280,
+            content_height: 300,
+            paddingLeftRight: 20,
+            c_paddingTop: 60,
+            footer_height: 0,
+            background: "#e3d1a2"
+        },
         location: {
-            nameFontSize: "64px",
-            nameFontFamily: "Sans Serif",
-            nameColor: "#d0363b",
-            descriptionFontSize: "48px",
-            descriptionFontFamily: "Times Neue Roman",
-            descriptionColor: "#121113",
+            name: {
+                fontSize: "64px",
+                fontFamily: "Sans Serif",
+                color: "#d0363b",
+                fontWeight: "bold",
+                textAnchor: "start",
+                textTransform: "uppercase"
+            },
+            description: {
+               fontSize: "48px",
+               fontFamily: "Times Neue Roman",
+               color: "#121113",
+               textAnchor: "start",
+            },  
             paddingTop: 30,
             lineNumber: 1
-        }  
-    };
+        },
+        footer: {
+            color: "#121113",
+            font: "Times Neue Roman",
+            fontSize: "30px",
+            textAnchor: "start",
+        }
+    }
+
+    var w = globalConfig.infographic.width,
+        h = globalConfig.infographic.height,
+        content_height = globalConfig.infographic.content_height,
+        footer_height = globalConfig.infographic.footer_height,
+        paddingLeftRight = globalConfig.infographic.paddingLeftRight,
+        c_paddingTop = globalConfig.infographic.c_paddingTop;
     
     function drawBackground(svgBase, backgroundColor) {
         svgBase.style('background-color', backgroundColor);
@@ -174,7 +186,6 @@ var draw_01_01 = (function () {
 
     function draw(trip) {
 
-        N_ITEMS = trip.locations.length;
         var viewBox = "0 0" + " " + w + " " + h;
         var svgBase = d3.select("#info-graphic-base")    
             .attr("width", w)
@@ -193,9 +204,9 @@ var draw_01_01 = (function () {
             svgBase
             .attr("height", h)
             .attr("viewBox", viewBox)
-            .attr("preserveAspectRatio", "xMinYMin meet");;
+            .attr("preserveAspectRatio", "xMinYMin meet");
 
-            drawBackground(svgBase, "#e3d1a2");
+            drawBackground(svgBase, globalConfig.infographic.background);
 
             drawImage(svgBase, {
                 y: 0,
