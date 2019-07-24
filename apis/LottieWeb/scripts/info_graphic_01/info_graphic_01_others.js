@@ -350,10 +350,10 @@ var draw_01_others = (function() {
     }
 
     function setGlobalConfig(numberOfLocations) {
-        if (numberOfLocations >= 3 || numberOfLocations <= 4) {
+        if (numberOfLocations == 3 || numberOfLocations == 4) {
             globalConfig = config_infographic_01.config_01_0304
         }
-        else if (numberOfLocations >= 5 || numberOfLocations <= 6) {
+        else if (numberOfLocations == 5 || numberOfLocations == 6) {
             globalConfig = config_infographic_01.config_01_0506
         }
         else if (numberOfLocations >= 7) {

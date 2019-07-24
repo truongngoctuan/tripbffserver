@@ -242,7 +242,72 @@ var config_infographic_01 = (function() {
     }
 
     var config_01_others = {
-
+        infographic: {
+            width: 2060,
+            height: 4200,
+            paddingLeftRight: 10,
+            background: "#e3d1a2"
+        },
+        header: {
+            height: 370,
+            background: "#d0363b",
+            tripName: {
+                color: "#e3d1a2",
+                font: "Sans Serif",
+                fontSize: "74px",
+                textAnchor: "middle",
+                textTransform: "uppercase",
+            },
+            tripDescription: {
+                color: "#e3d1a2",
+                font: "Sans Serif",
+                fontSize: "64px",
+                textAnchor: "middle",
+            }       
+        },
+        content: {
+            paddingTop: 60,
+            paddingBottom: 20,
+            itemHeight: 300,
+            pathStroke: "#121113",
+            pathStrokeWidth: "4",
+            nodeColor: "red"
+        },
+        location: {
+            paddingPath: 20,
+            lineNumber: 1,
+            name: {
+                color: "#d0363b",
+                font: "Sans Serif",
+                fontSize: "64px",
+                fontWeight: "bold",
+                textAnchorEven: "start",
+                textAnchorOdd: "end",
+                textTransform: "uppercase",
+            },
+            description: {
+                color: "#121113",
+                font: "Times Neue Roman",
+                fontSize: "56px",
+                textAnchorEven: "start",
+                textAnchorOdd: "end",
+            },
+            image: {
+                width: 220,
+                height: 220,
+                clipPath: "circle(38%)"
+            }            
+        },
+        footer: {
+            height: 100,
+            text: "MORE INFO: WWW.TRIPBFF.COM",
+            background: "#d0363b",
+            color: "#e3d1a2",
+            font: "San Serif",
+            fontSize: "42px",
+            textAnchor: "middle",
+            textTransform: "uppercase",
+        }
     }
 
     return {
