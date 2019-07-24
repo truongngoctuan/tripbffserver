@@ -6,78 +6,10 @@
 
 var draw_01_others = (function() {
     
-    var globalConfig = {
-        infographic: {
-            width: 940,
-            height: 1500,
-            paddingLeftRight: 10,
-            background: "#e3d1a2"
-        },
-        header: {
-            height: 170,
-            background: "#d0363b",
-            tripName: {
-                color: "#e3d1a2",
-                font: "Sans Serif",
-                fontSize: "54px",
-                textAnchor: "middle",
-                textTransform: "uppercase",
-            },
-            tripDescription: {
-                color: "#e3d1a2",
-                font: "Sans Serif",
-                fontSize: "42px",
-                textAnchor: "middle",
-            }       
-        },
-        content: {
-            paddingTop: 60,
-            paddingBottom: 20,
-            itemHeight: 250,
-            pathStroke: "#121113",
-            pathStrokeWidth: "4",
-            nodeColor: "red"
-        },
-        location: {
-            paddingPath: 20,
-            lineNumber: 1,
-            name: {
-                color: "#d0363b",
-                font: "Sans Serif",
-                fontSize: "40px",
-                fontWeight: "bold",
-                textAnchorEven: "start",
-                textAnchorOdd: "end",
-                textTransform: "uppercase",
-            },
-            description: {
-                color: "#121113",
-                font: "Times Neue Roman",
-                fontSize: "32px",
-                textAnchorEven: "start",
-                textAnchorOdd: "end",
-            },
-            image: {
-                width: 220,
-                height: 220,
-                clipPath: "circle(38%)"
-            }            
-        },
-        footer: {
-            height: 70,
-            text: "MORE INFO: WWW.TRIPBFF.COM",
-            background: "#d0363b",
-            color: "#e3d1a2",
-            font: "San Serif",
-            fontSize: "24px",
-            textAnchor: "middle",
-            textTransform: "uppercase",
-        }
-    };
-    
-    var w = globalConfig.infographic.width;
-    var h = globalConfig.infographic.height;
-    
+    var globalConfig = {};    
+    var w = 940;
+    var h = 1500;
+
     function drawBackground(svgBase, backgroundColor) {
         svgBase.style('background-color', backgroundColor);
     }
@@ -417,9 +349,24 @@ var draw_01_others = (function() {
                 globalConfig.footer.height;
     }
 
+    function setGlobalConfig(numberOfLocations) {
+        if (numberOfLocations >= 3 || numberOfLocations <= 4) {
+            globalConfig = config_infographic_01.config_01_0304
+        }
+        else if (numberOfLocations >= 5 || numberOfLocations <= 6) {
+            globalConfig = config_infographic_01.config_01_0506
+        }
+        else if (numberOfLocations >= 7) {
+            globalConfig = config_infographic_01.config_01_others;
+        }
+    }
+
     function draw(trip) {
     
         let numberOfLocations = trip.locations.length;
+        setGlobalConfig(numberOfLocations);
+
+        w = globalConfig.infographic.width;
         h = calculateInfographicHeight(numberOfLocations);
 
         var svgBase = d3.select("#info-graphic-base")

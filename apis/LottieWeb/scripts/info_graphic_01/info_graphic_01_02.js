@@ -6,73 +6,11 @@
 
 var draw_01_02 = (function() {
     
-    var globalConfig = {
-        infographic: {
-            width: 1280,
-            height: 1500,            
-            paddingLeftRight: 20,
-            paddingBottom: 10,
-            background: "rgb(254, 255, 246)"
-        },
-        header: {            
-            height: 170,
-            background: "rgb(254, 255, 246)",
-            tripName: {
-                color: "rgb(0, 0, 0)",
-                font: "Sans Serif",
-                fontSize: "64px",
-                textAnchor: "middle",
-                fontWeight: "bold",
-                textTransform: "uppercase",
-            },
-            tripDescription: {
-                color: "rgb(0, 0, 0)",
-                font: "Sans Serif",
-                fontSize: "52px",
-                textAnchor: "middle",
-            }
-        },
-        imageContainer: {
-            heightContainer: 840,
-            viewBox: "0 0 280 373.3",
-            width: "505",
-            height: "379",
-            paddingTop: 20,
-            paddingBetweenImage: 5,
-        },
-        location: {
-            name: {
-                color: "#121113",
-                font: "Sans Serif",
-                fontSize: "64px",
-                fontWeight: "bold",
-                textAnchor: "start",
-                textTransform: "uppercase",
-            },
-            description: {
-                color: "#121113",
-                font: "Times Neue Roman",
-                fontSize: "48px",
-                textAnchor: "start",
-            },
-            paddingTop: 30,
-            lineNumber: 1
-        },
-        footer: {
-            height: 70,
-            background: "rgb(254, 255, 246)",
-            color: "#121113",
-            font: "San Serif",
-            fontSize: "28px",
-            textAnchor: "middle",
-            textTransform: "uppercase",
-            text: "MORE INFO: WWW.TRIPBFF.COM"
-        }  
-    };
+    var globalConfig = config_infographic_01.config_01_02;
     
     let w = globalConfig.infographic.width;
     let h = globalConfig.infographic.height;
-    
+
     function drawHeader(svgBase, trip) {
         svgBase.append("rect")
             .attr("width", w)

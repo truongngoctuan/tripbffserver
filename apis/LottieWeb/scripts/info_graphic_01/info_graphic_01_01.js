@@ -1,41 +1,6 @@
 var draw_01_01 = (function () {
 
-    var globalConfig = {
-        infographic: {
-            width: 1280,
-            height: 1280,
-            content_height: 300,
-            paddingLeftRight: 20,
-            c_paddingTop: 60,
-            footer_height: 0,
-            background: "#e3d1a2"
-        },
-        location: {
-            name: {
-                fontSize: "64px",
-                fontFamily: "Sans Serif",
-                color: "#d0363b",
-                fontWeight: "bold",
-                textAnchor: "start",
-                textTransform: "uppercase"
-            },
-            description: {
-               fontSize: "48px",
-               fontFamily: "Times Neue Roman",
-               color: "#121113",
-               textAnchor: "start",
-            },  
-            paddingTop: 30,
-            lineNumber: 1
-        },
-        footer: {
-            color: "#121113",
-            font: "Times Neue Roman",
-            fontSize: "30px",
-            textAnchor: "start",
-            text: "MORE INFO: WWW.TRIPBFF.COM"
-        }
-    }
+    var globalConfig = config_infographic_01.config_01_01;
 
     var w = globalConfig.infographic.width,
         h = globalConfig.infographic.height,
