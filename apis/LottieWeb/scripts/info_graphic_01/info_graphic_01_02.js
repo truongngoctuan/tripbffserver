@@ -6,23 +6,90 @@
 
 var draw_01_02 = (function() {
     
+    var globalConfig = {
+        infographic: {
+            width: 1280,
+            height: 1500,            
+            paddingLeftRight: 20,
+            paddingBottom: 10,
+            background: "rgb(254, 255, 246)"
+        },
+        header: {            
+            height: 170,
+            background: "rgb(254, 255, 246)",
+            tripName: {
+                color: "rgb(0, 0, 0)",
+                font: "Sans Serif",
+                fontSize: "64px",
+                textAnchor: "middle",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+            },
+            tripDescription: {
+                color: "rgb(0, 0, 0)",
+                font: "Sans Serif",
+                fontSize: "52px",
+                textAnchor: "middle",
+            }
+        },
+        imageContainer: {
+            heightContainer: 840,
+            viewBox: "0 0 280 373.3",
+            width: "505",
+            height: "379",
+            paddingTop: 20,
+            paddingBetweenImage: 5,
+        },
+        location: {
+            name: {
+                color: "#121113",
+                font: "Sans Serif",
+                fontSize: "64px",
+                fontWeight: "bold",
+                textAnchor: "start",
+                textTransform: "uppercase",
+            },
+            description: {
+                color: "#121113",
+                font: "Times Neue Roman",
+                fontSize: "48px",
+                textAnchor: "start",
+            },
+            paddingTop: 30,
+            lineNumber: 1
+        },
+        footer: {
+            height: 70,
+            background: "rgb(254, 255, 246)",
+            color: "#121113",
+            font: "San Serif",
+            fontSize: "28px",
+            textAnchor: "middle",
+            textTransform: "uppercase",
+            text: "MORE INFO: WWW.TRIPBFF.COM"
+        }  
+    };
+    
+    let w = globalConfig.infographic.width;
+    let h = globalConfig.infographic.height;
+    
     function drawHeader(svgBase, trip) {
         svgBase.append("rect")
             .attr("width", w)
-            .attr("height", header_height)
-            .attr("fill", "rgb(254, 255, 246)");
+            .attr("height", globalConfig.header.height)
+            .attr("fill", globalConfig.header.background);
     
         let tripNameNode = drawText(svgBase, {
             y: 50,
-            x: w/2
+            x: w / 2
         }, trip.name, { 
-            color: "rgb(0, 0, 0)",
-            font: "Sans Serif",
-            fontSize: "64px",
-            textAnchor: "middle",
-            fontWeight: "bold",
-            textTransform: "uppercase",
-            wrapNumber: w - paddingLeftRight * 2 
+            color: globalConfig.header.tripName.color,
+            font: globalConfig.header.tripName.font,
+            fontSize: globalConfig.header.tripName.fontSize,
+            textAnchor: globalConfig.header.tripName.textAnchor,
+            fontWeight: globalConfig.header.tripName.fontWeight,
+            textTransform: globalConfig.header.tripName.textTransform,
+            wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2 
         });
         let tripNameNodeBbox = tripNameNode.node().getBBox();
     
@@ -33,13 +100,13 @@ var draw_01_02 = (function() {
     
         drawText(svgBase, {
             y: tripNameNodeBbox.y + tripNameNodeBbox.height + 40,
-            x: w/2
+            x: w / 2
         }, basicTripInfo, { 
-            color: "rgb(0, 0, 0)",
-            font: "Sans Serif",
-            fontSize: "52px",
-            textAnchor: "middle",
-            wrapNumber: w - paddingLeftRight * 2 
+            color: globalConfig.header.tripDescription.color,
+            font: globalConfig.header.tripDescription.font,
+            fontSize: globalConfig.header.tripDescription.fontSize,
+            textAnchor: globalConfig.header.tripDescription.textAnchor,
+            wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2  
         });
     }
     
@@ -48,10 +115,10 @@ var draw_01_02 = (function() {
             startPoint_py = startPointCoordinate.y;   
     
         let locationName = capitalizeFirstLetter(location.name) + ".",
-        feeling = location.feeling ? 'Feeling ' + location.feeling : "",
-        activity = location.activity,
-        highlights = location.highlights.toLowerCase(),
-        nodeFeelingActivity = "";
+            feeling = location.feeling ? 'Feeling ' + location.feeling : "",
+            activity = location.activity,
+            highlights = location.highlights.toLowerCase(),
+            nodeFeelingActivity = "";
     
         if (activity) nodeFeelingActivity = capitalizeFirstLetter(activity.toLowerCase());
         if (feeling) {
@@ -69,13 +136,13 @@ var draw_01_02 = (function() {
                 y: locationName_py,
                 x: locationName_px
             }, locationName, { 
-                color: globalConfig.location.nameColor,
-                font: globalConfig.location.nameFontFamily,
-                fontSize: globalConfig.location.nameFontSize,
-                fontWeight: "bold",
-                textAnchor: "start",
-                textTransform: "uppercase",
-                wrapNumber: w / 2 - paddingBetweenImage
+                color: globalConfig.location.name.color,
+                font: globalConfig.location.name.font,
+                fontSize: globalConfig.location.name.fontSize,
+                fontWeight: globalConfig.location.name.fontWeight,
+                textAnchor: globalConfig.location.name.textAnchor,
+                textTransform: globalConfig.location.name.textTransform,
+                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage
             });
         let locationNameNodeBbox = locationNameNode.node().getBBox();
     
@@ -83,22 +150,22 @@ var draw_01_02 = (function() {
             y: locationNameNodeBbox.y + locationNameNodeBbox.height + globalConfig.location.paddingTop,
             x: locationName_px
         }, nodeFeelingActivity, { 
-            color: globalConfig.location.descriptionColor,
-            font: globalConfig.location.descriptionFontFamily,
-            fontSize: globalConfig.location.descriptionFontSize,
-            textAnchor: "start",
-            wrapNumber: w / 2 - paddingBetweenImage
+            color: globalConfig.location.description.color,
+            font: globalConfig.location.description.font,
+            fontSize: globalConfig.location.description.fontSize,
+            textAnchor: globalConfig.location.description.textAnchor,
+            wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage
         });
         let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
         let hightlightNode = drawText(svgBase, {
             y: feelingActivityNodeBbox.y + feelingActivityNodeBbox.height + globalConfig.location.paddingTop,
             x: locationName_px
         }, highlights, { 
-            color: globalConfig.location.descriptionColor,
-            font: globalConfig.location.descriptionFontFamily,
-            fontSize: globalConfig.location.descriptionFontSize,
-            textAnchor: "start",
-            wrapNumber: w / 2 - paddingBetweenImage 
+            color: globalConfig.location.description.color,
+            font: globalConfig.location.description.font,
+            fontSize: globalConfig.location.description.fontSize,
+            textAnchor: globalConfig.location.description.textAnchor,
+            wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage 
         });
         return hightlightNode;
     }
@@ -107,16 +174,16 @@ var draw_01_02 = (function() {
         var svgImage = svgBase.append("svg")
         .attr("y", coordinate.y)
         .attr("x", coordinate.x)
-        .attr("width", w / 2 - paddingBetweenImage)
-        .attr("height", 840)
-        .attr("viewBox", "0 0 280 373.3");  
+        .attr("width", w / 2 - globalConfig.imageContainer.paddingBetweenImage)
+        .attr("height", globalConfig.imageContainer.heightContainer)
+        .attr("viewBox", globalConfig.imageContainer.viewBox);  
     
         drawImage(svgImage, {
             y: 0,
             x: -108 
         }, uri, {
-            width: "505",
-            height: "379"
+            width: globalConfig.imageContainer.width,
+            height: globalConfig.imageContainer.height
         });
     }
     
@@ -132,25 +199,25 @@ var draw_01_02 = (function() {
     }
     
     function drawFooter(svgBase) {
-        let footerText = "MORE INFO: WWW.TRIPBFF.COM";
+        let footerText = globalConfig.footer.text;
     
         svgBase.append("rect")
             .attr("x", 0)
-            .attr("y", h - footer_height)
+            .attr("y", h - globalConfig.footer.height)
             .attr("width", w)
-            .attr("height", footer_height)
-            .attr("fill", "rgb(254, 255, 246)");
+            .attr("height", globalConfig.footer.height)
+            .attr("fill", globalConfig.footer.background);
     
         let footerInfoElement = drawText(svgBase, {
-            y: h - footer_height / 2,
-            x: w/2
+            y: h - globalConfig.footer.height / 2,
+            x: w / 2
         }, footerText, { 
-            color: "#121113",
-            font: "San Serif",
-            fontSize: "28px",
-            textAnchor: "middle",
-            textTransform: "uppercase",
-            wrapNumber: w - paddingLeftRight * 2
+            color: globalConfig.footer.color,
+            font: globalConfig.footer.font,
+            fontSize: globalConfig.footer.fontSize,
+            textAnchor: globalConfig.footer.textAnchor,
+            textTransform: globalConfig.footer.textTransform,
+            wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2
         });
     }
     
@@ -209,34 +276,7 @@ var draw_01_02 = (function() {
           }
         });
       }
-    
-    
-    var N_ITEMS = 1;
-    
-    var header_height = 170;
-    var content_height = 300;
-    var footer_height = 70;
-    var paddingBetweenImage = 5;
-    var paddingLeftRight = 20;
-    var c_paddingTop = 20,
-          c_paddingBottom = 10;
-    
-    var w = 1280;
-    var h = 1500;
-    
-    var globalConfig = {
-        location: {
-            nameFontSize: "64px",
-            nameFontFamily: "Sans Serif",
-            nameColor: "#121113",
-            descriptionFontSize: "48px",
-            descriptionFontFamily: "Times Neue Roman",
-            descriptionColor: "#121113",
-            paddingTop: 30,
-            lineNumber: 1
-        }  
-    };
-     
+   
     function drawBackground(svgBase, backgroundColor) {
         svgBase.style('background-color', backgroundColor);
     }
@@ -250,38 +290,36 @@ var draw_01_02 = (function() {
             };
             img.src = url;
         });
-    }
+    }    
 
-    function draw(trip) {   
-        
+    function draw(trip) { 
+
         var svgBase = d3.select("#info-graphic-base")    
         .attr("width", w)
         .attr("height", h);
 
         Promise.all(trip.locations.map(item => loadImage(item.signedUrl, svgBase)));
-
-        N_ITEMS = trip.locations.length;
      
-        drawBackground(svgBase, "rgb(254, 255, 246)");    
+        drawBackground(svgBase, globalConfig.infographic.background);    
         drawHeader(svgBase, trip);
     
         drawImageContainer(svgBase, {
             x: 0,
-            y: 170 + c_paddingTop
+            y: 170 + globalConfig.imageContainer.paddingTop
         }, trip.locations[0].signedUrl);
     
         drawImageContainer(svgBase, {
-            x: w / 2 + paddingBetweenImage,
-            y: 170 + c_paddingTop
+            x: w / 2 + globalConfig.imageContainer.paddingBetweenImage,
+            y: 170 + globalConfig.imageContainer.paddingTop
         }, trip.locations[1].signedUrl);
     
         let lastElementOfFirstLocationNode = drawContent(svgBase, trip.locations[0], {
-            x: paddingLeftRight,
+            x: globalConfig.infographic.paddingLeftRight,
             y: 1100
         });
     
         let lastElementOfSecondLocationNode = drawContent(svgBase, trip.locations[1], {
-            x: w / 2 + paddingBetweenImage,
+            x: w / 2 + globalConfig.imageContainer.paddingBetweenImage,
             y: 1100
         });
     
@@ -290,8 +328,8 @@ var draw_01_02 = (function() {
             firstLatestHeight = firstBbox.y + firstBbox.height,
             secondLatestHeight = secondBbox.y + secondBbox.height;
         h = firstLatestHeight >= secondLatestHeight
-                    ? firstLatestHeight + c_paddingBottom + footer_height 
-                    : secondLatestHeight + c_paddingBottom + footer_height;
+                    ? firstLatestHeight + globalConfig.infographic.paddingBottom + globalConfig.footer.height 
+                    : secondLatestHeight + globalConfig.infographic.paddingBottom + globalConfig.footer.height;
         svgBase.attr("height", h);
     
         drawFooter(svgBase);  

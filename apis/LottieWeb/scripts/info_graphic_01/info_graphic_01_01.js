@@ -1,5 +1,49 @@
 var draw_01_01 = (function () {
 
+    var globalConfig = {
+        infographic: {
+            width: 1280,
+            height: 1280,
+            content_height: 300,
+            paddingLeftRight: 20,
+            c_paddingTop: 60,
+            footer_height: 0,
+            background: "#e3d1a2"
+        },
+        location: {
+            name: {
+                fontSize: "64px",
+                fontFamily: "Sans Serif",
+                color: "#d0363b",
+                fontWeight: "bold",
+                textAnchor: "start",
+                textTransform: "uppercase"
+            },
+            description: {
+               fontSize: "48px",
+               fontFamily: "Times Neue Roman",
+               color: "#121113",
+               textAnchor: "start",
+            },  
+            paddingTop: 30,
+            lineNumber: 1
+        },
+        footer: {
+            color: "#121113",
+            font: "Times Neue Roman",
+            fontSize: "30px",
+            textAnchor: "start",
+            text: "MORE INFO: WWW.TRIPBFF.COM"
+        }
+    }
+
+    var w = globalConfig.infographic.width,
+        h = globalConfig.infographic.height,
+        content_height = globalConfig.infographic.content_height,
+        footer_height = globalConfig.infographic.footer_height,
+        paddingLeftRight = globalConfig.infographic.paddingLeftRight,
+        c_paddingTop = globalConfig.infographic.c_paddingTop;
+
     function drawContent(svgBase, trip) {
         let startPoint_px = paddingLeftRight,
             startPoint_py = h - content_height - footer_height + c_paddingTop;   
@@ -63,7 +107,7 @@ var draw_01_01 = (function () {
         drawText(svgBase, {
             y: hightlightNodeBbox.y + hightlightNodeBbox.height + globalConfig.location.paddingTop,
             x: locationName_px
-        }, "MORE INFO: WWW.TRIPBFF.COM", { 
+        }, globalConfig.footer.text, { 
             color: globalConfig.footer.color,
             font: globalConfig.footer.fontFamily,
             fontSize: globalConfig.footer.fontSize,
@@ -134,50 +178,7 @@ var draw_01_01 = (function () {
             }
         }
         });
-    }
-
-    var globalConfig = {
-        infographic: {
-            width: 1280,
-            height: 1280,
-            content_height: 300,
-            paddingLeftRight: 20,
-            c_paddingTop: 60,
-            footer_height: 0,
-            background: "#e3d1a2"
-        },
-        location: {
-            name: {
-                fontSize: "64px",
-                fontFamily: "Sans Serif",
-                color: "#d0363b",
-                fontWeight: "bold",
-                textAnchor: "start",
-                textTransform: "uppercase"
-            },
-            description: {
-               fontSize: "48px",
-               fontFamily: "Times Neue Roman",
-               color: "#121113",
-               textAnchor: "start",
-            },  
-            paddingTop: 30,
-            lineNumber: 1
-        },
-        footer: {
-            color: "#121113",
-            font: "Times Neue Roman",
-            fontSize: "30px",
-            textAnchor: "start",
-        }
-    }
-
-    var w = globalConfig.infographic.width,
-        h = globalConfig.infographic.height,
-        content_height = globalConfig.infographic.content_height,
-        footer_height = globalConfig.infographic.footer_height,
-        paddingLeftRight = globalConfig.infographic.paddingLeftRight,
-        c_paddingTop = globalConfig.infographic.c_paddingTop;
+    }    
     
     function drawBackground(svgBase, backgroundColor) {
         svgBase.style('background-color', backgroundColor);
