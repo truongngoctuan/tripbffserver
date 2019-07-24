@@ -120,8 +120,8 @@ var draw_01_02 = (function() {
         });
     }
     
-    function drawImage(svgBase, coordinate, uri, config) {
-        var svgCanvas = svgBase.append("svg:image");
+    function drawImage(svgImage, coordinate, uri, config) {
+        var svgCanvas = svgImage.append("svg:image");
         svgCanvas
         .attr('x', coordinate.x)
         .attr('y', coordinate.y)
@@ -241,27 +241,40 @@ var draw_01_02 = (function() {
         svgBase.style('background-color', backgroundColor);
     }
     
-    function draw(trip) {
-    
-        N_ITEMS = trip.locations.length;
-    
+    function loadImage(url, svgImage){
+        return new Promise(resolve => {
+            var img = new Image();
+            img.onload = function() {
+                svgImage.append("span").attr("name", "imgLoaded");
+                resolve();
+            };
+            img.src = url;
+        });
+    }
+
+    function draw(trip) {   
+        
         var svgBase = d3.select("#info-graphic-base")    
-            .attr("width", w)
-            .attr("height", h);
-            
+        .attr("width", w)
+        .attr("height", h);
+
+        Promise.all(trip.locations.map(item => loadImage(item.signedUrl, svgBase)));
+
+        N_ITEMS = trip.locations.length;
+     
         drawBackground(svgBase, "rgb(254, 255, 246)");    
         drawHeader(svgBase, trip);
     
         drawImageContainer(svgBase, {
             x: 0,
             y: 170 + c_paddingTop
-        }, "./data/images/2.jpg");
+        }, trip.locations[0].signedUrl);
     
         drawImageContainer(svgBase, {
             x: w / 2 + paddingBetweenImage,
             y: 170 + c_paddingTop
-        }, "./data/images/3.jpg");
-       
+        }, trip.locations[1].signedUrl);
+    
         let lastElementOfFirstLocationNode = drawContent(svgBase, trip.locations[0], {
             x: paddingLeftRight,
             y: 1100
@@ -277,11 +290,11 @@ var draw_01_02 = (function() {
             firstLatestHeight = firstBbox.y + firstBbox.height,
             secondLatestHeight = secondBbox.y + secondBbox.height;
         h = firstLatestHeight >= secondLatestHeight
-                     ? firstLatestHeight + c_paddingBottom + footer_height 
-                     : secondLatestHeight + c_paddingBottom + footer_height;
+                    ? firstLatestHeight + c_paddingBottom + footer_height 
+                    : secondLatestHeight + c_paddingBottom + footer_height;
         svgBase.attr("height", h);
     
-        drawFooter(svgBase);
+        drawFooter(svgBase);  
     }
 
     return {

@@ -1,10 +1,15 @@
 const moment = require("moment");
 const puppeteer = require('puppeteer');
 
-
 const url = "http://" + process.env.LOTTIE_WEB_HOST + ":" + process.env.LOTTIE_WEB_PORT;
 console.log(url);
-async function exportInfo(trip) {
+
+  function imagesHaveLoaded(numberOfElements) {
+    var elements = document.getElementsByName("imgLoaded");
+    return elements.length == numberOfElements;
+  }
+
+  async function exportInfo(trip) {
     try {
 
     const browser = await puppeteer.launch({
@@ -12,8 +17,8 @@ async function exportInfo(trip) {
          args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     const page = await browser.newPage();
-    await page.goto(url, {waitUntil: 'networkidle2'});  
-    
+    await page.goto(url, {waitUntil: 'networkidle2'});     
+
     trip = {
         ...trip,
         numberOfDays: moment(trip.toDate).diff(moment(trip.fromDate), 'days') + 1,
@@ -30,6 +35,10 @@ async function exportInfo(trip) {
     var result = await page.evaluate((trip) => {        
         draw(trip, INFOGRAPHIC_TYPE.FIRST_RELEASED);
       }, trip);
+
+    // wait for all images fully loaded
+    await page.waitForFunction(imagesHaveLoaded, { timeout: 300000 }, [trip.locations.length]);
+
     await svgInfoGraphic.screenshot({
         path: 'svg-info-graphic.png',
         // omitBackground: true,

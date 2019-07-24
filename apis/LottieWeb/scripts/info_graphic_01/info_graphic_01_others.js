@@ -101,7 +101,6 @@ var draw_01_others = (function() {
     function drawContent(svgBase, trip) {
         let startPoint_px = w / 2,
             startPoint_py = header_height + c_paddingTop;   
-        let urlOriginal = './data/images/';
     
         for (let idx = 0; idx < N_ITEMS; idx++) {
             let location = trip.locations[idx],
@@ -110,7 +109,7 @@ var draw_01_others = (function() {
                 activity = location.activity,
                 highlights = location.highlights.toLowerCase(),
                 nodeFeelingActivity = "";
-            let url = urlOriginal + (idx + 1) + ".jpg";
+            let url = location.signedUrl;
     
             if (activity) nodeFeelingActivity = capitalizeFirstLetter(activity.toLowerCase());
             if (feeling) {
@@ -263,7 +262,7 @@ var draw_01_others = (function() {
         .attr('x', coordinate.x)
         .attr('y', coordinate.y)
         .attr('width', config.width)
-        .attr('height', config.height)
+        .attr('height', config.height)  
         .attr("xlink:href", uri)
         .attr("clip-path", config.imageClipPath)
     }
@@ -353,6 +352,17 @@ var draw_01_others = (function() {
         }  
     };
     
+    function loadImage(url, svgImage){
+        return new Promise(resolve => {
+            var img = new Image();
+            img.onload = function() {
+                svgImage.append("span").attr("name", "imgLoaded");
+                resolve();
+            };
+            img.src = url;
+        });
+    }
+
     function draw(trip) {
     
         N_ITEMS = trip.locations.length;
@@ -361,6 +371,8 @@ var draw_01_others = (function() {
         .attr("width", w)
         .attr("height", h);
     
+        Promise.all(trip.locations.map(item => loadImage(item.signedUrl, svgBase)));
+
         drawBackground(svgBase, "#e3d1a2");
         drawHeader(svgBase, trip);
         drawPathBetweenLocations(svgBase);

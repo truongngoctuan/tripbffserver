@@ -74,7 +74,6 @@ var draw_01_01 = (function () {
 
     function drawImage(svgBase, coordinate, uri, config) {
         svgBase.append("svg:image")
-        .attr('id', 'img01')
         .attr('x', coordinate.x)
         .attr('y', coordinate.y)
         .attr('width', config.width)
@@ -190,11 +189,12 @@ var draw_01_01 = (function () {
         var svgBase = d3.select("#info-graphic-base")    
             .attr("width", w)
             .attr("height", h)
-            .attr("viewBox", viewBox);
+            .attr("viewBox", viewBox)
+            .attr("preserveAspectRatio", "xMinYMin meet");
             
-        var imgUri = "./data/images/2.jpg";
+        var imgUri = trip.locations[0].signedUrl;
         var img = new Image();
-        img.onload = function() {
+        img.onload = function() {         
             var ratio = this.width / this.height; 
             h = w / ratio;          
             
@@ -211,13 +211,15 @@ var draw_01_01 = (function () {
             drawImage(svgBase, {
                 y: 0,
                 x: 0 
-            }, imgUri, {
+            }, trip.locations[0].signedUrl, {
                 width: w
             });      
 
             drawContent(svgBase, trip);
+
+            svgBase.append("span").attr("name", "imgLoaded");
         };
-        img.src = imgUri;
+        img.src = imgUri;    
     }
 
     return {

@@ -4,6 +4,7 @@ import { ServiceBus } from "../TripServiceBus";
 import { Succeed } from "../../../../_shared/utils";
 import _ from "lodash";
 import { IExtraParams } from "./_commandHandler";
+import { IoC } from "../../../IoC";
 
 // todo move to infographic folder
 export type ExportInfographicCommand = {
@@ -41,18 +42,34 @@ export async function exportInfographic(
     name: trip.name,
     toDate: trip.toDate,
     fromDate: trip.fromDate,
-    locations: trip.locations.map(item => {
+    locations: await Promise.all(trip.locations.map(async item => {      
+      let imageId = undefined,
+          signedUrl = "";
+
+      let favoriteImages = item.images.filter(img => img.isFavorite);
+
+      if (favoriteImages.length > 0)
+        imageId = favoriteImages[0].externalStorageId;
+      else if (item.images.length > 0)
+        imageId = item.images[0].externalStorageId;
+
+      if (imageId) {
+        let { fileInfo } = await IoC.fileService.getInfoById(imageId);    
+        signedUrl = await IoC.fileService.signGet(fileInfo.fileName, 350);
+      }
+
       return {
         name: item.name,
         fromTime: item.fromTime,
         toTime: item.toTime,
         feeling: item.feeling ? item.feeling.label : "",
         activity: item.activity ? item.activity.label : "",
-        highlights: item.highlights ? item.highlights.map(h => h.label) : []
+        highlights: item.highlights ? item.highlights.map(h => h.label) : [],
+        signedUrl: signedUrl
       }
-    })
-  }
-  
+    })) 
+  }  
+
   extraParams.jobDispatcher.dispatch(jobExportInfo);
 
   //update read store synchronously
