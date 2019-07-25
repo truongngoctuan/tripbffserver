@@ -1,5 +1,6 @@
 const moment = require("moment");
 const puppeteer = require('puppeteer');
+const { INFOGRAPHIC_TYPE } = require("./info_graphic_type");
 
 const url = "http://" + process.env.LOTTIE_WEB_HOST + ":" + process.env.LOTTIE_WEB_PORT;
 console.log(url);
@@ -7,6 +8,14 @@ console.log(url);
   function imagesHaveLoaded(numberOfElements) {
     var elements = document.getElementsByName("imgLoaded");
     return elements.length == numberOfElements;
+  }
+
+  function waitForPageLoaded(time) {
+    return new Promise(resolve => {
+        setTimeout(function() {
+            resolve();
+        }, time)
+    })
   }
 
   async function exportInfo(trip) {
@@ -17,8 +26,9 @@ console.log(url);
          args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     const page = await browser.newPage();
-    await page.goto(url, {waitUntil: 'networkidle2'});     
+    await page.goto(url, {waitUntil: 'networkidle0'});     
 
+    const info_graphic_type = INFOGRAPHIC_TYPE.FIRST_RELEASED;
     trip = {
         ...trip,
         numberOfDays: moment(trip.toDate).diff(moment(trip.fromDate), 'days') + 1,
@@ -32,9 +42,13 @@ console.log(url);
     };
 
     const svgInfoGraphic = await page.$('#info-graphic-base');
-    var result = await page.evaluate((trip) => {        
-        draw(trip, INFOGRAPHIC_TYPE.FIRST_RELEASED);
-      }, trip);
+    var result = await page.evaluate((trip, info_graphic_type) => {        
+        draw(trip, info_graphic_type);
+      }, trip, info_graphic_type);
+
+    // wait for fonts fully loaded --> can we download fonts and copy to tripbff-infographic image ???
+    if (info_graphic_type == INFOGRAPHIC_TYPE.FIRST_RELEASED && trip.locations.length == 1) 
+        await waitForPageLoaded(1000);
 
     // wait for all images fully loaded
     await page.waitForFunction(imagesHaveLoaded, { timeout: 300000 }, [trip.locations.length]);
