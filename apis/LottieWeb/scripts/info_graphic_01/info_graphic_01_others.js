@@ -21,7 +21,7 @@ var draw_01_others = (function() {
             .attr("fill", globalConfig.header.background);
     
         let tripNameNode = drawText(svgBase, {
-            y: 50,
+            y: globalConfig.header.tripName.paddingTop,
             x: w/2
         }, trip.name, { 
             color: globalConfig.header.tripName.color,
@@ -37,7 +37,7 @@ var draw_01_others = (function() {
             basicTripInfo = trip.numberOfDays + " days, " + numberOfLocations + " locations";
     
         drawText(svgBase, {
-            y: tripNameNodeBbox.y + tripNameNodeBbox.height + 40,
+            y: tripNameNodeBbox.y + tripNameNodeBbox.height + globalConfig.header.tripDescription.paddingTop,
             x: w/2
         }, basicTripInfo, { 
             color: globalConfig.header.tripDescription.color,
@@ -61,7 +61,7 @@ var draw_01_others = (function() {
             jsonCircles.push({
                 x_axis: px,
                 y_axis: py,
-                radius: 12,
+                radius: globalConfig.content.circleRadius,
                 color: globalConfig.content.nodeColor
             })
         }
@@ -140,35 +140,35 @@ var draw_01_others = (function() {
                         fontWeight: globalConfig.location.name.fontWeight,
                         textAnchor: globalConfig.location.name.textAnchorEven,
                         textTransform: globalConfig.location.name.textTransform,
-                        wrapNumber: w / 2 - globalConfig.infographic.paddingLeftRight
+                        wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight
                     });
                 let locationNameNodeBbox = locationNameNode.node().getBBox();
             
                 let feelingActivityNode = drawText(svgBase, {
-                    y: locationNameNodeBbox.y + locationNameNodeBbox.height + 20,
+                    y: locationNameNodeBbox.y + locationNameNodeBbox.height + globalConfig.location.linePadding,
                     x: locationName_px
                 }, nodeFeelingActivity, { 
                     color: globalConfig.location.description.color,
                     font: globalConfig.location.description.font,
                     fontSize: globalConfig.location.description.fontSize,
                     textAnchor: globalConfig.location.description.textAnchorEven,
-                    wrapNumber: w / 2 - globalConfig.infographic.paddingLeftRight 
+                    wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight
                 });
                 let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
                 drawText(svgBase, {
-                    y: feelingActivityNodeBbox.y + feelingActivityNodeBbox.height + 20,
+                    y: feelingActivityNodeBbox.y + feelingActivityNodeBbox.height + globalConfig.location.linePadding,
                     x: locationName_px
                 }, highlights, { 
                     color: globalConfig.location.description.color,
                     font: globalConfig.location.description.font,
                     fontSize: globalConfig.location.description.fontSize,
                     textAnchor: globalConfig.location.description.textAnchorEven,
-                    wrapNumber: w / 2 - globalConfig.infographic.paddingLeftRight 
+                    wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight 
                 });
     
                 drawImage(svgBase, {
-                    y: locationName_py - 20,
-                    x: locationName_px - globalConfig.location.paddingPath * 4 - globalConfig.location.image.width 
+                    y: locationName_py - globalConfig.location.image.paddingTop,
+                    x: locationName_px - globalConfig.location.paddingPath * 2 - globalConfig.location.image.width 
                 }, url, {
                     width: globalConfig.location.image.width,
                     height: globalConfig.location.image.height,
@@ -189,36 +189,36 @@ var draw_01_others = (function() {
                         fontWeight: globalConfig.location.name.fontWeight,
                         textAnchor: globalConfig.location.name.textAnchorOdd,
                         textTransform: globalConfig.location.name.textTransform,
-                        wrapNumber: w / 2 - globalConfig.infographic.paddingLeftRight 
+                        wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight 
                     });
                 let locationNameNodeBbox = locationNameNode.node().getBBox();
         
                 let feelingActivityNode = drawText(svgBase, {
-                    y: locationNameNodeBbox.y + locationNameNodeBbox.height + 20,
+                    y: locationNameNodeBbox.y + locationNameNodeBbox.height + globalConfig.location.linePadding,
                     x: locationName_px
                 }, nodeFeelingActivity, { 
                     color: globalConfig.location.description.color,
                     font: globalConfig.location.description.font,
                     fontSize: globalConfig.location.description.fontSize,
                     textAnchor: globalConfig.location.description.textAnchorOdd,
-                    wrapNumber: w / 2 - globalConfig.infographic.paddingLeftRight 
+                    wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight
                 });
     
                 let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
                 drawText(svgBase, {
-                    y: feelingActivityNodeBbox.y + feelingActivityNodeBbox.height + 20,
+                    y: feelingActivityNodeBbox.y + feelingActivityNodeBbox.height + globalConfig.location.linePadding,
                     x: locationName_px
                 }, highlights, { 
                     color: globalConfig.location.description.color,
                     font: globalConfig.location.description.font,
                     fontSize: globalConfig.location.description.fontSize,
                     textAnchor: globalConfig.location.description.textAnchorOdd,
-                    wrapNumber: w / 2 - globalConfig.infographic.paddingLeftRight 
+                    wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight
                 });
     
                 drawImage(svgBase, {
-                    y: locationName_py - 20,
-                    x: locationName_px + globalConfig.location.paddingPath * 4 
+                    y: locationName_py - globalConfig.location.image.paddingTop,
+                    x: locationName_px + globalConfig.location.paddingPath * 2 
                 }, url, {
                     width: globalConfig.location.image.width,
                     height: globalConfig.location.image.height,

@@ -119,12 +119,14 @@ var config_infographic_01 = (function() {
                 fontSize: "54px",
                 textAnchor: "middle",
                 textTransform: "uppercase",
+                paddingTop: 50,
             },
             tripDescription: {
                 color: "#e3d1a2",
                 font: "Sans Serif",
                 fontSize: "42px",
                 textAnchor: "middle",
+                paddingTop: 40,
             }       
         },
         content: {
@@ -133,11 +135,13 @@ var config_infographic_01 = (function() {
             itemHeight: 250,
             pathStroke: "#121113",
             pathStrokeWidth: "4",
-            nodeColor: "red"
+            nodeColor: "red",
+            circleRadius: 12
         },
         location: {
             paddingPath: 20,
             lineNumber: 1,
+            linePadding: 20,
             name: {
                 color: "#d0363b",
                 font: "Sans Serif",
@@ -155,9 +159,10 @@ var config_infographic_01 = (function() {
                 textAnchorOdd: "end",
             },
             image: {
-                width: 220,
-                height: 220,
-                clipPath: "circle(38%)"
+                width: 230,
+                height: 230,
+                clipPath: "circle(38%)",
+                paddingTop: 20,
             }            
         },
         footer: {
@@ -180,7 +185,7 @@ var config_infographic_01 = (function() {
             background: "#e3d1a2"
         },
         header: {
-            height: 370,
+            height: 300,
             background: "#d0363b",
             tripName: {
                 color: "#e3d1a2",
@@ -188,25 +193,29 @@ var config_infographic_01 = (function() {
                 fontSize: "64px",
                 textAnchor: "middle",
                 textTransform: "uppercase",
+                paddingTop: 100,
             },
             tripDescription: {
                 color: "#e3d1a2",
                 font: "Sans Serif",
                 fontSize: "54px",
                 textAnchor: "middle",
+                paddingTop: 50,
             }       
         },
         content: {
             paddingTop: 60,
-            paddingBottom: 20,
-            itemHeight: 250,
+            paddingBottom: 40,
+            itemHeight: 320,
             pathStroke: "#121113",
-            pathStrokeWidth: "4",
-            nodeColor: "red"
+            pathStrokeWidth: "6",
+            nodeColor: "red",
+            circleRadius: 16
         },
         location: {
-            paddingPath: 20,
+            paddingPath: 40,
             lineNumber: 1,
+            linePadding: 30,
             name: {
                 color: "#d0363b",
                 font: "Sans Serif",
@@ -224,9 +233,10 @@ var config_infographic_01 = (function() {
                 textAnchorOdd: "end",
             },
             image: {
-                width: 220,
-                height: 220,
-                clipPath: "circle(38%)"
+                width: 300,
+                height: 300,
+                clipPath: "circle(38%)",
+                paddingTop: 40,
             }            
         },
         footer: {
@@ -250,32 +260,36 @@ var config_infographic_01 = (function() {
         },
         header: {
             height: 370,
-            background: "#d0363b",
+            background: "#d0363b",            
             tripName: {
                 color: "#e3d1a2",
                 font: "Sans Serif",
-                fontSize: "74px",
+                fontSize: "84px",
                 textAnchor: "middle",
                 textTransform: "uppercase",
+                paddingTop: 130,
             },
             tripDescription: {
                 color: "#e3d1a2",
                 font: "Sans Serif",
-                fontSize: "64px",
+                fontSize: "74px",
                 textAnchor: "middle",
+                paddingTop: 70
             }       
         },
         content: {
             paddingTop: 60,
-            paddingBottom: 20,
-            itemHeight: 300,
+            paddingBottom: 40,
+            itemHeight: 400,
             pathStroke: "#121113",
-            pathStrokeWidth: "4",
-            nodeColor: "red"
+            pathStrokeWidth: "10",
+            nodeColor: "red",
+            circleRadius: 24
         },
         location: {
-            paddingPath: 20,
+            paddingPath: 40,
             lineNumber: 1,
+            linePadding: 40,
             name: {
                 color: "#d0363b",
                 font: "Sans Serif",
@@ -293,9 +307,10 @@ var config_infographic_01 = (function() {
                 textAnchorOdd: "end",
             },
             image: {
-                width: 220,
-                height: 220,
-                clipPath: "circle(38%)"
+                width: 380,
+                height: 380,
+                clipPath: "circle(38% at 50% 50%)",
+                paddingTop: 40,
             }            
         },
         footer: {
