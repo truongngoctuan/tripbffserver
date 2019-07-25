@@ -83,29 +83,39 @@ var draw_01_02 = (function() {
                 wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage
             });
         let locationNameNodeBbox = locationNameNode.node().getBBox();
-    
-        let feelingActivityNode = drawText(svgBase, {
-            y: locationNameNodeBbox.y + locationNameNodeBbox.height + globalConfig.location.paddingTop,
-            x: locationName_px
-        }, nodeFeelingActivity, { 
-            color: globalConfig.location.description.color,
-            font: globalConfig.location.description.font,
-            fontSize: globalConfig.location.description.fontSize,
-            textAnchor: globalConfig.location.description.textAnchor,
-            wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage
-        });
-        let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
-        let hightlightNode = drawText(svgBase, {
-            y: feelingActivityNodeBbox.y + feelingActivityNodeBbox.height + globalConfig.location.paddingTop,
-            x: locationName_px
-        }, highlights, { 
-            color: globalConfig.location.description.color,
-            font: globalConfig.location.description.font,
-            fontSize: globalConfig.location.description.fontSize,
-            textAnchor: globalConfig.location.description.textAnchor,
-            wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage 
-        });
-        return hightlightNode;
+        let nextElementYCoordinate = locationNameNodeBbox.y + locationNameNodeBbox.height;
+
+        if (nodeFeelingActivity) {
+            let feelingActivityNode = drawText(svgBase, {
+                y: nextElementYCoordinate + globalConfig.location.paddingTop,
+                x: locationName_px
+            }, nodeFeelingActivity, { 
+                color: globalConfig.location.description.color,
+                font: globalConfig.location.description.font,
+                fontSize: globalConfig.location.description.fontSize,
+                textAnchor: globalConfig.location.description.textAnchor,
+                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage
+            });
+            let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
+            nextElementYCoordinate = feelingActivityNodeBbox.y + feelingActivityNodeBbox.height;
+        }
+        
+        if (highlights) {
+            let hightlightNode = drawText(svgBase, {
+                y: nextElementYCoordinate + globalConfig.location.paddingTop,
+                x: locationName_px
+            }, highlights, { 
+                color: globalConfig.location.description.color,
+                font: globalConfig.location.description.font,
+                fontSize: globalConfig.location.description.fontSize,
+                textAnchor: globalConfig.location.description.textAnchor,
+                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage 
+            });
+            let highlightNodeBbox = hightlightNode.node().getBBox();
+            nextElementYCoordinate = highlightNodeBbox.y + highlightNodeBbox.height;
+        }
+        
+        return nextElementYCoordinate;
     }
     
     function drawImageContainer(svgBase, coordinate, uri) {
@@ -251,20 +261,16 @@ var draw_01_02 = (function() {
             y: 170 + globalConfig.imageContainer.paddingTop
         }, trip.locations[1].signedUrl);
     
-        let lastElementOfFirstLocationNode = drawContent(svgBase, trip.locations[0], {
+        let firstLatestHeight = drawContent(svgBase, trip.locations[0], {
             x: globalConfig.infographic.paddingLeftRight,
             y: 1100
         });
     
-        let lastElementOfSecondLocationNode = drawContent(svgBase, trip.locations[1], {
+        let secondLatestHeight = drawContent(svgBase, trip.locations[1], {
             x: w / 2 + globalConfig.imageContainer.paddingBetweenImage,
             y: 1100
         });
     
-        let firstBbox = lastElementOfFirstLocationNode.node().getBBox(),
-            secondBbox = lastElementOfSecondLocationNode.node().getBBox(),
-            firstLatestHeight = firstBbox.y + firstBbox.height,
-            secondLatestHeight = secondBbox.y + secondBbox.height;
         h = firstLatestHeight >= secondLatestHeight
                     ? firstLatestHeight + globalConfig.infographic.paddingBottom + globalConfig.footer.height 
                     : secondLatestHeight + globalConfig.infographic.paddingBottom + globalConfig.footer.height;
