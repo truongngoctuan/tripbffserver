@@ -152,7 +152,7 @@ var draw_01_others = (function() {
                     font: globalConfig.location.description.font,
                     fontSize: globalConfig.location.description.fontSize,
                     textAnchor: globalConfig.location.description.textAnchorEven,
-                    wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight
+                    wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight * 2
                 });
                 let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
                 drawText(svgBase, {
@@ -163,7 +163,7 @@ var draw_01_others = (function() {
                     font: globalConfig.location.description.font,
                     fontSize: globalConfig.location.description.fontSize,
                     textAnchor: globalConfig.location.description.textAnchorEven,
-                    wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight 
+                    wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight * 2
                 });
     
                 drawImage(svgBase, {
@@ -201,7 +201,7 @@ var draw_01_others = (function() {
                     font: globalConfig.location.description.font,
                     fontSize: globalConfig.location.description.fontSize,
                     textAnchor: globalConfig.location.description.textAnchorOdd,
-                    wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight
+                    wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight * 2
                 });
     
                 let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
@@ -213,7 +213,7 @@ var draw_01_others = (function() {
                     font: globalConfig.location.description.font,
                     fontSize: globalConfig.location.description.fontSize,
                     textAnchor: globalConfig.location.description.textAnchorOdd,
-                    wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight
+                    wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight * 2
                 });
     
                 drawImage(svgBase, {
@@ -309,22 +309,33 @@ var draw_01_others = (function() {
     
           while (word = words.pop()) {
             line.push(word);
-            tspan.text(line.join(" "));
+            let lineText = line.join(" ");
+            tspan.text(lineText + "..");
     
             if (tspan.node().getComputedTextLength() > width) {
               line.pop();
-              let lineText = line.join(" ");
+              lineText = line.join(" ");
     
               if (lineNumber == globalConfig.location.lineNumber) {
                 // make sure infographic only have maximum 2 lines for each text
-                lineText = lineText + "...";
-                tspan.text(lineText);
+                tspan.text(lineText + "...");
+
+                if (tspan.node().getComputedTextLength() > width) {
+                    line.pop();
+                    lineText = line.join(" ");
+                    tspan.text(lineText + "...");
+                    break;
+                }
+
                 break;
               }
     
               tspan.text(lineText);
               line = [word];
               tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+            }
+            else {
+                tspan.text(lineText);
             }
           }
         });

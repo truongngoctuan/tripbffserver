@@ -15,7 +15,7 @@ var config_infographic_01 = (function() {
         location: {
             name: {
                 fontSize: "64px",
-                fontFamily: "Sans Serif",
+                fontFamily: "Roboto",
                 color: "#d0363b",
                 fontWeight: "bold",
                 textAnchor: "start",
@@ -23,7 +23,7 @@ var config_infographic_01 = (function() {
             },
             description: {
                fontSize: "48px",
-               fontFamily: "Times Neue Roman",
+               fontFamily: "Roboto",
                color: "#121113",
                textAnchor: "start",
             },  
@@ -32,7 +32,7 @@ var config_infographic_01 = (function() {
         },
         footer: {
             color: "#121113",
-            font: "Times Neue Roman",
+            font: "Roboto",
             fontSize: "30px",
             textAnchor: "start",
             text: "MORE INFO: WWW.TRIPBFF.COM"
@@ -52,7 +52,7 @@ var config_infographic_01 = (function() {
             background: "rgb(254, 255, 246)",
             tripName: {
                 color: "rgb(0, 0, 0)",
-                font: "Sans Serif",
+                font: "Roboto",
                 fontSize: "64px",
                 textAnchor: "middle",
                 fontWeight: "bold",
@@ -60,7 +60,7 @@ var config_infographic_01 = (function() {
             },
             tripDescription: {
                 color: "rgb(0, 0, 0)",
-                font: "Sans Serif",
+                font: "Roboto",
                 fontSize: "52px",
                 textAnchor: "middle",
             }
@@ -76,7 +76,7 @@ var config_infographic_01 = (function() {
         location: {
             name: {
                 color: "#121113",
-                font: "Sans Serif",
+                font: "Roboto",
                 fontSize: "64px",
                 fontWeight: "bold",
                 textAnchor: "start",
@@ -84,7 +84,7 @@ var config_infographic_01 = (function() {
             },
             description: {
                 color: "#121113",
-                font: "Times Neue Roman",
+                font: "Roboto",
                 fontSize: "48px",
                 textAnchor: "start",
             },
@@ -95,7 +95,7 @@ var config_infographic_01 = (function() {
             height: 70,
             background: "rgb(254, 255, 246)",
             color: "#121113",
-            font: "San Serif",
+            font: "Roboto",
             fontSize: "28px",
             textAnchor: "middle",
             textTransform: "uppercase",
@@ -115,7 +115,7 @@ var config_infographic_01 = (function() {
             background: "#d0363b",
             tripName: {
                 color: "#e3d1a2",
-                font: "Sans Serif",
+                font: "Roboto",
                 fontSize: "54px",
                 textAnchor: "middle",
                 textTransform: "uppercase",
@@ -123,7 +123,7 @@ var config_infographic_01 = (function() {
             },
             tripDescription: {
                 color: "#e3d1a2",
-                font: "Sans Serif",
+                font: "Roboto",
                 fontSize: "42px",
                 textAnchor: "middle",
                 paddingTop: 40,
@@ -144,7 +144,7 @@ var config_infographic_01 = (function() {
             linePadding: 20,
             name: {
                 color: "#d0363b",
-                font: "Sans Serif",
+                font: "Roboto",
                 fontSize: "40px",
                 fontWeight: "bold",
                 textAnchorEven: "start",
@@ -153,7 +153,7 @@ var config_infographic_01 = (function() {
             },
             description: {
                 color: "#121113",
-                font: "Times Neue Roman",
+                font: "Roboto",
                 fontSize: "32px",
                 textAnchorEven: "start",
                 textAnchorOdd: "end",
@@ -170,7 +170,7 @@ var config_infographic_01 = (function() {
             text: "MORE INFO: WWW.TRIPBFF.COM",
             background: "#d0363b",
             color: "#e3d1a2",
-            font: "San Serif",
+            font: "Roboto",
             fontSize: "24px",
             textAnchor: "middle",
             textTransform: "uppercase",
@@ -189,7 +189,7 @@ var config_infographic_01 = (function() {
             background: "#d0363b",
             tripName: {
                 color: "#e3d1a2",
-                font: "Sans Serif",
+                font: "Roboto",
                 fontSize: "64px",
                 textAnchor: "middle",
                 textTransform: "uppercase",
@@ -197,7 +197,7 @@ var config_infographic_01 = (function() {
             },
             tripDescription: {
                 color: "#e3d1a2",
-                font: "Sans Serif",
+                font: "Roboto",
                 fontSize: "54px",
                 textAnchor: "middle",
                 paddingTop: 50,
@@ -218,7 +218,7 @@ var config_infographic_01 = (function() {
             linePadding: 30,
             name: {
                 color: "#d0363b",
-                font: "Sans Serif",
+                font: "Roboto",
                 fontSize: "52px",
                 fontWeight: "bold",
                 textAnchorEven: "start",
@@ -227,7 +227,7 @@ var config_infographic_01 = (function() {
             },
             description: {
                 color: "#121113",
-                font: "Times Neue Roman",
+                font: "Roboto",
                 fontSize: "44px",
                 textAnchorEven: "start",
                 textAnchorOdd: "end",
@@ -244,8 +244,8 @@ var config_infographic_01 = (function() {
             text: "MORE INFO: WWW.TRIPBFF.COM",
             background: "#d0363b",
             color: "#e3d1a2",
-            font: "San Serif",
-            fontSize: "32px",
+            font: "Roboto",
+            fontSize: "36px",
             textAnchor: "middle",
             textTransform: "uppercase",
         }
@@ -263,7 +263,7 @@ var config_infographic_01 = (function() {
             background: "#d0363b",            
             tripName: {
                 color: "#e3d1a2",
-                font: "Sans Serif",
+                font: "Roboto",
                 fontSize: "84px",
                 textAnchor: "middle",
                 textTransform: "uppercase",
@@ -271,7 +271,7 @@ var config_infographic_01 = (function() {
             },
             tripDescription: {
                 color: "#e3d1a2",
-                font: "Sans Serif",
+                font: "Roboto",
                 fontSize: "74px",
                 textAnchor: "middle",
                 paddingTop: 70
@@ -292,7 +292,7 @@ var config_infographic_01 = (function() {
             linePadding: 40,
             name: {
                 color: "#d0363b",
-                font: "Sans Serif",
+                font: "Roboto",
                 fontSize: "64px",
                 fontWeight: "bold",
                 textAnchorEven: "start",
@@ -301,7 +301,7 @@ var config_infographic_01 = (function() {
             },
             description: {
                 color: "#121113",
-                font: "Times Neue Roman",
+                font: "Roboto",
                 fontSize: "56px",
                 textAnchorEven: "start",
                 textAnchorOdd: "end",
@@ -318,7 +318,7 @@ var config_infographic_01 = (function() {
             text: "MORE INFO: WWW.TRIPBFF.COM",
             background: "#d0363b",
             color: "#e3d1a2",
-            font: "San Serif",
+            font: "Roboto",
             fontSize: "42px",
             textAnchor: "middle",
             textTransform: "uppercase",
