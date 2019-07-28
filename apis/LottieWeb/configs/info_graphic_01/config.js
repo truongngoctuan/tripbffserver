@@ -43,7 +43,7 @@ var config_infographic_01 = (function() {
         infographic: {
             width: 1280,
             height: 1500,            
-            paddingLeftRight: 20,
+            paddingLeftRight: 10,
             paddingBottom: 10,
             background: "rgb(254, 255, 246)"
         },
@@ -66,10 +66,12 @@ var config_infographic_01 = (function() {
             }
         },
         imageContainer: {
-            heightContainer: 840,
-            viewBox: "0 0 280 373.3",
-            width: "505",
-            height: "379",
+            svgWidth: 630,
+            svgHeight: 840,
+            viewBox: "0 0 288.5 384.1",
+            width: "283.5",
+            height: "500",
+            clipPath: "M2.5 2.5H286v379.1H2.5z",
             paddingTop: 20,
             paddingBetweenImage: 5,
         },

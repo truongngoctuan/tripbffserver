@@ -118,20 +118,31 @@ var draw_01_02 = (function() {
         return nextElementYCoordinate;
     }
     
-    function drawImageContainer(svgBase, coordinate, uri) {
+    function drawImageContainer(svgBase, coordinate, uri, index) {
         var svgImage = svgBase.append("svg")
         .attr("y", coordinate.y)
         .attr("x", coordinate.x)
-        .attr("width", w / 2 - globalConfig.imageContainer.paddingBetweenImage)
-        .attr("height", globalConfig.imageContainer.heightContainer)
+        .attr("width", globalConfig.imageContainer.svgWidth)
+        .attr("height", globalConfig.imageContainer.svgHeight)
         .attr("viewBox", globalConfig.imageContainer.viewBox);  
     
+        let clipPathId = "_id" + index;
+
+        svgImage.append("defs")
+        .append("clipPath")
+        .attr("id", clipPathId)
+        .append("path")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("d", globalConfig.imageContainer.clipPath); 
+
         drawImage(svgImage, {
             y: 0,
-            x: -108 
+            x: 0 
         }, uri, {
             width: globalConfig.imageContainer.width,
-            height: globalConfig.imageContainer.height
+            height: globalConfig.imageContainer.height,
+            imageClipPath: "url(#" + clipPathId + ")"
         });
     }
     
@@ -252,14 +263,14 @@ var draw_01_02 = (function() {
         drawHeader(svgBase, trip);
     
         drawImageContainer(svgBase, {
-            x: 0,
+            x: globalConfig.infographic.paddingLeftRight,
             y: 170 + globalConfig.imageContainer.paddingTop
-        }, trip.locations[0].signedUrl);
+        }, trip.locations[0].signedUrl, 0);
     
         drawImageContainer(svgBase, {
             x: w / 2 + globalConfig.imageContainer.paddingBetweenImage,
             y: 170 + globalConfig.imageContainer.paddingTop
-        }, trip.locations[1].signedUrl);
+        }, trip.locations[1].signedUrl, 1);
     
         let firstLatestHeight = drawContent(svgBase, trip.locations[0], {
             x: globalConfig.infographic.paddingLeftRight,
