@@ -59,6 +59,7 @@ export async function exportInfographic(
       }
 
       return {
+        locationId: item.locationId,
         name: item.name,
         fromTime: item.fromTime,
         toTime: item.toTime,

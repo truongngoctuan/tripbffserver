@@ -108,6 +108,8 @@ var draw_01_others = (function() {
         let startPoint_px = w / 2,
             startPoint_py = globalConfig.header.height + globalConfig.content.paddingTop;   
     
+        let locationImageCoordinates = [];
+
         for (let idx = 0; idx < numberOfLocations; idx++) {
             let location = trip.locations[idx],
                 locationName = capitalizeFirstLetter(location.name) + ".",
@@ -171,13 +173,10 @@ var draw_01_others = (function() {
                     wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight * 2
                 });
     
-                drawImage(svgBase, {
-                    y: locationName_py - globalConfig.location.image.paddingTop,
-                    x: locationName_px - globalConfig.location.paddingPath * 2 - globalConfig.location.image.width 
-                }, url, {
-                    width: globalConfig.location.image.width,
-                    height: globalConfig.location.image.height,
-                    imageClipPath: globalConfig.location.image.clipPath
+                locationImageCoordinates.push({
+                    x: locationName_px - globalConfig.location.paddingPath * 3 - globalConfig.location.image.svgWidth,
+                    y: locationName_py,
+                    id: location.locationId
                 });
             }
             else {
@@ -226,16 +225,15 @@ var draw_01_others = (function() {
                     wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight * 2
                 });
     
-                drawImage(svgBase, {
-                    y: locationName_py - globalConfig.location.image.paddingTop,
-                    x: locationName_px + globalConfig.location.paddingPath * 2 
-                }, url, {
-                    width: globalConfig.location.image.width,
-                    height: globalConfig.location.image.height,
-                    imageClipPath: globalConfig.location.image.clipPath
+                locationImageCoordinates.push({
+                    x: locationName_px + globalConfig.location.paddingPath * 3,
+                    y: locationName_py,
+                    id: location.locationId
                 });
             }
         }
+
+        return locationImageCoordinates;
     }
     
     function drawFooter(svgBase) {
@@ -275,12 +273,12 @@ var draw_01_others = (function() {
     function drawImage(svgBase, coordinate, uri, config) {
         var svgCanvas = svgBase.append("svg:image");
         svgCanvas
+        .attr("xlink:href", uri)
         .attr('x', coordinate.x)
         .attr('y', coordinate.y)
-        .attr('width', config.width)
-        .attr('height', config.height)  
-        .attr("xlink:href", uri)
-        .attr("clip-path", config.imageClipPath)
+        .attr("width",  config.width)
+        .attr("height", config.height)
+        .attr("clip-path", config.imageClipPath);
     }
     
     function capitalizeFirstLetter(string) {
@@ -349,13 +347,56 @@ var draw_01_others = (function() {
             }
           }
         });
-      }   
-     
-    function loadImage(url, svgImage){
+      } 
+
+    function loadImage(url, svgBase, coordinate, index){
         return new Promise(resolve => {
             var img = new Image();
             img.onload = function() {
-                svgImage.append("span").attr("name", "imgLoaded");
+                let ratio = this.width / this.height,
+                    svgWidth = globalConfig.location.image.svgWidth,
+                    svgHeight = globalConfig.location.image.svgHeight,
+                    viewBoxWidth = globalConfig.location.image.viewBoxWidth,
+                    viewBoxHeight = globalConfig.location.image.viewBoxHeight,
+                    width = viewBoxWidth,
+                    height = viewBoxHeight;
+
+                if (ratio >= 1) {
+                    width = height * ratio;
+                }
+                else {
+                    height = width / ratio;
+                }
+
+                let svgImage = svgBase
+                .append("g")
+                .append("svg")
+                .attr("x", coordinate.x)
+                .attr("y", coordinate.y)
+                .attr("width", svgWidth)
+                .attr("height", svgHeight)
+                .attr("viewBox", "0 0 " + viewBoxWidth + " " + viewBoxHeight);
+
+                let clipPathId = "_id" + index;
+
+                svgImage.append("defs")
+                .append("clipPath")
+                .attr("id", clipPathId)
+                .append("path")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("d", globalConfig.location.image.clipPath); 
+
+                drawImage(svgImage, {
+                    y: 0,
+                    x: 0 
+                }, url, {
+                    width: width,
+                    height: height,
+                    imageClipPath: "url(#" + clipPathId + ")"
+                });
+
+                svgBase.append("span").attr("name", "imgLoaded");
                 resolve();
             };
             img.src = url;
@@ -392,14 +433,21 @@ var draw_01_others = (function() {
 
         var svgBase = d3.select("#info-graphic-base")
         .attr("width", w)
-        .attr("height", h);
-    
-        Promise.all(trip.locations.map(item => loadImage(item.signedUrl, svgBase)));
+        .attr("height", h); 
 
         drawBackground(svgBase, globalConfig.infographic.background);
         drawHeader(svgBase, trip);
         drawPathBetweenLocations(svgBase, numberOfLocations);
-        drawContent(svgBase, trip, numberOfLocations);
+
+        let locationImageCoordinates = drawContent(svgBase, trip, numberOfLocations);
+        let promises = [];
+
+        trip.locations.forEach((location, index) => {
+            var coordinate = locationImageCoordinates[index];
+            promises.push(loadImage(location.signedUrl, svgBase, coordinate, index));
+        });
+
+        Promise.all(promises);
         drawFooter(svgBase);
     }
 

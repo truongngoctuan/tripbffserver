@@ -47,7 +47,7 @@ console.log(url);
       }, trip, info_graphic_type);
 
     // wait for fonts fully loaded --> can we download fonts and copy to tripbff-infographic image ???
-    if (info_graphic_type == INFOGRAPHIC_TYPE.FIRST_RELEASED && trip.locations.length == 1) 
+    if (info_graphic_type == INFOGRAPHIC_TYPE.FIRST_RELEASED) 
         await waitForPageLoaded(1000);
 
     // wait for all images fully loaded
