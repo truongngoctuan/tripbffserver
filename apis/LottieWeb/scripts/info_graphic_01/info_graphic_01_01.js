@@ -167,6 +167,12 @@ var draw_01_01 = (function () {
             .attr("preserveAspectRatio", "xMinYMin meet");
             
         var imgUri = trip.locations[0].signedUrl;
+
+        if (!imgUri) {
+            //TODO: load default image
+            imgUri = "./data/images/1.jpg";
+        }
+
         var img = new Image();
         img.onload = function() {         
             var ratio = this.width / this.height; 
@@ -185,7 +191,7 @@ var draw_01_01 = (function () {
             drawImage(svgBase, {
                 y: 0,
                 x: 0 
-            }, trip.locations[0].signedUrl, {
+            }, imgUri, {
                 width: w
             });      
 

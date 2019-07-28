@@ -257,6 +257,18 @@ var draw_01_02 = (function() {
         .attr("width", w)
         .attr("height", h);
 
+        let locationNoImage = trip.locations.find(item => item.signedUrl == "");
+
+        if (locationNoImage) {
+            //TODO: load default image if location has no image
+            trip.locations = trip.locations.map(item => {
+                return {
+                    ...item,
+                    signedUrl: item.signedUrl ? item.signedUrl : "./data/images/1.jpg"
+                }
+            });
+        }
+
         Promise.all(trip.locations.map(item => loadImage(item.signedUrl, svgBase)));
      
         drawBackground(svgBase, globalConfig.infographic.background);    
@@ -265,8 +277,8 @@ var draw_01_02 = (function() {
         drawImageContainer(svgBase, {
             x: globalConfig.infographic.paddingLeftRight,
             y: 170 + globalConfig.imageContainer.paddingTop
-        }, trip.locations[0].signedUrl, 0);
-    
+        }, trip.locations[0].signedUrl, 0);    
+       
         drawImageContainer(svgBase, {
             x: w / 2 + globalConfig.imageContainer.paddingBetweenImage,
             y: 170 + globalConfig.imageContainer.paddingTop

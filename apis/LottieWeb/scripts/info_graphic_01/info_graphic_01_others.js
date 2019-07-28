@@ -442,6 +442,18 @@ var draw_01_others = (function() {
         let locationImageCoordinates = drawContent(svgBase, trip, numberOfLocations);
         let promises = [];
 
+        let locationNoImage = trip.locations.find(item => item.signedUrl == "");
+
+        if (locationNoImage) {
+            //TODO: load default image if location has no image
+            trip.locations = trip.locations.map(item => {
+                return {
+                    ...item,
+                    signedUrl: item.signedUrl ? item.signedUrl : "./data/images/1.jpg"
+                }
+            });
+        }
+
         trip.locations.forEach((location, index) => {
             var coordinate = locationImageCoordinates[index];
             promises.push(loadImage(location.signedUrl, svgBase, coordinate, index));
