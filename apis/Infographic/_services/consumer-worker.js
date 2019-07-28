@@ -5,7 +5,6 @@ module.exports = {
 const redisStore = {
   host: process.env.REDIS_HOST,
   port: process.env.REDIS_PORT,
-  secret: process.env.REDIS_SECRET
 };
 
 console.log("redisStore", redisStore);

@@ -30,8 +30,7 @@ const redis = require("redis");
 (async () => {
   // Create a server with a host and port
   const server = new Server({
-    // host: process.env.SERVER_HOST,
-    port: process.env.SERVER_PORT,
+    port: process.env.INTERNAL_SERVER_PORT,
     routes: {
       validate: {
         failAction: async (request, h, err) => {
@@ -55,10 +54,15 @@ const redis = require("redis");
   const client = redis.createClient({
     host: process.env.REDIS_HOST,
     port: process.env.REDIS_PORT,
+    secret: process.env.REDIS_SECRET,
   });
 
   client.on("error", function (err: any) {
     console.log("Error " + err);
+  });
+
+  client.on("connect", function () {
+    console.log("redis connected");
   });
 
   await swaggerUiService.addSwaggerUi(server);
