@@ -6,23 +6,28 @@
 
 var draw_01_02 = (function() {
     
+    var globalConfig = config_infographic_01.config_01_02;
+    
+    let w = globalConfig.infographic.width;
+    let h = globalConfig.infographic.height;
+
     function drawHeader(svgBase, trip) {
         svgBase.append("rect")
             .attr("width", w)
-            .attr("height", header_height)
-            .attr("fill", "rgb(254, 255, 246)");
+            .attr("height", globalConfig.header.height)
+            .attr("fill", globalConfig.header.background);
     
         let tripNameNode = drawText(svgBase, {
             y: 50,
-            x: w/2
+            x: w / 2
         }, trip.name, { 
-            color: "rgb(0, 0, 0)",
-            font: "Sans Serif",
-            fontSize: "64px",
-            textAnchor: "middle",
-            fontWeight: "bold",
-            textTransform: "uppercase",
-            wrapNumber: w - paddingLeftRight * 2 
+            color: globalConfig.header.tripName.color,
+            font: globalConfig.header.tripName.font,
+            fontSize: globalConfig.header.tripName.fontSize,
+            textAnchor: globalConfig.header.tripName.textAnchor,
+            fontWeight: globalConfig.header.tripName.fontWeight,
+            textTransform: globalConfig.header.tripName.textTransform,
+            wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2 
         });
         let tripNameNodeBbox = tripNameNode.node().getBBox();
     
@@ -33,13 +38,13 @@ var draw_01_02 = (function() {
     
         drawText(svgBase, {
             y: tripNameNodeBbox.y + tripNameNodeBbox.height + 40,
-            x: w/2
+            x: w / 2
         }, basicTripInfo, { 
-            color: "rgb(0, 0, 0)",
-            font: "Sans Serif",
-            fontSize: "52px",
-            textAnchor: "middle",
-            wrapNumber: w - paddingLeftRight * 2 
+            color: globalConfig.header.tripDescription.color,
+            font: globalConfig.header.tripDescription.font,
+            fontSize: globalConfig.header.tripDescription.fontSize,
+            textAnchor: globalConfig.header.tripDescription.textAnchor,
+            wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2  
         });
     }
     
@@ -48,10 +53,10 @@ var draw_01_02 = (function() {
             startPoint_py = startPointCoordinate.y;   
     
         let locationName = capitalizeFirstLetter(location.name) + ".",
-        feeling = location.feeling ? 'Feeling ' + location.feeling : "",
-        activity = location.activity,
-        highlights = location.highlights.toLowerCase(),
-        nodeFeelingActivity = "";
+            feeling = location.feeling ? 'Feeling ' + location.feeling : "",
+            activity = location.activity,
+            highlights = location.highlights.toLowerCase(),
+            nodeFeelingActivity = "";
     
         if (activity) nodeFeelingActivity = capitalizeFirstLetter(activity.toLowerCase());
         if (feeling) {
@@ -69,59 +74,52 @@ var draw_01_02 = (function() {
                 y: locationName_py,
                 x: locationName_px
             }, locationName, { 
-                color: globalConfig.location.nameColor,
-                font: globalConfig.location.nameFontFamily,
-                fontSize: globalConfig.location.nameFontSize,
-                fontWeight: "bold",
-                textAnchor: "start",
-                textTransform: "uppercase",
-                wrapNumber: w / 2 - paddingBetweenImage
+                color: globalConfig.location.name.color,
+                font: globalConfig.location.name.font,
+                fontSize: globalConfig.location.name.fontSize,
+                fontWeight: globalConfig.location.name.fontWeight,
+                textAnchor: globalConfig.location.name.textAnchor,
+                textTransform: globalConfig.location.name.textTransform,
+                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage
             });
         let locationNameNodeBbox = locationNameNode.node().getBBox();
+        let nextElementYCoordinate = locationNameNodeBbox.y + locationNameNodeBbox.height;
+
+        if (nodeFeelingActivity) {
+            let feelingActivityNode = drawText(svgBase, {
+                y: nextElementYCoordinate + globalConfig.location.paddingTop,
+                x: locationName_px
+            }, nodeFeelingActivity, { 
+                color: globalConfig.location.description.color,
+                font: globalConfig.location.description.font,
+                fontSize: globalConfig.location.description.fontSize,
+                textAnchor: globalConfig.location.description.textAnchor,
+                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage
+            });
+            let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
+            nextElementYCoordinate = feelingActivityNodeBbox.y + feelingActivityNodeBbox.height;
+        }
+        
+        if (highlights) {
+            let hightlightNode = drawText(svgBase, {
+                y: nextElementYCoordinate + globalConfig.location.paddingTop,
+                x: locationName_px
+            }, highlights, { 
+                color: globalConfig.location.description.color,
+                font: globalConfig.location.description.font,
+                fontSize: globalConfig.location.description.fontSize,
+                textAnchor: globalConfig.location.description.textAnchor,
+                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage 
+            });
+            let highlightNodeBbox = hightlightNode.node().getBBox();
+            nextElementYCoordinate = highlightNodeBbox.y + highlightNodeBbox.height;
+        }
+        
+        return nextElementYCoordinate;
+    }    
     
-        let feelingActivityNode = drawText(svgBase, {
-            y: locationNameNodeBbox.y + locationNameNodeBbox.height + globalConfig.location.paddingTop,
-            x: locationName_px
-        }, nodeFeelingActivity, { 
-            color: globalConfig.location.descriptionColor,
-            font: globalConfig.location.descriptionFontFamily,
-            fontSize: globalConfig.location.descriptionFontSize,
-            textAnchor: "start",
-            wrapNumber: w / 2 - paddingBetweenImage
-        });
-        let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
-        let hightlightNode = drawText(svgBase, {
-            y: feelingActivityNodeBbox.y + feelingActivityNodeBbox.height + globalConfig.location.paddingTop,
-            x: locationName_px
-        }, highlights, { 
-            color: globalConfig.location.descriptionColor,
-            font: globalConfig.location.descriptionFontFamily,
-            fontSize: globalConfig.location.descriptionFontSize,
-            textAnchor: "start",
-            wrapNumber: w / 2 - paddingBetweenImage 
-        });
-        return hightlightNode;
-    }
-    
-    function drawImageContainer(svgBase, coordinate, uri) {
-        var svgImage = svgBase.append("svg")
-        .attr("y", coordinate.y)
-        .attr("x", coordinate.x)
-        .attr("width", w / 2 - paddingBetweenImage)
-        .attr("height", 840)
-        .attr("viewBox", "0 0 280 373.3");  
-    
-        drawImage(svgImage, {
-            y: 0,
-            x: -108 
-        }, uri, {
-            width: "505",
-            height: "379"
-        });
-    }
-    
-    function drawImage(svgBase, coordinate, uri, config) {
-        var svgCanvas = svgBase.append("svg:image");
+    function drawImage(svgImage, coordinate, uri, config) {
+        var svgCanvas = svgImage.append("svg:image");
         svgCanvas
         .attr('x', coordinate.x)
         .attr('y', coordinate.y)
@@ -132,25 +130,25 @@ var draw_01_02 = (function() {
     }
     
     function drawFooter(svgBase) {
-        let footerText = "MORE INFO: WWW.TRIPBFF.COM";
+        let footerText = globalConfig.footer.text;
     
         svgBase.append("rect")
             .attr("x", 0)
-            .attr("y", h - footer_height)
+            .attr("y", h - globalConfig.footer.height)
             .attr("width", w)
-            .attr("height", footer_height)
-            .attr("fill", "rgb(254, 255, 246)");
+            .attr("height", globalConfig.footer.height)
+            .attr("fill", globalConfig.footer.background);
     
         let footerInfoElement = drawText(svgBase, {
-            y: h - footer_height / 2,
-            x: w/2
+            y: h - globalConfig.footer.height / 2,
+            x: w / 2
         }, footerText, { 
-            color: "#121113",
-            font: "San Serif",
-            fontSize: "28px",
-            textAnchor: "middle",
-            textTransform: "uppercase",
-            wrapNumber: w - paddingLeftRight * 2
+            color: globalConfig.footer.color,
+            font: globalConfig.footer.font,
+            fontSize: globalConfig.footer.fontSize,
+            textAnchor: globalConfig.footer.textAnchor,
+            textTransform: globalConfig.footer.textTransform,
+            wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2
         });
     }
     
@@ -209,79 +207,112 @@ var draw_01_02 = (function() {
           }
         });
       }
-    
-    
-    var N_ITEMS = 1;
-    
-    var header_height = 170;
-    var content_height = 300;
-    var footer_height = 70;
-    var paddingBetweenImage = 5;
-    var paddingLeftRight = 20;
-    var c_paddingTop = 20,
-          c_paddingBottom = 10;
-    
-    var w = 1280;
-    var h = 1500;
-    
-    var globalConfig = {
-        location: {
-            nameFontSize: "64px",
-            nameFontFamily: "Sans Serif",
-            nameColor: "#121113",
-            descriptionFontSize: "48px",
-            descriptionFontFamily: "Times Neue Roman",
-            descriptionColor: "#121113",
-            paddingTop: 30,
-            lineNumber: 1
-        }  
-    };
-     
+   
     function drawBackground(svgBase, backgroundColor) {
         svgBase.style('background-color', backgroundColor);
     }
     
-    function draw(trip) {
-    
-        N_ITEMS = trip.locations.length;
-    
-        var svgBase = d3.select("#info-graphic-base")    
-            .attr("width", w)
-            .attr("height", h);
+    function loadImage(url, svgBase, coordinate, index){
+        return new Promise(resolve => {
+            var img = new Image();
+            img.onload = function() {
+                let ratio = this.width / this.height,
+                    svgWidth = globalConfig.imageContainer.svgWidth,
+                    svgHeight = globalConfig.imageContainer.svgHeight,
+                    viewBoxWidth = globalConfig.imageContainer.viewBoxWidth,
+                    viewBoxHeight = globalConfig.imageContainer.viewBoxHeight,
+                    width = viewBoxWidth,
+                    height = viewBoxHeight;
+
+                if (ratio >= 1) {
+                    width = height * ratio;
+                }
+                else {
+                    height = width / ratio;
+                }
+
+                var svgImage = svgBase.append("svg")
+                .attr("y", coordinate.y)
+                .attr("x", coordinate.x)
+                .attr("width", svgWidth)
+                .attr("height", svgHeight)
+                .attr("viewBox", "0 0 " + viewBoxWidth + " " + viewBoxHeight);  
             
-        drawBackground(svgBase, "rgb(254, 255, 246)");    
-        drawHeader(svgBase, trip);
-    
-        drawImageContainer(svgBase, {
-            x: 0,
-            y: 170 + c_paddingTop
-        }, "./data/images/2.jpg");
-    
-        drawImageContainer(svgBase, {
-            x: w / 2 + paddingBetweenImage,
-            y: 170 + c_paddingTop
-        }, "./data/images/3.jpg");
-       
-        let lastElementOfFirstLocationNode = drawContent(svgBase, trip.locations[0], {
-            x: paddingLeftRight,
+                let clipPathId = "_id" + index;
+
+                svgImage.append("defs")
+                .append("clipPath")
+                .attr("id", clipPathId)
+                .append("path")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("d", globalConfig.imageContainer.clipPath); 
+
+                drawImage(svgImage, {
+                    y: 0,
+                    x: 0 
+                }, url, {
+                    width: width,
+                    height: height,
+                    imageClipPath: "url(#" + clipPathId + ")"
+                }); 
+                
+                svgBase.append("span").attr("name", "imgLoaded");
+                resolve();
+            };
+            img.src = url;
+        });
+    }    
+
+    function draw(trip) { 
+
+        var svgBase = d3.select("#info-graphic-base")    
+        .attr("width", w)
+        .attr("height", h);
+
+        drawBackground(svgBase, globalConfig.infographic.background);    
+        drawHeader(svgBase, trip);  
+
+        let locationNoImage = trip.locations.find(item => item.signedUrl == "");
+
+        if (locationNoImage) {
+            // load default image if location has no image
+            trip.locations = trip.locations.map(item => {
+                return {
+                    ...item,
+                    signedUrl: item.signedUrl ? item.signedUrl : "./data/images/EmptyImage02.jpg"
+                }
+            });
+        }
+
+        let promise01 = loadImage(trip.locations[0].signedUrl, svgBase, {
+            x: globalConfig.infographic.paddingLeftRight,
+            y: 170 + globalConfig.imageContainer.paddingTop
+        }, 0);
+
+        let promise02 = loadImage(trip.locations[1].signedUrl, svgBase, {
+            x: w / 2 + globalConfig.imageContainer.paddingBetweenImage,
+            y: 170 + globalConfig.imageContainer.paddingTop
+        }, 1);
+
+        Promise.all([promise01, promise02]); 
+
+        let firstLatestHeight = drawContent(svgBase, trip.locations[0], {
+            x: globalConfig.infographic.paddingLeftRight,
             y: 1100
         });
     
-        let lastElementOfSecondLocationNode = drawContent(svgBase, trip.locations[1], {
-            x: w / 2 + paddingBetweenImage,
+        let secondLatestHeight = drawContent(svgBase, trip.locations[1], {
+            x: w / 2 + globalConfig.imageContainer.paddingBetweenImage,
             y: 1100
         });
     
-        let firstBbox = lastElementOfFirstLocationNode.node().getBBox(),
-            secondBbox = lastElementOfSecondLocationNode.node().getBBox(),
-            firstLatestHeight = firstBbox.y + firstBbox.height,
-            secondLatestHeight = secondBbox.y + secondBbox.height;
         h = firstLatestHeight >= secondLatestHeight
-                     ? firstLatestHeight + c_paddingBottom + footer_height 
-                     : secondLatestHeight + c_paddingBottom + footer_height;
+                    ? firstLatestHeight + globalConfig.infographic.paddingBottom + globalConfig.footer.height 
+                    : secondLatestHeight + globalConfig.infographic.paddingBottom + globalConfig.footer.height;
         svgBase.attr("height", h);
     
-        drawFooter(svgBase);
+        drawFooter(svgBase);  
     }
 
     return {

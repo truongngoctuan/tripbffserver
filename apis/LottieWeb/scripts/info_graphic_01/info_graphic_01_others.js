@@ -6,6 +6,10 @@
 
 var draw_01_others = (function() {
     
+    var globalConfig = {};    
+    var w = 940;
+    var h = 1500;
+
     function drawBackground(svgBase, backgroundColor) {
         svgBase.style('background-color', backgroundColor);
     }
@@ -13,19 +17,19 @@ var draw_01_others = (function() {
     function drawHeader(svgBase, trip) {
         svgBase.append("rect")
             .attr("width", w)
-            .attr("height", header_height)
-            .attr("fill", "#d0363b");
+            .attr("height", globalConfig.header.height)
+            .attr("fill", globalConfig.header.background);
     
         let tripNameNode = drawText(svgBase, {
-            y: 50,
+            y: globalConfig.header.tripName.paddingTop,
             x: w/2
         }, trip.name, { 
-            color: "#e3d1a2",
-            font: "Sans Serif",
-            fontSize: "54px",
-            textAnchor: "middle",
-            textTransform: "uppercase",
-            wrapNumber: w - paddingLeftRight * 2 
+            color: globalConfig.header.tripName.color,
+            font: globalConfig.header.tripName.font,
+            fontSize: globalConfig.header.tripName.fontSize,
+            textAnchor: globalConfig.header.tripName.textAnchor,
+            textTransform: globalConfig.header.tripName.textTransform,
+            wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2 
         });
         let tripNameNodeBbox = tripNameNode.node().getBBox();
     
@@ -33,30 +37,32 @@ var draw_01_others = (function() {
             basicTripInfo = trip.numberOfDays + " days, " + numberOfLocations + " locations";
     
         drawText(svgBase, {
-            y: tripNameNodeBbox.y + tripNameNodeBbox.height + 40,
+            y: tripNameNodeBbox.y + tripNameNodeBbox.height + globalConfig.header.tripDescription.paddingTop,
             x: w/2
         }, basicTripInfo, { 
-            color: "#e3d1a2",
-            font: "Sans Serif",
-            fontSize: "42px",
-            textAnchor: "middle",
-            wrapNumber: w - paddingLeftRight * 2 
+            color: globalConfig.header.tripDescription.color,
+            font: globalConfig.header.tripDescription.font,
+            fontSize: globalConfig.header.tripDescription.fontSize,
+            textAnchor: globalConfig.header.tripDescription.textAnchor,
+            wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2 
         });
     }
     
-    function drawNodesInPath(svgBase) {
+    function drawNodesInPath(svgBase, numberOfLocations) {
         var jsonCircles = [];
     
-        for (let idx = 0; idx <= N_ITEMS; idx++) {
+        for (let idx = 0; idx <= numberOfLocations; idx++) {
             let px = w / 2,
-                py = header_height + c_paddingTop + idx * c_itemHeight;
+                py = globalConfig.header.height + 
+                    globalConfig.content.paddingTop + 
+                    idx * globalConfig.content.itemHeight;
     
             //outer circle
             jsonCircles.push({
                 x_axis: px,
                 y_axis: py,
-                radius: 12,
-                color: "red"
+                radius: globalConfig.content.circleRadius,
+                color: globalConfig.content.nodeColor
             })
         }
     
@@ -80,11 +86,11 @@ var draw_01_others = (function() {
             });
     }
     
-    function drawPathBetweenLocations(svgBase) {
+    function drawPathBetweenLocations(svgBase, numberOfLocations) {
         var x1 = w / 2,
-            y1 = header_height + c_paddingTop,
+            y1 = globalConfig.header.height + globalConfig.content.paddingTop,
             x2 = x1,
-            y2 = h - c_paddingBottom - footer_height;
+            y2 = h - globalConfig.content.paddingBottom - globalConfig.footer.height;
     
         var pathElement = svgBase.append("line");
         pathElement
@@ -92,25 +98,26 @@ var draw_01_others = (function() {
           .attr("x2", x2)
           .attr("y1", y1)
           .attr("y2", y2)  
-          .style("stroke", "#121113")
-          .style("stroke-width", "4");
+          .style("stroke", globalConfig.content.pathStroke)
+          .style("stroke-width", globalConfig.content.pathStrokeWidth);
     
-          drawNodesInPath(svgBase);
+          drawNodesInPath(svgBase, numberOfLocations);
     }
     
-    function drawContent(svgBase, trip) {
+    function drawContent(svgBase, trip, numberOfLocations) {
         let startPoint_px = w / 2,
-            startPoint_py = header_height + c_paddingTop;   
-        let urlOriginal = './data/images/';
+            startPoint_py = globalConfig.header.height + globalConfig.content.paddingTop;   
     
-        for (let idx = 0; idx < N_ITEMS; idx++) {
+        let locationImageCoordinates = [];
+
+        for (let idx = 0; idx < numberOfLocations; idx++) {
             let location = trip.locations[idx],
                 locationName = capitalizeFirstLetter(location.name) + ".",
                 feeling = location.feeling ? 'Feeling ' + location.feeling : "",
                 activity = location.activity,
                 highlights = location.highlights.toLowerCase(),
                 nodeFeelingActivity = "";
-            let url = urlOriginal + (idx + 1) + ".jpg";
+            let url = location.signedUrl;
     
             if (activity) nodeFeelingActivity = capitalizeFirstLetter(activity.toLowerCase());
             if (feeling) {
@@ -123,126 +130,132 @@ var draw_01_others = (function() {
     
             if (idx % 2 == 0) {
                 let locationName_px = startPoint_px + globalConfig.location.paddingPath,
-                    locationName_py = startPoint_py + idx * c_itemHeight;
+                    locationName_py = startPoint_py + idx * globalConfig.content.itemHeight;
                 
                 let locationNameNode = drawText(svgBase, {
                         y: locationName_py,
                         x: locationName_px
                     }, locationName, { 
-                        color: globalConfig.location.nameColor,
-                        font: globalConfig.location.nameFontFamily,
-                        fontSize: globalConfig.location.nameFontSize,
-                        fontWeight: "bold",
-                        textAnchor: "start",
-                        textTransform: "uppercase",
-                        wrapNumber: w / 2 - paddingLeftRight
+                        color: globalConfig.location.name.color,
+                        font: globalConfig.location.name.font,
+                        fontSize: globalConfig.location.name.fontSize,
+                        fontWeight: globalConfig.location.name.fontWeight,
+                        textAnchor: globalConfig.location.name.textAnchorEven,
+                        textTransform: globalConfig.location.name.textTransform,
+                        wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight
                     });
                 let locationNameNodeBbox = locationNameNode.node().getBBox();
-            
-                let feelingActivityNode = drawText(svgBase, {
-                    y: locationNameNodeBbox.y + locationNameNodeBbox.height + 20,
-                    x: locationName_px
-                }, nodeFeelingActivity, { 
-                    color: globalConfig.location.descriptionColor,
-                    font: globalConfig.location.descriptionFontFamily,
-                    fontSize: globalConfig.location.descriptionFontSize,
-                    textAnchor: "start",
-                    wrapNumber: w / 2 - paddingLeftRight 
-                });
-                let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
+                let nextElementYCoordinate = locationNameNodeBbox.y + locationNameNodeBbox.height + globalConfig.location.linePadding;
+
+                if (nodeFeelingActivity) {
+                    let feelingActivityNode = drawText(svgBase, {
+                        y: nextElementYCoordinate,
+                        x: locationName_px
+                    }, nodeFeelingActivity, { 
+                        color: globalConfig.location.description.color,
+                        font: globalConfig.location.description.font,
+                        fontSize: globalConfig.location.description.fontSize,
+                        textAnchor: globalConfig.location.description.textAnchorEven,
+                        wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight * 2
+                    });
+                    let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
+                    nextElementYCoordinate = feelingActivityNodeBbox.y + feelingActivityNodeBbox.height + globalConfig.location.linePadding;
+                }
+                
                 drawText(svgBase, {
-                    y: feelingActivityNodeBbox.y + feelingActivityNodeBbox.height + 20,
+                    y: nextElementYCoordinate,
                     x: locationName_px
                 }, highlights, { 
-                    color: globalConfig.location.descriptionColor,
-                    font: globalConfig.location.descriptionFontFamily,
-                    fontSize: globalConfig.location.descriptionFontSize,
-                    textAnchor: "start",
-                    wrapNumber: w / 2 - paddingLeftRight 
+                    color: globalConfig.location.description.color,
+                    font: globalConfig.location.description.font,
+                    fontSize: globalConfig.location.description.fontSize,
+                    textAnchor: globalConfig.location.description.textAnchorEven,
+                    wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight * 2
                 });
     
-                drawImage(svgBase, {
-                    y: locationName_py - 20,
-                    x: locationName_px - globalConfig.location.paddingPath * 4 - globalConfig.location.imageWidth 
-                }, url, {
-                    width: globalConfig.location.imageWidth,
-                    height: globalConfig.location.imageHeight,
-                    imageClipPath: globalConfig.location.imageClipPath
+                locationImageCoordinates.push({
+                    x: locationName_px - globalConfig.location.paddingPath * 3 - globalConfig.location.image.svgWidth,
+                    y: locationName_py,
+                    id: location.locationId
                 });
             }
             else {
                 let locationName_px = startPoint_px - globalConfig.location.paddingPath,
-                locationName_py = startPoint_py + idx * c_itemHeight;
+                locationName_py = startPoint_py + idx * globalConfig.content.itemHeight;
             
                 let locationNameNode = drawText(svgBase, {
                         y: locationName_py,
                         x: locationName_px
                     }, locationName, { 
-                        color: globalConfig.location.nameColor,
-                        font: globalConfig.location.nameFontFamily,
-                        fontSize: globalConfig.location.nameFontSize,
-                        fontWeight: "bold",
-                        textAnchor: "end",
-                        textTransform: "uppercase",
-                        wrapNumber: w / 2 - paddingLeftRight 
+                        color: globalConfig.location.name.color,
+                        font: globalConfig.location.name.font,
+                        fontSize: globalConfig.location.name.fontSize,
+                        fontWeight: globalConfig.location.name.fontWeight,
+                        textAnchor: globalConfig.location.name.textAnchorOdd,
+                        textTransform: globalConfig.location.name.textTransform,
+                        wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight 
                     });
                 let locationNameNodeBbox = locationNameNode.node().getBBox();
+                let nextElementYCoordinate = locationNameNodeBbox.y + locationNameNodeBbox.height + globalConfig.location.linePadding;
+
+                if (nodeFeelingActivity) {
+                    let feelingActivityNode = drawText(svgBase, {
+                        y: nextElementYCoordinate,
+                        x: locationName_px
+                    }, nodeFeelingActivity, { 
+                        color: globalConfig.location.description.color,
+                        font: globalConfig.location.description.font,
+                        fontSize: globalConfig.location.description.fontSize,
+                        textAnchor: globalConfig.location.description.textAnchorOdd,
+                        wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight * 2
+                    });
         
-                let feelingActivityNode = drawText(svgBase, {
-                    y: locationNameNodeBbox.y + locationNameNodeBbox.height + 20,
-                    x: locationName_px
-                }, nodeFeelingActivity, { 
-                    color: globalConfig.location.descriptionColor,
-                    font: globalConfig.location.descriptionFontFamily,
-                    fontSize: globalConfig.location.descriptionFontSize,
-                    textAnchor: "end",
-                    wrapNumber: w / 2 - paddingLeftRight 
-                });
-    
-                let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
+                    let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
+                    nextElementYCoordinate = feelingActivityNodeBbox.y + feelingActivityNodeBbox.height + globalConfig.location.linePadding;
+                }
+                
                 drawText(svgBase, {
-                    y: feelingActivityNodeBbox.y + feelingActivityNodeBbox.height + 20,
+                    y: nextElementYCoordinate,
                     x: locationName_px
                 }, highlights, { 
-                    color: globalConfig.location.descriptionColor,
-                    font: globalConfig.location.descriptionFontFamily,
-                    fontSize: globalConfig.location.descriptionFontSize,
-                    textAnchor: "end",
-                    wrapNumber: w / 2 - paddingLeftRight 
+                    color: globalConfig.location.description.color,
+                    font: globalConfig.location.description.font,
+                    fontSize: globalConfig.location.description.fontSize,
+                    textAnchor: globalConfig.location.description.textAnchorOdd,
+                    wrapNumber: w / 2 - globalConfig.location.paddingPath - globalConfig.infographic.paddingLeftRight * 2
                 });
     
-                drawImage(svgBase, {
-                    y: locationName_py - 20,
-                    x: locationName_px + globalConfig.location.paddingPath * 4 
-                }, url, {
-                    width: globalConfig.location.imageWidth,
-                    height: globalConfig.location.imageHeight,
-                    imageClipPath: globalConfig.location.imageClipPath
+                locationImageCoordinates.push({
+                    x: locationName_px + globalConfig.location.paddingPath * 3,
+                    y: locationName_py,
+                    id: location.locationId
                 });
             }
         }
+
+        return locationImageCoordinates;
     }
     
     function drawFooter(svgBase) {
-        let footerText = "MORE INFO: WWW.TRIPBFF.COM";
+        let footerText = globalConfig.footer.text;
     
         svgBase.append("rect")
             .attr("x", 0)
-            .attr("y", h - footer_height)
+            .attr("y", h - globalConfig.footer.height)
             .attr("width", w)
-            .attr("height", footer_height)
-            .attr("fill", "#d0363b");
+            .attr("height", globalConfig.footer.height)
+            .attr("fill", globalConfig.footer.background);
     
         let footerInfoElement = drawText(svgBase, {
-            y: h - footer_height / 2,
+            y: h - globalConfig.footer.height / 2,
             x: w/2
         }, footerText, { 
-            color: "#e3d1a2",
-            font: "San Serif",
-            fontSize: "24px",
-            textAnchor: "middle",
-            textTransform: "uppercase",
-            wrapNumber: w - paddingLeftRight * 2
+            color: globalConfig.footer.color,
+            font:globalConfig.footer.font,
+            fontSize: globalConfig.footer.fontSize,
+            textAnchor: globalConfig.footer.textAnchor,
+            textTransform: globalConfig.footer.textTransform,
+            wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2
         });
     }
     
@@ -260,12 +273,12 @@ var draw_01_others = (function() {
     function drawImage(svgBase, coordinate, uri, config) {
         var svgCanvas = svgBase.append("svg:image");
         svgCanvas
+        .attr("xlink:href", uri)
         .attr('x', coordinate.x)
         .attr('y', coordinate.y)
-        .attr('width', config.width)
-        .attr('height', config.height)
-        .attr("xlink:href", uri)
-        .attr("clip-path", config.imageClipPath)
+        .attr("width",  config.width)
+        .attr("height", config.height)
+        .attr("clip-path", config.imageClipPath);
     }
     
     function capitalizeFirstLetter(string) {
@@ -304,16 +317,24 @@ var draw_01_others = (function() {
     
           while (word = words.pop()) {
             line.push(word);
-            tspan.text(line.join(" "));
+            let lineText = line.join(" ");
+            tspan.text(lineText + "..");
     
             if (tspan.node().getComputedTextLength() > width) {
               line.pop();
-              let lineText = line.join(" ");
+              lineText = line.join(" ");
     
-              if (lineNumber == 1) {
+              if (lineNumber == globalConfig.location.lineNumber) {
                 // make sure infographic only have maximum 2 lines for each text
-                lineText = lineText + "...";
-                tspan.text(lineText);
+                tspan.text(lineText + "...");
+
+                if (tspan.node().getComputedTextLength() > width) {
+                    line.pop();
+                    lineText = line.join(" ");
+                    tspan.text(lineText + "...");
+                    break;
+                }
+
                 break;
               }
     
@@ -321,50 +342,124 @@ var draw_01_others = (function() {
               line = [word];
               tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
             }
+            else {
+                tspan.text(lineText);
+            }
           }
         });
-      }
-    
-    
-    var N_ITEMS = 4;
-    
-    var header_height = 170;
-    var footer_height = 70;
-    var paddingLeftRight = 10;
-    var c_paddingTop = 60,
-          c_paddingBottom = 20,
-          c_itemHeight = 250;
-    
-    var w = 940;
-    var h = header_height + c_paddingTop + c_itemHeight * N_ITEMS + c_paddingBottom + footer_height;
-    
-    var globalConfig = {
-        location: {
-            paddingPath: 20,
-            nameFontSize: "40px",
-            nameFontFamily: "Sans Serif",
-            nameColor: "#d0363b",
-            descriptionFontSize: "32px",
-            descriptionFontFamily: "Times Neue Roman",
-            descriptionColor: "#121113",
-            imageWidth: 220,
-            imageHeight: 220,
-            imageClipPath: "circle(38%)"
-        }  
-    };
-    
+      } 
+
+    function loadImage(url, svgBase, coordinate, index){
+        return new Promise(resolve => {
+            var img = new Image();
+            img.onload = function() {
+                let ratio = this.width / this.height,
+                    svgWidth = globalConfig.location.image.svgWidth,
+                    svgHeight = globalConfig.location.image.svgHeight,
+                    viewBoxWidth = globalConfig.location.image.viewBoxWidth,
+                    viewBoxHeight = globalConfig.location.image.viewBoxHeight,
+                    width = viewBoxWidth,
+                    height = viewBoxHeight;
+
+                if (ratio >= 1) {
+                    width = height * ratio;
+                }
+                else {
+                    height = width / ratio;
+                }
+
+                let svgImage = svgBase
+                .append("g")
+                .append("svg")
+                .attr("x", coordinate.x)
+                .attr("y", coordinate.y)
+                .attr("width", svgWidth)
+                .attr("height", svgHeight)
+                .attr("viewBox", "0 0 " + viewBoxWidth + " " + viewBoxHeight);
+
+                let clipPathId = "_id" + index;
+
+                svgImage.append("defs")
+                .append("clipPath")
+                .attr("id", clipPathId)
+                .append("path")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("d", globalConfig.location.image.clipPath); 
+
+                drawImage(svgImage, {
+                    y: 0,
+                    x: 0 
+                }, url, {
+                    width: width,
+                    height: height,
+                    imageClipPath: "url(#" + clipPathId + ")"
+                });
+
+                svgBase.append("span").attr("name", "imgLoaded");
+                resolve();
+            };
+            img.src = url;
+        });
+    }
+
+    function calculateInfographicHeight(numberOfLocations) {
+        return globalConfig.header.height + 
+                globalConfig.content.paddingTop +
+                globalConfig.content.itemHeight * numberOfLocations +
+                globalConfig.content.paddingBottom + 
+                globalConfig.footer.height;
+    }
+
+    function setGlobalConfig(numberOfLocations) {
+        if (numberOfLocations == 3 || numberOfLocations == 4) {
+            globalConfig = config_infographic_01.config_01_0304
+        }
+        else if (numberOfLocations == 5 || numberOfLocations == 6) {
+            globalConfig = config_infographic_01.config_01_0506
+        }
+        else if (numberOfLocations >= 7) {
+            globalConfig = config_infographic_01.config_01_others;
+        }
+    }
+
     function draw(trip) {
     
-        N_ITEMS = trip.locations.length;
-    
+        let numberOfLocations = trip.locations.length;
+        setGlobalConfig(numberOfLocations);
+
+        w = globalConfig.infographic.width;
+        h = calculateInfographicHeight(numberOfLocations);
+
         var svgBase = d3.select("#info-graphic-base")
         .attr("width", w)
-        .attr("height", h);
-    
-        drawBackground(svgBase, "#e3d1a2");
+        .attr("height", h); 
+
+        drawBackground(svgBase, globalConfig.infographic.background);
         drawHeader(svgBase, trip);
-        drawPathBetweenLocations(svgBase);
-        drawContent(svgBase, trip);
+        drawPathBetweenLocations(svgBase, numberOfLocations);
+
+        let locationImageCoordinates = drawContent(svgBase, trip, numberOfLocations);
+        let promises = [];
+
+        let locationNoImage = trip.locations.find(item => item.signedUrl == "");
+
+        if (locationNoImage) {
+            // load default image if location has no image
+            trip.locations = trip.locations.map(item => {
+                return {
+                    ...item,
+                    signedUrl: item.signedUrl ? item.signedUrl : "./data/images/EmptyImageOthers.jpg"
+                }
+            });
+        }
+
+        trip.locations.forEach((location, index) => {
+            var coordinate = locationImageCoordinates[index];
+            promises.push(loadImage(location.signedUrl, svgBase, coordinate, index));
+        });
+
+        Promise.all(promises);
         drawFooter(svgBase);
     }
 

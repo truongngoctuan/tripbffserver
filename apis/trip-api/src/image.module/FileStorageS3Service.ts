@@ -111,7 +111,7 @@ async function signPutUrl(fullPath: string, mimeType: string) {
   return pros;
 }
 
-async function signGetUrl(fullPath: string) {
+async function signGetUrl(fullPath: string, expires: number = 60) {
   const s3 = new aws.S3({
     accessKeyId: AWS_ACCESS_KEY_ID,
     secretAccessKey: AWS_SECRET_ACCESS_KEY,
@@ -120,7 +120,7 @@ async function signGetUrl(fullPath: string) {
   const s3Params = {
     Bucket: S3_BUCKET,
     Key: fullPath,
-    Expires: 60,
+    Expires: expires,
     // ContentType: fileType,
     // ACL: 'public-read' //todo
   };

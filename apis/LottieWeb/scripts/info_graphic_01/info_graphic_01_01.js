@@ -1,10 +1,13 @@
-//follow this demo
-//      https://blog.adioma.com/how-to-create-timeline-infographic/
-
-// draw basic shape
-// https://www.dashingd3js.com/svg-basic-shapes-and-d3js
-
 var draw_01_01 = (function () {
+
+    var globalConfig = config_infographic_01.config_01_01;
+
+    var w = globalConfig.infographic.width,
+        h = globalConfig.infographic.height,
+        content_height = globalConfig.infographic.content_height,
+        footer_height = globalConfig.infographic.footer_height,
+        paddingLeftRight = globalConfig.infographic.paddingLeftRight,
+        c_paddingTop = globalConfig.infographic.c_paddingTop;
 
     function drawContent(svgBase, trip) {
         let startPoint_px = paddingLeftRight,
@@ -33,54 +36,61 @@ var draw_01_01 = (function () {
                 y: locationName_py,
                 x: locationName_px
             }, locationName, { 
-                color: globalConfig.location.nameColor,
-                font: globalConfig.location.nameFontFamily,
-                fontSize: globalConfig.location.nameFontSize,
-                fontWeight: "bold",
-                textAnchor: "start",
-                textTransform: "uppercase",
+                color: globalConfig.location.name.color,
+                font: globalConfig.location.name.fontFamily,
+                fontSize: globalConfig.location.name.fontSize,
+                fontWeight: globalConfig.location.name.fontWeight,
+                textAnchor: globalConfig.location.name.textAnchor,
+                textTransform: globalConfig.location.name.textTransform,
                 wrapNumber: w - paddingLeftRight
             });
         let locationNameNodeBbox = locationNameNode.node().getBBox();
+        var nextElementYCoordinate = locationNameNodeBbox.y + locationNameNodeBbox.height + globalConfig.location.paddingTop;
 
-        let feelingActivityNode = drawText(svgBase, {
-            y: locationNameNodeBbox.y + locationNameNodeBbox.height + globalConfig.location.paddingTop,
-            x: locationName_px
-        }, nodeFeelingActivity, { 
-            color: globalConfig.location.descriptionColor,
-            font: globalConfig.location.descriptionFontFamily,
-            fontSize: globalConfig.location.descriptionFontSize,
-            textAnchor: "start",
-            wrapNumber: w - paddingLeftRight 
-        });
-        let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
-        let hightlightNode = drawText(svgBase, {
-            y: feelingActivityNodeBbox.y + feelingActivityNodeBbox.height + globalConfig.location.paddingTop,
-            x: locationName_px
-        }, highlights, { 
-            color: globalConfig.location.descriptionColor,
-            font: globalConfig.location.descriptionFontFamily,
-            fontSize: globalConfig.location.descriptionFontSize,
-            textAnchor: "start",
-            wrapNumber: w - paddingLeftRight 
-        });
-
-        let hightlightNodeBbox = hightlightNode.node().getBBox();
+        if (nodeFeelingActivity) {
+            let feelingActivityNode = drawText(svgBase, {
+                y: nextElementYCoordinate,
+                x: locationName_px
+            }, nodeFeelingActivity, { 
+                color: globalConfig.location.description.color,
+                font: globalConfig.location.description.fontFamily,
+                fontSize: globalConfig.location.description.fontSize,
+                textAnchor: globalConfig.location.description.textAnchor,
+                wrapNumber: w - paddingLeftRight 
+            });
+            let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
+            nextElementYCoordinate = feelingActivityNodeBbox.y + feelingActivityNodeBbox.height + globalConfig.location.paddingTop;
+        }
+        
+        if (highlights) {
+            let hightlightNode = drawText(svgBase, {
+                y: nextElementYCoordinate,
+                x: locationName_px
+            }, highlights, { 
+                color: globalConfig.location.description.color,
+                font: globalConfig.location.description.fontFamily,
+                fontSize: globalConfig.location.description.fontSize,
+                textAnchor: globalConfig.location.description.textAnchor,
+                wrapNumber: w - paddingLeftRight 
+            });    
+            let hightlightNodeBbox = hightlightNode.node().getBBox();
+            nextElementYCoordinate = hightlightNodeBbox.y + hightlightNodeBbox.height + globalConfig.location.paddingTop;
+        }
+        
         drawText(svgBase, {
-            y: hightlightNodeBbox.y + hightlightNodeBbox.height + globalConfig.location.paddingTop,
+            y: nextElementYCoordinate,
             x: locationName_px
-        }, "MORE INFO: WWW.TRIPBFF.COM", { 
-            color: globalConfig.location.descriptionColor,
-            font: globalConfig.location.descriptionFontFamily,
-            fontSize: "30px",
-            textAnchor: "start",
+        }, globalConfig.footer.text, { 
+            color: globalConfig.footer.color,
+            font: globalConfig.footer.fontFamily,
+            fontSize: globalConfig.footer.fontSize,
+            textAnchor: globalConfig.footer.textAnchor,
             wrapNumber: w - paddingLeftRight 
         });
     }
 
     function drawImage(svgBase, coordinate, uri, config) {
         svgBase.append("svg:image")
-        .attr('id', 'img01')
         .attr('x', coordinate.x)
         .attr('y', coordinate.y)
         .attr('width', config.width)
@@ -141,32 +151,7 @@ var draw_01_01 = (function () {
             }
         }
         });
-    }
-
-
-    var N_ITEMS = 1;
-
-    const content_height = 300;
-    const footer_height = 0;
-    const paddingLeftRight = 20;
-    const c_paddingTop = 60,
-        c_paddingBottom = 20;
-
-    var w = 1280;
-    var h = 1280;
-
-    var globalConfig = {
-        location: {
-            nameFontSize: "64px",
-            nameFontFamily: "Sans Serif",
-            nameColor: "#d0363b",
-            descriptionFontSize: "48px",
-            descriptionFontFamily: "Times Neue Roman",
-            descriptionColor: "#121113",
-            paddingTop: 30,
-            lineNumber: 1
-        }  
-    };
+    }    
     
     function drawBackground(svgBase, backgroundColor) {
         svgBase.style('background-color', backgroundColor);
@@ -174,16 +159,18 @@ var draw_01_01 = (function () {
 
     function draw(trip) {
 
-        N_ITEMS = trip.locations.length;
         var viewBox = "0 0" + " " + w + " " + h;
         var svgBase = d3.select("#info-graphic-base")    
             .attr("width", w)
             .attr("height", h)
-            .attr("viewBox", viewBox);
+            .attr("viewBox", viewBox)
+            .attr("preserveAspectRatio", "xMinYMin meet");
             
-        var imgUri = "./data/images/2.jpg";
+        // load default image if location has no image
+        var imgUri = trip.locations[0].signedUrl ? trip.locations[0].signedUrl : "./data/images/EmptyImage01.jpg";
         var img = new Image();
-        img.onload = function() {
+
+        img.onload = function() {         
             var ratio = this.width / this.height; 
             h = w / ratio;          
             
@@ -193,9 +180,9 @@ var draw_01_01 = (function () {
             svgBase
             .attr("height", h)
             .attr("viewBox", viewBox)
-            .attr("preserveAspectRatio", "xMinYMin meet");;
+            .attr("preserveAspectRatio", "xMinYMin meet");
 
-            drawBackground(svgBase, "#e3d1a2");
+            drawBackground(svgBase, globalConfig.infographic.background);
 
             drawImage(svgBase, {
                 y: 0,
@@ -205,8 +192,10 @@ var draw_01_01 = (function () {
             });      
 
             drawContent(svgBase, trip);
+
+            svgBase.append("span").attr("name", "imgLoaded");
         };
-        img.src = imgUri;
+        img.src = imgUri;    
     }
 
     return {
