@@ -68,9 +68,8 @@ var config_infographic_01 = (function() {
         imageContainer: {
             svgWidth: 630,
             svgHeight: 840,
-            viewBox: "0 0 288.5 384.1",
-            width: "283.5",
-            height: "500",
+            viewBoxWidth: 288.5,
+            viewBoxHeight: 384.1,
             clipPath: "M2.5 2.5H286v379.1H2.5z",
             paddingTop: 20,
             paddingBetweenImage: 5,

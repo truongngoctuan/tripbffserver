@@ -116,35 +116,7 @@ var draw_01_02 = (function() {
         }
         
         return nextElementYCoordinate;
-    }
-    
-    function drawImageContainer(svgBase, coordinate, uri, index) {
-        var svgImage = svgBase.append("svg")
-        .attr("y", coordinate.y)
-        .attr("x", coordinate.x)
-        .attr("width", globalConfig.imageContainer.svgWidth)
-        .attr("height", globalConfig.imageContainer.svgHeight)
-        .attr("viewBox", globalConfig.imageContainer.viewBox);  
-    
-        let clipPathId = "_id" + index;
-
-        svgImage.append("defs")
-        .append("clipPath")
-        .attr("id", clipPathId)
-        .append("path")
-        .attr("x", 0)
-        .attr("y", 0)
-        .attr("d", globalConfig.imageContainer.clipPath); 
-
-        drawImage(svgImage, {
-            y: 0,
-            x: 0 
-        }, uri, {
-            width: globalConfig.imageContainer.width,
-            height: globalConfig.imageContainer.height,
-            imageClipPath: "url(#" + clipPathId + ")"
-        });
-    }
+    }    
     
     function drawImage(svgImage, coordinate, uri, config) {
         var svgCanvas = svgImage.append("svg:image");
@@ -240,11 +212,52 @@ var draw_01_02 = (function() {
         svgBase.style('background-color', backgroundColor);
     }
     
-    function loadImage(url, svgImage){
+    function loadImage(url, svgBase, coordinate, index){
         return new Promise(resolve => {
             var img = new Image();
             img.onload = function() {
-                svgImage.append("span").attr("name", "imgLoaded");
+                let ratio = this.width / this.height,
+                    svgWidth = globalConfig.imageContainer.svgWidth,
+                    svgHeight = globalConfig.imageContainer.svgHeight,
+                    viewBoxWidth = globalConfig.imageContainer.viewBoxWidth,
+                    viewBoxHeight = globalConfig.imageContainer.viewBoxHeight,
+                    width = viewBoxWidth,
+                    height = viewBoxHeight;
+
+                if (ratio >= 1) {
+                    width = height * ratio;
+                }
+                else {
+                    height = width / ratio;
+                }
+
+                var svgImage = svgBase.append("svg")
+                .attr("y", coordinate.y)
+                .attr("x", coordinate.x)
+                .attr("width", svgWidth)
+                .attr("height", svgHeight)
+                .attr("viewBox", "0 0 " + viewBoxWidth + " " + viewBoxHeight);  
+            
+                let clipPathId = "_id" + index;
+
+                svgImage.append("defs")
+                .append("clipPath")
+                .attr("id", clipPathId)
+                .append("path")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("d", globalConfig.imageContainer.clipPath); 
+
+                drawImage(svgImage, {
+                    y: 0,
+                    x: 0 
+                }, url, {
+                    width: width,
+                    height: height,
+                    imageClipPath: "url(#" + clipPathId + ")"
+                }); 
+                
+                svgBase.append("span").attr("name", "imgLoaded");
                 resolve();
             };
             img.src = url;
@@ -256,6 +269,9 @@ var draw_01_02 = (function() {
         var svgBase = d3.select("#info-graphic-base")    
         .attr("width", w)
         .attr("height", h);
+
+        drawBackground(svgBase, globalConfig.infographic.background);    
+        drawHeader(svgBase, trip);  
 
         let locationNoImage = trip.locations.find(item => item.signedUrl == "");
 
@@ -269,21 +285,18 @@ var draw_01_02 = (function() {
             });
         }
 
-        Promise.all(trip.locations.map(item => loadImage(item.signedUrl, svgBase)));
-     
-        drawBackground(svgBase, globalConfig.infographic.background);    
-        drawHeader(svgBase, trip);
-    
-        drawImageContainer(svgBase, {
+        let promise01 = loadImage(trip.locations[0].signedUrl, svgBase, {
             x: globalConfig.infographic.paddingLeftRight,
             y: 170 + globalConfig.imageContainer.paddingTop
-        }, trip.locations[0].signedUrl, 0);    
-       
-        drawImageContainer(svgBase, {
+        }, 0);
+
+        let promise02 = loadImage(trip.locations[1].signedUrl, svgBase, {
             x: w / 2 + globalConfig.imageContainer.paddingBetweenImage,
             y: 170 + globalConfig.imageContainer.paddingTop
-        }, trip.locations[1].signedUrl, 1);
-    
+        }, 1);
+
+        Promise.all([promise01, promise02]); 
+            
         let firstLatestHeight = drawContent(svgBase, trip.locations[0], {
             x: globalConfig.infographic.paddingLeftRight,
             y: 1100
