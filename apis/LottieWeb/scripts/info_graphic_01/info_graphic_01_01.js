@@ -166,14 +166,10 @@ var draw_01_01 = (function () {
             .attr("viewBox", viewBox)
             .attr("preserveAspectRatio", "xMinYMin meet");
             
-        var imgUri = trip.locations[0].signedUrl;
-
-        if (!imgUri) {
-            //TODO: load default image
-            imgUri = "./data/images/1.jpg";
-        }
-
+        // load default image if location has no image
+        var imgUri = trip.locations[0].signedUrl ? trip.locations[0].signedUrl : "./data/images/EmptyImage01.jpg";
         var img = new Image();
+
         img.onload = function() {         
             var ratio = this.width / this.height; 
             h = w / ratio;          

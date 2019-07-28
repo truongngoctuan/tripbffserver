@@ -276,11 +276,11 @@ var draw_01_02 = (function() {
         let locationNoImage = trip.locations.find(item => item.signedUrl == "");
 
         if (locationNoImage) {
-            //TODO: load default image if location has no image
+            // load default image if location has no image
             trip.locations = trip.locations.map(item => {
                 return {
                     ...item,
-                    signedUrl: item.signedUrl ? item.signedUrl : "./data/images/1.jpg"
+                    signedUrl: item.signedUrl ? item.signedUrl : "./data/images/EmptyImage02.jpg"
                 }
             });
         }
@@ -296,7 +296,7 @@ var draw_01_02 = (function() {
         }, 1);
 
         Promise.all([promise01, promise02]); 
-            
+
         let firstLatestHeight = drawContent(svgBase, trip.locations[0], {
             x: globalConfig.infographic.paddingLeftRight,
             y: 1100
