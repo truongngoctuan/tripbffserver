@@ -101,7 +101,7 @@ export type TripLocationUpdatedFeelingEvent = {
   ownerId: string;
   tripId: string;
   locationId: string;
-  feelingId: number,
+  feelingId: string,
   feelingLabel: string,
   feelingIcon: string
 }
@@ -111,7 +111,7 @@ export type TripLocationUpdatedActivityEvent = {
   ownerId: string;
   tripId: string;
   locationId: string;
-  activityId: number,
+  activityId: string,
   activityLabel: string,
   activityIcon: string
 }

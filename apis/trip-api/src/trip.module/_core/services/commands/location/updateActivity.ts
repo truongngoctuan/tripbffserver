@@ -8,7 +8,7 @@ export type UpdateLocationActivityCommand = {
   ownerId: string,
   tripId: string,
   locationId: string,
-  activityId: number,
+  activityId: string,
   activityLabel: string,
   activityIcon: string
 };

@@ -46,13 +46,13 @@ export interface IInfographic {
 export type InfographicStatus = "CREATED" | "EXPORTED" | "FAILED";
 
 export interface IFeeling {
-  feelingId: number,
+  feelingId: string,
   label: string,
   icon: string
 }
 
 export interface IActivity {
-  activityId: number,
+  activityId: string,
   label: string,
   icon: string
 }

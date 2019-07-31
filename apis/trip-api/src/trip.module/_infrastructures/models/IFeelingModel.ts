@@ -1,6 +1,6 @@
 
 export interface IFeelingModel {
-    feelingId: number
+    feelingId: string
     label: string
     icon: string
 }

@@ -1,6 +1,6 @@
 
 export interface IActivityModel {
-    activityId: number
+    activityId: string
     label: string
     icon: string
 }
