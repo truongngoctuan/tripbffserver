@@ -179,9 +179,8 @@ module.exports = {
         try {
           var tripId: string = request.params.tripId;
           var locationId: string = request.params.locationId;
-          var { feelingId } = request.payload as any;
-
-          var feeling = await dataSourceQueryHandler.getFeelingById(feelingId);
+          var feeling = request.payload as any;
+          console.log('feeling: ' + JSON.stringify(feeling));
 
           if (feeling) {
             const ownerId = CUtils.getUserId(request);
@@ -191,7 +190,7 @@ module.exports = {
               ownerId,
               tripId,
               locationId,
-              feelingId,
+              feelingId: feeling.feelingId,
               feelingLabel: feeling.label,
               feelingIcon: feeling.icon
             });
@@ -224,9 +223,7 @@ module.exports = {
         try {
           var tripId: string = request.params.tripId;
           var locationId: string = request.params.locationId;
-          var { activityId } = request.payload as any;
-
-          var activity = await dataSourceQueryHandler.getActivityById(activityId);
+          var activity = request.payload as any;
 
           if (activity) {
             const ownerId = CUtils.getUserId(request);
@@ -236,7 +233,7 @@ module.exports = {
               ownerId,
               tripId,
               locationId,
-              activityId,
+              activityId: activity.activityId,
               activityLabel: activity.label,
               activityIcon: activity.icon
             });
@@ -273,21 +270,6 @@ module.exports = {
           console.log('selected highlights: ' + JSON.stringify(highlights));
           
           if (highlights) {
-            var preDefinedHighlights = await dataSourceQueryHandler.getHighlights();
-            var newAddedPreDefinedHighlights = highlights.filter(item => !preDefinedHighlights.includes(item));
-
-            if (newAddedPreDefinedHighlights) {
-                let existedHighlights = highlights.filter(item => preDefinedHighlights.includes(item));
-                let newPreDefinedItems = newAddedPreDefinedHighlights.map(item => {
-                  return {
-                      ...item,
-                      highlightId: uuid4()
-                  }
-                });
-                
-                highlights = existedHighlights.concat(newPreDefinedItems);
-            }
-  
             const ownerId = CUtils.getUserId(request);
     
             var commandResult = await tripCommandHandler.exec({

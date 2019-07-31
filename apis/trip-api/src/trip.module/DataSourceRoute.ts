@@ -67,455 +67,455 @@ module.exports = {
         var feelingRepo =  new FeelingRepository();
         var feelings: Array<IFeeling> = [
           {
-            feelingId: 1,
+            feelingId: uuid4(),
             label: "Happy",
             icon: "smile"
           },
           {
-            feelingId: 2,
+            feelingId: uuid4(),
             label: "Sad",
             icon: "frown"
           },
           {
-            feelingId: 3,
+            feelingId: uuid4(),
             label: "Blessed",
             icon: "smile"
           },
           {
-            feelingId: 4,
+            feelingId: uuid4(),
             label: "Loved",
             icon: "smile"
           },
           {
-            feelingId: 5,
+            feelingId: uuid4(),
             label: "Lovely",
             icon: "smile"
           },
           {
-            feelingId: 6,
+            feelingId: uuid4(),
             label: "Excited",
             icon: "smile"
           },
           {
-            feelingId: 7,
+            feelingId: uuid4(),
             label: "Fantastic",
             icon: "smile"
           },
           {
-            feelingId: 8,
+            feelingId: uuid4(),
             label: "Chill",
             icon: "smile"
           },
           {
-            feelingId: 9,
+            feelingId: uuid4(),
             label: "Alone",
             icon: "smile"
           },
           {
-            feelingId: 10,
+            feelingId: uuid4(),
             label: "Angry",
             icon: "smile"
           },
           {
-            feelingId: 11,
+            feelingId: uuid4(),
             label: "Thankful",
             icon: "smile"
           },
           {
-            feelingId: 12,
+            feelingId: uuid4(),
             label: "In Love",
             icon: "frown"
           },
           {
-            feelingId: 13,
+            feelingId: uuid4(),
             label: "Crazy",
             icon: "smile"
           },
           {
-            feelingId: 14,
+            feelingId: uuid4(),
             label: "Grateful",
             icon: "smile"
           },
           {
-            feelingId: 15,
+            feelingId: uuid4(),
             label: "Silly",
             icon: "smile"
           },
           {
-            feelingId: 16,
+            feelingId: uuid4(),
             label: "Wonderful",
             icon: "smile"
           },
           {
-            feelingId: 17,
+            feelingId: uuid4(),
             label: "Cool",
             icon: "smile"
           },
           {
-            feelingId: 18,
+            feelingId: uuid4(),
             label: "Relaxed",
             icon: "smile"
           },
           {
-            feelingId: 19,
+            feelingId: uuid4(),
             label: "Positive",
             icon: "smile"
           },
           {
-            feelingId: 20,
+            feelingId: uuid4(),
             label: "Hopeful",
             icon: "smile"
           },
           {
-            feelingId: 21,
+            feelingId: uuid4(),
             label: "Joyful",
             icon: "smile"
           },
           {
-            feelingId: 22,
+            feelingId: uuid4(),
             label: "Tired",
             icon: "frown"
           },
           {
-            feelingId: 23,
+            feelingId: uuid4(),
             label: "Motivated",
             icon: "smile"
           },
           {
-            feelingId: 24,
+            feelingId: uuid4(),
             label: "Proud",
             icon: "smile"
           },
-          {
-            feelingId: 25,
-            label: "OK",
-            icon: "smile"
-          },
-          {
-            feelingId: 26,
-            label: "Sick",
-            icon: "smile"
-          },
-          {
-            feelingId: 27,
-            label: "Emotional",
-            icon: "smile"
-          },
-          {
-            feelingId: 28,
-            label: "Confident",
-            icon: "smile"
-          },
-          {
-            feelingId: 29,
-            label: "Awesome",
-            icon: "smile"
-          },
-          {
-            feelingId: 30,
-            label: "Fresh",
-            icon: "smile"
-          },
-          {
-            feelingId: 31,
-            label: "Exhausted",
-            icon: "smile"
-          },
-          {
-            feelingId: 32,
-            label: "Annoyed",
-            icon: "frown"
-          },
-          {
-            feelingId: 33,
-            label: "Glad",
-            icon: "smile"
-          },
-          {
-            feelingId: 34,
-            label: "Lucky",
-            icon: "smile"
-          },
-          {
-            feelingId: 35,
-            label: "Heartbroken",
-            icon: "smile"
-          },
-          {
-            feelingId: 36,
-            label: "Bored",
-            icon: "smile"
-          },
-          {
-            feelingId: 37,
-            label: "Sleepy",
-            icon: "smile"
-          },
-          {
-            feelingId: 38,
-            label: "Energized",
-            icon: "smile"
-          },
-          {
-            feelingId: 39,
-            label: "Hungry",
-            icon: "smile"
-          },
-          {
-            feelingId: 40,
-            label: "Pained",
-            icon: "smile"
-          },
-          {
-            feelingId: 41,
-            label: "Peaceful",
-            icon: "smile"
-          },
-          {
-            feelingId: 42,
-            label: "Disappointed",
-            icon: "frown"
-          },
-          {
-            feelingId: 43,
-            label: "Optimistic",
-            icon: "smile"
-          },
-          {
-            feelingId: 44,
-            label: "Cold",
-            icon: "smile"
-          },
-          {
-            feelingId: 45,
-            label: "Cute",
-            icon: "smile"
-          },
-          {
-            feelingId: 46,
-            label: "Fabulous",
-            icon: "smile"
-          },
-          {
-            feelingId: 47,
-            label: "Great",
-            icon: "smile"
-          },
-          {
-            feelingId: 48,
-            label: "Sorry",
-            icon: "smile"
-          },
-          {
-            feelingId: 49,
-            label: "Super",
-            icon: "smile"
-          },
-          {
-            feelingId: 50,
-            label: "Worried",
-            icon: "smile"
-          },
-          {
-            feelingId: 51,
-            label: "Funny",
-            icon: "smile"
-          },
-          {
-            feelingId: 52,
-            label: "Bad",
-            icon: "frown"
-          },
-          {
-            feelingId: 53,
-            label: "Down",
-            icon: "smile"
-          },
-          {
-            feelingId: 54,
-            label: "Inspired",
-            icon: "smile"
-          },
-          {
-            feelingId: 55,
-            label: "Satisfied",
-            icon: "smile"
-          },
-          {
-            feelingId: 56,
-            label: "Confused",
-            icon: "smile"
-          },
-          {
-            feelingId: 57,
-            label: "Good",
-            icon: "smile"
-          },
-          {
-            feelingId: 58,
-            label: "Lonely",
-            icon: "smile"
-          },
-          {
-            feelingId: 59,
-            label: "Strong",
-            icon: "smile"
-          },
-          {
-            feelingId: 60,
-            label: "Concerned",
-            icon: "smile"
-          },
-          {
-            feelingId: 61,
-            label: "Special",
-            icon: "smile"
-          },
-          {
-            feelingId: 62,
-            label: "Depressed",
-            icon: "frown"
-          },
-          {
-            feelingId: 63,
-            label: "Curious",
-            icon: "smile"
-          },
-          {
-            feelingId: 64,
-            label: "Welcome",
-            icon: "smile"
-          },
-          {
-            feelingId: 65,
-            label: "Broken",
-            icon: "smile"
-          },
-          {
-            feelingId: 66,
-            label: "Beautiful",
-            icon: "smile"
-          },
-          {
-            feelingId: 67,
-            label: "Amazing",
-            icon: "smile"
-          },
-          {
-            feelingId: 68,
-            label: "Pissed off",
-            icon: "smile"
-          },
-          {
-            feelingId: 69,
-            label: "Surprised",
-            icon: "smile"
-          },
-          {
-            feelingId: 70,
-            label: "Pretty",
-            icon: "smile"
-          },
-          {
-            feelingId: 71,
-            label: "Better",
-            icon: "smile"
-          },
-          {
-            feelingId: 72,
-            label: "Guilty",
-            icon: "frown"
-          },
-          {
-            feelingId: 73,
-            label: "Safe",
-            icon: "smile"
-          },
-          {
-            feelingId: 74,
-            label: "Free",
-            icon: "smile"
-          },
-          {
-            feelingId: 75,
-            label: "Lost",
-            icon: "smile"
-          },
-          {
-            feelingId: 76,
-            label: "Old",
-            icon: "smile"
-          },
-          {
-            feelingId: 77,
-            label: "Lazy",
-            icon: "smile"
-          },
-          {
-            feelingId: 78,
-            label: "Worse",
-            icon: "smile"
-          },
-          {
-            feelingId: 79,
-            label: "Horrible",
-            icon: "smile"
-          },
-          {
-            feelingId: 80,
-            label: "Comfortable",
-            icon: "smile"
-          },
-          {
-            feelingId: 81,
-            label: "Stupid",
-            icon: "smile"
-          },
-          {
-            feelingId: 82,
-            label: "Terrible",
-            icon: "frown"
-          },
-          {
-            feelingId: 83,
-            label: "Asleep",
-            icon: "smile"
-          },
-          {
-            feelingId: 84,
-            label: "Well",
-            icon: "smile"
-          },
-          {
-            feelingId: 85,
-            label: "Alive",
-            icon: "smile"
-          },
-          {
-            feelingId: 86,
-            label: "Shy",
-            icon: "smile"
-          },
-          {
-            feelingId: 87,
-            label: "Weird",
-            icon: "smile"
-          },
-          {
-            feelingId: 88,
-            label: "Hurt",
-            icon: "smile"
-          },
-          {
-            feelingId: 89,
-            label: "Awful",
-            icon: "smile"
-          },
-          {
-            feelingId: 90,
-            label: "Stressed",
-            icon: "smile"
-          }
+          // {
+          //   feelingId: 25,
+          //   label: "OK",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 26,
+          //   label: "Sick",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 27,
+          //   label: "Emotional",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 28,
+          //   label: "Confident",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 29,
+          //   label: "Awesome",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 30,
+          //   label: "Fresh",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 31,
+          //   label: "Exhausted",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 32,
+          //   label: "Annoyed",
+          //   icon: "frown"
+          // },
+          // {
+          //   feelingId: 33,
+          //   label: "Glad",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 34,
+          //   label: "Lucky",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 35,
+          //   label: "Heartbroken",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 36,
+          //   label: "Bored",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 37,
+          //   label: "Sleepy",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 38,
+          //   label: "Energized",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 39,
+          //   label: "Hungry",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 40,
+          //   label: "Pained",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 41,
+          //   label: "Peaceful",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 42,
+          //   label: "Disappointed",
+          //   icon: "frown"
+          // },
+          // {
+          //   feelingId: 43,
+          //   label: "Optimistic",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 44,
+          //   label: "Cold",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 45,
+          //   label: "Cute",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 46,
+          //   label: "Fabulous",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 47,
+          //   label: "Great",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 48,
+          //   label: "Sorry",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 49,
+          //   label: "Super",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 50,
+          //   label: "Worried",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 51,
+          //   label: "Funny",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 52,
+          //   label: "Bad",
+          //   icon: "frown"
+          // },
+          // {
+          //   feelingId: 53,
+          //   label: "Down",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 54,
+          //   label: "Inspired",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 55,
+          //   label: "Satisfied",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 56,
+          //   label: "Confused",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 57,
+          //   label: "Good",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 58,
+          //   label: "Lonely",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 59,
+          //   label: "Strong",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 60,
+          //   label: "Concerned",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 61,
+          //   label: "Special",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 62,
+          //   label: "Depressed",
+          //   icon: "frown"
+          // },
+          // {
+          //   feelingId: 63,
+          //   label: "Curious",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 64,
+          //   label: "Welcome",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 65,
+          //   label: "Broken",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 66,
+          //   label: "Beautiful",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 67,
+          //   label: "Amazing",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 68,
+          //   label: "Pissed off",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 69,
+          //   label: "Surprised",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 70,
+          //   label: "Pretty",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 71,
+          //   label: "Better",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 72,
+          //   label: "Guilty",
+          //   icon: "frown"
+          // },
+          // {
+          //   feelingId: 73,
+          //   label: "Safe",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 74,
+          //   label: "Free",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 75,
+          //   label: "Lost",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 76,
+          //   label: "Old",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 77,
+          //   label: "Lazy",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 78,
+          //   label: "Worse",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 79,
+          //   label: "Horrible",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 80,
+          //   label: "Comfortable",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 81,
+          //   label: "Stupid",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 82,
+          //   label: "Terrible",
+          //   icon: "frown"
+          // },
+          // {
+          //   feelingId: 83,
+          //   label: "Asleep",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 84,
+          //   label: "Well",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 85,
+          //   label: "Alive",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 86,
+          //   label: "Shy",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 87,
+          //   label: "Weird",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 88,
+          //   label: "Hurt",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 89,
+          //   label: "Awful",
+          //   icon: "smile"
+          // },
+          // {
+          //   feelingId: 90,
+          //   label: "Stressed",
+          //   icon: "smile"
+          // }
         ];
         feelingRepo.insertMany(feelings);
         return true;
@@ -546,117 +546,117 @@ module.exports = {
         var activityRepo =  new ActivityRepository();
         var activities: Array<IActivity> = [
           {
-            activityId: 1,
+            activityId: uuid4(),
             label: "Swim",
             icon: "swimmer"
           },
           {
-            activityId: 2,
+            activityId: uuid4(),
             label: "Listen Music",
             icon: "music"
           },
           {
-            activityId: 3,
+            activityId: uuid4(),
             label: "Eat",
             icon: "running"
           },
           {
-            activityId: 4,
+            activityId: uuid4(),
             label: "Drink",
             icon: "running"
           },
           {
-            activityId: 5,
+            activityId: uuid4(),
             label: "Go trekking",
             icon: "running"
           },
           {
-            activityId: 6,
+            activityId: uuid4(),
             label: "Go sightseeing",
             icon: "running"
           },
           {
-            activityId: 7,
+            activityId: uuid4(),
             label: "Cloud hunting",
             icon: "running"
           },
           {
-            activityId: 8,
+            activityId: uuid4(),
             label: "Watch the sunrise",
             icon: "running"
           },
           {
-            activityId: 9,
+            activityId: uuid4(),
             label: "Go fishing",
             icon: "running"
           },
           {
-            activityId: 10,
+            activityId: uuid4(),
             label: "Stargazing",
             icon: "running"
           },
           {
-            activityId: 11,
+            activityId: uuid4(),
             label: "Eat & Drink",
             icon: "running"
           },
           {
-            activityId: 12,
+            activityId: uuid4(),
             label: "Read book",
             icon: "running"
           },
           {
-            activityId: 13,
+            activityId: uuid4(),
             label: "Watch movie",
             icon: "running"
           },
           {
-            activityId: 14,
+            activityId: uuid4(),
             label: "Go hiking",
             icon: "running"
           },
           {
-            activityId: 15,
+            activityId: uuid4(),
             label: "Go camping",
             icon: "running"
           },
           {
-            activityId: 16,
+            activityId: uuid4(),
             label: "Go climbing",
             icon: "running"
           },
           {
-            activityId: 17,
+            activityId: uuid4(),
             label: "Kayak",
             icon: "running"
           },
           {
-            activityId: 18,
+            activityId: uuid4(),
             label: "Water Ski",
             icon: "running"
           },
           {
-            activityId: 19,
+            activityId: uuid4(),
             label: "Walking with a Storm",
             icon: "running"
           },
           {
-            activityId: 20,
+            activityId: uuid4(),
             label: "Watch the sunset",
             icon: "running"
           },
           {
-            activityId: 21,
+            activityId: uuid4(),
             label: "Horseback riding",
             icon: "running"
           },
           {
-            activityId: 22,
+            activityId: uuid4(),
             label: "Ride a bike",
             icon: "running"
           },
           {
-            activityId: 23,
+            activityId: uuid4(),
             label: "Ride a motorbike",
             icon: "running"
           }

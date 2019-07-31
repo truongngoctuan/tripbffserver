@@ -8,7 +8,7 @@ export type UpdateLocationFeelingCommand = {
   ownerId: string,
   tripId: string,
   locationId: string,
-  feelingId: number,
+  feelingId: string,
   feelingLabel: string,
   feelingIcon: string
 };
