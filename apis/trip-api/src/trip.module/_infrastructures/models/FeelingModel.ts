@@ -7,7 +7,8 @@ export interface IFeelingDocument extends IFeelingModel, Document {}
 
 const FeelingSchema = new Schema({
     feelingId: String,
-    label: String,
+    label_en: String,
+    label_vi: String,
     icon: String
 });
 

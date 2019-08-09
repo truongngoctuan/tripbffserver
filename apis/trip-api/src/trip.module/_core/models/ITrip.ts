@@ -47,18 +47,21 @@ export type InfographicStatus = "CREATED" | "EXPORTED" | "FAILED";
 
 export interface IFeeling {
   feelingId: string,
-  label: string,
+  label_en: string,
+  label_vi: string,
   icon: string
 }
 
 export interface IActivity {
   activityId: string,
-  label: string,
+  label_en: string,
+  label_vi: string,
   icon: string
 }
 
 export interface IHighlight {
   highlightId: string,
-  label: string,
+  label_en: string,
+  label_vi: string,
   highlightType: string
 }

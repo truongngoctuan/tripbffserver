@@ -63,9 +63,9 @@ export async function exportInfographic(
         name: item.name,
         fromTime: item.fromTime,
         toTime: item.toTime,
-        feeling: item.feeling ? item.feeling.label : "",
-        activity: item.activity ? item.activity.label : "",
-        highlights: item.highlights ? item.highlights.map(h => h.label) : [],
+        feeling: item.feeling ? item.feeling.label_vi : "", //TODO: based on locale of user: to use vi or en. Default for now is vi.
+        activity: item.activity ? item.activity.label_vi : "", //TODO: based on locale of user: to use vi or en. Default for now is vi.
+        highlights: item.highlights ? item.highlights.map(h => h.label_vi) : [], //TODO: based on locale of user: to use vi or en. Default for now is vi.
         signedUrl: signedUrl
       }
     })) 

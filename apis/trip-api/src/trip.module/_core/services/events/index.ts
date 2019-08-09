@@ -102,7 +102,8 @@ export type TripLocationUpdatedFeelingEvent = {
   tripId: string;
   locationId: string;
   feelingId: string,
-  feelingLabel: string,
+  label_en: string,
+  label_vi: string,
   feelingIcon: string
 }
 
@@ -112,7 +113,8 @@ export type TripLocationUpdatedActivityEvent = {
   tripId: string;
   locationId: string;
   activityId: string,
-  activityLabel: string,
+  label_en: string,
+  label_vi: string,
   activityIcon: string
 }
 

@@ -9,7 +9,8 @@ export type UpdateLocationActivityCommand = {
   tripId: string,
   locationId: string,
   activityId: string,
-  activityLabel: string,
+  label_en: string,
+  label_vi: string,
   activityIcon: string
 };
 
@@ -19,7 +20,7 @@ export async function UpdateLocationActivity(
   reducers: TripReducers,
   emitter: ServiceBus
 ) {
-  const { ownerId, tripId, locationId, activityId, activityLabel, activityIcon } = command;
+  const { ownerId, tripId, locationId, activityId, label_en, label_vi, activityIcon } = command;
 
   var event: TripEvent = {
     type: "LocationActivityUpdated",
@@ -27,7 +28,8 @@ export async function UpdateLocationActivity(
     tripId,
     locationId,
     activityId,
-    activityLabel,
+    label_en,
+    label_vi,
     activityIcon
   };
 

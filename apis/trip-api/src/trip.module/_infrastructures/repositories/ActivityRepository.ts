@@ -7,7 +7,8 @@ export class ActivityRepository implements IActivityRepository {
     toActivity(o: IActivityModel): IActivity {
         return {
             activityId: o.activityId,
-            label: o.label,
+            label_en: o.label_en,
+            label_vi: o.label_vi,
             icon: o.icon
         }
     }
@@ -27,10 +28,11 @@ export class ActivityRepository implements IActivityRepository {
     }
 
     public async insert(activity: IActivity) {
-        var { activityId, label, icon } = activity;
+        var { activityId, label_en, label_vi, icon } = activity;
         var activityDocument = new ActivityDocument({
             activityId: activityId,
-            label: label,
+            label_en: label_en,
+            label_vi: label_vi,
             icon: icon
         });
 
@@ -41,7 +43,8 @@ export class ActivityRepository implements IActivityRepository {
         var activityDocuments = activities.map(f => {
             return new ActivityDocument({
                 activityId: f.activityId,
-                label: f.label,
+                label_en: f.label_en,
+                label_vi: f.label_vi,
                 icon: f.icon
             });
         });
@@ -49,11 +52,12 @@ export class ActivityRepository implements IActivityRepository {
     }
 
     public async update(payload: IActivity) {
-        var { activityId, label, icon } = payload;
+        var { activityId, label_en, label_vi, icon } = payload;
         var activity = await ActivityDocument.findOne(activityId);
 
         if (activity) {
-            activity.label = label;
+            activity.label_en = label_en;
+            activity.label_vi = label_vi;
             activity.icon = icon;
             activity.save();
         }

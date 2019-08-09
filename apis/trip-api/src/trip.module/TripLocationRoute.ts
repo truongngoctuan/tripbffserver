@@ -191,7 +191,8 @@ module.exports = {
               tripId,
               locationId,
               feelingId: feeling.feelingId,
-              feelingLabel: feeling.label,
+              label_en: feeling.label_en,
+              label_vi: feeling.label_vi,
               feelingIcon: feeling.icon
             });
   
@@ -234,7 +235,8 @@ module.exports = {
               tripId,
               locationId,
               activityId: activity.activityId,
-              activityLabel: activity.label,
+              label_en: activity.label_en,
+              label_vi: activity.label_en,
               activityIcon: activity.icon
             });
   

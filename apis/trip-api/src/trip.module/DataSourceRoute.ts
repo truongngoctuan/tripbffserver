@@ -68,454 +68,250 @@ module.exports = {
         var feelings: Array<IFeeling> = [
           {
             feelingId: uuid4(),
-            label: "Happy",
-            icon: "smile"
+            label_en: "Beautiful",
+            label_vi: "Đẹp",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Sad",
-            icon: "frown"
+            label_en: "Wonderful",
+            label_vi: "Tuyệt vời",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Blessed",
-            icon: "smile"
+            label_en: "Peaceful",
+            label_vi: "Yên bình",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Loved",
-            icon: "smile"
+            label_en: "Free",
+            label_vi: "Tự do",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Lovely",
-            icon: "smile"
+            label_en: "Comfortable",
+            label_vi: "Thoải mái",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Excited",
-            icon: "smile"
+            label_en: "Chill",
+            label_vi: "Chill",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Fantastic",
-            icon: "smile"
+            label_en: "Chất phát ngất",
+            label_vi: "Chất phát ngất",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Chill",
-            icon: "smile"
+            label_en: "Hạn hán lời",
+            label_vi: "Hạn hán lời",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Alone",
-            icon: "smile"
+            label_en: "Mình thích thì mình làm thôi",
+            label_vi: "Mình thích thì mình làm thôi",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Angry",
-            icon: "smile"
+            label_en: "Trẻ trâu",
+            label_vi: "Trẻ trâu",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Thankful",
-            icon: "smile"
+            label_en: "Cool",
+            label_vi: "Ngầu",
+            icon: ""
+          },         
+          {
+            feelingId: uuid4(),
+            label_en: "Happy",
+            label_vi: "Hạnh phúc",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "In Love",
-            icon: "frown"
+            label_en: "In Love",
+            label_vi: "Đang yêu",
+            icon: ""
+          },      
+          {
+            feelingId: uuid4(),
+            label_en: "Loved",
+            label_vi: "Được yêu",
+            icon: ""
+          },   
+          {
+            feelingId: uuid4(),
+            label_en: "Cute",
+            label_vi: "Dễ thương",
+            icon: ""
+          },  
+          {
+            feelingId: uuid4(),
+            label_en: "Excited",
+            label_vi: "Hào hứng",
+            icon: ""
+          },     
+          {
+            feelingId: uuid4(),
+            label_en: "Crazy",
+            label_vi: "Khùng",
+            icon: ""
+          },  
+          {
+            feelingId: uuid4(),
+            label_en: "Silly",
+            label_vi: "Ngớ ngẩn",
+            icon: ""
+          }, 
+          {
+            feelingId: uuid4(),
+            label_en: "Relaxed",
+            label_vi: "Thư giãn",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Crazy",
-            icon: "smile"
+            label_en: "Motivated",
+            label_vi: "Có động lực",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Grateful",
-            icon: "smile"
+            label_en: "Confident",
+            label_vi: "Tự tin",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Silly",
-            icon: "smile"
+            label_en: "Fresh",
+            label_vi: "Tươi mới",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Wonderful",
-            icon: "smile"
+            label_en: "Lucky",
+            label_vi: "May mắn",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Cool",
-            icon: "smile"
+            label_en: "Cold",
+            label_vi: "Lạnh",
+            icon: ""
+          },    
+          {
+            feelingId: uuid4(),
+            label_en: "Worried",
+            label_vi: "Lo lắng",
+            icon: ""
+          },   
+          {
+            feelingId: uuid4(),
+            label_en: "Funny",
+            label_vi: "Hài hước",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Relaxed",
-            icon: "smile"
+            label_en: "Inspired",
+            label_vi: "Được truyền cảm hứng",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Positive",
-            icon: "smile"
+            label_en: "Super",
+            label_vi: "Phi thường",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Hopeful",
-            icon: "smile"
+            label_en: "Satisfied",
+            label_vi: "Thỏa mãn",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Joyful",
-            icon: "smile"
+            label_en: "Safe",
+            label_vi: "An toàn",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Tired",
-            icon: "frown"
+            label_en: "Sad",
+            label_vi: "Buồn",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Motivated",
-            icon: "smile"
+            label_en: "Tired",
+            label_vi: "Mệt mỏi",
+            icon: ""
+          }, 
+          {
+            feelingId: uuid4(),
+            label_en: "Angry",
+            label_vi: "Giận dữ",
+            icon: ""
+          },  
+          {
+            feelingId: uuid4(),
+            label_en: "Exhausted",
+            label_vi: "Kiệt sức",
+            icon: ""
+          }, 
+          {
+            feelingId: uuid4(),
+            label_en: "Bored",
+            label_vi: "Chán",
+            icon: ""
           },
           {
             feelingId: uuid4(),
-            label: "Proud",
-            icon: "smile"
+            label_en: "Sleepy",
+            label_vi: "Buồn ngủ",
+            icon: ""
           },
-          // {
-          //   feelingId: 25,
-          //   label: "OK",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 26,
-          //   label: "Sick",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 27,
-          //   label: "Emotional",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 28,
-          //   label: "Confident",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 29,
-          //   label: "Awesome",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 30,
-          //   label: "Fresh",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 31,
-          //   label: "Exhausted",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 32,
-          //   label: "Annoyed",
-          //   icon: "frown"
-          // },
-          // {
-          //   feelingId: 33,
-          //   label: "Glad",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 34,
-          //   label: "Lucky",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 35,
-          //   label: "Heartbroken",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 36,
-          //   label: "Bored",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 37,
-          //   label: "Sleepy",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 38,
-          //   label: "Energized",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 39,
-          //   label: "Hungry",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 40,
-          //   label: "Pained",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 41,
-          //   label: "Peaceful",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 42,
-          //   label: "Disappointed",
-          //   icon: "frown"
-          // },
-          // {
-          //   feelingId: 43,
-          //   label: "Optimistic",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 44,
-          //   label: "Cold",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 45,
-          //   label: "Cute",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 46,
-          //   label: "Fabulous",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 47,
-          //   label: "Great",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 48,
-          //   label: "Sorry",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 49,
-          //   label: "Super",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 50,
-          //   label: "Worried",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 51,
-          //   label: "Funny",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 52,
-          //   label: "Bad",
-          //   icon: "frown"
-          // },
-          // {
-          //   feelingId: 53,
-          //   label: "Down",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 54,
-          //   label: "Inspired",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 55,
-          //   label: "Satisfied",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 56,
-          //   label: "Confused",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 57,
-          //   label: "Good",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 58,
-          //   label: "Lonely",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 59,
-          //   label: "Strong",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 60,
-          //   label: "Concerned",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 61,
-          //   label: "Special",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 62,
-          //   label: "Depressed",
-          //   icon: "frown"
-          // },
-          // {
-          //   feelingId: 63,
-          //   label: "Curious",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 64,
-          //   label: "Welcome",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 65,
-          //   label: "Broken",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 66,
-          //   label: "Beautiful",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 67,
-          //   label: "Amazing",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 68,
-          //   label: "Pissed off",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 69,
-          //   label: "Surprised",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 70,
-          //   label: "Pretty",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 71,
-          //   label: "Better",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 72,
-          //   label: "Guilty",
-          //   icon: "frown"
-          // },
-          // {
-          //   feelingId: 73,
-          //   label: "Safe",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 74,
-          //   label: "Free",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 75,
-          //   label: "Lost",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 76,
-          //   label: "Old",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 77,
-          //   label: "Lazy",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 78,
-          //   label: "Worse",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 79,
-          //   label: "Horrible",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 80,
-          //   label: "Comfortable",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 81,
-          //   label: "Stupid",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 82,
-          //   label: "Terrible",
-          //   icon: "frown"
-          // },
-          // {
-          //   feelingId: 83,
-          //   label: "Asleep",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 84,
-          //   label: "Well",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 85,
-          //   label: "Alive",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 86,
-          //   label: "Shy",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 87,
-          //   label: "Weird",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 88,
-          //   label: "Hurt",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 89,
-          //   label: "Awful",
-          //   icon: "smile"
-          // },
-          // {
-          //   feelingId: 90,
-          //   label: "Stressed",
-          //   icon: "smile"
-          // }
+          {
+            feelingId: uuid4(),
+            label_en: "Hungry",
+            label_vi: "Đói",
+            icon: ""
+          },
+          {
+            feelingId: uuid4(),
+            label_en: "Bad",
+            label_vi: "Tồi tệ",
+            icon: ""
+          }, 
+          {
+            feelingId: uuid4(),
+            label_en: "Disappointed",
+            label_vi: "Thất vọng",
+            icon: ""
+          },       
+          {
+            feelingId: uuid4(),
+            label_en: "Heartbroken",
+            label_vi: "Trái tim tan vỡ",
+            icon: ""
+          },         
+          {
+            feelingId: uuid4(),
+            label_en: "Lonely",
+            label_vi: "Cô đơn",
+            icon: ""
+          }
         ];
         feelingRepo.insertMany(feelings);
         return true;
@@ -547,118 +343,165 @@ module.exports = {
         var activities: Array<IActivity> = [
           {
             activityId: uuid4(),
-            label: "Swim",
-            icon: "swimmer"
+            label_en: "Eat & Drink",
+            label_vi: "Ăn uống",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Listen Music",
-            icon: "music"
+            label_en: "Hiking",
+            label_vi: "Đi bộ đường dài ngắn ngày",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Eat",
-            icon: "running"
+            label_en: "Trekking",
+            label_vi: "Đi bộ đường dài nhiều ngày",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Drink",
-            icon: "running"
+            label_en: "Walking with a Storm",
+            label_vi: "Bước đi với một cơn bão",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Go trekking",
-            icon: "running"
+            label_en: "Stargazing",
+            label_vi: "Ngắm sao",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Go sightseeing",
-            icon: "running"
+            label_en: "Cloud hunting",
+            label_vi: "Săn mây",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Cloud hunting",
-            icon: "running"
+            label_en: "Watch the sunrise",
+            label_vi: "Ngắm mặt trời mọc",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Watch the sunrise",
-            icon: "running"
+            label_en: "Watch the sunset",
+            label_vi: "Ngắm mặt trời lặn",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Go fishing",
-            icon: "running"
+            label_en: "See rice fields",
+            label_vi: "Ngắm ruộng lúa",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Stargazing",
-            icon: "running"
+            label_en: "Rock climbing",
+            label_vi: "Leo núi",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Eat & Drink",
-            icon: "running"
+            label_en: "Camping",
+            label_vi: "Cắm trại",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Read book",
-            icon: "running"
+            label_en: "Swimming",
+            label_vi: "Bơi",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Watch movie",
-            icon: "running"
+            label_en: "Extreme sports",
+            label_vi: "Thể thao mạo hiểm",
+            icon: ""
+          }, 
+          {
+            activityId: uuid4(),
+            label_en: "Go sightseeing",
+            label_vi: "Tham quan",
+            icon: ""
+          },  
+          {
+            activityId: uuid4(),
+            label_en: "Roller coaster",
+            label_vi: "Tàu lượn siêu tốc",
+            icon: ""
+          }, 
+          {
+            activityId: uuid4(),
+            label_en: "Picnic",
+            label_vi: "Dã ngoại",
+            icon: ""
+          }, 
+          {
+            activityId: uuid4(),
+            label_en: "Photography",
+            label_vi: "Chụp hình",
+            icon: ""
+          },          
+          {
+            activityId: uuid4(),
+            label_en: "Fishing",
+            label_vi: "Câu cá",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Go hiking",
-            icon: "running"
+            label_en: "Paragliding",
+            label_vi: "Dù lượn",
+            icon: ""
+          },  
+          {
+            activityId: uuid4(),
+            label_en: "Motor racing",
+            label_vi: "Đua xe máy",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Go camping",
-            icon: "running"
+            label_en: "Cycling",
+            label_vi: "Đi xe đạp",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Go climbing",
-            icon: "running"
+            label_en: "Kayaking",
+            label_vi: "Chèo thuyền Kayak",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Kayak",
-            icon: "running"
+            label_en: "Surfing",
+            label_vi: "Lướt sóng",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Water Ski",
-            icon: "running"
+            label_en: "Horseback riding",
+            label_vi: "Cưỡi ngựa",
+            icon: ""
+          },           
+          {
+            activityId: uuid4(),
+            label_en: "Listen Music",
+            label_vi: "Nghe nhạc",
+            icon: ""
+          },     
+          {
+            activityId: uuid4(),
+            label_en: "Read book",
+            label_vi: "Đọc sách",
+            icon: ""
           },
           {
             activityId: uuid4(),
-            label: "Walking with a Storm",
-            icon: "running"
-          },
-          {
-            activityId: uuid4(),
-            label: "Watch the sunset",
-            icon: "running"
-          },
-          {
-            activityId: uuid4(),
-            label: "Horseback riding",
-            icon: "running"
-          },
-          {
-            activityId: uuid4(),
-            label: "Ride a bike",
-            icon: "running"
-          },
-          {
-            activityId: uuid4(),
-            label: "Ride a motorbike",
-            icon: "running"
+            label_en: "Watch movie",
+            label_vi: "Xem phim",
+            icon: ""
           }
         ];
         activityRepo.insertMany(activities);
@@ -690,92 +533,110 @@ module.exports = {
           var highlights: Array<IHighlight> = [
             {
                 highlightId: uuid4(),
-                label: "Beautiful",
-                highlightType: "Like"
-            },
-            {
-                highlightId: uuid4(),
-                label: "Bad Services",
-                highlightType: "Dislike"
-            },
-            {
-                highlightId: uuid4(),
-                label: "Good Foods",
-                highlightType: "Like"
-            },
-            {
-                highlightId: uuid4(),
-                label: "Very Noise",
-                highlightType: "Dislike"
-            },
-            {
-                highlightId: uuid4(),
-                label: "Good Drinks",
-                highlightType: "Like"
-            },
-            {
-                highlightId: uuid4(),
-                label: "A Lot of Dogs ",
+                label_en: "Beautiful",
+                label_vi: "Đẹp",
                 highlightType: "Like"
             },
             {
               highlightId: uuid4(),
-              label: "Food is delicious",
+              label_en: "Food is delicious",
+              label_vi: "Đồ ăn ngon",
               highlightType: "Like"
             },
             {
               highlightId: uuid4(),
-              label: "Good movie",
+              label_en: "Good drinks",
+              label_vi: "Đồ uống ngon",
               highlightType: "Like"
             },
             {
               highlightId: uuid4(),
-              label: "Good service",
+              label_en: "Good services",
+              label_vi: "Phục vụ tốt",
               highlightType: "Like"
             },
             {
               highlightId: uuid4(),
-              label: "Safe",
+              label_en: "A lot of dogs",
+              label_vi: "Nhiều chó",
               highlightType: "Like"
             },
             {
               highlightId: uuid4(),
-              label: "Cheap",
+              label_en: "Safe",
+              label_vi: "An toàn",
               highlightType: "Like"
             },
             {
               highlightId: uuid4(),
-              label: "Clean",
+              label_en: "Cheap",
+              label_vi: "Rẻ",
               highlightType: "Like"
             },
             {
               highlightId: uuid4(),
-              label: "Bad Food ",
+              label_en: "Clean",
+              label_vi: "Sạch sẽ",
+              highlightType: "Like"
+            },
+            {
+              highlightId: uuid4(),
+              label_en: "Good movie",
+              label_vi: "Phim hay",
+              highlightType: "Like"
+            },
+            {
+              highlightId: uuid4(),
+              label_en: "Bad services",
+              label_vi: "Phục vụ tệ",
               highlightType: "Dislike"
             },
             {
               highlightId: uuid4(),
-              label: "Very crowded",
+              label_en: "Bad food",
+              label_vi: "Thức ăn dở",
               highlightType: "Dislike"
             },
             {
               highlightId: uuid4(),
-              label: "Not beautiful",
+              label_en: "Bad drinks",
+              label_vi: "Đồ uống dở",
+              highlightType: "Dislike"
+            },    
+            {
+              highlightId: uuid4(),
+              label_en: "Very noise",
+              label_vi: "Rất ồn",
               highlightType: "Dislike"
             },
             {
               highlightId: uuid4(),
-              label: "Dangerous",
+              label_en: "Very crowded",
+              label_vi: "Rất đông",
               highlightType: "Dislike"
             },
             {
               highlightId: uuid4(),
-              label: "Expensive",
+              label_en: "Not beautiful",
+              label_vi: "Không đẹp",
               highlightType: "Dislike"
             },
             {
               highlightId: uuid4(),
-              label: "Dirty",
+              label_en: "Dangerous",
+              label_vi: "Nguy hiểm",
+              highlightType: "Dislike"
+            },
+            {
+              highlightId: uuid4(),
+              label_en: "Expensive",
+              label_vi: "Đắt",
+              highlightType: "Dislike"
+            },
+            {
+              highlightId: uuid4(),
+              label_en: "Dirty",
+              label_vi: "Bẩn",
               highlightType: "Dislike"
             }
           ];

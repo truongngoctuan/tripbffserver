@@ -7,7 +7,8 @@ export class HighlightRepository implements IHighlightRepository {
     toHighlight(o: IHighlightModel): IHighlight {
         return {
             highlightId: o.highlightId,
-            label: o.label,
+            label_en: o.label_en,
+            label_vi: o.label_vi,
             highlightType: o.highlightType
         }
     }
@@ -27,10 +28,11 @@ export class HighlightRepository implements IHighlightRepository {
     }
 
     public async insert(highlight: IHighlight) {
-        var { highlightId, label, highlightType } = highlight;
+        var { highlightId, label_en, label_vi, highlightType } = highlight;
         var highlightDocument = new HighlightDocument({
             highlightId: highlightId,
-            label: label,
+            label_en: label_en,
+            label_vi: label_vi,
             highlightType: highlightType
         });
 
@@ -41,7 +43,8 @@ export class HighlightRepository implements IHighlightRepository {
         var highlightDocuments = highlights.map(f => {
             return new HighlightDocument({
                 highlightId: f.highlightId,
-                label: f.label,
+                label_en: f.label_en,
+                label_vi: f.label_vi,
                 highlightType: f.highlightType
             });
         });
@@ -49,11 +52,12 @@ export class HighlightRepository implements IHighlightRepository {
     }
 
     public async update(payload: IHighlight) {
-        var { highlightId, label, highlightType } = payload;
+        var { highlightId, label_en, label_vi, highlightType } = payload;
         var highlight = await HighlightDocument.findOne(highlightId);
 
         if (highlight) {
-            highlight.label = label;
+            highlight.label_en = label_en;
+            highlight.label_vi = label_vi;
             highlight.highlightType = highlightType;
             highlight.save();
         }
