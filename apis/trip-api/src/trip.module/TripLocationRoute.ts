@@ -236,7 +236,7 @@ module.exports = {
               locationId,
               activityId: activity.activityId,
               label_en: activity.label_en,
-              label_vi: activity.label_en,
+              label_vi: activity.label_vi,
               activityIcon: activity.icon
             });
   
