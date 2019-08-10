@@ -34,18 +34,21 @@ const TripSchema = new Schema({
       ],
       feeling: {
         feelingId: String,
-        label: String,
+        label_en: String,
+        label_vi: String,
         icon: String
       },
       activity: {
         activityId: String,
-        label: String,
+        label_en: String,
+        label_vi: String,
         icon: String
       },
       highlights: [
         {
           highlightId: String,
-          label: String,
+          label_en: String,
+          label_vi: String,
           highlightType: String
         }
       ]
