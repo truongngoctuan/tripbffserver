@@ -3,6 +3,7 @@ export interface IUser {
   userName: string;
   fullName: string;
   logins: ILogin[];
+  locale: string;
 }
 
 type ILogin = {
@@ -48,7 +49,8 @@ export interface IUserAuth {
     fullName: string;
     facebook?: {
       accessToken
-    }
+    },
+    locale: string;
   },
   token: string;
 }

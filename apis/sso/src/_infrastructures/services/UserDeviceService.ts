@@ -39,7 +39,8 @@ export class UserDeviceService {
       userId: uuid(),
       userName: getUserName(uniqueDeviceId),
       fullName: "Quest",
-      logins: [userLogin]
+      logins: [userLogin],
+      locale: "en"
     });
 
     return finalUser.save().then(() => toUserVM(finalUser));

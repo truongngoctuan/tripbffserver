@@ -46,7 +46,8 @@ export class UserLocalService implements IUserLocalService {
       userId: uuid(),
       userName: email,
       fullName: "Quest",
-      logins: [userLogin]
+      logins: [userLogin],
+      locale: "en" //default locale
     });
 
 

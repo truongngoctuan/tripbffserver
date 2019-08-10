@@ -22,7 +22,8 @@ export class UserService {
         fullName: userObject.fullName,
         facebook: facebookLogin == null ? undefined : {
           accessToken: facebookLogin.facebook.accessToken
-        }
+        },
+        locale: userObject.locale
       },
       token: this.generateJWT(userObject),
     };
@@ -41,5 +42,13 @@ export class UserService {
     }, 'secret', {
         // algorithm: 'RS256',
       });
+  }
+
+  async updateUserLocale(userId: string, locale: string) {    
+    const userDb = await this.getById(userId);
+    userDb.locale = locale;
+    return userDb.save().then(() => {
+      return true;
+    });
   }
 }
