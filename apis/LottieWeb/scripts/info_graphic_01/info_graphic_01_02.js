@@ -30,11 +30,14 @@ var draw_01_02 = (function() {
             wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2 
         });
         let tripNameNodeBbox = tripNameNode.node().getBBox();
-    
-        let numberOfLocations = trip.locations.length,
-            dayText = trip.numberOfDays > 1 ? " days, " : " day, ",
-            locationText = numberOfLocations > 1 ? " locations" : " location",
-            basicTripInfo = trip.numberOfDays + dayText + numberOfLocations + locationText;
+        let numberOfDays = trip.numberOfDays,
+            numberOfLocations = trip.locations.length,
+            dayLabel = commonFunc.getDayLabel(trip.locale, numberOfDays),
+            locationLabel = commonFunc.getLocationLabel(trip.locale, numberOfLocations); 
+
+        let dayText =  " " + dayLabel + ", ",
+            locationText = " " + locationLabel,
+            basicTripInfo = numberOfDays + dayText + numberOfLocations + locationText;
     
         drawText(svgBase, {
             y: tripNameNodeBbox.y + tripNameNodeBbox.height + 40,
@@ -48,12 +51,14 @@ var draw_01_02 = (function() {
         });
     }
     
-    function drawContent(svgBase, location, startPointCoordinate) {
+    function drawContent(svgBase, location, startPointCoordinate, locale) {
         let startPoint_px = startPointCoordinate.x,
             startPoint_py = startPointCoordinate.y;   
     
+        let feelingLabel = commonFunc.getFeelingLabel(locale);
+
         let locationName = capitalizeFirstLetter(location.name) + ".",
-            feeling = location.feeling ? 'Feeling ' + location.feeling : "",
+            feeling = location.feeling ? feelingLabel + ' ' + location.feeling : "",
             activity = location.activity,
             highlights = location.highlights.toLowerCase(),
             nodeFeelingActivity = "";
@@ -300,12 +305,12 @@ var draw_01_02 = (function() {
         let firstLatestHeight = drawContent(svgBase, trip.locations[0], {
             x: globalConfig.infographic.paddingLeftRight,
             y: 1100
-        });
+        }, trip.locale);
     
         let secondLatestHeight = drawContent(svgBase, trip.locations[1], {
             x: w / 2 + globalConfig.imageContainer.paddingBetweenImage,
             y: 1100
-        });
+        }, trip.locale);
     
         h = firstLatestHeight >= secondLatestHeight
                     ? firstLatestHeight + globalConfig.infographic.paddingBottom + globalConfig.footer.height 

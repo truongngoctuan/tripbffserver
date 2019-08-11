@@ -19,14 +19,16 @@ async function actionExecAsync(data) {
     name,
     toDate,
     fromDate,
-    locations
+    locations,
+    locale
   } = JSON.parse(data.message);
 
   var trip = {
     name,
     fromDate,
     toDate,
-    locations
+    locations,
+    locale
   }
   //console.log('data message: ' + JSON.stringify(trip));
   await exporter.exportInfo(trip);

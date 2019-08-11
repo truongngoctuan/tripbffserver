@@ -12,6 +12,7 @@ export type ExportInfographicCommand = {
   ownerId: string;
   tripId: string;
   infographicId: string;
+  locale: string
 };
 
 export async function exportInfographic(
@@ -21,7 +22,7 @@ export async function exportInfographic(
   emitter: ServiceBus,
   extraParams: IExtraParams
 ) {
-  const { ownerId, tripId, infographicId } = command;
+  const { ownerId, tripId, infographicId, locale } = command;
 
   const trip = await reducers.getCurrentState(tripId);
   if (!trip) throw "trip not found";
@@ -42,6 +43,7 @@ export async function exportInfographic(
     name: trip.name,
     toDate: trip.toDate,
     fromDate: trip.fromDate,
+    locale: locale,
     locations: await Promise.all(trip.locations.map(async item => {      
       let imageId = undefined,
           signedUrl = "";
@@ -58,14 +60,32 @@ export async function exportInfographic(
         signedUrl = await IoC.fileService.signGet(fileInfo.fileName, 350);
       }
 
+      var feeling: string = "",
+          activity: string = "",
+          highlights: Array<string> = [];
+
+      if(item.feeling) {
+        feeling = (item.feeling as any)["label_" + locale];
+      }
+
+      if (item.activity) {
+        activity = (item.activity as any)["label_" + locale];
+      }
+
+      if (item.highlights) {
+        highlights = item.highlights.map(h => {
+          return (h as any)["label_" + locale];
+        });
+      }
+      
       return {
         locationId: item.locationId,
         name: item.name,
         fromTime: item.fromTime,
         toTime: item.toTime,
-        feeling: item.feeling ? item.feeling.label_vi : "", //TODO: based on locale of user: to use vi or en. Default for now is vi.
-        activity: item.activity ? item.activity.label_vi : "", //TODO: based on locale of user: to use vi or en. Default for now is vi.
-        highlights: item.highlights ? item.highlights.map(h => h.label_vi) : [], //TODO: based on locale of user: to use vi or en. Default for now is vi.
+        feeling: feeling, 
+        activity: activity,
+        highlights: highlights, 
         signedUrl: signedUrl
       }
     })) 

@@ -18,6 +18,8 @@ module.exports = {
         console.log("POST /trips/{id}/infographics");
         try {
           var tripId: string = request.params.id;
+          var { locale } = request.payload as any;
+          
           const ownerId = CUtils.getUserId(request);
 
           var infographicId = uuid();     
@@ -26,7 +28,8 @@ module.exports = {
             type: "exportInfographic",
             ownerId,
             tripId,
-            infographicId
+            infographicId,
+            locale
           });
 
           if (commandResult.isSucceed) {
