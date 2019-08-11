@@ -85,7 +85,7 @@ var draw_01_02 = (function() {
                 fontWeight: globalConfig.location.name.fontWeight,
                 textAnchor: globalConfig.location.name.textAnchor,
                 textTransform: globalConfig.location.name.textTransform,
-                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage
+                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 2
             });
         let locationNameNodeBbox = locationNameNode.node().getBBox();
         let nextElementYCoordinate = locationNameNodeBbox.y + locationNameNodeBbox.height;
@@ -99,7 +99,7 @@ var draw_01_02 = (function() {
                 font: globalConfig.location.description.font,
                 fontSize: globalConfig.location.description.fontSize,
                 textAnchor: globalConfig.location.description.textAnchor,
-                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage
+                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 2
             });
             let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
             nextElementYCoordinate = feelingActivityNodeBbox.y + feelingActivityNodeBbox.height;
@@ -114,7 +114,7 @@ var draw_01_02 = (function() {
                 font: globalConfig.location.description.font,
                 fontSize: globalConfig.location.description.fontSize,
                 textAnchor: globalConfig.location.description.textAnchor,
-                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage 
+                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 2
             });
             let highlightNodeBbox = hightlightNode.node().getBBox();
             nextElementYCoordinate = highlightNodeBbox.y + highlightNodeBbox.height;
