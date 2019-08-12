@@ -14,7 +14,8 @@ export function updateLocationActivity(
             ...item,
             activity: {
                 activityId: event.activityId,
-                label: event.activityLabel,
+                label_en: event.label_en,
+                label_vi: event.label_vi,
                 icon: event.activityIcon
             }
         }

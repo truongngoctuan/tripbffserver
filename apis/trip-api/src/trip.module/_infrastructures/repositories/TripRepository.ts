@@ -40,7 +40,8 @@ export class TripRepository implements ITripRepository {
           highlights: loc.highlights != undefined ? loc.highlights.map(item => {
             return {
               highlightId: item.highlightId,
-              label: item.label,
+              label_en: item.label_en,
+              label_vi: item.label_vi,
               highlightType: item.highlightType
             }
           }) : undefined

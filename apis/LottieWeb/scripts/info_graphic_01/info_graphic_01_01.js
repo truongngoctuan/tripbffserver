@@ -13,9 +13,11 @@ var draw_01_01 = (function () {
         let startPoint_px = paddingLeftRight,
             startPoint_py = h - content_height - footer_height + c_paddingTop;   
 
+        let feelingLabel = commonFunc.getFeelingLabel(trip.locale);
+
         let location = trip.locations[0],
         locationName = capitalizeFirstLetter(location.name) + ".",
-        feeling = location.feeling ? 'Feeling ' + location.feeling : "",
+        feeling = location.feeling ? feelingLabel + " " + location.feeling : "",
         activity = location.activity,
         highlights = location.highlights.toLowerCase(),
         nodeFeelingActivity = "";

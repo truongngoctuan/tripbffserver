@@ -32,9 +32,11 @@ var draw_01_others = (function() {
             wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2 
         });
         let tripNameNodeBbox = tripNameNode.node().getBBox();
-    
         let numberOfLocations = trip.locations.length,
-            basicTripInfo = trip.numberOfDays + " days, " + numberOfLocations + " locations";
+            dayLabel = commonFunc.getDayLabel(trip.locale, trip.numberOfDays),
+            locationLabel = commonFunc.getLocationLabel(trip.locale, numberOfLocations);
+
+        let basicTripInfo = trip.numberOfDays + " " + dayLabel + ", " + numberOfLocations + " " + locationLabel;
     
         drawText(svgBase, {
             y: tripNameNodeBbox.y + tripNameNodeBbox.height + globalConfig.header.tripDescription.paddingTop,
@@ -113,7 +115,8 @@ var draw_01_others = (function() {
         for (let idx = 0; idx < numberOfLocations; idx++) {
             let location = trip.locations[idx],
                 locationName = capitalizeFirstLetter(location.name) + ".",
-                feeling = location.feeling ? 'Feeling ' + location.feeling : "",
+                feelingLabel = commonFunc.getFeelingLabel(trip.locale),
+                feeling = location.feeling ? feelingLabel + ' ' + location.feeling : "",
                 activity = location.activity,
                 highlights = location.highlights.toLowerCase(),
                 nodeFeelingActivity = "";

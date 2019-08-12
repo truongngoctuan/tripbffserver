@@ -8,7 +8,8 @@ export interface IActivityDocument extends IActivityModel, Document {}
 
 const ActivitySchema = new Schema({
     activityId: String,
-    label: String,
+    label_en: String,
+    label_vi: String,
     icon: String
 });
 

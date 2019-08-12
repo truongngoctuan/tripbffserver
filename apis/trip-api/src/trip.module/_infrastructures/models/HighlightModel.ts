@@ -7,7 +7,8 @@ export interface IHighlightDocument extends IHighlightModel, Document {}
 
 const HighlightSchema = new Schema({
     highlightId: String,
-    label: String,
+    label_en: String,
+    label_vi: String,
     highlightType: String
 });
 

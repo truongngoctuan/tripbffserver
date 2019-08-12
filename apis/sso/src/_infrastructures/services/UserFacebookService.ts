@@ -74,7 +74,8 @@ export class UserFacebookService {
       finalUser = new Users({
         userId: uuid(),
         userName: getUserName(facebookUserId),
-        logins: [userLogin]
+        logins: [userLogin],
+        locale: "en" // default locale
       });
     }
 
@@ -152,5 +153,4 @@ export class UserFacebookService {
     // console.log(user);
     return profileResult
   }
-
 }

@@ -30,11 +30,14 @@ var draw_01_02 = (function() {
             wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2 
         });
         let tripNameNodeBbox = tripNameNode.node().getBBox();
-    
-        let numberOfLocations = trip.locations.length,
-            dayText = trip.numberOfDays > 1 ? " days, " : " day, ",
-            locationText = numberOfLocations > 1 ? " locations" : " location",
-            basicTripInfo = trip.numberOfDays + dayText + numberOfLocations + locationText;
+        let numberOfDays = trip.numberOfDays,
+            numberOfLocations = trip.locations.length,
+            dayLabel = commonFunc.getDayLabel(trip.locale, numberOfDays),
+            locationLabel = commonFunc.getLocationLabel(trip.locale, numberOfLocations); 
+
+        let dayText =  " " + dayLabel + ", ",
+            locationText = " " + locationLabel,
+            basicTripInfo = numberOfDays + dayText + numberOfLocations + locationText;
     
         drawText(svgBase, {
             y: tripNameNodeBbox.y + tripNameNodeBbox.height + 40,
@@ -48,12 +51,14 @@ var draw_01_02 = (function() {
         });
     }
     
-    function drawContent(svgBase, location, startPointCoordinate) {
+    function drawContent(svgBase, location, startPointCoordinate, locale) {
         let startPoint_px = startPointCoordinate.x,
             startPoint_py = startPointCoordinate.y;   
     
+        let feelingLabel = commonFunc.getFeelingLabel(locale);
+
         let locationName = capitalizeFirstLetter(location.name) + ".",
-            feeling = location.feeling ? 'Feeling ' + location.feeling : "",
+            feeling = location.feeling ? feelingLabel + ' ' + location.feeling : "",
             activity = location.activity,
             highlights = location.highlights.toLowerCase(),
             nodeFeelingActivity = "";
@@ -80,7 +85,7 @@ var draw_01_02 = (function() {
                 fontWeight: globalConfig.location.name.fontWeight,
                 textAnchor: globalConfig.location.name.textAnchor,
                 textTransform: globalConfig.location.name.textTransform,
-                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage
+                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 2
             });
         let locationNameNodeBbox = locationNameNode.node().getBBox();
         let nextElementYCoordinate = locationNameNodeBbox.y + locationNameNodeBbox.height;
@@ -94,7 +99,7 @@ var draw_01_02 = (function() {
                 font: globalConfig.location.description.font,
                 fontSize: globalConfig.location.description.fontSize,
                 textAnchor: globalConfig.location.description.textAnchor,
-                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage
+                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 2
             });
             let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
             nextElementYCoordinate = feelingActivityNodeBbox.y + feelingActivityNodeBbox.height;
@@ -109,7 +114,7 @@ var draw_01_02 = (function() {
                 font: globalConfig.location.description.font,
                 fontSize: globalConfig.location.description.fontSize,
                 textAnchor: globalConfig.location.description.textAnchor,
-                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage 
+                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 2
             });
             let highlightNodeBbox = hightlightNode.node().getBBox();
             nextElementYCoordinate = highlightNodeBbox.y + highlightNodeBbox.height;
@@ -300,12 +305,12 @@ var draw_01_02 = (function() {
         let firstLatestHeight = drawContent(svgBase, trip.locations[0], {
             x: globalConfig.infographic.paddingLeftRight,
             y: 1100
-        });
+        }, trip.locale);
     
         let secondLatestHeight = drawContent(svgBase, trip.locations[1], {
             x: w / 2 + globalConfig.imageContainer.paddingBetweenImage,
             y: 1100
-        });
+        }, trip.locale);
     
         h = firstLatestHeight >= secondLatestHeight
                     ? firstLatestHeight + globalConfig.infographic.paddingBottom + globalConfig.footer.height 

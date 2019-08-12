@@ -9,7 +9,8 @@ export type UpdateLocationFeelingCommand = {
   tripId: string,
   locationId: string,
   feelingId: string,
-  feelingLabel: string,
+  label_en: string,
+  label_vi: string,
   feelingIcon: string
 };
 
@@ -19,7 +20,7 @@ export async function UpdateLocationFeeling(
   reducers: TripReducers,
   emitter: ServiceBus
 ) {
-  const { ownerId, tripId, locationId, feelingId, feelingLabel, feelingIcon } = command;
+  const { ownerId, tripId, locationId, feelingId, label_en, label_vi , feelingIcon } = command;
 
   var event: TripEvent = {
     type: "LocationFeelingUpdated",
@@ -27,7 +28,8 @@ export async function UpdateLocationFeeling(
     tripId,
     locationId,
     feelingId,
-    feelingLabel,
+    label_en,
+    label_vi,
     feelingIcon
   };
 
