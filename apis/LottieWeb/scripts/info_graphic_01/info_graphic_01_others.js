@@ -240,26 +240,13 @@ var draw_01_others = (function() {
     }
     
     function drawFooter(svgBase) {
-        let footerText = globalConfig.footer.text;
-    
-        svgBase.append("rect")
-            .attr("x", 0)
-            .attr("y", h - globalConfig.footer.height)
-            .attr("width", w)
-            .attr("height", globalConfig.footer.height)
-            .attr("fill", globalConfig.footer.background);
-    
-        let footerInfoElement = drawText(svgBase, {
-            y: h - globalConfig.footer.height / 2,
-            x: w/2
-        }, footerText, { 
-            color: globalConfig.footer.color,
-            font:globalConfig.footer.font,
-            fontSize: globalConfig.footer.fontSize,
-            textAnchor: globalConfig.footer.textAnchor,
-            textTransform: globalConfig.footer.textTransform,
-            wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2
-        });
+        drawImage(svgBase, {
+            x: w - globalConfig.footer.marginRight,
+            y: h - globalConfig.footer.marginBottom
+        }, "data/images/App_Signature.png", {
+            width: globalConfig.footer.imageWidth,
+            height: globalConfig.footer.imageHeight
+        });   
     }
     
     // function drawSvg(svgBase, uri, coordinate, config) {

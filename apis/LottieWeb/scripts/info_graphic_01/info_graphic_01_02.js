@@ -85,7 +85,7 @@ var draw_01_02 = (function() {
                 fontWeight: globalConfig.location.name.fontWeight,
                 textAnchor: globalConfig.location.name.textAnchor,
                 textTransform: globalConfig.location.name.textTransform,
-                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 2
+                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 4
             });
         let locationNameNodeBbox = locationNameNode.node().getBBox();
         let nextElementYCoordinate = locationNameNodeBbox.y + locationNameNodeBbox.height;
@@ -99,7 +99,7 @@ var draw_01_02 = (function() {
                 font: globalConfig.location.description.font,
                 fontSize: globalConfig.location.description.fontSize,
                 textAnchor: globalConfig.location.description.textAnchor,
-                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 2
+                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 4
             });
             let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
             nextElementYCoordinate = feelingActivityNodeBbox.y + feelingActivityNodeBbox.height;
@@ -114,7 +114,7 @@ var draw_01_02 = (function() {
                 font: globalConfig.location.description.font,
                 fontSize: globalConfig.location.description.fontSize,
                 textAnchor: globalConfig.location.description.textAnchor,
-                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 2
+                wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 4
             });
             let highlightNodeBbox = hightlightNode.node().getBBox();
             nextElementYCoordinate = highlightNodeBbox.y + highlightNodeBbox.height;
@@ -134,27 +134,14 @@ var draw_01_02 = (function() {
         .attr("clip-path", config.imageClipPath)
     }
     
-    function drawFooter(svgBase) {
-        let footerText = globalConfig.footer.text;
-    
-        svgBase.append("rect")
-            .attr("x", 0)
-            .attr("y", h - globalConfig.footer.height)
-            .attr("width", w)
-            .attr("height", globalConfig.footer.height)
-            .attr("fill", globalConfig.footer.background);
-    
-        let footerInfoElement = drawText(svgBase, {
-            y: h - globalConfig.footer.height / 2,
-            x: w / 2
-        }, footerText, { 
-            color: globalConfig.footer.color,
-            font: globalConfig.footer.font,
-            fontSize: globalConfig.footer.fontSize,
-            textAnchor: globalConfig.footer.textAnchor,
-            textTransform: globalConfig.footer.textTransform,
-            wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2
-        });
+    function drawFooter(svgBase) {         
+        drawImage(svgBase, {
+            x: w - globalConfig.footer.marginRight,
+            y: h - globalConfig.footer.marginBottom
+        }, "data/images/App_Signature.png", {
+            width: globalConfig.footer.imageWidth,
+            height: globalConfig.footer.imageHeight
+        });        
     }
     
     function capitalizeFirstLetter(string) {
@@ -308,7 +295,7 @@ var draw_01_02 = (function() {
         }, trip.locale);
     
         let secondLatestHeight = drawContent(svgBase, trip.locations[1], {
-            x: w / 2 + globalConfig.imageContainer.paddingBetweenImage,
+            x: w / 2 + globalConfig.imageContainer.paddingBetweenImage * 4,
             y: 1100
         }, trip.locale);
     

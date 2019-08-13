@@ -77,26 +77,27 @@ var draw_01_01 = (function () {
             });    
             let hightlightNodeBbox = hightlightNode.node().getBBox();
             nextElementYCoordinate = hightlightNodeBbox.y + hightlightNodeBbox.height + globalConfig.location.paddingTop;
-        }
+        }        
         
-        drawText(svgBase, {
-            y: nextElementYCoordinate,
-            x: locationName_px
-        }, globalConfig.footer.text, { 
-            color: globalConfig.footer.color,
-            font: globalConfig.footer.fontFamily,
-            fontSize: globalConfig.footer.fontSize,
-            textAnchor: globalConfig.footer.textAnchor,
-            wrapNumber: w - paddingLeftRight 
+        drawImage(svgBase, {
+            x: w - globalConfig.footer.marginRight,
+            y: h - globalConfig.footer.marginBottom
+        }, "data/images/App_Signature.png", {
+            width: globalConfig.footer.imageWidth,
+            height: globalConfig.footer.imageHeight
         });
     }
 
     function drawImage(svgBase, coordinate, uri, config) {
-        svgBase.append("svg:image")
+        var svgImage = svgBase.append("svg:image")
         .attr('x', coordinate.x)
         .attr('y', coordinate.y)
         .attr('width', config.width)
         .attr("xlink:href", uri); 
+
+        if (config.height) {
+            svgImage.attr('height', config.height);
+        }        
     }
 
     function capitalizeFirstLetter(string) {
