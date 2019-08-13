@@ -6,6 +6,8 @@ export interface IFileStorageService2 {
 
   save: (fullPath: string) => Promise<{ externalId: string; slug: string }>;
   getInfoById: (externalId: string) => Promise<{ fileInfo: IFileInfo }>;
+
+  signGetIcon(fullPath: string, expires?: number): Promise<string>;
 }
 
 export interface IFileInfo {

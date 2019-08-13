@@ -21,7 +21,7 @@ export class FileStorageS3Service implements IFileStorageService2 {
     const externalId = uuid();
 
     const fullPath = category ? `${category}/${externalId}.${fileExtension}` : `${externalId}.${fileExtension}`;
-    const signedS3Url: any = await signPutUrl(fullPath, mimeType);
+    const signedS3Url: any = await signPutUrl(fullPath, mimeType);;
     return {
       signedRequest: signedS3Url.signedRequest,
       externalId,
@@ -31,6 +31,11 @@ export class FileStorageS3Service implements IFileStorageService2 {
 
   async signGet(fullPath: string): Promise<string> {
     const signedS3Url: any = await signGetUrl(fullPath);
+    return signedS3Url.signedRequest as string;
+  }
+
+  async signGetIcon(fullPath: string): Promise<string> {
+    const signedS3Url: any = await signGetIconUrl(fullPath);
     return signedS3Url.signedRequest as string;
   }
 
@@ -137,6 +142,43 @@ async function signGetUrl(fullPath: string, expires: number = 60) {
       const returnData = {
         signedRequest: data,
         url: `https://${S3_BUCKET}.s3.amazonaws.com/${fullPath}`
+      };
+      console.log("signed request");
+      // console.log(returnData);
+      resolve(returnData);
+      return returnData;
+      // res.write(JSON.stringify(returnData));
+      // res.end();
+    });
+  })
+
+  return pros;
+}
+
+async function signGetIconUrl(fullPath: string, expires: number = 60) {
+  const s3 = new aws.S3({
+    accessKeyId: 'AKIA4TON7PMDUAFDZC5Y',
+    secretAccessKey: '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',
+    region: 'ap-southeast-1',
+  });
+  const s3Params = {
+    Bucket: 'tripbff-icons',
+    Key: fullPath,
+    Expires: expires,
+  };
+
+  const pros = new Promise((resolve, reject) => {
+    s3.getSignedUrl('getObject', s3Params, (err, data) => {
+      if (err) {
+
+        console.log(err);
+        reject(err);
+        return;
+        // return res.end();
+      }
+      const returnData = {
+        signedRequest: data,
+        url: `https://tripbff-icons.s3.amazonaws.com/${fullPath}`
       };
       console.log("signed request");
       // console.log(returnData);
