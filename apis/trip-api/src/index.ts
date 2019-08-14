@@ -24,6 +24,7 @@ const imageRoutes = require("./trip.module/ImageRoute");
 const tripLocationRoutes = require("./trip.module/TripLocationRoute");
 const tripInfographicRoutes = require("./trip.module/TripInfographicRoute");
 const dataSourceRoutes = require("./trip.module/DataSourceRoute");
+const userSettingRoutes = require("./setting.module/UserSettingRoute");
 
 const redis = require("redis");
 
@@ -76,6 +77,7 @@ const redis = require("redis");
   tripInfographicRoutes.init(server);
   imageRoutes.init(server);
   dataSourceRoutes.init(server);
+  userSettingRoutes.init(server);
 
   registerModules();
 
