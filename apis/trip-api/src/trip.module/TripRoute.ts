@@ -3,7 +3,7 @@ const Joi = require("joi");
 import uuid from "uuid/v1";
 import { Err } from "../_shared/utils";
 import { IoC } from "./IoC"
-import { CUtils } from "./ControllerUtils";
+import { CUtils } from "../_shared/ControllerUtils";
 import moment = require("moment-timezone");
 
 console.log("checking current time in server", moment().format());

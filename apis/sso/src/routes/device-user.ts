@@ -27,7 +27,6 @@ router.post('/device/login', auth.optional, async (req, res, next) => {
     }
 
     const newUser = await IoC.userDeviceService.register(uniqueDeviceId);
-    console.log("new user", newUser);
     const result = await IoC.userDeviceService.login(uniqueDeviceId);
     return res.json(result);
   }

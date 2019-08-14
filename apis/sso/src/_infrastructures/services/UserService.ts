@@ -4,6 +4,7 @@ import { LOGIN_TYPE } from "../../_core/models/constants";
 const jwt = require('jsonwebtoken');
 import _ from "lodash";
 import Users from "../models/users";
+import UserSettingDocument from "../models/userSettings";
 import { toUserVM } from "./utils";
 
 export class UserService {
@@ -13,8 +14,9 @@ export class UserService {
     return userDb;
   }
 
-  getAuthObject(userObject: IUser): IUserAuth {
+  async getAuthObject(userObject: IUser): Promise<IUserAuth> {
     const facebookLogin = _.find(userObject.logins, login => login.loginType == LOGIN_TYPE.FACEBOOK) as ILoginFacebook;
+    let userSetting = await UserSettingDocument.findOne({userId: userObject.userId});
     return {
       user: {
         id: userObject.userId,
@@ -23,7 +25,7 @@ export class UserService {
         facebook: facebookLogin == null ? undefined : {
           accessToken: facebookLogin.facebook.accessToken
         },
-        locale: userObject.locale
+        locale: userSetting.locale
       },
       token: this.generateJWT(userObject),
     };
@@ -44,11 +46,11 @@ export class UserService {
       });
   }
 
-  async updateUserLocale(userId: string, locale: string) {    
-    const userDb = await this.getById(userId);
-    userDb.locale = locale;
-    return userDb.save().then(() => {
-      return true;
+  async insertDefaultLocale(userId) {
+    var userSetting = new UserSettingDocument({
+      userId: userId,
+      locale: "en"
     });
+    userSetting.save();
   }
 }

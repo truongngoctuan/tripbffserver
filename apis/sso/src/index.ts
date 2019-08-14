@@ -43,6 +43,5 @@ require('./routes')(app, passport); // load our routes and pass in our app and f
 app.use(require('./routes/local-user'));
 app.use(require('./routes/facebook-user'));
 app.use(require('./routes/device-user'));
-app.use(require('./routes/user-setting'));
 
 app.listen(port, () => console.log(`Example app listening on port ${port}! http://localhost:${port}`))

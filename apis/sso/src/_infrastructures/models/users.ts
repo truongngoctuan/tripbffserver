@@ -26,8 +26,7 @@ const UsersSchema = new Schema({
   userId: String,
   userName: String,
   fullName: String,
-  logins: [LoginsSchema],
-  locale: String
+  logins: [LoginsSchema]
 });
 
 export const Users: Model<IUserModel> = mongoose.model<IUserModel>(

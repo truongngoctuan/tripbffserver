@@ -1,11 +1,13 @@
 import { IUserLocalService } from "../../_core/services/IUserLocalService";
 import { UserService } from "./UserService";
 import Users from "../models/users";
+import UserSettingDocument from "../models/userSettings";
 import uuid from "uuid/v4";
 import crypto from 'crypto';
 import { ILoginLocal } from "../../_core/models/IUser";
 import _ from "lodash";
 import { toUserVM } from "./utils";
+import { IoC } from "../../IoC";
 
 function getUserLoginLocal(email: string, password: string): ILoginLocal {
 
@@ -46,11 +48,11 @@ export class UserLocalService implements IUserLocalService {
       userId: uuid(),
       userName: email,
       fullName: "Quest",
-      logins: [userLogin],
-      locale: "en" //default locale
+      logins: [userLogin]
     });
 
-
+    // insert locale default is en for first time registered
+    await IoC.userService.insertDefaultLocale(finalUser.userId);
     return finalUser.save().then(() => toUserVM(finalUser));
   }
 

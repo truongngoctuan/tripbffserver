@@ -4,6 +4,7 @@ import { ILoginDevice, ILoginLocal } from "../../_core/models/IUser";
 import _ from "lodash";
 import { toUserVM } from "./utils";
 import { UserService } from "./UserService";
+import { IoC } from "../../IoC";
 
 function getUserName(uniqueDeviceId: string) {
   return `device:${uniqueDeviceId}`;
@@ -39,9 +40,11 @@ export class UserDeviceService {
       userId: uuid(),
       userName: getUserName(uniqueDeviceId),
       fullName: "Quest",
-      logins: [userLogin],
-      locale: "en"
+      logins: [userLogin]
     });
+
+    // insert locale default is en for first time registered
+    await IoC.userService.insertDefaultLocale(finalUser.userId);
 
     return finalUser.save().then(() => toUserVM(finalUser));
   }

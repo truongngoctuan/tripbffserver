@@ -1,7 +1,7 @@
 import { Server } from "hapi";
 import { Err } from "../_shared/utils";
 import { IoC } from "./IoC";
-import { CUtils } from "./ControllerUtils";
+import { CUtils } from "../_shared/ControllerUtils";
 import uuid4 from 'uuid/v4';
 import { IHighlight } from "./_core/models/ITrip";
 import moment = require("moment");

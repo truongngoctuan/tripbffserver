@@ -1,7 +1,7 @@
 import { Server } from "hapi";
 const uuid = require("uuid/v1");
 import { IoC } from "./IoC";
-import { CUtils } from "./ControllerUtils";
+import { CUtils } from "../_shared/ControllerUtils";
 var fs = require("fs");
 const Joi = require("joi");
 

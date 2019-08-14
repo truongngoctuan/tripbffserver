@@ -31,11 +31,10 @@ var config_infographic_01 = (function() {
             lineNumber: 1
         },
         footer: {
-            color: "#121113",
-            font: "Roboto",
-            fontSize: "30px",
-            textAnchor: "start",
-            text: "MORE INFO: WWW.TRIPBFF.COM"
+            marginBottom: 80,
+            marginRight: 200,
+            imageWidth: 180,
+            imageHeight: 60
         }
     }
 
@@ -94,13 +93,10 @@ var config_infographic_01 = (function() {
         },
         footer: {
             height: 70,
-            background: "rgb(254, 255, 246)",
-            color: "#121113",
-            font: "Roboto",
-            fontSize: "28px",
-            textAnchor: "middle",
-            textTransform: "uppercase",
-            text: "MORE INFO: WWW.TRIPBFF.COM"
+            marginBottom: 80,
+            marginRight: 200,
+            imageWidth: 180,
+            imageHeight: 60
         }  
     };
 
@@ -170,13 +166,10 @@ var config_infographic_01 = (function() {
         },
         footer: {
             height: 70,
-            text: "MORE INFO: WWW.TRIPBFF.COM",
-            background: "#d0363b",
-            color: "#e3d1a2",
-            font: "Roboto",
-            fontSize: "24px",
-            textAnchor: "middle",
-            textTransform: "uppercase",
+            marginBottom: 80,
+            marginRight: 200,
+            imageWidth: 180,
+            imageHeight: 60
         }
     };
 
@@ -246,13 +239,10 @@ var config_infographic_01 = (function() {
         },
         footer: {
             height: 100,
-            text: "MORE INFO: WWW.TRIPBFF.COM",
-            background: "#d0363b",
-            color: "#e3d1a2",
-            font: "Roboto",
-            fontSize: "36px",
-            textAnchor: "middle",
-            textTransform: "uppercase",
+            marginBottom: 80,
+            marginRight: 200,
+            imageWidth: 180,
+            imageHeight: 60
         }
     }
 
@@ -322,13 +312,10 @@ var config_infographic_01 = (function() {
         },
         footer: {
             height: 100,
-            text: "MORE INFO: WWW.TRIPBFF.COM",
-            background: "#d0363b",
-            color: "#e3d1a2",
-            font: "Roboto",
-            fontSize: "42px",
-            textAnchor: "middle",
-            textTransform: "uppercase",
+            marginBottom: 80,
+            marginRight: 200,
+            imageWidth: 180,
+            imageHeight: 60
         }
     }
 

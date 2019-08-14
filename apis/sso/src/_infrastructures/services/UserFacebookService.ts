@@ -74,9 +74,11 @@ export class UserFacebookService {
       finalUser = new Users({
         userId: uuid(),
         userName: getUserName(facebookUserId),
-        logins: [userLogin],
-        locale: "en" // default locale
+        logins: [userLogin]
       });
+
+      // insert locale default is en for first time registered
+      await IoC.userService.insertDefaultLocale(finalUser.userId);
     }
 
     return finalUser.save().then(() => toUserVM(finalUser));

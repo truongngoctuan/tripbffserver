@@ -3,7 +3,6 @@ export interface IUser {
   userName: string;
   fullName: string;
   logins: ILogin[];
-  locale: string;
 }
 
 type ILogin = {
