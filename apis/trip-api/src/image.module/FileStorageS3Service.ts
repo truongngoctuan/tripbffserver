@@ -155,7 +155,9 @@ async function signGetUrl(fullPath: string, expires: number = 60) {
   return pros;
 }
 
-async function signGetIconUrl(fullPath: string, expires: number = 60) {
+//expired: 60 days -> same time with user login expiration
+// will be re-signed again when user refresh trip profile or login again
+async function signGetIconUrl(fullPath: string, expires: number = 5184000) {
   const s3 = new aws.S3({
     accessKeyId: 'AKIA4TON7PMDUAFDZC5Y',
     secretAccessKey: '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',
