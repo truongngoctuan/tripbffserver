@@ -1,31 +1,31 @@
 import { IFileStorageService2, IFileInfo } from "./IFileStorageService2";
-import { Stream } from "stream";
-import fse from "fs-extra";
-import { read, write } from "./FileAsync";
 import path from "path";
 import { File, IFileModel } from "./File";
 const uuid = require("uuid/v1");
 import { mimeMapping, fileExtensionMapping } from "./mimeMapping";
 import aws from "aws-sdk";
 
-//todo need to setup AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
-// using dev-access account with S3FullAccess only
-const AWS_ACCESS_KEY_ID = "AKIA43HXFY3XFFFG5GRX"
-const AWS_SECRET_ACCESS_KEY = "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"
-const S3_BUCKET = "tripbff-dev-trips"
-const S3_REGION = "ap-southeast-1" //singapore
+const AWS_ACCESS_KEY_ID = "AKIA4TON7PMDXZCP4Z64";
+const AWS_SECRET_ACCESS_KEY = "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";
+const S3_BUCKET = "tripbff-inte-trips";
+const S3_REGION = "ap-southeast-1"; // singapore
 
 export class FileStorageS3Service implements IFileStorageService2 {
-  async signUpload(category: string, mimeType: string): Promise<{ signedRequest: string, externalId: string, fullPath: string }> {
+  async signUpload(
+    category: string,
+    mimeType: string
+  ): Promise<{ signedRequest: string; externalId: string; fullPath: string }> {
     const fileExtension = fileExtensionMapping(mimeType);
     const externalId = uuid();
 
-    const fullPath = category ? `${category}/${externalId}.${fileExtension}` : `${externalId}.${fileExtension}`;
-    const signedS3Url: any = await signPutUrl(fullPath, mimeType);;
+    const fullPath = category
+      ? `${category}/${externalId}.${fileExtension}`
+      : `${externalId}.${fileExtension}`;
+    const signedS3Url: any = await signPutUrl(fullPath, mimeType);
     return {
       signedRequest: signedS3Url.signedRequest,
       externalId,
-      fullPath,
+      fullPath
     };
   }
 
@@ -52,7 +52,7 @@ export class FileStorageS3Service implements IFileStorageService2 {
 
     return {
       externalId: fileObject.externalId.toString(),
-      slug: fullPath,
+      slug: fullPath
     };
   }
 
@@ -64,7 +64,7 @@ export class FileStorageS3Service implements IFileStorageService2 {
       category: "",
       mimeType: mimeMapping(fileExtension),
       path: fileObject.fileName
-    }
+    };
   }
 
   async getInfoById(externalId: string) {
@@ -76,25 +76,23 @@ export class FileStorageS3Service implements IFileStorageService2 {
   }
 }
 
-
 async function signPutUrl(fullPath: string, mimeType: string) {
   const s3 = new aws.S3({
     accessKeyId: AWS_ACCESS_KEY_ID,
     secretAccessKey: AWS_SECRET_ACCESS_KEY,
-    region: S3_REGION,
+    region: S3_REGION
   });
   const s3Params = {
     Bucket: S3_BUCKET,
     Key: fullPath,
     Expires: 60,
-    ContentType: mimeType,
+    ContentType: mimeType
     // ACL: 'public-read' //todo
   };
 
   const pros = new Promise((resolve, reject) => {
-    s3.getSignedUrl('putObject', s3Params, (err, data) => {
+    s3.getSignedUrl("putObject", s3Params, (err, data) => {
       if (err) {
-
         console.log(err);
         reject(err);
         return;
@@ -111,7 +109,7 @@ async function signPutUrl(fullPath: string, mimeType: string) {
       // res.write(JSON.stringify(returnData));
       // res.end();
     });
-  })
+  });
 
   return pros;
 }
@@ -120,20 +118,19 @@ async function signGetUrl(fullPath: string, expires: number = 60) {
   const s3 = new aws.S3({
     accessKeyId: AWS_ACCESS_KEY_ID,
     secretAccessKey: AWS_SECRET_ACCESS_KEY,
-    region: S3_REGION,
+    region: S3_REGION
   });
   const s3Params = {
     Bucket: S3_BUCKET,
     Key: fullPath,
-    Expires: expires,
+    Expires: expires
     // ContentType: fileType,
     // ACL: 'public-read' //todo
   };
 
   const pros = new Promise((resolve, reject) => {
-    s3.getSignedUrl('getObject', s3Params, (err, data) => {
+    s3.getSignedUrl("getObject", s3Params, (err, data) => {
       if (err) {
-
         console.log(err);
         reject(err);
         return;
@@ -150,27 +147,26 @@ async function signGetUrl(fullPath: string, expires: number = 60) {
       // res.write(JSON.stringify(returnData));
       // res.end();
     });
-  })
+  });
 
   return pros;
 }
 
 async function signGetIconUrl(fullPath: string, expires: number = 60) {
   const s3 = new aws.S3({
-    accessKeyId: 'AKIA4TON7PMDUAFDZC5Y',
-    secretAccessKey: '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',
-    region: 'ap-southeast-1',
+    accessKeyId: "AKIA4TON7PMDUAFDZC5Y",
+    secretAccessKey: "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",
+    region: "ap-southeast-1"
   });
   const s3Params = {
-    Bucket: 'tripbff-icons',
+    Bucket: "tripbff-icons",
     Key: fullPath,
-    Expires: expires,
+    Expires: expires
   };
 
   const pros = new Promise((resolve, reject) => {
-    s3.getSignedUrl('getObject', s3Params, (err, data) => {
+    s3.getSignedUrl("getObject", s3Params, (err, data) => {
       if (err) {
-
         console.log(err);
         reject(err);
         return;
@@ -187,7 +183,7 @@ async function signGetIconUrl(fullPath: string, expires: number = 60) {
       // res.write(JSON.stringify(returnData));
       // res.end();
     });
-  })
+  });
 
   return pros;
 }
