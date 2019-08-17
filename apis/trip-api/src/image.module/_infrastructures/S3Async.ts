@@ -4,7 +4,7 @@ import { mimeMapping } from "../mimeMapping";
 
 const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
 const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
-const S3_BUCKET = process.env.S3_BUCKET;
+const S3_BUCKET: string = process.env.S3_BUCKET as string;
 const S3_REGION = process.env.S3_REGION;
 
 const s3 = new aws.S3({
@@ -14,7 +14,7 @@ const s3 = new aws.S3({
 });
 
 export async function fileExists(filePath: string) {
-  const params = {
+  const params: aws.S3.HeadObjectRequest = {
     Bucket: S3_BUCKET,
     Key: filePath
   };
@@ -58,7 +58,7 @@ export function writeBuffer(fileName: string, buffer: string | Buffer) {
         Body: buffer,
         ContentType: mimeMapping(ext)
       },
-      function(resp) {
+      function(resp: any) {
         console.log(arguments);
         console.log("Successfully uploaded package.");
         resolve(true);

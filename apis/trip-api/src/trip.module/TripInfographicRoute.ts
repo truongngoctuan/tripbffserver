@@ -2,12 +2,10 @@ import { Server } from "hapi";
 const uuid = require("uuid/v1");
 import { IoC } from "./IoC";
 import { CUtils } from "../_shared/ControllerUtils";
-var fs = require("fs");
 const Joi = require("joi");
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripEventQueryHandler = IoC.tripEventQueryHandler;
-const fileService = IoC.fileService;
 
 module.exports = {
   init: function(server: Server) {
@@ -49,10 +47,6 @@ module.exports = {
         tags: ["api"]
       }
     });
-
-    //todo add preUpload
-    //todo change PUT to simply save externalId...
-    //todo change GET to redirect
 
     server.route({
       method: "GET",
@@ -123,60 +117,47 @@ module.exports = {
       }
     });
 
-    //todo this setInternal should be handled in client-side to avoid too many processing in server-side
     server.route({
       method: "GET",
       path: "/trips/{tripId}/infographics/{infographicId}",
       handler: async function(request, h) {
-        var tripId = request.params.tripId;
-        var inforgraphicId = request.params.infographicId;
+        const tripId = request.params.tripId;
+        const inforgraphicId = request.params.infographicId;
 
-        return new Promise((resolve, reject) => { 
-          var getEventInterval = setInterval(async () => {
-            var tripEvents = await tripEventQueryHandler.getAll(tripId);
+        return new Promise((resolve, reject) => {
+          let counter = 0;
+          let getEventInterval = setInterval(async () => {
+            counter += 1;
+            if (counter > 60) {
+              console.log(`setInterval ${counter} running for ${inforgraphicId}. Stop interval, return timeout`);
+              clearInterval(getEventInterval);
+              const error2 = new Error("request timeout");
+              reject(error2);
+            }
+
+            const tripEvents = await tripEventQueryHandler.getAll(tripId);
 
             if (tripEvents) {
-              let exportedInfoEvent = tripEvents.find(event => 
+              const exportedInfoEvent = tripEvents.find(event => 
                 event.type == 'InfographicExported' && event.infographicId == inforgraphicId) as any;
 
               if (exportedInfoEvent) {
                 clearInterval(getEventInterval);
 
-                var externalId = exportedInfoEvent.externalStorageId;
-                var filePath = `trips/${tripId}/infographics/${externalId}.png`;
+                const externalId = exportedInfoEvent.externalStorageId;
+                const filePath = `trips/${tripId}/infographics/${externalId}.png`;
 
                 const signedUrl = await IoC.fileService.signGet(filePath);
                 console.log("infographic signed request", signedUrl);
                 resolve(h.redirect(signedUrl));
-                
-                // var filePath = `uploads/trips/${tripId}/infographics/${externalId}.png`;
-
-                // var getFileInterval = setInterval(() => {
-                //   if (fs.existsSync(filePath)) {
-                //     clearInterval(getFileInterval);
-                //     var imgStream = fs.createReadStream(filePath);
-                //     imgStream.setEncoding("base64");
-
-                //     var bufs = '';
-  
-                //     imgStream.on('data', (chunk: any) => {
-                //       bufs += chunk;
-                //     });
-                //     imgStream.on('end', () => {
-                //       const response = h.response(bufs);
-                //       resolve(response);
-                //     });
-                //   }
-                // }, 500);
               }
-            }
-            else {
+            } else {
               clearInterval(getEventInterval);
-              var error = new Error("Could not found any trip events.");
+              const error = new Error("Could not found any trip events.");
               reject(error);
             }
           }, 500);
-        });        
+        });
 
       },
       options: {
