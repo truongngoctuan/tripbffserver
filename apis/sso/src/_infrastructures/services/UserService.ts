@@ -25,7 +25,7 @@ export class UserService {
         facebook: facebookLogin == null ? undefined : {
           accessToken: facebookLogin.facebook.accessToken
         },
-        locale: userSetting.locale
+        locale: userSetting ? userSetting.locale : null
       },
       token: this.generateJWT(userObject),
     };
