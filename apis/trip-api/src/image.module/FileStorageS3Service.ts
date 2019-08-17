@@ -7,7 +7,7 @@ import aws from "aws-sdk";
 
 const AWS_ACCESS_KEY_ID = "AKIA4TON7PMDXZCP4Z64";
 const AWS_SECRET_ACCESS_KEY = "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";
-const S3_BUCKET = "tripbff-inte-trips";
+const S3_BUCKET = "tripbff-inte";
 const S3_REGION = "ap-southeast-1"; // singapore
 
 export class FileStorageS3Service implements IFileStorageService2 {

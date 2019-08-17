@@ -18,7 +18,9 @@ router.post('/facebook/verify',
         verification.app_id,
         verification.user_id,
         verification.is_valid)) {
-        return res.json(await IoC.userFacebookService.login(user_id, access_token));
+          const result2 = await IoC.userFacebookService.login(user_id, access_token);
+          console.log("logged in 2", result2);
+          return res.json(result2);
       }
       return res.json({ error: "authen_failed"});
     }
@@ -27,6 +29,7 @@ router.post('/facebook/verify',
     console.log("new user", user);
 
     const result = await IoC.userFacebookService.login(user_id, access_token);
+    console.log("logged in", result);
     return res.json(result);
   });
 
