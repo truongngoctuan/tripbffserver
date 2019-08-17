@@ -5,10 +5,10 @@ const uuid = require("uuid/v1");
 import { mimeMapping, fileExtensionMapping } from "./mimeMapping";
 import aws from "aws-sdk";
 
-const AWS_ACCESS_KEY_ID = "AKIA4TON7PMDXZCP4Z64";
-const AWS_SECRET_ACCESS_KEY = "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";
-const S3_BUCKET = "tripbff-inte";
-const S3_REGION = "ap-southeast-1"; // singapore
+const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
+const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
+const S3_BUCKET = process.env.S3_BUCKET;
+const S3_REGION = process.env.S3_REGION;
 
 export class FileStorageS3Service implements IFileStorageService2 {
   async signUpload(
