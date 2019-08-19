@@ -52,7 +52,7 @@ module.exports = {
       method: "GET",
       path: "/trips/{id}/infographics/{infoId}/preUploadImage",
       handler: async function(request) {
-        console.log("GET /images/preUploadImage");
+        console.log("GET /trips/{id}/infographics/{infoId}/preUploadImage");
 
         try {
           const { mimeType } = request.query as any;
@@ -61,6 +61,7 @@ module.exports = {
 
           var category = `trips/${tripId}/infographics`;
           const result = await IoC.fileService.signUpload(category ? category : "images", mimeType);
+          console.log("infographic preUploadImage signed", result);
 
           return result;
 
