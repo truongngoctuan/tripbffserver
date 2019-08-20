@@ -9,7 +9,8 @@
   <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
   <!--  Styles  -->
   <link rel="stylesheet" href="styles/index.css">
-  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <!-- https://stackoverflow.com/questions/40378320/how-to-include-roboto-font-in-webpack-build-for-material-ui -->
+  <link href="./fonts/index.css" rel="stylesheet">
   <!-- <script data-main="scripts/main" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script> -->
 </head>
 <body>
@@ -28,9 +29,9 @@
 
   <!-- Scripts -->
   <script src=".\node_modules\lottie-web\build\player\lottie.js"></script>
-  <script src="https://d3js.org/d3.v5.js"></script>
+  <script src="./node_modules/d3/dist/d3.min.js"></script>
 
-  <script src="./scripts//info_graphic_type.js"></script>
+  <script src="./scripts/info_graphic_type.js"></script>
   <script src="./configs/info_graphic_01/config.js"></script>
   <script src="./configs/constants.js"></script>
   <script src="./scripts/commonFunc.js"></script>

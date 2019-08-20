@@ -20,12 +20,20 @@ function waitForPageLoaded(time) {
   });
 }
 
+var browser;
+
+async function initBrowser() {
+  return await puppeteer.launch({
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"]
+  });
+}
+
 async function exportInfo(trip) {
   try {
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"]
-    });
+    if (!browser) {
+      browser = await initBrowser();
+    }
     const page = await browser.newPage();
     page.on("console", msg => {
       for (let i = 0; i < msg.args().length; ++i)
@@ -36,10 +44,12 @@ async function exportInfo(trip) {
       console.log("A request was made:", interceptedRequest.url());
     }
     page.on("request", logRequest);
-    page.on("requestfailed", err => console.log("on requestfailed", err));
+    page.on("requestfailed", rq => {
+      console.log("on requestfailed", rq.url());
+    });
     page.on("requestfinished", rq => {
       console.log("on requestfinished", rq.url());
-    //   console.log("on requestfinished", rq.respond().status);
+      //   console.log("on requestfinished", rq.respond().status);
     });
 
     await page.goto(url, { waitUntil: "networkidle0" });
@@ -68,9 +78,9 @@ async function exportInfo(trip) {
       info_graphic_type
     );
 
-    // wait for fonts fully loaded --> can we download fonts and copy to tripbff-infographic image ???
-    if (info_graphic_type == INFOGRAPHIC_TYPE.FIRST_RELEASED)
-      await waitForPageLoaded(1000);
+    // // wait for fonts fully loaded --> can we download fonts and copy to tripbff-infographic image ???
+    // if (info_graphic_type == INFOGRAPHIC_TYPE.FIRST_RELEASED)
+    //   await waitForPageLoaded(1000);
 
     // wait for all images fully loaded
     await page
@@ -88,7 +98,9 @@ async function exportInfo(trip) {
       // omitBackground: true,
     });
 
-    await browser.close();
+    await page.close();
+
+    // await browser.close();
   } catch (err) {
     console.log("ERR on process chrome", err);
   }
