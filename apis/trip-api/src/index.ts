@@ -1,4 +1,6 @@
 require("dotenv").config(); // red config from .env file
+import { setupExtraFunction } from "./_shared/utils";
+setupExtraFunction();
 
 //-------------------
 //setup timezone to utc
@@ -51,6 +53,19 @@ const redis = require("redis");
       },
     },
   });
+
+  // log requests
+  server.ext('onRequest', (request, h) => {
+    request.headers['x-req-start'] = (new Date()).getTime().toString();
+    return h.continue;
+  });
+
+  server.events.on('response', function (request) {
+    var start = parseInt(request.headers['x-req-start']);
+    var end = (new Date()).getTime();
+    var responseTime = end - start;
+    console.log(request.info.remoteAddress + ': ' + `${responseTime.toString().padStart(6, "0")} milli ` + request.method.toUpperCase() + ' ' + request.path + ' --> ' + (request.response as any).statusCode);
+});
 
   const client = redis.createClient({
     host: process.env.REDIS_HOST,

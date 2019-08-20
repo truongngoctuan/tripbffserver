@@ -8,17 +8,16 @@ console.log(url);
 
 function imagesHaveLoaded(numberOfElements) {
   var elements = document.getElementsByName("imgLoaded");
-  //   console.log("imagesHaveLoaded length", elements.length);
   return elements.length == numberOfElements;
 }
 
-function waitForPageLoaded(time) {
-  return new Promise(resolve => {
-    setTimeout(function() {
-      resolve();
-    }, time);
-  });
-}
+// function waitForPageLoaded(time) {
+//   return new Promise(resolve => {
+//     setTimeout(function() {
+//       resolve();
+//     }, time);
+//   });
+// }
 
 var browser;
 
