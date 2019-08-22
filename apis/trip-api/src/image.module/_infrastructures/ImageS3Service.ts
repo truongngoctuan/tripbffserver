@@ -3,6 +3,12 @@ import path from "path";
 import { fileExists, read, writeBuffer } from "./S3Async";
 import sharp = require("sharp");
 
+const THUMBNAIL_IMAGE_SIZES = {
+  HD: 1080,
+  MEDIUM: 700,
+  SMALL: 400,
+};
+
 export class ImageS3Service implements IImageService {
 
   generateThumbnailUri(relativeImageUri: string, w: number, h: number): string {
@@ -14,6 +20,16 @@ export class ImageS3Service implements IImageService {
     throw "Not implemented";
   }
 
+  async internalSaveThumbnail(fromUri: string, toUri: string, w: number, h: number): Promise<void> {
+    const buf = await read(fromUri);
+    const thumbnailBuf = await sharp(buf, { failOnError: false })
+    .resize(w, h)
+    .withMetadata()
+    .toBuffer();
+
+    await writeBuffer(toUri, thumbnailBuf);
+  }
+
   async saveThumbnail(relativeImageUri: string, w: number, h: number): Promise<void> {
 
     const fileThumbnailPath = this.generateThumbnailUri(relativeImageUri, w, h);
@@ -21,14 +37,46 @@ export class ImageS3Service implements IImageService {
 
     if (!(await fileExists(fileThumbnailPath))) {
       console.log("file does not exist", fileThumbnailPath);
-      const buf = await read(relativeImageUri);
-      const thumbnailBuf = await sharp(buf, { failOnError: false })
-      .resize(w, h)
-      .withMetadata()
-      .toBuffer();
-
-      await writeBuffer(fileThumbnailPath, thumbnailBuf);
+      await this.internalSaveThumbnail(relativeImageUri, fileThumbnailPath, w, h);
     }
+  }
+
+  async saveThumbnail2(relativeImageUri: string, w: number, h: number): Promise<void> {
+    let fromUri: string;
+    let toUri: string;
+    let upscaleW: number;
+    let upscaleH: number;
+
+    if (w >= THUMBNAIL_IMAGE_SIZES.HD) {
+      upscaleW = THUMBNAIL_IMAGE_SIZES.HD;
+      upscaleH = THUMBNAIL_IMAGE_SIZES.HD;
+      fromUri = relativeImageUri;
+    } else if (w >= THUMBNAIL_IMAGE_SIZES.MEDIUM) {
+      upscaleW = THUMBNAIL_IMAGE_SIZES.MEDIUM;
+      upscaleH = THUMBNAIL_IMAGE_SIZES.MEDIUM;
+      fromUri = this.generateThumbnailUri(
+        relativeImageUri,
+        THUMBNAIL_IMAGE_SIZES.HD,
+        THUMBNAIL_IMAGE_SIZES.HD);
+    } else {
+      upscaleW = THUMBNAIL_IMAGE_SIZES.SMALL;
+      upscaleH = THUMBNAIL_IMAGE_SIZES.SMALL;
+      fromUri = this.generateThumbnailUri(
+        relativeImageUri,
+        THUMBNAIL_IMAGE_SIZES.MEDIUM,
+        THUMBNAIL_IMAGE_SIZES.MEDIUM);
+    }
+
+    toUri = this.generateThumbnailUri(relativeImageUri, upscaleW, upscaleH);
+
+    if (!(await fileExists(toUri))) {
+      console.log("file does not exist", toUri);
+      if (!(await fileExists(fromUri))) {
+        await this.internalSaveThumbnail(relativeImageUri, fromUri, w, h);
+      }
+      await this.internalSaveThumbnail(fromUri, toUri, w, h);
+    }
+
   }
 
 }
