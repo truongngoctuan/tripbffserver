@@ -8,26 +8,25 @@ const tripCommandHandler = IoC.tripCommandHandler;
 const tripEventQueryHandler = IoC.tripEventQueryHandler;
 
 module.exports = {
-  init: function(server: Server) {
+  init(server: Server) {
     server.route({
       method: "POST",
       path: "/trips/{id}/infographics",
-      handler: async function(request) {
-        console.log("POST /trips/{id}/infographics");
+      async handler(request) {
         try {
-          var tripId: string = request.params.id;
-          var { locale } = request.payload as any;
-          
+          const tripId: string = request.params.id;
+          const { locale } = request.payload as any;
+
           const ownerId = CUtils.getUserId(request);
 
-          var infographicId = uuid();     
+          const infographicId = uuid();
 
-          var commandResult = await tripCommandHandler.exec({
+          const commandResult = await tripCommandHandler.exec({
             type: "exportInfographic",
             ownerId,
             tripId,
             infographicId,
-            locale
+            locale,
           });
 
           if (commandResult.isSucceed) {
@@ -44,22 +43,22 @@ module.exports = {
       },
       options: {
         auth: "simple",
-        tags: ["api"]
-      }
+        tags: ["api"],
+      },
     });
 
     server.route({
       method: "GET",
       path: "/trips/{id}/infographics/{infoId}/preUploadImage",
-      handler: async function(request) {
+      async handler(request) {
         console.log("GET /trips/{id}/infographics/{infoId}/preUploadImage");
 
         try {
           const { mimeType } = request.query as any;
           console.log(mimeType);
-          var tripId: string = request.params.id;
+          const tripId: string = request.params.id;
 
-          var category = `trips/${tripId}/infographics`;
+          const category = `trips/${tripId}/infographics`;
           const result = await IoC.fileService.signUpload(category ? category : "images", mimeType);
           console.log("infographic preUploadImage signed", result);
 
@@ -71,33 +70,33 @@ module.exports = {
         }
       },
       options: {
-        //todo add auth for internal communication
+        // todo add auth for internal communication
         // auth: "simple",
-        tags: ["api"]
-      }
+        tags: ["api"],
+      },
     });
-    
+
     server.route({
       method: "PUT",
       path: "/trips/{id}/infographics/{infoId}",
-      handler: async function(request) {
+      async handler(request) {
         try {
-          var tripId: string = request.params.id;
-          var infographicId: string = request.params.infoId;
-          
+          const tripId: string = request.params.id;
+          const infographicId: string = request.params.infoId;
+
           const {
             ownerId,
-            fullPath
+            fullPath,
           } = request.payload as any;
 
           const { externalId } = await IoC.fileService.save(fullPath);
 
-          var commandResult = await tripCommandHandler.exec({
+          const commandResult = await tripCommandHandler.exec({
             type: "finishExportInfographic",
             ownerId,
             tripId,
             infographicId,
-            externalStorageId: externalId
+            externalStorageId: externalId,
           });
 
           if (commandResult.isSucceed) {
@@ -112,22 +111,22 @@ module.exports = {
         }
       },
       options: {
-        //todo add auth for internal communication
-        //auth: "simple",
-        tags: ["api"]
-      }
+        // todo add auth for internal communication
+        // auth: "simple",
+        tags: ["api"],
+      },
     });
 
     server.route({
       method: "GET",
       path: "/trips/{tripId}/infographics/{infographicId}",
-      handler: async function(request, h) {
+      async handler(request, h) {
         const tripId = request.params.tripId;
         const inforgraphicId = request.params.infographicId;
 
         return new Promise((resolve, reject) => {
           let counter = 0;
-          let getEventInterval = setInterval(async () => {
+          const getEventInterval = setInterval(async () => {
             counter += 1;
             if (counter > 60) {
               console.log(`setInterval ${counter} running for ${inforgraphicId}. Stop interval, return timeout`);
@@ -139,7 +138,7 @@ module.exports = {
             const tripEvents = await tripEventQueryHandler.getAll(tripId);
 
             if (tripEvents) {
-              const exportedInfoEvent = tripEvents.find(event => 
+              const exportedInfoEvent = tripEvents.find(event =>
                 event.type == 'InfographicExported' && event.infographicId == inforgraphicId) as any;
 
               if (exportedInfoEvent) {
@@ -149,7 +148,7 @@ module.exports = {
                 const filePath = `trips/${tripId}/infographics/${externalId}.png`;
 
                 const signedUrl = await IoC.fileService.signGet(filePath);
-                console.log("infographic signed request", signedUrl);
+                // console.log("infographic signed request", signedUrl);
                 resolve(h.redirect(signedUrl));
               }
             } else {
@@ -167,10 +166,10 @@ module.exports = {
         validate: {
           params: {
             tripId: Joi.required().description("the tripId for the todo item"),
-            infographicId: Joi.required().description("the id for the todo item")
-          }
-        }
-      }
+            infographicId: Joi.required().description("the id for the todo item"),
+          },
+        },
+      },
     });
-  }
+  },
 };

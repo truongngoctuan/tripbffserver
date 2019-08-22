@@ -4,7 +4,7 @@ import { fileExists, read, writeBuffer } from "./S3Async";
 import sharp = require("sharp");
 
 export class ImageS3Service implements IImageService {
-  
+
   generateThumbnailUri(relativeImageUri: string, w: number, h: number): string {
     const parsedPath = path.parse(relativeImageUri);
     return path.join(parsedPath.dir, `${parsedPath.name}_${w}_${h}${parsedPath.ext}`);
@@ -15,14 +15,14 @@ export class ImageS3Service implements IImageService {
   }
 
   async saveThumbnail(relativeImageUri: string, w: number, h: number): Promise<void> {
-    
+
     const fileThumbnailPath = this.generateThumbnailUri(relativeImageUri, w, h);
-    console.log("file thumbnail path", fileThumbnailPath);
+    // console.log("file thumbnail path", fileThumbnailPath);
 
     if (!(await fileExists(fileThumbnailPath))) {
       console.log("file does not exist", fileThumbnailPath);
       const buf = await read(relativeImageUri);
-      const thumbnailBuf = await sharp(buf)
+      const thumbnailBuf = await sharp(buf, { failOnError: false })
       .resize(w, h)
       .withMetadata()
       .toBuffer();

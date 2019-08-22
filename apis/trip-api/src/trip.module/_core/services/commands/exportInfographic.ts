@@ -5,6 +5,7 @@ import { Succeed } from "../../../../_shared/utils";
 import _ from "lodash";
 import { IExtraParams } from "./_commandHandler";
 import { IoC } from "../../../IoC";
+import { resolveThumbnailImageUrlFromExternalStorageId } from "../ImageUrlResolver";
 
 // todo move to infographic folder
 export type ExportInfographicCommand = {
@@ -20,7 +21,7 @@ export async function exportInfographic(
   eventHandler: EventHandler,
   reducers: TripReducers,
   emitter: ServiceBus,
-  extraParams: IExtraParams
+  extraParams: IExtraParams,
 ) {
   const { ownerId, tripId, infographicId, locale } = command;
 
@@ -31,7 +32,7 @@ export async function exportInfographic(
     type: "InfographicCreated",
     ownerId,
     tripId,
-    infographicId
+    infographicId,
   };
 
   eventHandler.save(event);
@@ -43,21 +44,26 @@ export async function exportInfographic(
     name: trip.name,
     toDate: trip.toDate,
     fromDate: trip.fromDate,
-    locale: locale,
-    locations: await Promise.all(trip.locations.map(async item => {      
+    locale,
+    locations: await Promise.all(trip.locations.map(async item => {
       let imageId = undefined,
           signedUrl = "";
 
-      let favoriteImages = item.images.filter(img => img.isFavorite);
+      const favoriteImages = item.images.filter(img => img.isFavorite);
 
-      if (favoriteImages.length > 0)
+      if (favoriteImages.length > 0) {
         imageId = favoriteImages[0].externalStorageId;
-      else if (item.images.length > 0)
+      } else if (item.images.length > 0) {
         imageId = item.images[0].externalStorageId;
+      }
 
       if (imageId) {
-        let { fileInfo } = await IoC.fileService.getInfoById(imageId);    
-        signedUrl = await IoC.fileService.signGet(fileInfo.fileName, 350);
+        // build thumbnail on the flight
+        const { fileInfo } = await IoC.fileService.getInfoById(imageId);
+        await IoC.imageService.saveThumbnail(fileInfo.path, 1280, 1280);
+
+        // get a thumbnail HD size
+        signedUrl = resolveThumbnailImageUrlFromExternalStorageId(imageId, 1280);
       }
 
       var feeling: string = "",
@@ -77,23 +83,23 @@ export async function exportInfographic(
           return (h as any)["label_" + locale];
         });
       }
-      
+
       return {
         locationId: item.locationId,
         name: item.name,
         fromTime: item.fromTime,
         toTime: item.toTime,
-        feeling: feeling, 
-        activity: activity,
-        highlights: highlights, 
-        signedUrl: signedUrl
-      }
-    })) 
-  }  
+        feeling,
+        activity,
+        highlights,
+        signedUrl,
+      };
+    })),
+  };
 
   extraParams.jobDispatcher.dispatch(jobExportInfo);
 
-  //update read store synchronously
+  // update read store synchronously
   await emitter.emit(event);
 
   return Succeed();

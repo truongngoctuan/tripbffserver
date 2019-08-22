@@ -11,7 +11,7 @@ moment.tz.setDefault("Zulu");
 
 console.log("checking current time in server", moment().format());
 console.log(moment.tz.guess());
-//-------------------
+// -------------------
 
 import { Server } from "hapi";
 import { registerModules } from "./trip.module/_core/services/commands";
@@ -37,7 +37,7 @@ const redis = require("redis");
     routes: {
       validate: {
         failAction: async (request, h, err) => {
-          console.error("ERR:" + JSON.stringify(err));
+          console.error("ERR:", JSON.stringify(err));
 
           throw err;
           // if (process.env.NODE_ENV === 'production') {
@@ -55,17 +55,17 @@ const redis = require("redis");
   });
 
   // log requests
-  server.ext('onRequest', (request, h) => {
-    request.headers['x-req-start'] = (new Date()).getTime().toString();
+  server.ext("onRequest", (request, h) => {
+    request.headers["x-req-start"] = (new Date()).getTime().toString();
     return h.continue;
   });
 
-  server.events.on('response', function (request) {
-    var start = parseInt(request.headers['x-req-start']);
+  server.events.on("response", (request) => {
+    var start = parseInt(request.headers["x-req-start"]);
     var end = (new Date()).getTime();
     var responseTime = end - start;
-    console.log(request.info.remoteAddress + ': ' + `${responseTime.toString().padStart(6, "0")} milli ` + request.method.toUpperCase() + ' ' + request.path + ' --> ' + (request.response as any).statusCode);
-});
+    console.log(request.info.remoteAddress + ": " + `${responseTime.toString().padStart(6, "0")} milli ` + request.method.toUpperCase() + " " + request.path + " --> " + (request.response as any).statusCode);
+  });
 
   const client = redis.createClient({
     host: process.env.REDIS_HOST,
@@ -73,11 +73,11 @@ const redis = require("redis");
     secret: process.env.REDIS_SECRET,
   });
 
-  client.on("error", function (err: any) {
-    console.log("Error " + err);
+  client.on("error", (err: any) => {
+    console.log(`Error ${err}`);
   });
 
-  client.on("connect", function () {
+  client.on("connect", () => {
     console.log("redis connected");
   });
 

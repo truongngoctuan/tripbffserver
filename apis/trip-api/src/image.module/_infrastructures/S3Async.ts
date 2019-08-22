@@ -59,7 +59,7 @@ export function writeBuffer(fileName: string, buffer: string | Buffer) {
         ContentType: mimeMapping(ext)
       },
       function(resp: any) {
-        console.log(arguments);
+        // console.log(arguments);
         console.log("Successfully uploaded package.");
         resolve(true);
       }
