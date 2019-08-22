@@ -30,18 +30,18 @@ export class ImageS3Service implements IImageService {
     await writeBuffer(toUri, thumbnailBuf);
   }
 
+  // async saveThumbnail(relativeImageUri: string, w: number, h: number): Promise<void> {
+
+  //   const fileThumbnailPath = this.generateThumbnailUri(relativeImageUri, w, h);
+  //   // console.log("file thumbnail path", fileThumbnailPath);
+
+  //   if (!(await fileExists(fileThumbnailPath))) {
+  //     console.log("file does not exist", fileThumbnailPath);
+  //     await this.internalSaveThumbnail(relativeImageUri, fileThumbnailPath, w, h);
+  //   }
+  // }
+
   async saveThumbnail(relativeImageUri: string, w: number, h: number): Promise<void> {
-
-    const fileThumbnailPath = this.generateThumbnailUri(relativeImageUri, w, h);
-    // console.log("file thumbnail path", fileThumbnailPath);
-
-    if (!(await fileExists(fileThumbnailPath))) {
-      console.log("file does not exist", fileThumbnailPath);
-      await this.internalSaveThumbnail(relativeImageUri, fileThumbnailPath, w, h);
-    }
-  }
-
-  async saveThumbnail2(relativeImageUri: string, w: number, h: number): Promise<void> {
     let fromUri: string;
     let toUri: string;
     let upscaleW: number;

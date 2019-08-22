@@ -19,8 +19,12 @@ export async function fileExists(filePath: string) {
     Key: filePath
   };
   try {
+    const start = (new Date()).getTime();
     await s3.headObject(params).promise();
-    console.log("File Found in S3");
+    const end = (new Date()).getTime();
+    const responseTime = end - start;
+
+    console.log("File Found in S3", `${filePath} ${responseTime}`);
     return true;
   } catch (err) {
     // console.log("File not Found ERROR : " + err.code)

@@ -379,8 +379,6 @@ module.exports = {
       method: "GET",
       path: "/trips/{tripId}/preUploadImage",
       async handler(request) {
-        console.log("GET /trips/{tripId}/preUploadImage");
-
         try {
           const { tripId } = request.params;
           const { mimeType } = request.query as any;

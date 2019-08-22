@@ -92,12 +92,23 @@ async function exportInfo(trip) {
         console.log(err);
       });
 
-    await svgInfoGraphic.screenshot({
-      path: "svg-info-graphic.png"
+    // const start = (new Date()).getTime();
+    return svgInfoGraphic.screenshot({
+      // path: "svg-info-graphic.jpg"
       // omitBackground: true,
+      type: "jpeg",
+      quality: 85,
+    })
+    .then((buf) => {
+      page.close();
+      return buf;
     });
 
-    await page.close();
+    // const end = (new Date()).getTime();
+    // const responseTime = end - start;
+    // console.log(`screenshot in ${responseTime}`);
+
+    // await page.close();
 
     // await browser.close();
   } catch (err) {

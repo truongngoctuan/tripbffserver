@@ -10,8 +10,6 @@ module.exports = {
       method: "GET",
       path: "/images/preUploadImage",
       async handler(request) {
-        console.log("GET /images/preUploadImage");
-
         try {
           const { category, mimeType } = request.query as any;
           console.log(mimeType);
@@ -76,8 +74,12 @@ module.exports = {
       await IoC.imageService.saveThumbnail(fileInfo.path, wi, he);
 
       const imageThumbnail = IoC.imageService.generateThumbnailUri(fileInfo.fileName, wi, he);
+
+      const start = (new Date()).getTime();
       const signedUrl = await IoC.fileService.signGet(imageThumbnail);
-      // console.log("signed thumbnail", signedUrl);
+      const end = (new Date()).getTime();
+      const responseTime = end - start;
+      console.log(`signed thumbnail ${responseTime}`, signedUrl);
       return signedUrl;
     }
 
@@ -100,6 +102,62 @@ module.exports = {
           }
 
           signedUrl = await returnFileFromWH(imageId, 400, 400, h);
+
+          return h.redirect(signedUrl);
+
+        } catch (error) {
+          console.log(error);
+          return error;
+        }
+      },
+      options: {
+        // todo: need another way to handle authentication
+        // auth: "simple",
+        tags: ["api"],
+        validate: {
+          params: {
+            id: Joi.required().description("the external id")
+          },
+          query: {
+            s: Joi.number().description("size"),
+          },
+        },
+        response: {
+        },
+      },
+    });
+
+
+    async function returnSignOnlyFromWH(imageId: string, wi: number, he: number, h: ResponseToolkit) {
+      const { fileInfo } = await IoC.fileService.getInfoById(imageId);
+      const imageThumbnail = IoC.imageService.generateThumbnailUri(fileInfo.fileName, wi, he);
+      const start = (new Date()).getTime();
+      const signedUrl = await IoC.fileService.signGet(imageThumbnail);
+      const end = (new Date()).getTime();
+      const responseTime = end - start;
+      console.log(`signed thumbnail ${responseTime}`, signedUrl);
+      return signedUrl;
+    }
+
+    server.route({
+      method: "GET",
+      path: "/images/{id}/thumbnail/sign-only",
+      async handler(request, h) {
+        try {
+          const imageId = request.params.id;
+          // either size(s) or width + height (w, h)
+          const { s, wi, he } = request.query as any;
+
+          let signedUrl = "";
+          if (s) {
+            signedUrl = await returnSignOnlyFromWH(imageId, s, s, h);
+          }
+
+          if (wi && he) {
+            signedUrl = await returnSignOnlyFromWH(imageId, wi, he, h);
+          }
+
+          signedUrl = await returnSignOnlyFromWH(imageId, 400, 400, h);
 
           return h.redirect(signedUrl);
 

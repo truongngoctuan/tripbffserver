@@ -51,8 +51,6 @@ module.exports = {
       method: "GET",
       path: "/trips/{id}/infographics/{infoId}/preUploadImage",
       async handler(request) {
-        console.log("GET /trips/{id}/infographics/{infoId}/preUploadImage");
-
         try {
           const { mimeType } = request.query as any;
           console.log(mimeType);
@@ -60,8 +58,6 @@ module.exports = {
 
           const category = `trips/${tripId}/infographics`;
           const result = await IoC.fileService.signUpload(category ? category : "images", mimeType);
-          console.log("infographic preUploadImage signed", result);
-
           return result;
 
         } catch (error) {
@@ -145,7 +141,7 @@ module.exports = {
                 clearInterval(getEventInterval);
 
                 const externalId = exportedInfoEvent.externalStorageId;
-                const filePath = `trips/${tripId}/infographics/${externalId}.png`;
+                const filePath = `trips/${tripId}/infographics/${externalId}.jpeg`;
 
                 const signedUrl = await IoC.fileService.signGet(filePath);
                 // console.log("infographic signed request", signedUrl);

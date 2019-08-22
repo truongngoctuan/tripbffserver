@@ -8,7 +8,7 @@ const axios = require("axios");
 //todo put it into env file
 const BASE_URL = `http://${process.env.TRIP_API_HOST}:${process.env.TRIP_API_PORT}`;
 console.log("BASE_URL", BASE_URL)
-const fileLocation = "svg-info-graphic.png";
+const fileLocation = "svg-info-graphic.jpg";
 
 async function actionExecAsync(data) {
   console.log("actionExecAsync", data);
@@ -31,12 +31,12 @@ async function actionExecAsync(data) {
     locale
   }
   //console.log('data message: ' + JSON.stringify(trip));
-  await exporter.exportInfo(trip);
+  const buf = await exporter.exportInfo(trip);
 
   try {
 
     //pre upload
-    const mimeType = "image/png";
+    const mimeType = "image/jpeg";
     const preUploadUrl = `${BASE_URL}/trips/${tripId}/infographics/${infographicId}/preUploadImage?mimeType=${mimeType}`
     const {
       signedRequest,
@@ -46,7 +46,11 @@ async function actionExecAsync(data) {
 
     console.log("fullPath", fullPath);
     //upload to s3
-    await fileUploader.uploadFile(signedRequest, fileLocation, mimeType);
+    const start = (new Date()).getTime();
+    await fileUploader.uploadFileFromBuffer(signedRequest, buf, mimeType);
+    const end = (new Date()).getTime();
+    const responseTime = end - start;
+    console.log(`uploaded file in ${responseTime}`)
 
     //confirm with trip-api
     const url = `${BASE_URL}/trips/${tripId}/infographics/${infographicId}`

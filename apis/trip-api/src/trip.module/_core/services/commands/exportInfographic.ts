@@ -5,7 +5,7 @@ import { Succeed } from "../../../../_shared/utils";
 import _ from "lodash";
 import { IExtraParams } from "./_commandHandler";
 import { IoC } from "../../../IoC";
-import { resolveThumbnailImageUrlFromExternalStorageId } from "../ImageUrlResolver";
+import { resolveSignOnlyThumbnailImageUrlFromExternalStorageId } from "../ImageUrlResolver";
 
 // todo move to infographic folder
 export type ExportInfographicCommand = {
@@ -60,10 +60,9 @@ export async function exportInfographic(
       if (imageId) {
         // build thumbnail on the flight
         const { fileInfo } = await IoC.fileService.getInfoById(imageId);
-        await IoC.imageService.saveThumbnail(fileInfo.path, 1280, 1280);
+        await IoC.imageService.saveThumbnail(fileInfo.path, 400, 400);
 
-        // get a thumbnail HD size
-        signedUrl = resolveThumbnailImageUrlFromExternalStorageId(imageId, 1280);
+        signedUrl = resolveSignOnlyThumbnailImageUrlFromExternalStorageId(imageId);
       }
 
       var feeling: string = "",
