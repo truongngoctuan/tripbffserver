@@ -8,10 +8,10 @@ const axios = require("axios");
 //todo put it into env file
 const BASE_URL = `http://${process.env.TRIP_API_HOST}:${process.env.TRIP_API_PORT}`;
 console.log("BASE_URL", BASE_URL)
-const fileLocation = "svg-info-graphic.jpg";
+
 
 async function actionExecAsync(data) {
-  console.log("actionExecAsync", data);
+  // console.log("actionExecAsync", data);
   const {
     tripId,
     infographicId,
@@ -30,12 +30,19 @@ async function actionExecAsync(data) {
     locations,
     locale
   }
-  //console.log('data message: ' + JSON.stringify(trip));
   const buf = await exporter.exportInfo(trip);
+  await Promise.all([
+    uploadResult(ownerId, tripId, infographicId, buf),
+    exporter.initPage()
+  ]);
+}
+
+async function uploadResult(ownerId, tripId, infographicId, buf) {
 
   try {
 
     //pre upload
+    const startPreUpload = (new Date()).getTime();
     const mimeType = "image/jpeg";
     const preUploadUrl = `${BASE_URL}/trips/${tripId}/infographics/${infographicId}/preUploadImage?mimeType=${mimeType}`
     const {
@@ -43,14 +50,13 @@ async function actionExecAsync(data) {
       fullPath
     } = await axios.get(preUploadUrl)
       .then(res => res.data);
+    console.log(`pre uploaded file in ${(new Date()).getTime() - startPreUpload} ms`)
 
     console.log("fullPath", fullPath);
     //upload to s3
     const start = (new Date()).getTime();
     await fileUploader.uploadFileFromBuffer(signedRequest, buf, mimeType);
-    const end = (new Date()).getTime();
-    const responseTime = end - start;
-    console.log(`uploaded file in ${responseTime}`)
+    console.log(`uploaded file in ${(new Date()).getTime() - start} ms`)
 
     //confirm with trip-api
     const url = `${BASE_URL}/trips/${tripId}/infographics/${infographicId}`
@@ -65,12 +71,9 @@ async function actionExecAsync(data) {
   }
 }
 
-// this is event data schemas
-// var event: TripEvent = {
-//   type: "InfographicCreated",
-//   tripId,
-//   infographicId,
-// };
+(async() => {
+  await exporter.initPage();
+  consumer.receiveMessage(actionExecAsync);
+})();
 
-consumer.receiveMessage(actionExecAsync);
 return;
