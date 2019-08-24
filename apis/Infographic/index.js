@@ -30,11 +30,15 @@ async function actionExecAsync(data) {
     locations,
     locale
   }
-  const buf = await exporter.exportInfo(trip);
-  await Promise.all([
-    uploadResult(ownerId, tripId, infographicId, buf),
-    exporter.initPage()
-  ]);
+  const result = await exporter.exportInfo(trip)
+  .then(buf => {
+    return Promise.all([
+      uploadResult(ownerId, tripId, infographicId, buf),
+      exporter.initPage(),
+    ]);
+
+  });
+  
 }
 
 async function uploadResult(ownerId, tripId, infographicId, buf) {
