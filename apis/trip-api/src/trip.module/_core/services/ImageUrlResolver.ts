@@ -2,7 +2,18 @@ export function resolveImageUrlFromExternalStorageId(externalStorageId: string) 
   return `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/images/${externalStorageId}`;
 }
 
-//todo improve with multiple thumbnail size url
-export function resolveThumbnailImageUrlFromExternalStorageId(externalStorageId: string) {
-  return `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/images/${externalStorageId}/thumbnail`;
+export function resolveThumbnailImageUrlFromExternalStorageId(
+  externalStorageId: string,
+  size?: number) {
+  return size
+  ? `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/images/${externalStorageId}/thumbnail?s=${size}`
+  : `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/images/${externalStorageId}/thumbnail`;
+}
+
+export function resolveSignOnlyThumbnailImageUrlFromExternalStorageId(
+  externalStorageId: string,
+  size?: number) {
+  return size
+  ? `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/images/${externalStorageId}/thumbnail/sign-only?s=${size}`
+  : `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/images/${externalStorageId}/thumbnail/sign-only`;
 }

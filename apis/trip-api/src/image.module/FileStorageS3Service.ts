@@ -102,7 +102,7 @@ async function signPutUrl(fullPath: string, mimeType: string) {
         signedRequest: data,
         url: `https://${S3_BUCKET}.s3.amazonaws.com/${fullPath}`
       };
-      console.log("signed request");
+      // console.log("signed request");
       // console.log(returnData);
       resolve(returnData);
       return returnData;
@@ -140,7 +140,7 @@ async function signGetUrl(fullPath: string, expires: number = 60) {
         signedRequest: data,
         url: `https://${S3_BUCKET}.s3.amazonaws.com/${fullPath}`
       };
-      console.log("signed request");
+      // console.log("signed request");
       // console.log(returnData);
       resolve(returnData);
       return returnData;
@@ -178,7 +178,7 @@ async function signGetIconUrl(fullPath: string, expires: number = 5184000) {
         signedRequest: data,
         url: `https://tripbff-icons.s3.amazonaws.com/${fullPath}`
       };
-      console.log("signed request");
+      // console.log("signed request");
       // console.log(returnData);
       resolve(returnData);
       return returnData;

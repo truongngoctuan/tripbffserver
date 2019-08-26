@@ -1,5 +1,6 @@
 module.exports = {
-  uploadFile
+  uploadFile,
+  uploadFileFromBuffer
 };
 
 const axios = require("axios");
@@ -22,6 +23,23 @@ function uploadFile(signedUrl, path, mimeType) {
   };
 
   return axios.put(signedUrl, file, options)
+  .then(res => {
+    console.log("Success axios");
+  })
+  .catch(err => {
+    console.log("Err axios", err.response);
+  });
+}
+
+function uploadFileFromBuffer(signedUrl, buffer, mimeType) {
+
+  var options = {
+    headers: {
+      'Content-Type': mimeType
+    }
+  };
+
+  return axios.put(signedUrl, buffer, options)
   .then(res => {
     console.log("Success axios");
   })
