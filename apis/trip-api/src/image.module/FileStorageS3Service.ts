@@ -156,9 +156,9 @@ async function signGetUrl(fullPath: string, expires: number = 60) {
 // will be re-signed again when user refresh trip profile or login again
 async function signGetIconUrl(fullPath: string, expires: number = 5184000) {
   const s3 = new aws.S3({
-    accessKeyId: "AKIA4TON7PMDUAFDZC5Y",
-    secretAccessKey: "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",
-    region: "ap-southeast-1"
+    accessKeyId: AWS_ACCESS_KEY_ID,
+    secretAccessKey: AWS_SECRET_ACCESS_KEY,
+    region: S3_REGION
   });
   const s3Params = {
     Bucket: "tripbff-icons",
