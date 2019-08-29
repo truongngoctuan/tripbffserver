@@ -2,8 +2,8 @@ require("dotenv").config(); // red config from .env file
 import { setupExtraFunction } from "./_shared/utils";
 setupExtraFunction();
 
-//-------------------
-//setup timezone to utc
+// -------------------
+// setup timezone to utc
 import moment from "moment-timezone";
 console.log("checking current time in server", moment().format());
 
@@ -18,6 +18,7 @@ import { registerModules } from "./trip.module/_core/services/commands";
 const authService = require("./bootstraping/authentication.js");
 const swaggerUiService = require("./bootstraping/swagger-documentation");
 const mongoService = require("./bootstraping/mongo-connection");
+const monitoringService = require("./bootstraping/prometheus-client");
 
 // import helloRoutes from './sample.module/route';
 const helloRoutes = require("./sample.module/route");
@@ -53,6 +54,8 @@ const redis = require("redis");
       },
     },
   });
+
+  monitoringService.addMonitoringService(server);
 
   // log requests
   server.ext("onRequest", (request, h) => {
