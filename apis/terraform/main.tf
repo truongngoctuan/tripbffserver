@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "eu-west-1"
-}
-
 locals {
   name        = "tripbff"
   environment = "inte"
@@ -18,7 +14,7 @@ module "vpc" {
 
   cidr = "10.1.0.0/16"
 
-  azs             = ["eu-west-1a", "eu-west-1b"]
+  azs             = ["ap-southeast-1a", "ap-southeast-1b"]
   private_subnets = ["10.1.1.0/24", "10.1.2.0/24"]
   public_subnets  = ["10.1.11.0/24", "10.1.12.0/24"]
 
@@ -32,14 +28,14 @@ module "vpc" {
 
 #----- ECS --------
 module "ecs" {
-  source = "../../"
+  # source = "../../"
   name   = local.name
 }
 
 #----- ECS  Services--------
 
 module "hello-world" {
-  source     = "./ecs-service"
+  source     = "./ecs-services"
   cluster_id = module.ecs.this_ecs_cluster_id
 }
 
@@ -53,7 +49,7 @@ module "this" {
   lc_name = local.ec2_resources_name
 
   image_id             = data.aws_ami.amazon_linux_ecs.id
-  instance_type        = "t2.micro"
+  instance_type        = "t3.micro"
   security_groups      = [module.vpc.default_security_group_id]
   iam_instance_profile = module.ec2-profile.this_iam_instance_profile_id
   user_data            = data.template_file.user_data.rendered
@@ -79,12 +75,4 @@ module "this" {
       propagate_at_launch = true
     },
   ]
-}
-
-data "template_file" "user_data" {
-  template = file("${path.module}/templates/user-data.sh")
-
-  vars = {
-    cluster_name = local.name
-  }
 }
