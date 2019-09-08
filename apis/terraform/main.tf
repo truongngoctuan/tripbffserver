@@ -26,17 +26,47 @@ module "vpc" {
   }
 }
 
-#----- ECS --------
-module "ecs" {
-  # source = "../../"
-  name   = local.name
+# We have one ECS cluster that instances will register with
+resource "aws_ecs_cluster" "cluster" {
+  name = "${local.name}-${local.environment}-cluster"
 }
+
+data "template_file" "user_data" {
+  template = file("./user_data.tpl")
+
+  vars = {
+    cluster_name = "${aws_ecs_cluster.cluster.name}"
+  }
+}
+
 
 #----- ECS  Services--------
 
-module "hello-world" {
-  source     = "./ecs-services"
-  cluster_id = module.ecs.this_ecs_cluster_id
+module "ecs-services" {
+  source     = "./stage/ecs-services"
+  cluster_id = aws_ecs_cluster.cluster.id
+}
+
+module "ec2-profile" {
+  source = "./modules/ecs-instance-profile"
+  name   = local.name
+}
+
+#For now we only use the AWS ECS optimized ami <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html>
+data "aws_ami" "amazon_linux_ecs" {
+  most_recent = true
+
+  owners = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn-ami-*-amazon-ecs-optimized"]
+  }
+
+  filter {
+    name   = "owner-alias"
+    values = ["amazon"]
+  }
 }
 
 module "this" {
