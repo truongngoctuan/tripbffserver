@@ -14,6 +14,21 @@ module.exports = {
   init: function(server: Server) {   
 
     server.route({
+      method: "GET",
+      path: "/checkApiAlive",
+      handler: async function(request, h) {
+        try {          
+          return "API is alive";
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      options: {        
+        tags: ["api"]
+      }
+    });
+    
+    server.route({
       method: "POST",
       path: "/registerNotify",
       handler: async function(request) {   
@@ -28,7 +43,8 @@ module.exports = {
         return true;
       },
       options: {
-        tags: ["api"]
+        tags: ["api"],
+        cors: true
       }
     });
 
@@ -42,7 +58,8 @@ module.exports = {
         return registeredItems;
       },
       options: {
-        tags: ["api"]
+        tags: ["api"],
+        cors: true
       }
     });
 

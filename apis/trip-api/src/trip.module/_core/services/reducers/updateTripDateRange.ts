@@ -1,6 +1,7 @@
 import { ITrip, ITripLocation } from "../../models/ITrip";
 import _ from "lodash";
 import { TripDateRangeUpdatedEvent } from "../events/TripEvents";
+import moment from "moment";
 
 export function updateTripDateRange(
   prevState: ITrip,
@@ -10,13 +11,16 @@ export function updateTripDateRange(
   const { fromDate, toDate } = command;
 
   var filteredLocations: ITripLocation[] = [];
+
+
   if (fromDate) {
-    filteredLocations = prevState.locations.filter(loc => fromDate <= loc.fromTime );
+    filteredLocations = prevState.locations.filter(loc => moment(fromDate) <= moment(loc.fromTime));
   }
 
   if (toDate) {
-    filteredLocations = prevState.locations.filter(loc => loc.toTime <= toDate);
+    filteredLocations = prevState.locations.filter(loc => moment(loc.toTime) <= moment(toDate));
   }
+
   return {
     ...prevState,
     fromDate: fromDate ? fromDate : prevState.fromDate,

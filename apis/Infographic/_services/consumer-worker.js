@@ -18,16 +18,17 @@ const rsmq = new RedisSMQ({
   ns: "rsmq"
 });
 
-
-rsmq.createQueue({ qname: qName }, (err, resp) => {
-  if (err) {
-    console.log("Create error", err);
-    // console.log("Create error", err);
-    // todo better handling the service
-  }
-
-  console.log("queue created");
-});
+function createQueue() {
+  rsmq.createQueue({ qname: qName }, (err, resp) => {
+    if (err) {
+      console.log("Create error", err);
+      // console.log("Create error", err);
+      // todo better handling the service
+    }
+  
+    console.log("queue created");
+  });
+}
 
 var counter = 0;
 var _callBack;
@@ -70,7 +71,11 @@ function SetTimeoutReceiveMessage() {
 }
 
 function errorHandler(err) {
-  if (err && err.toString().startsWith("queueNotFound")) console.log("ERR", "queueNotFound");
+  if (err && err.toString().startsWith("queueNotFound")) {
+    console.log("ERR", "queueNotFound");
+    console.log("attempting to create queue");
+    createQueue();
+  }
   else if (err) {
     console.log("ERR", "error on queue");
     console.log(err);
