@@ -1,0 +1,43 @@
+###############################################################################
+# Step 1 : Builder image
+#
+FROM node:10.16-alpine AS builder
+
+# Define working directory and copy source
+WORKDIR /home/node/app
+
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile; \
+  yarn cache clean;
+
+COPY . .
+# Install dependencies and build whatever you have to build 
+# (babel, grunt, webpack, etc.)
+RUN yarn build && yarn --production
+
+###############################################################################
+# Step 2 : Run image
+#
+FROM node:10.16-alpine
+ENV NODE_ENV=production
+WORKDIR /home/node/app
+
+# Install deps for production only
+COPY ./package* ./
+RUN yarn install --frozen-lockfile --production; \
+  yarn cache clean;
+# Copy builded source from the upper builder stage
+COPY --from=builder /home/node/app/dist ./dist
+
+# Expose ports (for orchestrators and dynamic reverse proxies)
+EXPOSE 80
+
+## THE LIFE SAVER
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
+RUN chmod +x /wait
+
+## Launch the wait tool and then your application
+CMD /wait && yarn start
+
+# # Start the app
+# CMD npm start

@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`add a location image 1`] = `
+Array [
+  Object {
+    "externalUrl": "",
+    "imageId": "imageId01",
+    "isFavorite": false,
+    "thumbnailExternalUrl": "",
+    "time": "2018-12-31T17:00:00.000Z",
+    "url": "url",
+  },
+  Object {
+    "externalUrl": "",
+    "imageId": "imageId02",
+    "isFavorite": false,
+    "thumbnailExternalUrl": "",
+    "time": "2019-01-01T17:00:00.000Z",
+    "url": "url2",
+  },
+]
+`;
+
+exports[`create trip 1`] = `
+Object {
+  "fromDate": "2018-12-31T17:00:00.000Z",
+  "infographics": Array [],
+  "locations": Array [],
+  "name": "name",
+  "toDate": "2019-01-09T17:00:00.000Z",
+  "tripId": "tripId",
+}
+`;
+
+exports[`import trip location 1`] = `
+Object {
+  "fromDate": "2018-12-31T17:00:00.000Z",
+  "infographics": Array [],
+  "locations": Array [
+    Object {
+      "fromTime": "2018-12-31T17:00:00.000Z",
+      "images": Array [],
+      "location": Object {
+        "address": "address",
+        "lat": 1,
+        "long": 1,
+      },
+      "locationId": "locationId01",
+      "name": "name",
+      "toTime": "2019-01-09T17:00:00.000Z",
+    },
+  ],
+  "name": "name",
+  "toDate": "2019-01-09T17:00:00.000Z",
+  "tripId": "tripId",
+}
+`;
+
+exports[`remove location images 1`] = `Array []`;
+
+exports[`remove location multi mages 1`] = `
+Array [
+  "imageId02",
+  "imageId04",
+]
+`;
+
+exports[`update trip name 1`] = `
+Object {
+  "fromDate": "2018-12-31T17:00:00.000Z",
+  "infographics": Array [],
+  "locations": Array [],
+  "name": "name 2",
+  "toDate": "2019-01-09T17:00:00.000Z",
+  "tripId": "tripId",
+}
+`;
+
+exports[`upload location image 1`] = `
+Object {
+  "fromDate": "2018-12-31T17:00:00.000Z",
+  "infographics": Array [],
+  "locations": Array [
+    Object {
+      "fromTime": "2018-12-31T17:00:00.000Z",
+      "images": Array [
+        Object {
+          "externalStorageId": "guid01",
+          "externalUrl": "",
+          "imageId": "imageId01",
+          "isFavorite": false,
+          "thumbnailExternalUrl": "",
+          "url": "url",
+        },
+      ],
+      "location": Object {
+        "address": "address",
+        "lat": 1,
+        "long": 1,
+      },
+      "locationId": "locationId01",
+      "name": "name",
+      "toTime": "2019-01-09T17:00:00.000Z",
+    },
+  ],
+  "name": "name",
+  "toDate": "2019-01-09T17:00:00.000Z",
+  "tripId": "tripId",
+}
+`;
