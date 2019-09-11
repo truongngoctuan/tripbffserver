@@ -1,46 +1,109 @@
 locals {
-  name        = "tripbff"
-  environment = "inte"
+  region           = "ap-southeast-1"
+  namespace        = "tripbff"
+  stage            = "dev"
 
   # This is the convention we use to know what belongs to each other
-  ec2_resources_name = "${local.name}-${local.environment}"
+  resources_name = "${local.namespace}-${local.stage}"
 }
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 2.0"
-
-  name = local.name
+  version = "~> 2.9.0"
+  name = local.resources_name
 
   cidr = "10.1.0.0/16"
 
-  azs             = ["ap-southeast-1a", "ap-southeast-1b"]
+  azs             = ["${local.region}a", "${local.region}b"]
   private_subnets = ["10.1.1.0/24", "10.1.2.0/24"]
   public_subnets  = ["10.1.11.0/24", "10.1.12.0/24"]
 
-  enable_nat_gateway = false # this is faster, but should be "true" for real
-
   tags = {
-    Environment = local.environment
-    Name        = local.name
+    Terraform   = "yes"
+    Namespace   = local.namespace
+    Environment = local.stage
+  }
+
+  vpc_tags = {
+    Name = "ECS ${local.namespace} (${local.stage})"
   }
 }
+
+resource "aws_default_route_table" "default" {
+  default_route_table_id = module.vpc.default_route_table_id
+
+  tags = {
+    Name        = "${local.resources_name}-private"
+    Terraform   = "yes"
+    Namespace   = local.namespace
+    Environment = local.stage
+  }
+}
+
+resource "aws_default_network_acl" "default" {
+  default_network_acl_id = module.vpc.default_network_acl_id
+
+  ingress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  egress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  tags = {
+    Name        = local.resources_name
+    Terraform   = "yes"
+    Namespace   = local.namespace
+    Environment = local.stage
+  }
+
+  lifecycle {
+    ignore_changes = ["subnet_ids"]
+  }
+}
+
+resource "aws_default_security_group" "default" {
+  vpc_id = module.vpc.vpc_id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name        = local.resources_name
+    Terraform   = "yes"
+    Namespace   = local.namespace
+    Environment = local.stage
+  }
+}
+
+#----- ECS  Services--------
 
 # We have one ECS cluster that instances will register with
 resource "aws_ecs_cluster" "cluster" {
-  name = "${local.name}-${local.environment}-cluster"
+  name = local.namespace
 }
-
-data "template_file" "user_data" {
-  template = file("./user_data.tpl")
-
-  vars = {
-    cluster_name = "${aws_ecs_cluster.cluster.name}"
-  }
-}
-
-
-#----- ECS  Services--------
 
 module "ecs-services" {
   source     = "./stage/ecs-services"
@@ -49,7 +112,7 @@ module "ecs-services" {
 
 module "ec2-profile" {
   source = "./modules/ecs-instance-profile"
-  name   = local.name
+  name   = local.namespace
 }
 
 #For now we only use the AWS ECS optimized ami <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html>
@@ -73,36 +136,45 @@ module "this" {
   source  = "terraform-aws-modules/autoscaling/aws"
   version = "~> 3.0"
 
-  name = local.ec2_resources_name
+  name = local.resources_name
 
   # Launch configuration
-  lc_name = local.ec2_resources_name
+  lc_name = local.resources_name
 
   image_id             = data.aws_ami.amazon_linux_ecs.id
-  instance_type        = "t3.micro"
+  instance_type        = "t2.micro"
   security_groups      = [module.vpc.default_security_group_id]
   iam_instance_profile = module.ec2-profile.this_iam_instance_profile_id
   user_data            = data.template_file.user_data.rendered
+  key_name             = "tripbff-ec2-key-pair"
 
   # Auto scaling group
-  asg_name                  = local.ec2_resources_name
+  asg_name                  = local.resources_name
   vpc_zone_identifier       = module.vpc.private_subnets
   health_check_type         = "EC2"
-  min_size                  = 0
+  min_size                  = 1
   max_size                  = 1
-  desired_capacity          = 0
+  desired_capacity          = 1
   wait_for_capacity_timeout = 0
 
   tags = [
     {
       key                 = "Environment"
-      value               = local.environment
+      value               = local.stage
       propagate_at_launch = true
     },
     {
       key                 = "Cluster"
-      value               = local.name
+      value               = local.namespace
       propagate_at_launch = true
     },
   ]
+}
+
+data "template_file" "user_data" {
+  template = file("${path.module}/user-data.sh")
+
+  vars = {
+    cluster_name = local.namespace
+  }
 }

@@ -69,7 +69,7 @@ resource "aws_ecs_task_definition" "tripbff-sso" {
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "/ecs/tripbff-sso",
+          "awslogs-group": "${aws_cloudwatch_log_group.sso.name}",
           "awslogs-region": "ap-southeast-1",
           "awslogs-stream-prefix": "ecs"
         }
@@ -77,6 +77,11 @@ resource "aws_ecs_task_definition" "tripbff-sso" {
     }
   ]
   DEFINITION
+}
+
+resource "aws_cloudwatch_log_group" "sso" {
+  name              = "tripbff-sso"
+  retention_in_days = 14
 }
 
 resource "aws_ecs_service" "tripbff-sso-service" {
