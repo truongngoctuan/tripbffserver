@@ -1,0 +1,1 @@
+docker-compose -f docker-compose.reverse-proxy.yml up --scale whoami=2

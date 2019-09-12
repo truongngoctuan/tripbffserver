@@ -130,6 +130,15 @@ resource "aws_route_table_association" "mesh-vpc-route-table-association2" {
 #     to_port    = 80
 #   }
 
+  # egress {
+  #   protocol   = "tcp"
+  #   rule_no    = 200
+  #   action     = "allow"
+  #   cidr_block = "10.3.0.0/18"
+  #   from_port  = 443
+  #   to_port    = 443
+  # }
+
 #   egress {
 #     rule_no    = 210
 #     protocol   = "-1"
