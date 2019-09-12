@@ -5,7 +5,7 @@ resource "aws_ecs_task_definition" "tripbff-sso" {
   [
     {
       "name": "tripbff-sso-container",
-      "image": "866404760327.dkr.ecr.ap-southeast-1.amazonaws.com/tripbff/sso:latest",
+      "image": "${var.repository_url}:latest",
       "cpu": 0,
       "essential": true,
       "portMappings": [
@@ -18,7 +18,7 @@ resource "aws_ecs_task_definition" "tripbff-sso" {
       "environment": [
         {
           "name": "MONGODB_CONNECTION_STRING",
-          "value": "mongodb+srv://MongoDbUser:nEohpAvoyimKiZAH@clusterdevelopment-ckix9.mongodb.net/UnicornBFF?retryWrites=true&w=majority"
+          "value": "${var.mongodb}"
         },
         {
           "name": "SERVER_HOST",
@@ -33,7 +33,7 @@ resource "aws_ecs_task_definition" "tripbff-sso" {
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "/ecs/tripbff-sso",
+          "awslogs-group": "${aws_cloudwatch_log_group.sso.name}",
           "awslogs-region": "ap-southeast-1",
           "awslogs-stream-prefix": "ecs"
         }
@@ -51,20 +51,7 @@ resource "aws_ecs_task_definition" "tripbff-sso" {
           "containerPort": 6379
         }
       ],
-      "environment": [
-        {
-          "name": "MONGODB_CONNECTION_STRING",
-          "value": "mongodb+srv://MongoDbUser:nEohpAvoyimKiZAH@clusterdevelopment-ckix9.mongodb.net/UnicornBFF?retryWrites=true&w=majority"
-        },
-        {
-          "name": "SERVER_HOST",
-          "value": "localhost"
-        },
-        {
-          "name": "SERVER_PORT",
-          "value": "80"
-        }
-      ],
+      "environment": [],
       "logConfiguration": {
         "logDriver": "awslogs",
         "secretOptions": null,

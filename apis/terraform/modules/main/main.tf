@@ -7,111 +7,6 @@ locals {
   resources_name = "${local.namespace}-${local.stage}"
 }
 
-# module "vpc" {
-#   source  = "terraform-aws-modules/vpc/aws"
-#   version = "~> 2.9.0"
-#   name    = local.resources_name
-
-#   cidr = "10.1.0.0/16"
-
-#   azs             = ["${local.region}a", "${local.region}b"]
-#   private_subnets = ["10.1.1.0/24", "10.1.2.0/24"]
-#   public_subnets  = ["10.1.11.0/24", "10.1.12.0/24"]
-
-#   tags = {
-#     Terraform   = "yes"
-#     Namespace   = local.namespace
-#     Environment = local.stage
-#   }
-
-#   vpc_tags = {
-#     Name = "ECS ${local.namespace} (${local.stage})"
-#   }
-# }
-
-# resource "aws_default_route_table" "default" {
-#   default_route_table_id = module.vpc.default_route_table_id
-
-#   tags = {
-#     Name        = "${local.resources_name}-private"
-#     Terraform   = "yes"
-#     Namespace   = local.namespace
-#     Environment = local.stage
-#   }
-# }
-
-# resource "aws_default_network_acl" "default" {
-#   default_network_acl_id = module.vpc.default_network_acl_id
-
-#   ingress {
-#     protocol   = -1
-#     rule_no    = 100
-#     action     = "allow"
-#     cidr_block = "0.0.0.0/0"
-#     from_port  = 0
-#     to_port    = 0
-#   }
-
-#   egress {
-#     protocol   = -1
-#     rule_no    = 100
-#     action     = "allow"
-#     cidr_block = "0.0.0.0/0"
-#     from_port  = 0
-#     to_port    = 0
-#   }
-
-#   tags = {
-#     Name        = local.resources_name
-#     Terraform   = "yes"
-#     Namespace   = local.namespace
-#     Environment = local.stage
-#   }
-
-#   lifecycle {
-#     ignore_changes = ["subnet_ids"]
-#   }
-# }
-
-# resource "aws_default_security_group" "default" {
-#   vpc_id = module.vpc.vpc_id
-
-#   ingress {
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-
-#   # ingress {
-#   #   from_port   = 80
-#   #   to_port     = 80
-#   #   protocol    = "tcp"
-#   #   cidr_blocks = ["0.0.0.0/0"]
-#   # }
-
-#   # ingress {
-#   #   from_port   = 22
-#   #   to_port     = 22
-#   #   protocol    = "tcp"
-#   #   cidr_blocks = ["0.0.0.0/0"]
-#   # }
-
-#   egress {
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-
-#   tags = {
-#     Name        = local.resources_name
-#     Terraform   = "yes"
-#     Namespace   = local.namespace
-#     Environment = local.stage
-#   }
-# }
-
 #----- ECS  Services--------
 
 # We have one ECS cluster that instances will register with
@@ -119,13 +14,15 @@ resource "aws_ecs_cluster" "cluster" {
   name = local.namespace
 }
 
-module "ecs-services" {
-  source     = "./stage/ecs-services"
+module "ecs-sso-services" {
+  source     = "../ecs-sso-services"
   cluster_id = aws_ecs_cluster.cluster.id
+  repository_url = var.sso_repository_url
+  mongodb = var.sso_mongodb
 }
 
 module "ec2-profile" {
-  source = "./modules/ecs-instance-profile"
+  source = "../ecs-instance-profile"
   name   = local.namespace
 }
 
