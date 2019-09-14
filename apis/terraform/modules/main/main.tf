@@ -21,11 +21,6 @@ module "ecs-sso-services" {
   mongodb        = var.sso_mongodb
 }
 
-module "ec2-profile" {
-  source = "../ecs-instance-profile"
-  name   = local.namespace
-}
-
 module "instances" {
   source    = "../ec2_instances_manual"
   stage     = local.stage
