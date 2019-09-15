@@ -28,6 +28,7 @@ resource "aws_ecs_task_definition" "tripbff-traefik" {
         "--api.entryPoint=traefik",
         "--ping",
         "--ping.entrypoint=http",
+        "--ecs",
         "--ecs.clusters=${var.ecs_cluster_name}",
         "--ecs.exposedbydefault=false",
         "--ecs.region=${var.ecs_cluster_region}",
@@ -40,7 +41,7 @@ resource "aws_ecs_task_definition" "tripbff-traefik" {
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "ecs/${aws_cloudwatch_log_group.log1.name}",
+          "awslogs-group": "${aws_cloudwatch_log_group.log1.name}",
           "awslogs-region": "ap-southeast-1",
           "awslogs-stream-prefix": "ecs"
         }
@@ -67,7 +68,7 @@ resource "aws_ecs_task_definition" "tripbff-traefik" {
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "ecs/${aws_cloudwatch_log_group.log1.name}",
+          "awslogs-group": "${aws_cloudwatch_log_group.log1.name}",
           "awslogs-region": "ap-southeast-1",
           "awslogs-stream-prefix": "ecs"
         }

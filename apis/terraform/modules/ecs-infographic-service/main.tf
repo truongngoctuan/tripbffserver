@@ -39,7 +39,7 @@ resource "aws_ecs_task_definition" "tripbff-infographic" {
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "ecs/${aws_cloudwatch_log_group.log1.name}",
+          "awslogs-group": "${aws_cloudwatch_log_group.log1.name}",
           "awslogs-region": "ap-southeast-1",
           "awslogs-stream-prefix": "ecs"
         }
@@ -63,7 +63,7 @@ resource "aws_ecs_task_definition" "tripbff-infographic" {
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "ecs/${aws_cloudwatch_log_group.log1.name}",
+          "awslogs-group": "${aws_cloudwatch_log_group.log1.name}",
           "awslogs-region": "ap-southeast-1",
           "awslogs-stream-prefix": "ecs"
         }

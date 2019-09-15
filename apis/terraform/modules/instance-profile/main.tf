@@ -24,11 +24,42 @@ resource "aws_iam_instance_profile" "this" {
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_ec2_role" {
-  role = aws_iam_role.this.id
+  role       = aws_iam_role.this.id
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_ec2_cloudwatch_role" {
-  role = aws_iam_role.this.id
+  role       = aws_iam_role.this.id
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+}
+
+# ------traefik
+
+data "aws_iam_policy_document" "traefik" {
+  statement {
+    sid    = "TraefikECSReadAccess"
+    effect = "Allow"
+
+    actions = [
+      "ecs:ListClusters",
+      "ecs:DescribeClusters",
+      "ecs:ListTasks",
+      "ecs:DescribeTasks",
+      "ecs:DescribeContainerInstances",
+      "ecs:DescribeTaskDefinition",
+      "ec2:DescribeInstances",
+    ]
+
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "traefik_ecs_exec_role_additions" {
+  name   = "traefik-policy"
+  policy = "${data.aws_iam_policy_document.traefik.json}"
+}
+
+resource "aws_iam_role_policy_attachment" "traefik_ecs_exec_role_additions" {
+  role       = aws_iam_role.this.id
+  policy_arn = "${aws_iam_policy.traefik_ecs_exec_role_additions.arn}"
 }

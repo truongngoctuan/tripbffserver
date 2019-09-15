@@ -44,21 +44,23 @@ resource "aws_instance" "one" {
   ami           = data.aws_ami.amazon_linux_ecs.id
   instance_type = "t2.nano"
 
-  security_groups             = [aws_security_group.mesh-vpc-security-group.id]
+  # security_groups             = [aws_security_group.mesh-vpc-security-group.id]
   iam_instance_profile        = module.ec2-profile.this_iam_instance_profile_id
   user_data                   = data.template_file.user_data.rendered
   key_name                    = "tripbff-ec2-key-pair"
-  associate_public_ip_address = true
+  # associate_public_ip_address = true
+  vpc_security_group_ids = [aws_security_group.mesh-vpc-security-group.id]
+  subnet_id = "${aws_subnet.mesh-vpc-subnet1.id}"
 
-  network_interface {
-    network_interface_id = "${aws_network_interface.foo.id}"
-    device_index         = 0
-  }
+  # network_interface {
+  #   network_interface_id = "${aws_network_interface.foo.id}"
+  #   device_index         = 0
+  # }
 
-  network_interface {
-    network_interface_id = "${aws_network_interface.foo2.id}"
-    device_index         = 1
-  }
+  # network_interface {
+  #   network_interface_id = "${aws_network_interface.foo2.id}"
+  #   device_index         = 1
+  # }
 
   tags = {
     Environment = var.stage
