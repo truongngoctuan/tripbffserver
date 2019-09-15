@@ -1,3 +1,7 @@
+variable "domain" {
+  description = "domain for traefik"
+  type        = string
+}
 variable "region" {
   default = "ap-southeast-1"
 }
@@ -9,7 +13,7 @@ variable "aws_region" {
 
 variable "ecs_task_execution_role_name" {
   description = "ECS task execution role name"
-  default = "myEcsTaskExecutionRole"
+  default     = "myEcsTaskExecutionRole"
 }
 
 # variable "ecs_auto_scale_role_name" {
@@ -57,5 +61,5 @@ variable "lottie_web_repository_url" {
 
 variable "mongodb" {
   description = "sso mongodb connection string"
-  type = string
+  type        = string
 }

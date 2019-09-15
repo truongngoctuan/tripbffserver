@@ -22,6 +22,16 @@ module "ecs-traefik-services" {
   cluster_id         = aws_ecs_cluster.cluster.id
   ecs_cluster_name   = aws_ecs_cluster.cluster.name
   ecs_cluster_region = local.region
+  domain             = var.domain
+  # http://ec2-18-136-37-156.ap-southeast-1.compute.amazonaws.com
+  # domain = "ec2-${replace(module.instances.eip_public_ip, ".", "-")}.ap-southeast-1.compute.amazonaws.com"
+}
+
+
+module "ecs-traefik-whoami-services" {
+  source             = "../ecs-traefik-whoami-service"
+  cluster_id         = aws_ecs_cluster.cluster.id
+  domain             = var.domain
 }
 
 # module "ecs-sso-services" {

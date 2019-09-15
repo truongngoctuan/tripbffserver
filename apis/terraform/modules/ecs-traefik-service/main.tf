@@ -46,33 +46,6 @@ resource "aws_ecs_task_definition" "tripbff-traefik" {
           "awslogs-stream-prefix": "ecs"
         }
       }
-    },
-    {
-      "name": "tripbff-whoami-container",
-      "image": "containous/whoami",
-      "cpu": 0,
-      "essential": true,
-      "portMappings": [
-        {
-          "hostPort": 0,
-          "protocol": "tcp",
-          "containerPort": 80
-        }
-      ],
-      "environment": [],
-      "labels": [
-        "traefik.frontend.rule=Host:whoami.localhost",
-        "traefik.backend.rule=Host:whoami.localhost"
-      ],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "secretOptions": null,
-        "options": {
-          "awslogs-group": "${aws_cloudwatch_log_group.log1.name}",
-          "awslogs-region": "ap-southeast-1",
-          "awslogs-stream-prefix": "ecs"
-        }
-      }
     }
   ]
   DEFINITION
