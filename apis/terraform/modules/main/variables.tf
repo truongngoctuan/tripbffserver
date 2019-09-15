@@ -42,7 +42,12 @@ variable "sso_repository_url" {
   type        = string
 }
 
-variable "sso_mongodb" {
+variable "trip_api_repository_url" {
+  description = "trip-api repository"
+  type        = string
+}
+
+variable "mongodb" {
   description = "sso mongodb connection string"
   type = string
 }

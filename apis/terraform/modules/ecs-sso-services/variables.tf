@@ -10,5 +10,5 @@ variable "repository_url" {
 
 variable "mongodb" {
   description = "mongodb connection string"
-  type = string
+  type        = string
 }

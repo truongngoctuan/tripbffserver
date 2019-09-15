@@ -18,7 +18,18 @@ module "ecs-sso-services" {
   source         = "../ecs-sso-services"
   cluster_id     = aws_ecs_cluster.cluster.id
   repository_url = var.sso_repository_url
-  mongodb        = var.sso_mongodb
+  mongodb        = var.mongodb
+}
+
+module "ecs-trip_api-services" {
+  source         = "../ecs-trip-api-services"
+  cluster_id     = aws_ecs_cluster.cluster.id
+  repository_url = var.trip_api_repository_url
+  mongodb        = var.mongodb
+  api_redis_gateway = module.instances.eip_public_ip
+  api_redis_gateway_port = 6379
+  api_trip_api_gateway = module.instances.eip_public_ip
+  api_trip_api_gateway_port = 8000
 }
 
 module "instances" {
