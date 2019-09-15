@@ -11,3 +11,11 @@ variable "sso_repository_url" {
 variable "trip_api_repository_url" {
   default = "883134154478.dkr.ecr.ap-southeast-1.amazonaws.com/tripbff/trip-api"
 }
+
+variable "infographic_repository_url" {
+  default = "883134154478.dkr.ecr.ap-southeast-1.amazonaws.com/tripbff/infographic"
+}
+
+variable "lottie_web_repository_url" {
+  default = "883134154478.dkr.ecr.ap-southeast-1.amazonaws.com/tripbff/lottie-web"
+}

@@ -4,7 +4,7 @@ variable "cluster_id" {
 }
 
 variable "repository_url" {
-  description = "repository url for sso service"
+  description = "repository url"
   type        = string
 }
 

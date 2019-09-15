@@ -46,6 +46,14 @@ variable "trip_api_repository_url" {
   description = "trip-api repository"
   type        = string
 }
+variable "infographic_repository_url" {
+  description = "infographic repository"
+  type        = string
+}
+variable "lottie_web_repository_url" {
+  description = "lottie_web repository"
+  type        = string
+}
 
 variable "mongodb" {
   description = "sso mongodb connection string"

@@ -36,7 +36,7 @@ resource "aws_network_interface" "foo2" {
 }
 
 module "ec2-profile" {
-  source = "../ecs-instance-profile"
+  source = "../instance-profile"
   name   = var.namespace
 }
 
