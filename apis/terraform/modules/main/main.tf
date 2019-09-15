@@ -14,6 +14,16 @@ resource "aws_ecs_cluster" "cluster" {
   name = local.namespace
 }
 
+#----- ECS  Services: API gateway + load balancing--------
+
+
+module "ecs-traefik-services" {
+  source             = "../ecs-traefik-service"
+  cluster_id         = aws_ecs_cluster.cluster.id
+  ecs_cluster_name   = aws_ecs_cluster.cluster.name
+  ecs_cluster_region = local.region
+}
+
 module "ecs-sso-services" {
   source         = "../ecs-sso-service"
   cluster_id     = aws_ecs_cluster.cluster.id
@@ -22,28 +32,28 @@ module "ecs-sso-services" {
 }
 
 module "ecs-trip_api-services" {
-  source         = "../ecs-trip-api-service"
-  cluster_id     = aws_ecs_cluster.cluster.id
-  repository_url = var.trip_api_repository_url
-  mongodb        = var.mongodb
-  api_redis_gateway = module.instances.eip_public_ip
-  api_redis_gateway_port = 6379
-  api_trip_api_gateway = module.instances.eip_public_ip
+  source                    = "../ecs-trip-api-service"
+  cluster_id                = aws_ecs_cluster.cluster.id
+  repository_url            = var.trip_api_repository_url
+  mongodb                   = var.mongodb
+  api_redis_gateway         = module.instances.eip_public_ip
+  api_redis_gateway_port    = 6379
+  api_trip_api_gateway      = module.instances.eip_public_ip
   api_trip_api_gateway_port = 8000
 }
 
 module "ecs-infographic-services" {
-  source         = "../ecs-infographic-service"
-  cluster_id     = aws_ecs_cluster.cluster.id
-  repository_url = var.infographic_repository_url
+  source                    = "../ecs-infographic-service"
+  cluster_id                = aws_ecs_cluster.cluster.id
+  repository_url            = var.infographic_repository_url
   lottie_web_repository_url = var.lottie_web_repository_url
-  
-  mongodb        = var.mongodb
-  api_redis_gateway = module.instances.eip_public_ip
-  api_redis_gateway_port = 6379
-  api_trip_api_gateway = module.instances.eip_public_ip
-  api_trip_api_gateway_port = 8000
-  api_lottie_web_gateway = module.instances.eip_public_ip
+
+  mongodb                     = var.mongodb
+  api_redis_gateway           = module.instances.eip_public_ip
+  api_redis_gateway_port      = 6379
+  api_trip_api_gateway        = module.instances.eip_public_ip
+  api_trip_api_gateway_port   = 8000
+  api_lottie_web_gateway      = module.instances.eip_public_ip
   api_lottie_web_gateway_port = 4050
 }
 

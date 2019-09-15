@@ -1,0 +1,94 @@
+resource "aws_ecs_task_definition" "tripbff-traefik" {
+  family                = "tripbff-traefik"
+  memory                = 128
+  container_definitions = <<DEFINITION
+  [
+    {
+      "name": "tripbff-traefik-container",
+      "image": "traefik:1.7-alpine",
+      "cpu": 0,
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "protocol": "tcp",
+          "containerPort": 80
+        },
+        {
+          "hostPort": 8080,
+          "protocol": "tcp",
+          "containerPort": 8080
+        }
+      ],
+      "command": [
+        "--loglevel=${var.log_level}",
+        "--traefikLog.format=${var.log_format}",
+        "--api",
+        "--api.dashboard=true",
+        "--api.entryPoint=traefik",
+        "--ping",
+        "--ping.entrypoint=http",
+        "--ecs.clusters=${var.ecs_cluster_name}",
+        "--ecs.exposedbydefault=false",
+        "--ecs.region=${var.ecs_cluster_region}",
+        "--defaultentrypoints=http",
+        "--entryPoints=Name:http Address::80",
+        "--entryPoints=Name:traefik Address::8080"
+      ],
+      "environment": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "secretOptions": null,
+        "options": {
+          "awslogs-group": "ecs/${aws_cloudwatch_log_group.log1.name}",
+          "awslogs-region": "ap-southeast-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    },
+    {
+      "name": "tripbff-whoami-container",
+      "image": "containous/whoami",
+      "cpu": 0,
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 0,
+          "protocol": "tcp",
+          "containerPort": 80
+        }
+      ],
+      "environment": [],
+      "labels": [
+        "traefik.frontend.rule=Host:whoami.localhost",
+        "traefik.backend.rule=Host:whoami.localhost"
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "secretOptions": null,
+        "options": {
+          "awslogs-group": "ecs/${aws_cloudwatch_log_group.log1.name}",
+          "awslogs-region": "ap-southeast-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+  DEFINITION
+}
+
+resource "aws_cloudwatch_log_group" "log1" {
+  name              = "tripbff-traefik"
+  retention_in_days = 14
+}
+
+resource "aws_ecs_service" "tripbff-traefik-service" {
+  name            = "tripbff-traefik-service"
+  cluster         = var.cluster_id
+  task_definition = aws_ecs_task_definition.tripbff-traefik.arn
+
+  desired_count = 1
+
+  deployment_maximum_percent         = 100
+  deployment_minimum_healthy_percent = 0
+}
