@@ -1,16 +1,15 @@
 resource "aws_ecs_task_definition" "tripbff-sso" {
   family                = "tripbff-sso"
-  memory                = 128
   container_definitions = <<DEFINITION
   [
     {
       "name": "tripbff-sso-container",
       "image": "${var.repository_url}:latest",
-      "cpu": 0,
+      "memoryReservation": 64,
       "essential": true,
       "portMappings": [
         {
-          "hostPort": 3000,
+          "hostPort": 0,
           "protocol": "tcp",
           "containerPort": 80
         }
@@ -29,29 +28,11 @@ resource "aws_ecs_task_definition" "tripbff-sso" {
           "value": "80"
         }
       ],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "secretOptions": null,
-        "options": {
-          "awslogs-group": "${aws_cloudwatch_log_group.log1.name}",
-          "awslogs-region": "ap-southeast-1",
-          "awslogs-stream-prefix": "ecs"
-        }
-      }
-    },
-    {
-      "name": "tripbff-redis-container",
-      "image": "redis:4-alpine",
-      "cpu": 0,
-      "essential": true,
-      "portMappings": [
-        {
-          "hostPort": 6379,
-          "protocol": "tcp",
-          "containerPort": 6379
-        }
-      ],
-      "environment": [],
+      "dockerLabels": {
+        "traefik.enable": "true",
+        "traefik.frontend.rule": "Host: ${var.sub_domain}.${var.domain}",
+        "traefik.backend.rule": "Host: ${var.sub_domain}.${var.domain}"
+      },
       "logConfiguration": {
         "logDriver": "awslogs",
         "secretOptions": null,

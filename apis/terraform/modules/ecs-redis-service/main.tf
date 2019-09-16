@@ -1,25 +1,20 @@
-resource "aws_ecs_task_definition" "tripbff-whoami" {
-  family                = "tripbff-whoami"
+resource "aws_ecs_task_definition" "tripbff-redis" {
+  family                = "tripbff-redis"
   container_definitions = <<DEFINITION
   [
     {
-      "name": "tripbff-whoami-container",
-      "image": "containous/whoami",
-      "memoryReservation": 16,
+      "name": "tripbff-redis-container",
+      "image": "redis:4-alpine",
+      "memoryReservation": 32,
       "essential": true,
       "portMappings": [
         {
-          "hostPort": 0,
+          "hostPort": 6379,
           "protocol": "tcp",
-          "containerPort": 80
+          "containerPort": 6379
         }
       ],
       "environment": [],
-      "dockerLabels": {
-        "traefik.enable": "true",
-        "traefik.frontend.rule": "Host: whoami.${var.domain}",
-        "traefik.backend.rule": "Host: whoami.${var.domain}"
-      },
       "logConfiguration": {
         "logDriver": "awslogs",
         "secretOptions": null,
@@ -35,16 +30,16 @@ resource "aws_ecs_task_definition" "tripbff-whoami" {
 }
 
 resource "aws_cloudwatch_log_group" "log1" {
-  name              = "tripbff-whoami"
+  name              = "tripbff-redis"
   retention_in_days = 14
 }
 
-resource "aws_ecs_service" "tripbff-whoami-service" {
-  name            = "tripbff-whoami-service"
+resource "aws_ecs_service" "tripbff-redis-service" {
+  name            = "tripbff-redis-service"
   cluster         = var.cluster_id
-  task_definition = aws_ecs_task_definition.tripbff-whoami.arn
+  task_definition = aws_ecs_task_definition.tripbff-redis.arn
 
-  desired_count = 2
+  desired_count = 1
 
   deployment_maximum_percent         = 100
   deployment_minimum_healthy_percent = 0

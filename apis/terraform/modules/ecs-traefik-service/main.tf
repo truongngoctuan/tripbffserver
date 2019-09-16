@@ -1,12 +1,11 @@
 resource "aws_ecs_task_definition" "tripbff-traefik" {
   family                = "tripbff-traefik"
-  memory                = 128
   container_definitions = <<DEFINITION
   [
     {
       "name": "tripbff-traefik-container",
       "image": "traefik:1.7-alpine",
-      "cpu": 0,
+      "memoryReservation": 32,
       "essential": true,
       "portMappings": [
         {

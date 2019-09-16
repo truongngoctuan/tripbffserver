@@ -1,16 +1,15 @@
 resource "aws_ecs_task_definition" "tripbff-trip-api" {
   family                = "tripbff-trip-api"
-  memory                = 256
   container_definitions = <<DEFINITION
   [
     {
       "name": "tripbff-trip-api-container",
       "image": "${var.repository_url}:latest",
-      "cpu": 0,
+      "memoryReservation": 96,
       "essential": true,
       "portMappings": [
         {
-          "hostPort": 8000,
+          "hostPort": 0,
           "protocol": "tcp",
           "containerPort": 80
         }
@@ -18,11 +17,11 @@ resource "aws_ecs_task_definition" "tripbff-trip-api" {
       "environment": [
         {
           "name": "AWS_ACCESS_KEY_ID",
-          "value": "AKIA4TON7PMDXZCP4Z64"
+          "value": "AKIA43HXFY3XFFFG5GRX"
         },
         {
           "name": "AWS_SECRET_ACCESS_KEY",
-          "value": "+Vm3RFYoBcFjVOSPU2yAcrQVC8sQXxxdNiBOHQ/N"
+          "value": "J2bWDomom6mwL8UZEtLvaTvyMMjnwphxs5ifM1rf"
         },
         {
           "name": "S3_BUCKET",
@@ -58,6 +57,11 @@ resource "aws_ecs_task_definition" "tripbff-trip-api" {
           "value": "${var.api_trip_api_gateway_port}"
         }
       ],
+      "dockerLabels": {
+        "traefik.enable": "true",
+        "traefik.frontend.rule": "Host: ${var.sub_domain}.${var.domain}",
+        "traefik.backend.rule": "Host: ${var.sub_domain}.${var.domain}"
+      },
       "logConfiguration": {
         "logDriver": "awslogs",
         "secretOptions": null,
