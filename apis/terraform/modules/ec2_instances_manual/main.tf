@@ -42,7 +42,7 @@ module "ec2-profile" {
 
 resource "aws_instance" "one" {
   ami           = data.aws_ami.amazon_linux_ecs.id
-  instance_type = "t2.nano"
+  instance_type = "t2.micro"
 
   # security_groups             = [aws_security_group.mesh-vpc-security-group.id]
   iam_instance_profile        = module.ec2-profile.this_iam_instance_profile_id

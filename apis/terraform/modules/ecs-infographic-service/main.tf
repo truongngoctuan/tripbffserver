@@ -1,12 +1,13 @@
+    
+
 resource "aws_ecs_task_definition" "tripbff-infographic" {
   family                = "tripbff-infographic"
-  memory                = 256
   container_definitions = <<DEFINITION
   [
     {
       "name": "tripbff-infographic-container",
       "image": "${var.repository_url}:latest",
-      "cpu": 0,
+      "memoryReservation": 160,
       "essential": true,
       "portMappings": [],
       "environment": [
@@ -35,6 +36,11 @@ resource "aws_ecs_task_definition" "tripbff-infographic" {
           "value": "${var.api_trip_api_gateway_port}"
         }
       ],
+      "dockerLabels": {
+        "traefik.enable": "true",
+        "traefik.frontend.rule": "Host: ${var.sub_domain}.${var.domain}",
+        "traefik.backend.rule": "Host: ${var.sub_domain}.${var.domain}"
+      },
       "logConfiguration": {
         "logDriver": "awslogs",
         "secretOptions": null,
@@ -48,17 +54,22 @@ resource "aws_ecs_task_definition" "tripbff-infographic" {
     {
       "name": "tripbff-lottie-web-container",
       "image": "${var.lottie_web_repository_url}:latest",
-      "cpu": 0,
+      "memoryReservation": 32,
       "essential": true,
       "portMappings": [
         {
-          "hostPort": 4050,
+          "hostPort": 0,
           "protocol": "tcp",
           "containerPort": 80
         }
       ],
       "environment": [
       ],
+      "dockerLabels": {
+        "traefik.enable": "true",
+        "traefik.frontend.rule": "Host: ${var.lottie_sub_domain}.${var.domain}",
+        "traefik.backend.rule": "Host: ${var.lottie_sub_domain}.${var.domain}"
+      },
       "logConfiguration": {
         "logDriver": "awslogs",
         "secretOptions": null,
