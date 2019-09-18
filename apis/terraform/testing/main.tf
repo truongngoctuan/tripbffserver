@@ -11,8 +11,10 @@ locals {
 
 module "this" {
   source = "../modules/main"
+  stage = "pre-inte"
 
   sso_repository_url         = var.sso_repository_url # module.repos.sso_repository_url
+  redis_repository_url    = var.redis_repository_url
   trip_api_repository_url    = var.trip_api_repository_url
   infographic_repository_url = var.infographic_repository_url
   lottie_web_repository_url  = var.lottie_web_repository_url

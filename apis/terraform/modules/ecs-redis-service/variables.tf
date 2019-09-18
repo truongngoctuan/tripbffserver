@@ -13,3 +13,8 @@ variable "cluster_id" {
   description = "The ECS cluster ID"
   type        = string
 }
+
+variable "repository_url" {
+  description = "repository url"
+  type        = string
+}

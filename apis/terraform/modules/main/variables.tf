@@ -1,7 +1,13 @@
+variable "stage" {
+  description = "domain for traefik"
+  type        = string
+}
+
 variable "domain" {
   description = "domain for traefik"
   type        = string
 }
+
 variable "region" {
   default = "ap-southeast-1"
 }
@@ -43,6 +49,11 @@ variable "az_count" {
 
 variable "sso_repository_url" {
   description = "sso repository"
+  type        = string
+}
+
+variable "redis_repository_url" {
+  description = "redis repository"
   type        = string
 }
 

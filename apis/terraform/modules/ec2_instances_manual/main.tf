@@ -47,7 +47,7 @@ resource "aws_instance" "one" {
   # security_groups             = [aws_security_group.mesh-vpc-security-group.id]
   iam_instance_profile        = module.ec2-profile.this_iam_instance_profile_id
   user_data                   = data.template_file.user_data.rendered
-  key_name                    = "tripbff-ec2-key-pair"
+  key_name                    = "tripbff-ec2-key-pair" # todo abstract this to var
   # associate_public_ip_address = true
   vpc_security_group_ids = [aws_security_group.mesh-vpc-security-group.id]
   subnet_id = "${aws_subnet.mesh-vpc-subnet1.id}"
@@ -72,6 +72,6 @@ data "template_file" "user_data" {
   template = file("${path.module}/user-data.sh")
 
   vars = {
-    cluster_name = var.namespace
+    cluster_name = "${var.namespace}-${var.stage}"
   }
 }

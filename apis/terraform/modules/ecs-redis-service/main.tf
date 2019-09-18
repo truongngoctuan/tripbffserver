@@ -4,7 +4,7 @@ resource "aws_ecs_task_definition" "tripbff-redis" {
   [
     {
       "name": "tripbff-redis-container",
-      "image": "redis:4-alpine",
+      "image": "${var.repository_url}",
       "memoryReservation": 32,
       "essential": true,
       "portMappings": [

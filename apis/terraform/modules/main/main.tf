@@ -1,17 +1,22 @@
 locals {
   region    = "ap-southeast-1"
   namespace = "tripbff"
-  stage     = "dev"
+  stage     = var.stage
 
   # This is the convention we use to know what belongs to each other
   resources_name = "${local.namespace}-${local.stage}"
+}
+
+#----- S3--------
+module "ecs-traefik-services" {
+  source             = "../s3"
 }
 
 #----- ECS  Services--------
 
 # We have one ECS cluster that instances will register with
 resource "aws_ecs_cluster" "cluster" {
-  name = local.namespace
+  name = local.resources_name
 }
 
 #----- ECS  Services: API gateway + load balancing--------
@@ -43,9 +48,10 @@ module "ecs-sso-services" {
 }
 
 module "ecs-redis-services" {
-  source     = "../ecs-redis-service"
-  cluster_id = aws_ecs_cluster.cluster.id
-  domain     = var.domain
+  source         = "../ecs-redis-service"
+  cluster_id     = aws_ecs_cluster.cluster.id
+  domain         = var.domain
+  repository_url = var.redis_repository_url
 }
 
 module "ecs-trip_api-services" {
@@ -55,9 +61,9 @@ module "ecs-trip_api-services" {
   mongodb                   = var.mongodb
   domain                    = var.domain
   api_redis_gateway         = module.instances.private_ip # module.instances.eip_public_ip
-  api_redis_gateway_port    = 6379                            # 6379
-  api_trip_api_gateway      = "trip-api.${var.domain}"        # module.instances.eip_public_ip
-  api_trip_api_gateway_port = 80                              # 8000
+  api_redis_gateway_port    = 6379                        # 6379
+  api_trip_api_gateway      = "trip-api.${var.domain}"    # module.instances.eip_public_ip
+  api_trip_api_gateway_port = 80                          # 8000
 }
 
 module "ecs-infographic-services" {
