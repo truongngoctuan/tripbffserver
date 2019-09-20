@@ -6,13 +6,11 @@ variable "region" {
 variable "aws_id" {
   type        = "string"
   description = "AWS_ACCESS_KEY_ID"
-  default = "AKIA43HXFY3XFFFG5GRX"
 }
 
 variable "aws_key" {
   type        = "string"
   description = "AWS_SECRET_ACCESS_KEY"
-  default = "J2bWDomom6mwL8UZEtLvaTvyMMjnwphxs5ifM1rf"
 }
 
 # ---------SSO------------
