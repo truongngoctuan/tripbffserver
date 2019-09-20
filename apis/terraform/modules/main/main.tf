@@ -8,8 +8,11 @@ locals {
 }
 
 #----- S3--------
-module "ecs-traefik-services" {
-  source             = "../s3"
+module "s3-bucket" {
+  source = "../s3"
+
+  name  = local.namespace
+  stage = local.stage
 }
 
 #----- ECS  Services--------
@@ -55,7 +58,10 @@ module "ecs-redis-services" {
 }
 
 module "ecs-trip_api-services" {
-  source                    = "../ecs-trip-api-service"
+  source = "../ecs-trip-api-service"
+
+  name                      = local.namespace
+  stage                     = var.stage
   cluster_id                = aws_ecs_cluster.cluster.id
   repository_url            = var.trip_api_repository_url
   mongodb                   = var.mongodb
@@ -64,6 +70,8 @@ module "ecs-trip_api-services" {
   api_redis_gateway_port    = 6379                        # 6379
   api_trip_api_gateway      = "trip-api.${var.domain}"    # module.instances.eip_public_ip
   api_trip_api_gateway_port = 80                          # 8000
+  aws_id                    = var.aws_id
+  aws_key                   = var.aws_key
 }
 
 module "ecs-infographic-services" {

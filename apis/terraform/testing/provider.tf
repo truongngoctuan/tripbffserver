@@ -3,5 +3,5 @@
 provider "aws" {
   shared_credentials_file = "$HOME/.aws/credentials"
   profile                 = "tripbff-test"
-  region                  = var.aws_region
+  region                  = var.region
 }

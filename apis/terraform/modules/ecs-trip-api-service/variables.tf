@@ -1,3 +1,13 @@
+variable "name" {
+  description = "name"
+  type        = string
+}
+
+variable "stage" {
+  description = "env"
+  type        = string
+}
+
 variable "domain" {
   type        = "string"
   description = "domain name, for example http://ec2-18-136-37-156.ap-southeast-1.compute.amazonaws.com"
@@ -9,24 +19,34 @@ variable "sub_domain" {
   default = "trip-api"
 }
 
+variable "aws_id" {
+  type        = "string"
+  description = "AWS_ACCESS_KEY_ID"
+}
+
+variable "aws_key" {
+  type        = "string"
+  description = "AWS_SECRET_ACCESS_KEY"
+}
+
 variable "cluster_id" {
   description = "The ECS cluster ID"
-  type        = string
+  type        = "string"
 }
 
 variable "repository_url" {
   description = "repository url"
-  type        = string
+  type        = "string"
 }
 
 variable "mongodb" {
   description = "mongodb connection string"
-  type        = string
+  type        = "string"
 }
 
 variable "api_redis_gateway" {
   description = "api gateway, with an assumption from traefik"
-  type        = string
+  type        = "string"
   default     = "18.140.37.188"
 }
 

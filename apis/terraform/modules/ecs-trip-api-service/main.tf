@@ -17,15 +17,15 @@ resource "aws_ecs_task_definition" "tripbff-trip-api" {
       "environment": [
         {
           "name": "AWS_ACCESS_KEY_ID",
-          "value": "AKIA43HXFY3XFFFG5GRX"
+          "value": "${var.aws_id}"
         },
         {
           "name": "AWS_SECRET_ACCESS_KEY",
-          "value": "J2bWDomom6mwL8UZEtLvaTvyMMjnwphxs5ifM1rf"
+          "value": "${var.aws_key}"
         },
         {
           "name": "S3_BUCKET",
-          "value": "tripbff-inte"
+          "value": "${var.name}-${var.stage}"
         },
         {
           "name": "S3_REGION",
