@@ -1,13 +1,3 @@
-locals {
-  domain = "tntuan.tk"
-}
-
-# module "repos" {
-#   source = "../modules/ecr"
-# }
-
-# https://medium.com/@kcabading/getting-a-free-domain-for-your-ec2-instance-3ac2955b0a2f
-# how to link tk domain to aws
 
 module "this" {
   source = "../modules/main"
@@ -22,5 +12,5 @@ module "this" {
   domain                     = local.domain
   aws_id                     = var.aws_id
   aws_key                    = var.aws_key
-  aws_account_code = "arn:aws:iam::883134154478:user/dev-access"
+  aws_account_code = "arn:aws:iam::866404760327:user/tripbff-dev-access"
 }

@@ -11,8 +11,9 @@ locals {
 module "s3-bucket" {
   source = "../s3"
 
-  name  = local.namespace
-  stage = local.stage
+  name             = local.namespace
+  stage            = local.stage
+  aws_account_code = var.aws_account_code
 }
 
 #----- ECS  Services--------

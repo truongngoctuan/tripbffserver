@@ -23,6 +23,11 @@ variable "aws_key" {
   description = "AWS_SECRET_ACCESS_KEY"
 }
 
+variable "aws_account_code" {
+  description = "account code used to grant permission, For example: arn:aws:iam::xxx:user/yyy"
+  type        = string
+}
+
 variable "ecs_task_execution_role_name" {
   description = "ECS task execution role name"
   default     = "myEcsTaskExecutionRole"
