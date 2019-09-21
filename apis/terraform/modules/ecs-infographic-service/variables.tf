@@ -12,7 +12,7 @@ variable "sub_domain" {
 variable "lottie_sub_domain" {
   type        = "string"
   description = "sub domain name, for example whoami"
-  default     = "lottie"
+  default     = "lottie-web"
 }
 
 variable "cluster_id" {
