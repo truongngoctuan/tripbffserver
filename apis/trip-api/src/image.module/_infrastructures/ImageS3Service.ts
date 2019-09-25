@@ -22,9 +22,13 @@ export class ImageS3Service implements IImageService {
 
   async internalSaveThumbnail(fromUri: string, toUri: string, w: number, h: number): Promise<void> {
     const buf = await read(fromUri);
+
+    // https://sharp.pixelplumbing.com/en/stable/api-operation/#rotate
+    // rotate will implicitly using EXIF orientation, so we don't need to use withMetadata anymore
     const thumbnailBuf = await sharp(buf, { failOnError: false })
+    .rotate()
     .resize(w, h)
-    .withMetadata()
+    // .withMetadata()
     .toBuffer();
 
     await writeBuffer(toUri, thumbnailBuf);
