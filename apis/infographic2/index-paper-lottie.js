@@ -26,7 +26,7 @@ const canvas2 = document.querySelector("canvas");
 // var canvas2 = new paper.Canvas(500, 500);
 
 // ------use lottie-web
-// lottie only work with this canvas, so after draw, 
+// lottie only work with this canvas, so after draw,
 // I load this canvas as an raster image then render it in the main canvas
 const lottie = require("lottie-node");
 const canvas = createCanvas(w || 100, h || 100);
@@ -55,12 +55,8 @@ var raster = new paper.Raster({
 raster.onLoad = function(e) {
   console.log("sss.", e);
   paper.view.draw(); //this needed to render image with data, otherwise nothing will show
-};
 
-// // Draw the view now:
-paper.view.draw();
-
-setTimeout(() => {
+  // setTimeout(() => {
   // var base64Data = canvas2.toDataURL().replace(/^data:image\/png;base64,/, "");
 
   // fs.writeFile("test.png", base64Data, "base64", function(err) {
@@ -74,4 +70,8 @@ setTimeout(() => {
     `TIMER ${new Date().getTime() -
       startTimer} ms: complete rendering and export to png`
   );
-}, 2000);
+  // }, 2000);
+};
+
+// // Draw the view now:
+paper.view.draw();
