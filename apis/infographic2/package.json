@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "server": "http-server ./LottieWeb/ -p 4050",
+    "serve-paper": "nodemon --delay 100ms --watch . --exec node index-paper.js",
+    "serve-paper-lottie": "nodemon --delay 100ms --watch . --exec node index-paper-lottie.js",
     "serve-node-canvas": "nodemon --delay 100ms --watch . --exec node index-node-canvas.js",
+    "serve-fabric-lottie": "nodemon --delay 100ms --watch . --exec node index-fabric-lottie.js",
+    "serve-lottie-web": "nodemon --delay 100ms --watch . --exec node index-lottie-web.js",
     "serve-fabric": "nodemon --delay 100ms --watch . --exec node index-fabric2.js",
     "serve:production": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -28,6 +32,10 @@
     "btoa": "1.2.1",
     "canvg": "2.0.0",
     "xmldom": "0.1.27",
-    "svg2img": "0.6.1"
+    "svg2img": "0.6.1",
+    "lottie-web": "5.5.7",
+    "lottie-node": "1.0.0",
+    "paper": "0.12.3",
+    "paper-jsdom-canvas": "0.12.3"
   }
 }

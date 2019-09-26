@@ -276,6 +276,11 @@ btoa@1.2.1, btoa@^1.1.2:
   resolved "https://registry.yarnpkg.com/btoa/-/btoa-1.2.1.tgz#01a9909f8b2c93f6bf680ba26131eb30f7fa3d73"
   integrity sha512-SB4/MIGlsiVkMcHmT+pSmIPoNDoHg+7cMzmt3Uxt628MTz2487DKSqK/fuhFBrkuqrYv5UCEnACpF4dTFNKc/g==
 
+buffer-from@^1.0.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
+  integrity sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
+
 cache-base@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cache-base/-/cache-base-1.0.1.tgz#0a7f46416831c8b662ee36fe4e7c59d76f666ab2"
@@ -305,7 +310,7 @@ canvas@2.5.0:
     node-pre-gyp "^0.11.0"
     simple-get "^3.0.3"
 
-canvas@^2.0.0-alpha.13, canvas@^2.6.0:
+canvas@^2.0.0-alpha.13, canvas@^2.5.0, canvas@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/canvas/-/canvas-2.6.0.tgz#7a8f87b6148845d97e6ee30947fba1508bed4941"
   integrity sha512-bEO9f1ThmbknLPxCa8Es7obPlN9W3stB1bo7njlhOFKIdUTldeTqXCh9YclCPAi2pSQs84XA0jq/QEZXSzgyMw==
@@ -1292,7 +1297,7 @@ jsbn@~0.1.0:
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
   integrity sha1-peZUwuWi3rXyAdls77yoDA7y9RM=
 
-jsdom@15.1.1, jsdom@^15.1.0:
+jsdom@15.1.1, jsdom@^15.1.0, jsdom@^15.1.1:
   version "15.1.1"
   resolved "https://registry.yarnpkg.com/jsdom/-/jsdom-15.1.1.tgz#21ed01f81d95ef4327f3e564662aef5e65881252"
   integrity sha512-cQZRBB33arrDAeCrAEWn1U3SvrvC8XysBua9Oqg1yWrsY/gYcusloJC3RZJXuY5eehSCmws8f2YeliCqGSkrtQ==
@@ -1430,6 +1435,16 @@ lodash@^4.17.11:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+
+lottie-node@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/lottie-node/-/lottie-node-1.0.0.tgz#63c6c082720bb6c22663bb355dde9c6619c586e1"
+  integrity sha512-ysepTJgr9IrwOYKDWUjdJdlzrG2NqCgTUPFhViXSv29PyR6V/wyKBSSHUkYYTEW036pmwkh4EQlkuld18WP1QQ==
+
+lottie-web@5.5.7:
+  version "5.5.7"
+  resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.5.7.tgz#a8341487be1c31915fb3a784c3ec25fd6c9468df"
+  integrity sha512-NqXq1AncbLvUXHzQwpNMv4ySLOj6IWXOuN8GZbz6e3lMfw6y93rrxVhwYTPudQ8VKAYLjwu72cZiPQgcDt+mPg==
 
 lowercase-keys@^1.0.0:
   version "1.0.1"
@@ -1819,6 +1834,21 @@ package-json@^4.0.0:
     registry-auth-token "^3.0.1"
     registry-url "^3.0.3"
     semver "^5.1.0"
+
+paper-jsdom-canvas@0.12.3:
+  version "0.12.3"
+  resolved "https://registry.yarnpkg.com/paper-jsdom-canvas/-/paper-jsdom-canvas-0.12.3.tgz#140eac3057fb19c8612089e99d6ea241c15dc215"
+  integrity sha512-Xq4BrwITtEy9mBWhT3By8oVz8Le18k1aXAgW8WeXsENUuPUKI3j5iAVG2Nlg+PRLT7cZAj+oXhxTdeGbimxDvw==
+  dependencies:
+    canvas "^2.5.0"
+    jsdom "^15.1.1"
+    paper "0.12.3"
+    source-map-support "^0.5.12"
+
+paper@0.12.3:
+  version "0.12.3"
+  resolved "https://registry.yarnpkg.com/paper/-/paper-0.12.3.tgz#7274a31c17b8998ab0d98207fcf25a8f25f4c18d"
+  integrity sha512-MBlJ0xKFkU/K0eTk2VoAlNbqbfp7MJMVw7gF6v0pveXrBXrJ+1842YLTm07jjjbVJaQZnLvtecDf6Mbazc3jig==
 
 parse5@5.1.0:
   version "5.1.0"
@@ -2239,6 +2269,14 @@ source-map-resolve@^0.5.0:
     source-map-url "^0.4.0"
     urix "^0.1.0"
 
+source-map-support@^0.5.12:
+  version "0.5.13"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.13.tgz#31b24a9c2e73c2de85066c0feb7d44767ed52932"
+  integrity sha512-SHSKFHadjVA5oR4PPqhtAVdcBWwRYVd6g6cAXnIbRiIwc2EhPrTuKUBdSLvlEKyIP3GCf89fltvcZiP9MMFA1w==
+  dependencies:
+    buffer-from "^1.0.0"
+    source-map "^0.6.0"
+
 source-map-url@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/source-map-url/-/source-map-url-0.4.0.tgz#3e935d7ddd73631b97659956d55128e87b5084a3"
@@ -2249,7 +2287,7 @@ source-map@^0.5.6:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=
 
-source-map@~0.6.1:
+source-map@^0.6.0, source-map@~0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
