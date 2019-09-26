@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "server": "http-server ./LottieWeb/ -p 4050",
-    "serve": "nodemon --delay 2500ms --watch . --exec node index.js",
-    "serve2": "nodemon --delay 250ms --watch . --exec node index-pixi-shim.js",
+    "serve-node-canvas": "nodemon --delay 100ms --watch . --exec node index-node-canvas.js",
+    "serve-fabric": "nodemon --delay 100ms --watch . --exec node index-fabric2.js",
     "serve:production": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,7 +22,12 @@
     "redis": "^2.8.0",
     "rsmq": "^0.9.3",
     "dotenv": "^6.1.0",
-    "pixi.js": "^5.1.4",
-    "pixi-shim": "1.6.0"
+    "fabric": "3.3.2",
+    "canvas": "2.5.0",
+    "jsdom": "15.1.1",
+    "btoa": "1.2.1",
+    "canvg": "2.0.0",
+    "xmldom": "0.1.27",
+    "svg2img": "0.6.1"
   }
 }
