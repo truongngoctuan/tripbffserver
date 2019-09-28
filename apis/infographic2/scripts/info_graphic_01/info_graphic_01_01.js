@@ -1,6 +1,6 @@
 const utils = require("../utils");
 const globalInfographic01Config = require("../../configs/info_graphic_01/config");
-
+const commonFunc = require("../commonFunc");
 var globalConfig = globalInfographic01Config.config_01_01;
 
 var w = globalConfig.infographic.width,
@@ -10,7 +10,7 @@ var w = globalConfig.infographic.width,
   paddingLeftRight = globalConfig.infographic.paddingLeftRight,
   c_paddingTop = globalConfig.infographic.c_paddingTop;
 
-function drawContent(svgBase, trip) {
+async function drawContent(canvasAdaptor, trip) {
   let startPoint_px = paddingLeftRight,
     startPoint_py = h - content_height - footer_height + c_paddingTop;
 
@@ -38,13 +38,13 @@ function drawContent(svgBase, trip) {
   let locationName_px = startPoint_px,
     locationName_py = startPoint_py;
 
-  let locationNameNode = drawText(
-    svgBase,
+    console.log("locationName", locationName);
+  let locationNameNode = canvasAdaptor.drawText(
+    locationName + locationName + locationName,
     {
       y: locationName_py,
       x: locationName_px
     },
-    locationName,
     {
       color: globalConfig.location.name.color,
       font: globalConfig.location.name.fontFamily,
@@ -55,69 +55,86 @@ function drawContent(svgBase, trip) {
       wrapNumber: w - paddingLeftRight
     }
   );
-  let locationNameNodeBbox = locationNameNode.node().getBBox();
-  var nextElementYCoordinate =
-    locationNameNodeBbox.y +
-    locationNameNodeBbox.height +
-    globalConfig.location.paddingTop;
+  canvasAdaptor.drawText(
+    locationName + locationName + locationName,
+    {
+      y: locationName_py + 60,
+      x: locationName_px
+    },
+    {
+      color: globalConfig.location.name.color,
+      font: "Arial",
+      fontSize: globalConfig.location.name.fontSize,
+      fontWeight: globalConfig.location.name.fontWeight,
+      textAnchor: globalConfig.location.name.textAnchor,
+      textTransform: globalConfig.location.name.textTransform,
+      wrapNumber: w - paddingLeftRight
+    }
+  );
+  // let locationNameNodeBbox = locationNameNode.node().getBBox();
+  // var nextElementYCoordinate =
+  //   locationNameNodeBbox.y +
+  //   locationNameNodeBbox.height +
+  //   globalConfig.location.paddingTop;
 
-  if (nodeFeelingActivity) {
-    let feelingActivityNode = drawText(
-      svgBase,
-      {
-        y: nextElementYCoordinate,
-        x: locationName_px
-      },
-      nodeFeelingActivity,
-      {
-        color: globalConfig.location.description.color,
-        font: globalConfig.location.description.fontFamily,
-        fontSize: globalConfig.location.description.fontSize,
-        textAnchor: globalConfig.location.description.textAnchor,
-        wrapNumber: w - paddingLeftRight
-      }
-    );
-    let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
-    nextElementYCoordinate =
-      feelingActivityNodeBbox.y +
-      feelingActivityNodeBbox.height +
-      globalConfig.location.paddingTop;
-  }
+  // if (nodeFeelingActivity) {
+  //   console.log("nodeFeelingActivity", nodeFeelingActivity)
+  //   let feelingActivityNode = drawText(
+  //     canvasAdaptor,
+  //     {
+  //       y: nextElementYCoordinate,
+  //       x: locationName_px
+  //     },
+  //     nodeFeelingActivity,
+  //     {
+  //       color: globalConfig.location.description.color,
+  //       font: globalConfig.location.description.fontFamily,
+  //       fontSize: globalConfig.location.description.fontSize,
+  //       textAnchor: globalConfig.location.description.textAnchor,
+  //       wrapNumber: w - paddingLeftRight
+  //     }
+  //   );
+  //   let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
+  //   nextElementYCoordinate =
+  //     feelingActivityNodeBbox.y +
+  //     feelingActivityNodeBbox.height +
+  //     globalConfig.location.paddingTop;
+  // }
 
-  if (highlights) {
-    let hightlightNode = drawText(
-      svgBase,
-      {
-        y: nextElementYCoordinate,
-        x: locationName_px
-      },
-      highlights,
-      {
-        color: globalConfig.location.description.color,
-        font: globalConfig.location.description.fontFamily,
-        fontSize: globalConfig.location.description.fontSize,
-        textAnchor: globalConfig.location.description.textAnchor,
-        wrapNumber: w - paddingLeftRight
-      }
-    );
-    let hightlightNodeBbox = hightlightNode.node().getBBox();
-    nextElementYCoordinate =
-      hightlightNodeBbox.y +
-      hightlightNodeBbox.height +
-      globalConfig.location.paddingTop;
-  }
+  // if (highlights) {
+  //   let hightlightNode = drawText(
+  //     canvasAdaptor,
+  //     {
+  //       y: nextElementYCoordinate,
+  //       x: locationName_px
+  //     },
+  //     highlights,
+  //     {
+  //       color: globalConfig.location.description.color,
+  //       font: globalConfig.location.description.fontFamily,
+  //       fontSize: globalConfig.location.description.fontSize,
+  //       textAnchor: globalConfig.location.description.textAnchor,
+  //       wrapNumber: w - paddingLeftRight
+  //     }
+  //   );
+  //   let hightlightNodeBbox = hightlightNode.node().getBBox();
+  //   nextElementYCoordinate =
+  //     hightlightNodeBbox.y +
+  //     hightlightNodeBbox.height +
+  //     globalConfig.location.paddingTop;
+  // }
 
-  drawImage(
-    svgBase,
+  await canvasAdaptor.drawImage(
+    "./data/images/App_Signature.png",
     {
       x: w - globalConfig.footer.marginRight,
       y: h - globalConfig.footer.marginBottom
-    },
-    "data/images/App_Signature.png",
-    {
-      width: globalConfig.footer.imageWidth,
-      height: globalConfig.footer.imageHeight
     }
+    
+    // {
+    //   width: globalConfig.footer.imageWidth,
+    //   height: globalConfig.footer.imageHeight
+    // }
   );
 }
 
@@ -221,10 +238,6 @@ async function draw(canvasAdaptor, trip) {
     ? trip.locations[0].signedUrl
     : "./data/images/EmptyImage01.jpg";
 
-  // var ratio = this.width / this.height;
-  //   h = w / ratio;
-
-  //   h += content_height + footer_height;
   await canvasAdaptor.drawImage(
     imgUri,
     { x: 0, y: 0 },
@@ -233,13 +246,15 @@ async function draw(canvasAdaptor, trip) {
       var h = w / ratio;
 
       h += content_height + footer_height;
+      console.log("w", w);
+      console.log("h", h);
       canvasAdaptor.resize(w, h);
     }
   );
 
-  // drawBackground(svgBase, globalConfig.infographic.background);
+  canvasAdaptor.drawBackground(globalConfig.infographic.background);
 
-  // drawContent(svgBase, trip);
+  await drawContent(canvasAdaptor, trip);
 }
 
 module.exports = {
