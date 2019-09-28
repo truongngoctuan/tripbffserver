@@ -40,7 +40,7 @@ async function drawContent(canvasAdaptor, trip) {
 
     console.log("locationName", locationName);
   let locationNameNode = canvasAdaptor.drawText(
-    locationName + locationName + locationName,
+    "123456789" + locationName + locationName + locationName,
     {
       y: locationName_py,
       x: locationName_px
@@ -56,7 +56,7 @@ async function drawContent(canvasAdaptor, trip) {
     }
   );
   canvasAdaptor.drawText(
-    locationName + locationName + locationName,
+    "123456789" + locationName + locationName + locationName,
     {
       y: locationName_py + 60,
       x: locationName_px

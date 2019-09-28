@@ -12,7 +12,7 @@ const data = {
       feeling: "Tuyệt vời",
       activity: "Đi bộ đường dài ngắn ngày",
       highlights: "Đẹp, Nguy hiểm",
-      signedUrl: "http://placekitten.com/1300/1000"
+      // signedUrl: "http://placekitten.com/1300/1000"
     }
     // {
     //   locationId: "2b877a4c-5bf9-4315-a8b4-02f44971879d",
@@ -57,6 +57,8 @@ const genericDraw = require("./info_graphic_general_draw");
 const startTimer = new Date().getTime();
 
 (async () => {
+  // setTimeout(async() => {
+
   const canvasAdaptor = await genericDraw.draw(
     data,
     infographicTypes.INFOGRAPHIC_TYPE.FIRST_RELEASED
@@ -64,4 +66,5 @@ const startTimer = new Date().getTime();
   canvasAdaptor.draw();
   await canvasAdaptor.export("output.png");
   console.log(`TIMER ${new Date().getTime() - startTimer} ms: completed`);
+  // }, 1000);
 })();

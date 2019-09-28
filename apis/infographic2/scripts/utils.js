@@ -4,23 +4,37 @@ const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const paper = require("paper-jsdom-canvas");
 const fs = require("fs");
+var path = require('path')
 
-process.env.PANGOCAIRO_BACKEND = 'fontconfig'
-process.env.FONTCONFIG_PATH = __dirname
+registerFont("./fonts/Pfennig.ttf", { family: "Pfennig" });
+registerFont("./fonts/Roboto-Regular.ttf", { family: "Roboto", style: "normal", weight: "400" });
+registerFont("./fonts/Roboto-Bold.ttf", { family: "Roboto", style: "normal", weight: "bold" });
 
-registerFont("./fonts/Roboto-Regular.ttf", { family: "Roboto" });
-
+// todo: add this into node_modules/paper/dist/node/canvas.js
+// todo: to load font into canvas
+// try {
+//   const a = require('canvas');
+//   a.registerFont("./fonts/Pfennig.ttf", { family: "Pfennig" });
+//   console.log("hello Canvas")
+//   Canvas = a.Canvas;
+// } catch(error) {
 class CanvasAdaptor {
-  constructor(w = 500, h = 500) {
+  constructor(w = 300, h = 300) {
 
-    var canvas = createCanvas(w, h);
+    //use the canvas in paper so that we can magically register font
+    var canvas = paper.Canvas(w, h);
+    // var canvas = createCanvas(w, h);
     const ctx = canvas.getContext('2d')
     ctx.fillStyle = 'white';
 ctx.fillRect(0, 0, w, h);
+console.log(ctx.font);
     ctx.fillStyle = 'red';
-    ctx.font = '20px "Roboto"'
-    ctx.fillText('Everyone hates this font :(', 50, 50)
-    // canvas.draw();
+    ctx.font = '10px "sans-serif"'
+    ctx.fillText('123456789 Everyoooooooooooone hates this font :(', 50, 50)
+    ctx.font = '10px "Roboto"'
+    ctx.fillText('123456789 Everyoooooooooooone hates this font :(', 50, 80)
+    ctx.font = '10px "Pfennig"'
+    ctx.fillText('123456789 Everyoooooooooooone hates this font :(', 50, 120)
     const buf = canvas.toBuffer();
     fs.writeFileSync("output2.png", buf);
     // ------paper
@@ -100,11 +114,14 @@ ctx.fillRect(0, 0, w, h);
     textNode.style = {
       fontSize,
       fillColor: options.color,
-      font: options.font == "Roboto" ? 'normal 64px "Roboto"' : 'normal 64px "Arial"',
-      fontFamily: options.font,
+      font: options.font == "Roboto" ? '64px "Pfennig"' : '64px "Roboto"',
+      fontFamily: options.font != "Roboto" ? "Pfennig" : "Roboto",
+      // fontFamily: options.font,
       // fontFamily: "Roboto",
       // fontWeight: options.fontWeight
     };
+
+    console.log("getFontStyle", textNode.style.getFontStyle())
 
     
   }
