@@ -40,7 +40,7 @@ async function drawContent(canvasAdaptor, trip) {
 
     console.log("locationName", locationName);
   let locationNameNode = canvasAdaptor.drawText(
-    "123456789" + locationName + locationName + locationName,
+    locationName,
     {
       y: locationName_py,
       x: locationName_px
@@ -55,74 +55,58 @@ async function drawContent(canvasAdaptor, trip) {
       wrapNumber: w - paddingLeftRight
     }
   );
-  canvasAdaptor.drawText(
-    "123456789" + locationName + locationName + locationName,
-    {
-      y: locationName_py + 60,
-      x: locationName_px
-    },
-    {
-      color: globalConfig.location.name.color,
-      font: "Arial",
-      fontSize: globalConfig.location.name.fontSize,
-      fontWeight: globalConfig.location.name.fontWeight,
-      textAnchor: globalConfig.location.name.textAnchor,
-      textTransform: globalConfig.location.name.textTransform,
-      wrapNumber: w - paddingLeftRight
-    }
-  );
-  // let locationNameNodeBbox = locationNameNode.node().getBBox();
-  // var nextElementYCoordinate =
-  //   locationNameNodeBbox.y +
-  //   locationNameNodeBbox.height +
-  //   globalConfig.location.paddingTop;
+  
+  let locationNameNodeBbox = locationNameNode.bounds;
+  var nextElementYCoordinate =
+    locationNameNodeBbox.y +
+    locationNameNodeBbox.height +
+    globalConfig.location.paddingTop;
 
-  // if (nodeFeelingActivity) {
-  //   console.log("nodeFeelingActivity", nodeFeelingActivity)
-  //   let feelingActivityNode = drawText(
-  //     canvasAdaptor,
-  //     {
-  //       y: nextElementYCoordinate,
-  //       x: locationName_px
-  //     },
-  //     nodeFeelingActivity,
-  //     {
-  //       color: globalConfig.location.description.color,
-  //       font: globalConfig.location.description.fontFamily,
-  //       fontSize: globalConfig.location.description.fontSize,
-  //       textAnchor: globalConfig.location.description.textAnchor,
-  //       wrapNumber: w - paddingLeftRight
-  //     }
-  //   );
-  //   let feelingActivityNodeBbox = feelingActivityNode.node().getBBox();
-  //   nextElementYCoordinate =
-  //     feelingActivityNodeBbox.y +
-  //     feelingActivityNodeBbox.height +
-  //     globalConfig.location.paddingTop;
-  // }
+  if (nodeFeelingActivity) {
+    console.log("nodeFeelingActivity", nodeFeelingActivity)
+    let feelingActivityNode = canvasAdaptor.drawText(
+      nodeFeelingActivity,
+      {
+        y: nextElementYCoordinate,
+        x: locationName_px
+      },
+      {
+        color: globalConfig.location.description.color,
+        font: globalConfig.location.description.fontFamily,
+        fontSize: globalConfig.location.description.fontSize,
+        textAnchor: globalConfig.location.description.textAnchor,
+        wrapNumber: w - paddingLeftRight
+      }
+    );
+    let feelingActivityNodeBbox = feelingActivityNode.bounds;
+    nextElementYCoordinate =
+      feelingActivityNodeBbox.y +
+      feelingActivityNodeBbox.height +
+      globalConfig.location.paddingTop;
+  }
 
-  // if (highlights) {
-  //   let hightlightNode = drawText(
-  //     canvasAdaptor,
-  //     {
-  //       y: nextElementYCoordinate,
-  //       x: locationName_px
-  //     },
-  //     highlights,
-  //     {
-  //       color: globalConfig.location.description.color,
-  //       font: globalConfig.location.description.fontFamily,
-  //       fontSize: globalConfig.location.description.fontSize,
-  //       textAnchor: globalConfig.location.description.textAnchor,
-  //       wrapNumber: w - paddingLeftRight
-  //     }
-  //   );
-  //   let hightlightNodeBbox = hightlightNode.node().getBBox();
-  //   nextElementYCoordinate =
-  //     hightlightNodeBbox.y +
-  //     hightlightNodeBbox.height +
-  //     globalConfig.location.paddingTop;
-  // }
+  if (highlights) {
+    console.log("highlights", highlights)
+    let hightlightNode = canvasAdaptor.drawText(
+      highlights,
+      {
+        y: nextElementYCoordinate,
+        x: locationName_px
+      },
+      {
+        color: globalConfig.location.description.color,
+        font: globalConfig.location.description.fontFamily,
+        fontSize: globalConfig.location.description.fontSize,
+        textAnchor: globalConfig.location.description.textAnchor,
+        wrapNumber: w - paddingLeftRight
+      }
+    );
+    let hightlightNodeBbox = hightlightNode.bounds;
+    nextElementYCoordinate =
+      hightlightNodeBbox.y +
+      hightlightNodeBbox.height +
+      globalConfig.location.paddingTop;
+  }
 
   await canvasAdaptor.drawImage(
     "./data/images/App_Signature.png",
@@ -138,100 +122,11 @@ async function drawContent(canvasAdaptor, trip) {
   );
 }
 
-function drawImage(svgBase, coordinate, uri, config) {
-  var svgImage = svgBase
-    .append("svg:image")
-    .attr("x", coordinate.x)
-    .attr("y", coordinate.y)
-    .attr("width", config.width)
-    .attr("xlink:href", uri);
-
-  if (config.height) {
-    svgImage.attr("height", config.height);
-  }
-}
-
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function drawText(svgBase, coordinate, text, config) {
-  var svgCanvas = svgBase.append("text");
-  svgCanvas
-    .attr("y", coordinate.y)
-    .attr("x", coordinate.x)
-    .style("text-anchor", config.textAnchor)
-    .style("text-transform", config.textTransform)
-    .style("font-size", config.fontSize)
-    .style("font-weight", config.fontWeight)
-    .attr("font-family", config.font)
-    .attr("fill", config.color)
-    .attr("name", config.name)
-    .text(text)
-    .call(wrap, config.wrapNumber);
-  return svgCanvas;
-}
-
-function wrap(text, width) {
-  text.each(function() {
-    var text = d3.select(this),
-      words = text
-        .text()
-        .split(/\s+/)
-        .reverse(),
-      word,
-      line = [],
-      lineNumber = 0,
-      lineHeight = 1.1, // ems
-      y = text.attr("y"),
-      x = text.attr("x"),
-      dy = 0.35,
-      tspan = text
-        .text(null)
-        .append("tspan")
-        .attr("x", x)
-        .attr("y", y)
-        .attr("dy", dy + "em");
-
-    while ((word = words.pop())) {
-      line.push(word);
-      tspan.text(line.join(" "));
-
-      if (tspan.node().getComputedTextLength() > width) {
-        line.pop();
-        let lineText = line.join(" ");
-
-        if (lineNumber == globalConfig.location.lineNumber) {
-          lineText = lineText + "...";
-          tspan.text(lineText);
-          break;
-        }
-
-        tspan.text(lineText);
-        line = [word];
-        tspan = text
-          .append("tspan")
-          .attr("x", x)
-          .attr("y", y)
-          .attr("dy", ++lineNumber * lineHeight + dy + "em")
-          .text(word);
-      }
-    }
-  });
-}
-
-function drawBackground(svgBase, backgroundColor) {
-  svgBase.style("background-color", backgroundColor);
-}
-
 async function draw(canvasAdaptor, trip) {
-  // var viewBox = "0 0" + " " + w + " " + h;
-  // var svgBase = d3
-  //   .select("#info-graphic-base")
-  //   .attr("width", w)
-  //   .attr("height", h)
-  //   .attr("viewBox", viewBox)
-  //   .attr("preserveAspectRatio", "xMinYMin meet");
 
   // load default image if location has no image
   var imgUri = trip.locations[0].signedUrl

@@ -1,14 +1,18 @@
-const { registerFont, loadImage, createCanvas } = require("canvas");
-const canvg = require("canvg");
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+const { registerFont } = require("canvas");
 const paper = require("paper-jsdom-canvas");
 const fs = require("fs");
-var path = require('path')
+// const path = require("path");
+const _ = require("lodash");
 
 registerFont("./fonts/Pfennig.ttf", { family: "Pfennig" });
-registerFont("./fonts/Roboto-Regular.ttf", { family: "Roboto", style: "normal", weight: "400" });
-registerFont("./fonts/Roboto-Bold.ttf", { family: "Roboto", style: "normal", weight: "bold" });
+registerFont("./fonts/Roboto-Regular.ttf", {
+  family: "Roboto"
+});
+registerFont("./fonts/Roboto-Bold.ttf", {
+  family: "Roboto",
+  style: "normal",
+  weight: "bold"
+});
 
 // todo: add this into node_modules/paper/dist/node/canvas.js
 // todo: to load font into canvas
@@ -20,23 +24,22 @@ registerFont("./fonts/Roboto-Bold.ttf", { family: "Roboto", style: "normal", wei
 // } catch(error) {
 class CanvasAdaptor {
   constructor(w = 300, h = 300) {
-
     //use the canvas in paper so that we can magically register font
     var canvas = paper.Canvas(w, h);
     // var canvas = createCanvas(w, h);
-    const ctx = canvas.getContext('2d')
-    ctx.fillStyle = 'white';
-ctx.fillRect(0, 0, w, h);
-console.log(ctx.font);
-    ctx.fillStyle = 'red';
-    ctx.font = '10px "sans-serif"'
-    ctx.fillText('123456789 Everyoooooooooooone hates this font :(', 50, 50)
-    ctx.font = '10px "Roboto"'
-    ctx.fillText('123456789 Everyoooooooooooone hates this font :(', 50, 80)
-    ctx.font = '10px "Pfennig"'
-    ctx.fillText('123456789 Everyoooooooooooone hates this font :(', 50, 120)
-    const buf = canvas.toBuffer();
-    fs.writeFileSync("output2.png", buf);
+    // const ctx = canvas.getContext("2d");
+    // ctx.fillStyle = "white";
+    // ctx.fillRect(0, 0, w, h);
+    // console.log(ctx.font);
+    // ctx.fillStyle = "red";
+    // ctx.font = '10px "sans-serif"';
+    // ctx.fillText("123456789 Everyoooooooooooone hates this font :(", 50, 50);
+    // ctx.font = '10px "Roboto"';
+    // ctx.fillText("123456789 Everyoooooooooooone hates this font :(", 50, 80);
+    // ctx.font = '10px "Pfennig"';
+    // ctx.fillText("123456789 Everyoooooooooooone hates this font :(", 50, 120);
+    // const buf = canvas.toBuffer();
+    // fs.writeFileSync("output2.png", buf);
     // ------paper
     // Create an empty project and a view for the canvas:
     paper.setup(canvas);
@@ -96,8 +99,6 @@ console.log(ctx.font);
     var rect = new paper.Path.Rectangle({
       point: [0, 0],
       size: paper.view.size
-      // strokeColor: 'white',
-      // selected: true
     });
     rect.sendToBack();
     rect.fillColor = backgroundColor;
@@ -108,22 +109,25 @@ console.log(ctx.font);
     var textNode = new paper.PointText(
       new paper.Point(position.x, position.y + fontSize / 2)
     );
-    console.log(options.font);
-    console.log("fontFamily", textNode.fontFamily);
+
     textNode.content = text;
     textNode.style = {
       fontSize,
       fillColor: options.color,
-      font: options.font == "Roboto" ? '64px "Pfennig"' : '64px "Roboto"',
       fontFamily: options.font != "Roboto" ? "Pfennig" : "Roboto",
-      // fontFamily: options.font,
-      // fontFamily: "Roboto",
-      // fontWeight: options.fontWeight
+      fontWeight: options.fontWeight
     };
 
-    console.log("getFontStyle", textNode.style.getFontStyle())
+    return {
+      bounds: {
+        x: textNode.bounds.x,
+        y: textNode.bounds.y,
+        width: textNode.bounds.width,
+        height: textNode.bounds.height
+      }
+    };
 
-    
+    // console.log("getFontStyle", textNode.style.getFontStyle());
   }
 }
 

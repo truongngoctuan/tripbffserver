@@ -12,7 +12,7 @@ const data = {
       feeling: "Tuyệt vời",
       activity: "Đi bộ đường dài ngắn ngày",
       highlights: "Đẹp, Nguy hiểm",
-      // signedUrl: "http://placekitten.com/1300/1000"
+      signedUrl: "http://placekitten.com/1300/1000"
     }
     // {
     //   locationId: "2b877a4c-5bf9-4315-a8b4-02f44971879d",
