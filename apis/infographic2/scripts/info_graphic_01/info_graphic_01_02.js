@@ -14,19 +14,20 @@ let h = globalConfig.infographic.height;
 
 function drawHeader(canvasAdaptor, trip) {
   canvasAdaptor.drawRect({
-      x: 0, y: 0,
-      width: w,
-      height: globalConfig.header.height,
-      backgroundColor: globalConfig.header.background
+    x: 0,
+    y: 0,
+    width: w,
+    height: globalConfig.header.height,
+    backgroundColor: globalConfig.header.background
   });
 
-    // .append("rect")
-    // .attr("width", w)
-    // .attr("height", globalConfig.header.height)
-    // .attr("fill", globalConfig.header.background);
+  // .append("rect")
+  // .attr("width", w)
+  // .attr("height", globalConfig.header.height)
+  // .attr("fill", globalConfig.header.background);
 
   let tripNameNode = canvasAdaptor.drawText(
-    trip.name,
+    trip.name.toUpperCase(),
     {
       y: 50,
       x: w / 2
@@ -51,7 +52,7 @@ function drawHeader(canvasAdaptor, trip) {
     locationText = " " + locationLabel,
     basicTripInfo = numberOfDays + dayText + numberOfLocations + locationText;
 
-    canvasAdaptor.drawText(
+  canvasAdaptor.drawText(
     basicTripInfo,
     {
       y: tripNameNodeBbox.y + tripNameNodeBbox.height + 40,
@@ -95,7 +96,7 @@ function drawContent(canvasAdaptor, location, startPointCoordinate, locale) {
     locationName_py = startPoint_py;
 
   let locationNameNode = canvasAdaptor.drawText(
-    locationName,
+    locationName.toUpperCase(),
     {
       y: locationName_py,
       x: locationName_px
@@ -168,38 +169,21 @@ function drawImage(svgImage, coordinate, uri, config) {
 }
 
 async function drawFooter(canvasAdaptor) {
-    await canvasAdaptor.drawImage(
+  await canvasAdaptor.drawImage(
     "data/images/App_Signature.png",
     {
       x: w - globalConfig.footer.marginRight,
       y: h - globalConfig.footer.marginBottom
-    }
-    // {
+    },
+    {
     //   width: globalConfig.footer.imageWidth,
     //   height: globalConfig.footer.imageHeight
-    // }
+    }
   );
 }
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function drawText(canvasAdaptor, coordinate, text, config) {
-  var svgCanvas = canvasAdaptor.append("text");
-  svgCanvas
-    .attr("y", coordinate.y)
-    .attr("x", coordinate.x)
-    .style("text-anchor", config.textAnchor)
-    .style("text-transform", config.textTransform)
-    .style("font-size", config.fontSize)
-    .style("font-weight", config.fontWeight)
-    .attr("font-family", config.font)
-    .attr("fill", config.color)
-    .attr("name", config.name)
-    .text(text)
-    .call(wrap, config.wrapNumber);
-  return svgCanvas;
 }
 
 function wrap(text, width) {
@@ -250,72 +234,56 @@ function wrap(text, width) {
   });
 }
 
-function drawBackground(canvasAdaptor, backgroundColor) {
-  canvasAdaptor.style("background-color", backgroundColor);
-}
+function onLoadImage(canvasAdaptor, imageResult, url, coordinate, index) {
+  let ratio = imageResult.width / imageResult.height,
+    svgWidth = globalConfig.imageContainer.svgWidth,
+    svgHeight = globalConfig.imageContainer.svgHeight,
+    viewBoxWidth = globalConfig.imageContainer.viewBoxWidth,
+    viewBoxHeight = globalConfig.imageContainer.viewBoxHeight,
+    width = viewBoxWidth,
+    height = viewBoxHeight;
 
-function loadImage(url, canvasAdaptor, coordinate, index) {
-  return new Promise(resolve => {
-    var img = new Image();
-    img.onload = function() {
-      let ratio = this.width / this.height,
-        svgWidth = globalConfig.imageContainer.svgWidth,
-        svgHeight = globalConfig.imageContainer.svgHeight,
-        viewBoxWidth = globalConfig.imageContainer.viewBoxWidth,
-        viewBoxHeight = globalConfig.imageContainer.viewBoxHeight,
-        width = viewBoxWidth,
-        height = viewBoxHeight;
+  if (ratio >= 1) {
+    width = height * ratio;
+  } else {
+    height = width / ratio;
+  }
 
-      if (ratio >= 1) {
-        width = height * ratio;
-      } else {
-        height = width / ratio;
-      }
+  //   var svgImage = canvasAdaptor
+  //     .append("svg")
+  //     .attr("y", coordinate.y)
+  //     .attr("x", coordinate.x)
+  //     .attr("width", svgWidth)
+  //     .attr("height", svgHeight)
+  //     .attr("viewBox", "0 0 " + viewBoxWidth + " " + viewBoxHeight);
 
-      var svgImage = canvasAdaptor
-        .append("svg")
-        .attr("y", coordinate.y)
-        .attr("x", coordinate.x)
-        .attr("width", svgWidth)
-        .attr("height", svgHeight)
-        .attr("viewBox", "0 0 " + viewBoxWidth + " " + viewBoxHeight);
+  //   let clipPathId = "_id" + index;
 
-      let clipPathId = "_id" + index;
+  //   svgImage
+  //     .append("defs")
+  //     .append("clipPath")
+  //     .attr("id", clipPathId)
+  //     .append("path")
+  //     .attr("x", 0)
+  //     .attr("y", 0)
+  //     .attr("d", globalConfig.imageContainer.clipPath);
 
-      svgImage
-        .append("defs")
-        .append("clipPath")
-        .attr("id", clipPathId)
-        .append("path")
-        .attr("x", 0)
-        .attr("y", 0)
-        .attr("d", globalConfig.imageContainer.clipPath);
-
-      drawImage(
-        svgImage,
-        {
-          y: 0,
-          x: 0
-        },
-        url,
-        {
-          width: width,
-          height: height,
-          imageClipPath: "url(#" + clipPathId + ")"
-        }
-      );
-
-      canvasAdaptor.append("span").attr("name", "imgLoaded");
-      resolve();
-    };
-    img.src = url;
-  });
+  //   drawImage(
+  //     svgImage,
+  //     {
+  //       y: 0,
+  //       x: 0
+  //     },
+  //     url,
+  //     {
+  //       width: width,
+  //       height: height,
+  //       imageClipPath: "url(#" + clipPathId + ")"
+  //     }
+  //   );
 }
 
 async function draw(canvasAdaptor, trip) {
-
-  canvasAdaptor.drawBackground(globalConfig.infographic.background);
-
   drawHeader(canvasAdaptor, trip);
 
   let locationNoImage = trip.locations.find(item => item.signedUrl == "");
@@ -332,23 +300,57 @@ async function draw(canvasAdaptor, trip) {
     });
   }
 
-  let promise01 = canvasAdaptor.drawImage(
-    trip.locations[0].signedUrl,
-    {
-      x: globalConfig.infographic.paddingLeftRight,
-      y: 170 + globalConfig.imageContainer.paddingTop
-    }
-    // 0
-  );
+  let promise01 = canvasAdaptor
+    .drawImage(
+      trip.locations[0].signedUrl,
+      {
+        x: globalConfig.infographic.paddingLeftRight,
+        y: 170 + globalConfig.imageContainer.paddingTop
+      },
+      {
+        width: globalConfig.imageContainer.svgWidth,
+        height: globalConfig.imageContainer.svgHeight
+      }
+      // 0
+    )
+    .then(imageResult =>
+      onLoadImage(
+        canvasAdaptor,
+        imageResult,
+        trip.locations[0].signedUrl,
+        {
+          x: globalConfig.infographic.paddingLeftRight,
+          y: 170 + globalConfig.imageContainer.paddingTop
+        },
+        0
+      )
+    );
 
-  let promise02 = canvasAdaptor.drawImage(
-    trip.locations[1].signedUrl,
-    {
-      x: w / 2 + globalConfig.imageContainer.paddingBetweenImage,
-      y: 170 + globalConfig.imageContainer.paddingTop
-    }
-    // 1
-  );
+  let promise02 = canvasAdaptor
+    .drawImage(
+      trip.locations[1].signedUrl,
+      {
+        x: w / 2 + globalConfig.imageContainer.paddingBetweenImage,
+        y: 170 + globalConfig.imageContainer.paddingTop
+      },
+      {
+        width: globalConfig.imageContainer.svgWidth,
+        height: globalConfig.imageContainer.svgHeight
+      }
+      // 1
+    )
+    .then(imageResult =>
+      onLoadImage(
+        canvasAdaptor,
+        imageResult,
+        trip.locations[1].signedUrl,
+        {
+          x: w / 2 + globalConfig.imageContainer.paddingBetweenImage,
+          y: 170 + globalConfig.imageContainer.paddingTop
+        },
+        1
+      )
+    );
 
   await Promise.all([promise01, promise02]);
 
@@ -380,8 +382,9 @@ async function draw(canvasAdaptor, trip) {
       : secondLatestHeight +
         globalConfig.infographic.paddingBottom +
         globalConfig.footer.height;
+
   canvasAdaptor.resize(w, h);
-//   canvasAdaptor.attr("height", h);
+  canvasAdaptor.drawBackground(globalConfig.infographic.background);
 
   await drawFooter(canvasAdaptor);
 }

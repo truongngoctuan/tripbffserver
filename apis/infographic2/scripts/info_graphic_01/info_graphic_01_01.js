@@ -40,7 +40,7 @@ async function drawContent(canvasAdaptor, trip) {
 
     console.log("locationName", locationName);
   let locationNameNode = canvasAdaptor.drawText(
-    locationName,
+    locationName.toUpperCase(),
     {
       y: locationName_py,
       x: locationName_px

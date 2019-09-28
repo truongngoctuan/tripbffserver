@@ -63,7 +63,7 @@ class CanvasAdaptor {
   // get name() {
   //   return this._name;
   // }
-  async drawImage(source, position, cb) {
+  async drawImage(source, position, options = {}, cb) {
     return new Promise((resolve, reject) => {
       var raster = source.startsWith("http")
         ? new paper.Raster(source)
@@ -76,8 +76,37 @@ class CanvasAdaptor {
           position.x + width / 2,
           position.y + height / 2
         );
-        // paper.project.activeLayer.fillColor = new paper.Color("#e3d1a2");
-        // paper.project.activeLayer.blendMode = "normal";
+
+        if (options.width && options.height) {
+          // Use clipMask to create a custom polygon clip mask:
+          var path = new paper.Path.Rectangle(
+            position.x,
+            position.y,
+            options.width,
+            options.height
+          );
+          path.clipMask = true;
+
+          const scaleWidth = options.width / width;
+          const scaleHeight = options.height / height;
+          const scale = _.max([scaleWidth, scaleHeight]);
+          raster.scale(scale);
+
+          const deltaWidth = width - options.width;
+          const deltaHeight = height - options.height;
+          console.log("deltaWidth", deltaWidth);
+          //setup image cover
+          raster.position = new paper.Point(
+            raster.position.x - (deltaWidth > 0 ? deltaWidth / 2 : 0),
+            raster.position.y - (deltaHeight > 0 ? deltaHeight / 2 : 0)
+          );
+
+          // It is better to add the path and the raster in a group (but not mandatory)
+          var group = new paper.Group();
+          group.addChild(raster);
+          group.addChild(path);
+        }
+
         if (cb) {
           cb({
             // imageResult: raster,
