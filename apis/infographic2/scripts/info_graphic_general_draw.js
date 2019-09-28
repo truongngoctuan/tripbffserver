@@ -1,4 +1,5 @@
 const draw_01_01 = require("./info_graphic_01/info_graphic_01_01");
+const draw_01_02 = require("./info_graphic_01/info_graphic_01_02");
 const { INFOGRAPHIC_TYPE } = require("./info_graphic_type");
 const { CanvasAdaptor } = require("./utils");
 
@@ -7,14 +8,12 @@ async function draw(trip, infographicType) {
   let canvasAdaptor = new CanvasAdaptor();
   if (infographicType == INFOGRAPHIC_TYPE.FIRST_RELEASED) {
     if (numberOfLocations == 1) {
-
       await draw_01_01.draw(canvasAdaptor, trip);
     } else if (numberOfLocations == 2) {
-      throw "location == 2";
-      draw_01_02.draw(trip);
+      await draw_01_02.draw(canvasAdaptor, trip);
     } else {
-      throw "location > 2"
-      draw_01_others.draw(trip);
+      throw "location > 2";
+      await draw_01_others.draw(canvasAdaptor, trip);
     }
   }
 

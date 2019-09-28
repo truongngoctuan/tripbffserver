@@ -13,18 +13,17 @@ const data = {
       activity: "Đi bộ đường dài ngắn ngày",
       highlights: "Đẹp, Nguy hiểm",
       signedUrl: "http://placekitten.com/1300/1000"
+    },
+    {
+      locationId: "2b877a4c-5bf9-4315-a8b4-02f44971879d",
+      name: "Mù Cang Chải",
+      fromTime: "September 10, 2019",
+      toTime: "2019-09-10T03:16:00.000Z",
+      feeling: "Yên bình",
+      activity: "Ngắm ruộng lúa",
+      highlights: "Đẹp, Rẻ",
+      signedUrl: "http://placekitten.com/1200/1200"
     }
-    // {
-    //   locationId: "2b877a4c-5bf9-4315-a8b4-02f44971879d",
-    //   name: "Mù Cang Chải",
-    //   fromTime: "September 10, 2019",
-    //   toTime: "2019-09-10T03:16:00.000Z",
-    //   feeling: "Yên bình",
-    //   activity: "Ngắm ruộng lúa",
-    //   highlights: "Đẹp, Rẻ",
-    //   signedUrl:
-    //     "http://18.140.37.188:8000/images/4fbd9b00-e0d6-11e9-9eb4-07fe33cabedd/thumbnail/sign-only"
-    // },
     // {
     //   locationId: "1f611a70-abde-4e5d-95d3-ae5e7959a9cb",
     //   name: "Tú Lệ",

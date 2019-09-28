@@ -1,7 +1,13 @@
 const {
   LOCALE_EN,
   FEELING_LABEL_EN,
-  FEELING_LABEL_VI
+  FEELING_LABEL_VI,
+  DAYS_LABEL_EN,
+  DAY_LABEL_EN,
+  DAY_LABEL_VI,
+
+  LOCATION_LABEL_EN,
+  LOCATION_LABEL_VI,
 } = require("../configs/constants");
 function getFeelingLabel(locale) {
   return locale == LOCALE_EN ? FEELING_LABEL_EN : FEELING_LABEL_VI;

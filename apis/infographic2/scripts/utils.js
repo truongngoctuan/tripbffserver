@@ -104,6 +104,14 @@ class CanvasAdaptor {
     rect.fillColor = backgroundColor;
   }
 
+  drawRect(options) {
+    var rect = new paper.Path.Rectangle(
+      new paper.Point(options.x, options.y),
+      new paper.Size(options.width, options.height)
+    );
+    rect.fillColor = options.backgroundColor;
+  }
+
   drawText(text, position, options) {
     var fontSize = parseInt((options.fontSize || "30px").replace("px", ""));
     var textNode = new paper.PointText(
@@ -117,6 +125,14 @@ class CanvasAdaptor {
       fontFamily: options.font != "Roboto" ? "Pfennig" : "Roboto",
       fontWeight: options.fontWeight
     };
+
+    // handle textAnchor manually
+    if (options.textAnchor === "middle") {
+      textNode.point = new paper.Point(
+        textNode.point.x - textNode.bounds.width / 2,
+        textNode.point.y
+      );
+    }
 
     return {
       bounds: {
