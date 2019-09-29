@@ -141,19 +141,30 @@ class CanvasAdaptor {
     rect.fillColor = options.backgroundColor;
   }
 
-  drawText(text, position, options) {
+  _drawText(text, position, options) {
     var fontSize = parseInt((options.fontSize || "30px").replace("px", ""));
     var textNode = new paper.PointText(
       new paper.Point(position.x, position.y + fontSize / 2)
     );
 
-    textNode.content = text;
+    // textNode.content = text;
     textNode.style = {
       fontSize,
       fillColor: options.color,
       fontFamily: options.font != "Roboto" ? "Pfennig" : "Roboto",
       fontWeight: options.fontWeight
     };
+
+    return textNode;
+  }
+
+  drawText(text, position, options) {
+    if (options.wrapNumber) {
+      return this._drawTextWrap(text, position, options);
+    }
+
+    let textNode = this._drawText(text, position, options);
+    textNode.content = text;
 
     // handle textAnchor manually
     if (options.textAnchor === "middle") {
@@ -171,9 +182,93 @@ class CanvasAdaptor {
         height: textNode.bounds.height
       }
     };
-
-    // console.log("getFontStyle", textNode.style.getFontStyle());
   }
+
+  _drawTextWrap(text, position, options) {
+    let textNode = this._drawText(text, position, options);
+    // textNode.content = text;
+    const width = options.wrapNumber;
+    let words = text.trim().split(/\s+/).reverse();
+    let previousLine = "";
+    let word = "";
+
+    while ((word = words.pop())) {
+      textNode.content = previousLine + " " + word;
+      if (textNode.bounds.width > width) {
+        previousLine += "\n" + word;
+      } else {
+        previousLine = _.isEmpty(previousLine)
+          ? word
+          : previousLine + " " + word;
+      }
+    }
+
+    textNode.content = previousLine;
+
+    // handle textAnchor manually
+    if (options.textAnchor === "middle") {
+      textNode.point = new paper.Point(
+        textNode.point.x - textNode.bounds.width / 2,
+        textNode.point.y
+      );
+    }
+
+    return {
+      bounds: {
+        x: textNode.bounds.x,
+        y: textNode.bounds.y,
+        width: textNode.bounds.width,
+        height: textNode.bounds.height
+      }
+    };
+  }
+
+  // async drawTextWrap(text, position, options) {
+  //   const widthToWrap = options.width;
+  //   // let textNode = this._drawText(text, position, options);
+  //   // let newText = text;
+  //   let svgText2 = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  //   <style>
+  //     text  { font: italic 12px serif; font-size: 20px; }
+  //     tspan { font: bold 10px sans-serif; fill: red; }
+  //   </style>
+
+  //   <text x="${position.x}" y="${position.y}" class="small">
+  //     You are aaaa
+  //     <tspan>not</tspan>
+  //     a banana!
+  //     a banana!
+  //     a banana!
+  //     a banana!
+  //   </text>
+  // </svg>`;
+  //   return new Promise((resolve, reject) => {
+  //     paper.project.importSVG(svgText2, textNode => {
+  //       // console.log(textNode);
+  //       var fontSize = parseInt((options.fontSize || "30px").replace("px", ""));
+  //       textNode.style = {
+  //         fontSize,
+  //         fillColor: options.color,
+  //         fontFamily: options.font != "Roboto" ? "Pfennig" : "Roboto",
+  //         fontWeight: options.fontWeight,
+  //       };
+  //       textNode.fillColor ="#f00"
+
+  //       textNode.position = new paper.Point(
+  //         position.x,
+  //         position.y + fontSize / 2
+  //       );
+  //       resolve({
+  //         bounds: {
+  //           x: textNode.bounds.x,
+  //           y: textNode.bounds.y,
+  //           width: textNode.bounds.width,
+  //           height: textNode.bounds.height
+  //         }
+  //       });
+  //     });
+  //   });
+  // }
 }
 
 function loadLocalImage(file) {

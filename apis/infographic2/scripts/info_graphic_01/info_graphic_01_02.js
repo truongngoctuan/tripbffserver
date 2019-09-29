@@ -68,7 +68,7 @@ function drawHeader(canvasAdaptor, trip) {
   );
 }
 
-function drawContent(canvasAdaptor, location, startPointCoordinate, locale) {
+async function drawContent(canvasAdaptor, location, startPointCoordinate, locale) {
   let startPoint_px = startPointCoordinate.x,
     startPoint_py = startPointCoordinate.y;
 
@@ -116,6 +116,7 @@ function drawContent(canvasAdaptor, location, startPointCoordinate, locale) {
     locationNameNodeBbox.y + locationNameNodeBbox.height;
 
   if (nodeFeelingActivity) {
+      console.log(nodeFeelingActivity)
     let feelingActivityNode = canvasAdaptor.drawText(
       nodeFeelingActivity,
       {
@@ -259,14 +260,15 @@ function onLoadImage(canvasAdaptor, imageResult, url, coordinate, index) {
 
   //   let clipPathId = "_id" + index;
 
-  //   svgImage
-  //     .append("defs")
-  //     .append("clipPath")
-  //     .attr("id", clipPathId)
-  //     .append("path")
-  //     .attr("x", 0)
-  //     .attr("y", 0)
-  //     .attr("d", globalConfig.imageContainer.clipPath);
+    //todo
+    // svgImage
+    //   .append("defs")
+    //   .append("clipPath")
+    //   .attr("id", clipPathId)
+    //   .append("path")
+    //   .attr("x", 0)
+    //   .attr("y", 0)
+    //   .attr("d", globalConfig.imageContainer.clipPath);
 
   //   drawImage(
   //     svgImage,
@@ -354,7 +356,7 @@ async function draw(canvasAdaptor, trip) {
 
   await Promise.all([promise01, promise02]);
 
-  let firstLatestHeight = drawContent(
+  let firstLatestHeight = await drawContent(
     canvasAdaptor,
     trip.locations[0],
     {
@@ -364,7 +366,7 @@ async function draw(canvasAdaptor, trip) {
     trip.locale
   );
 
-  let secondLatestHeight = drawContent(
+  let secondLatestHeight = await drawContent(
     canvasAdaptor,
     trip.locations[1],
     {
