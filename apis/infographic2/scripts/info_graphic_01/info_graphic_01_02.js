@@ -187,54 +187,6 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function wrap(text, width) {
-  text.each(function() {
-    var text = d3.select(this),
-      words = text
-        .text()
-        .split(/\s+/)
-        .reverse(),
-      word,
-      line = [],
-      lineNumber = 0,
-      lineHeight = 1.1, // ems
-      y = text.attr("y"),
-      x = text.attr("x"),
-      dy = 0.35,
-      tspan = text
-        .text(null)
-        .append("tspan")
-        .attr("x", x)
-        .attr("y", y)
-        .attr("dy", dy + "em");
-
-    while ((word = words.pop())) {
-      line.push(word);
-      tspan.text(line.join(" "));
-
-      if (tspan.node().getComputedTextLength() > width) {
-        line.pop();
-        let lineText = line.join(" ");
-
-        if (lineNumber == globalConfig.location.lineNumber) {
-          lineText = lineText + "...";
-          tspan.text(lineText);
-          break;
-        }
-
-        tspan.text(lineText);
-        line = [word];
-        tspan = text
-          .append("tspan")
-          .attr("x", x)
-          .attr("y", y)
-          .attr("dy", ++lineNumber * lineHeight + dy + "em")
-          .text(word);
-      }
-    }
-  });
-}
-
 function onLoadImage(canvasAdaptor, imageResult, url, coordinate, index) {
   let ratio = imageResult.width / imageResult.height,
     svgWidth = globalConfig.imageContainer.svgWidth,

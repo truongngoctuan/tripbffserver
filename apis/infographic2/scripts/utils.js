@@ -167,13 +167,8 @@ class CanvasAdaptor {
     textNode.content = text;
 
     // handle textAnchor manually
-    if (options.textAnchor === "middle") {
-      textNode.point = new paper.Point(
-        textNode.point.x - textNode.bounds.width / 2,
-        textNode.point.y
-      );
-    }
-
+    this._textAnchor(textNode, options.textAnchor);
+    
     return {
       bounds: {
         x: textNode.bounds.x,
@@ -206,12 +201,7 @@ class CanvasAdaptor {
     textNode.content = previousLine;
 
     // handle textAnchor manually
-    if (options.textAnchor === "middle") {
-      textNode.point = new paper.Point(
-        textNode.point.x - textNode.bounds.width / 2,
-        textNode.point.y
-      );
-    }
+    this._textAnchor(textNode, options.textAnchor);
 
     return {
       bounds: {
@@ -221,6 +211,22 @@ class CanvasAdaptor {
         height: textNode.bounds.height
       }
     };
+  }
+
+  _textAnchor(textNode, textAnchor) {
+    // handle textAnchor manually
+    if (textAnchor === "middle") {
+      textNode.point = new paper.Point(
+        textNode.point.x - textNode.bounds.width / 2,
+        textNode.point.y
+      );
+    }
+    else if (textAnchor === "end") {
+      textNode.point = new paper.Point(
+        textNode.point.x - textNode.bounds.width,
+        textNode.point.y
+      );
+    }
   }
 
   // async drawTextWrap(text, position, options) {
