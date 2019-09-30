@@ -85,7 +85,20 @@ class CanvasAdaptor {
             options.width,
             options.height
           );
-          path.clipMask = true;
+          // path.clipMask = true;
+          if (options.clipPath) {
+            var path2 = new paper.Path(options.clipPath);
+            // path2.position = new paper.Point(position.x, position.y);
+            const scalePathWidth = options.width / path2.bounds.width;
+            const scalePathHeight = options.height / path2.bounds.height;
+            const scalePath = _.max([scalePathWidth, scalePathHeight]);
+            path2.scale(scalePath);
+            path2.style = {
+              strokeColor: "#f00",
+              strokeWidth: 2,
+            }
+            // path2.clipMask = true;
+          }
 
           const scaleWidth = options.width / width;
           const scaleHeight = options.height / height;
@@ -104,7 +117,8 @@ class CanvasAdaptor {
           // It is better to add the path and the raster in a group (but not mandatory)
           var group = new paper.Group();
           group.addChild(raster);
-          group.addChild(path);
+          // group.addChild(path);
+          // group.addChild(path2);
         }
 
         if (cb) {
@@ -168,7 +182,7 @@ class CanvasAdaptor {
 
     // handle textAnchor manually
     this._textAnchor(textNode, options.textAnchor);
-    
+
     return {
       bounds: {
         x: textNode.bounds.x,
@@ -183,7 +197,10 @@ class CanvasAdaptor {
     let textNode = this._drawText(text, position, options);
     // textNode.content = text;
     const width = options.wrapNumber;
-    let words = text.trim().split(/\s+/).reverse();
+    let words = text
+      .trim()
+      .split(/\s+/)
+      .reverse();
     let previousLine = "";
     let word = "";
 
@@ -220,8 +237,7 @@ class CanvasAdaptor {
         textNode.point.x - textNode.bounds.width / 2,
         textNode.point.y
       );
-    }
-    else if (textAnchor === "end") {
+    } else if (textAnchor === "end") {
       textNode.point = new paper.Point(
         textNode.point.x - textNode.bounds.width,
         textNode.point.y
@@ -275,6 +291,25 @@ class CanvasAdaptor {
   //     });
   //   });
   // }
+  drawLine(options) {
+    let line = new paper.Path.Line(
+      new paper.Point(options.x1, options.y1),
+      new paper.Point(options.x2, options.y2)
+    );
+    line.style = {
+      strokeColor: options.strokeColor,
+      strokeWidth: options.strokeWidth
+    };
+  }
+  drawCircle(options) {
+    let circle = new paper.Path.Circle(
+      new paper.Point(options.x, options.y),
+      options.r
+    );
+    circle.style = {
+      fillColor: options.fillColor
+    };
+  }
 }
 
 function loadLocalImage(file) {

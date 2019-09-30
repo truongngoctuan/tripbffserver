@@ -11,10 +11,6 @@ var globalConfig = {};
 var w = 940;
 var h = 1500;
 
-function drawBackground(canvasAdaptor, backgroundColor) {
-  canvasAdaptor.style("background-color", backgroundColor);
-}
-
 function drawHeader(canvasAdaptor, trip) {
   canvasAdaptor.drawRect({
     x: 0,
@@ -23,11 +19,6 @@ function drawHeader(canvasAdaptor, trip) {
     height: globalConfig.header.height,
     backgroundColor: globalConfig.header.background
   });
-  //   canvasAdaptor
-  //     .append("rect")
-  //     .attr("width", w)
-  //     .attr("height", globalConfig.header.height)
-  //     .attr("fill", globalConfig.header.background);
 
   let tripNameNode = canvasAdaptor.drawText(
     trip.name,
@@ -78,43 +69,20 @@ function drawHeader(canvasAdaptor, trip) {
 }
 
 function drawNodesInPath(canvasAdaptor, numberOfLocations) {
-  var jsonCircles = [];
-
-  for (let idx = 0; idx <= numberOfLocations; idx++) {
+  for (let idx = 0; idx < numberOfLocations; idx++) {
     let px = w / 2,
       py =
         globalConfig.header.height +
         globalConfig.content.paddingTop +
         idx * globalConfig.content.itemHeight;
 
-    //outer circle
-    jsonCircles.push({
-      x_axis: px,
-      y_axis: py,
-      radius: globalConfig.content.circleRadius,
-      color: globalConfig.content.nodeColor
+    canvasAdaptor.drawCircle({
+      x: px,
+      y: py,
+      r: globalConfig.content.circleRadius,
+      fillColor: globalConfig.content.nodeColor
     });
   }
-
-  var circles = canvasAdaptor
-    .selectAll("circle")
-    .data(jsonCircles)
-    .enter()
-    .append("circle");
-
-  var circleAttributes = circles
-    .attr("cx", function(d) {
-      return d.x_axis;
-    })
-    .attr("cy", function(d) {
-      return d.y_axis;
-    })
-    .attr("r", function(d) {
-      return d.radius;
-    })
-    .style("fill", function(d) {
-      return d.color;
-    });
 }
 
 function drawPathBetweenLocations(canvasAdaptor, numberOfLocations) {
@@ -123,14 +91,14 @@ function drawPathBetweenLocations(canvasAdaptor, numberOfLocations) {
     x2 = x1,
     y2 = h - globalConfig.content.paddingBottom - globalConfig.footer.height;
 
-  var pathElement = canvasAdaptor.append("line");
-  pathElement
-    .attr("x1", x1)
-    .attr("x2", x2)
-    .attr("y1", y1)
-    .attr("y2", y2)
-    .style("stroke", globalConfig.content.pathStroke)
-    .style("stroke-width", globalConfig.content.pathStrokeWidth);
+  canvasAdaptor.drawLine({
+    x1,
+    y1,
+    x2,
+    y2,
+    strokeColor: globalConfig.content.pathStroke,
+    strokeWidth: globalConfig.content.pathStrokeWidth
+  });
 
   drawNodesInPath(canvasAdaptor, numberOfLocations);
 }
@@ -447,12 +415,8 @@ async function draw(canvasAdaptor, trip) {
   w = globalConfig.infographic.width;
   h = calculateInfographicHeight(numberOfLocations);
 
-  //   var canvasAdaptor = d3
-  //     .select("#info-graphic-base")
-  //     .attr("width", w)
-  //     .attr("height", h);
   drawHeader(canvasAdaptor, trip);
-  //   drawPathBetweenLocations(canvasAdaptor, numberOfLocations);
+  drawPathBetweenLocations(canvasAdaptor, numberOfLocations);
 
   let locationImageCoordinates = drawContent(
     canvasAdaptor,
@@ -481,7 +445,8 @@ async function draw(canvasAdaptor, trip) {
       canvasAdaptor
         .drawImage(location.signedUrl, coordinate, {
           width: globalConfig.location.image.svgWidth,
-          height: globalConfig.location.image.svgHeight
+          height: globalConfig.location.image.svgHeight,
+          clipPath: globalConfig.location.image.clipPath
         })
         .then(imageResult =>
           onLoadImage(
