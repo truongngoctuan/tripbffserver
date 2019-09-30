@@ -7,6 +7,8 @@
 const utils = require("../utils");
 const globalInfographic01Config = require("../../configs/info_graphic_01/config");
 const commonFunc = require("../commonFunc");
+const _ = require("lodash");
+
 var globalConfig = globalInfographic01Config.config_01_02;
 
 let w = globalConfig.infographic.width;
@@ -68,7 +70,12 @@ function drawHeader(canvasAdaptor, trip) {
   );
 }
 
-async function drawContent(canvasAdaptor, location, startPointCoordinate, locale) {
+async function drawContent(
+  canvasAdaptor,
+  location,
+  startPointCoordinate,
+  locale
+) {
   let startPoint_px = startPointCoordinate.x,
     startPoint_py = startPointCoordinate.y;
 
@@ -116,7 +123,6 @@ async function drawContent(canvasAdaptor, location, startPointCoordinate, locale
     locationNameNodeBbox.y + locationNameNodeBbox.height;
 
   if (nodeFeelingActivity) {
-      console.log(nodeFeelingActivity)
     let feelingActivityNode = canvasAdaptor.drawText(
       nodeFeelingActivity,
       {
@@ -177,8 +183,8 @@ async function drawFooter(canvasAdaptor) {
       y: h - globalConfig.footer.marginBottom
     },
     {
-    //   width: globalConfig.footer.imageWidth,
-    //   height: globalConfig.footer.imageHeight
+      //   width: globalConfig.footer.imageWidth,
+      //   height: globalConfig.footer.imageHeight
     }
   );
 }
@@ -212,15 +218,15 @@ function onLoadImage(canvasAdaptor, imageResult, url, coordinate, index) {
 
   //   let clipPathId = "_id" + index;
 
-    //todo
-    // svgImage
-    //   .append("defs")
-    //   .append("clipPath")
-    //   .attr("id", clipPathId)
-    //   .append("path")
-    //   .attr("x", 0)
-    //   .attr("y", 0)
-    //   .attr("d", globalConfig.imageContainer.clipPath);
+  //todo
+  // svgImage
+  //   .append("defs")
+  //   .append("clipPath")
+  //   .attr("id", clipPathId)
+  //   .append("path")
+  //   .attr("x", 0)
+  //   .attr("y", 0)
+  //   .attr("d", globalConfig.imageContainer.clipPath);
 
   //   drawImage(
   //     svgImage,
@@ -240,7 +246,9 @@ function onLoadImage(canvasAdaptor, imageResult, url, coordinate, index) {
 async function draw(canvasAdaptor, trip) {
   drawHeader(canvasAdaptor, trip);
 
-  let locationNoImage = trip.locations.find(item => item.signedUrl == "");
+  let locationNoImage = trip.locations.find(
+    item => item.signedUrl == "" || _.isEmpty(item.signedUrl)
+  );
 
   if (locationNoImage) {
     // load default image if location has no image
@@ -263,21 +271,15 @@ async function draw(canvasAdaptor, trip) {
       },
       {
         width: globalConfig.imageContainer.svgWidth,
-        height: globalConfig.imageContainer.svgHeight
+        height: globalConfig.imageContainer.svgHeight,
+        clipPath: globalConfig.imageContainer.clipPath
       }
-      // 0
     )
     .then(imageResult =>
-      onLoadImage(
-        canvasAdaptor,
-        imageResult,
-        trip.locations[0].signedUrl,
-        {
-          x: globalConfig.infographic.paddingLeftRight,
-          y: 170 + globalConfig.imageContainer.paddingTop
-        },
-        0
-      )
+      onLoadImage(canvasAdaptor, imageResult, trip.locations[0].signedUrl, {
+        x: globalConfig.infographic.paddingLeftRight,
+        y: 170 + globalConfig.imageContainer.paddingTop
+      })
     );
 
   let promise02 = canvasAdaptor
@@ -289,7 +291,8 @@ async function draw(canvasAdaptor, trip) {
       },
       {
         width: globalConfig.imageContainer.svgWidth,
-        height: globalConfig.imageContainer.svgHeight
+        height: globalConfig.imageContainer.svgHeight,
+        clipPath: globalConfig.imageContainer.clipPath
       }
       // 1
     )

@@ -77,32 +77,37 @@ class CanvasAdaptor {
           position.y + height / 2
         );
 
-        const scaleWidth = options.width / width;
-        const scaleHeight = options.height / height;
-        const scale = _.max([scaleWidth, scaleHeight]);
-        raster.scale(scale);
-
-        const deltaWidth = width - options.width;
-        const deltaHeight = height - options.height;
-        //setup image cover
-        raster.position = new paper.Point(
-          raster.position.x - (deltaWidth > 0 ? deltaWidth / 2 : 0),
-          raster.position.y - (deltaHeight > 0 ? deltaHeight / 2 : 0)
-        );
-
         if (options.width && options.height) {
-          // Use clipMask to create a custom polygon clip mask:
-          // var path = new paper.Path.Rectangle(
-          //   position.x,
-          //   position.y,
-          //   options.width,
-          //   options.height
-          // );
-          // // path.clipMask = true;
+          const scaleWidth = options.width / width;
+          const scaleHeight = options.height / height;
+          const scale = _.max([scaleWidth, scaleHeight]);
+          console.log("scale", scale);
+          raster.scale(scale);
 
-          var path2;
-          if (options.clipPath) {
-            path2 = new paper.Path(options.clipPath);
+          const deltaWidth = width - options.width;
+          const deltaHeight = height - options.height;
+          //setup image cover
+          raster.position = new paper.Point(
+            raster.position.x - (deltaWidth > 0 ? deltaWidth / 2 : 0),
+            raster.position.y - (deltaHeight > 0 ? deltaHeight / 2 : 0)
+          );
+
+          if (!options.clipPath) {
+            // Use clipMask to create a custom polygon clip mask:
+            var path = new paper.Path.Rectangle(
+              position.x,
+              position.y,
+              options.width,
+              options.height
+            );
+            path.clipMask = true;
+
+            // It is better to add the path and the raster in a group (but not mandatory)
+            var group = new paper.Group();
+            group.addChild(raster);
+            group.addChild(path);
+          } else {
+            var path2 = new paper.Path(options.clipPath);
             path2.position = new paper.Point(
               raster.position.x,
               raster.position.y
@@ -122,15 +127,12 @@ class CanvasAdaptor {
             };
 
             path2.clipMask = true;
-          }
 
-          // It is better to add the path and the raster in a group (but not mandatory)
-          var group = new paper.Group();
-          group.addChild(raster);
-          if (path2) {
+            // It is better to add the path and the raster in a group (but not mandatory)
+            var group = new paper.Group();
+            group.addChild(raster);
             group.addChild(path2);
           }
-          // group.addChild(path);
         }
 
         if (cb) {

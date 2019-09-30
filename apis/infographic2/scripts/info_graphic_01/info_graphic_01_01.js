@@ -1,6 +1,8 @@
 const utils = require("../utils");
 const globalInfographic01Config = require("../../configs/info_graphic_01/config");
 const commonFunc = require("../commonFunc");
+const _ = require("lodash");
+
 var globalConfig = globalInfographic01Config.config_01_01;
 
 var w = globalConfig.infographic.width,
@@ -114,11 +116,6 @@ async function drawContent(canvasAdaptor, trip) {
       x: w - globalConfig.footer.marginRight,
       y: h - globalConfig.footer.marginBottom
     }
-    
-    // {
-    //   width: globalConfig.footer.imageWidth,
-    //   height: globalConfig.footer.imageHeight
-    // }
   );
 }
 
@@ -129,13 +126,15 @@ function capitalizeFirstLetter(string) {
 async function draw(canvasAdaptor, trip) {
 
   // load default image if location has no image
-  var imgUri = trip.locations[0].signedUrl
+  var imgUri = trip.locations[0].signedUrl && !_.isEmpty(trip.locations[0].signedUrl)
     ? trip.locations[0].signedUrl
     : "./data/images/EmptyImage01.jpg";
 
   await canvasAdaptor.drawImage(
     imgUri,
     { x: 0, y: 0 },
+    {
+    },
     ({ width, height }) => {
       var ratio = width / height;
       var h = w / ratio;
