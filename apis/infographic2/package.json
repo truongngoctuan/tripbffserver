@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "nodemon --delay 100ms --watch . --exec node ./scripts/export-infographic-test.js",
+    "serve": "nodemon --delay 100ms --watch . --exec node index.js",
+    "serve2": "nodemon --delay 100ms --watch . --exec node ./scripts/export-infographic-test.js",
     "serve-paper": "nodemon --delay 100ms --watch . --exec node index-paper.js",
     "serve-paper-lottie": "nodemon --delay 100ms --watch . --exec node index-paper-lottie.js",
     "serve-node-canvas": "nodemon --delay 100ms --watch . --exec node index-node-canvas.js",

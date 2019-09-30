@@ -55,16 +55,16 @@ class CanvasAdaptor {
     fs.writeFileSync(file, buf);
   }
 
-  toBufferJpeg(file) {
+  toBufferJpeg() {
     return paper.view.element.toBuffer("image/jpeg", {
       quality: 0.9
     });
   }
 
-  toBufferPng(file) {
+  toBufferPng() {
     return paper.view.element.toBuffer("image/png", {
       compressionLevel: 3,
-      filters: canvas.PNG_FILTER_NONE
+      filters: paper.Canvas.PNG_FILTER_NONE
     });
   }
 

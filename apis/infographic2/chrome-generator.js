@@ -1,10 +1,19 @@
 const moment = require("moment");
 const { INFOGRAPHIC_TYPE } = require("./scripts/info_graphic_type");
 const genericDraw = require("./scripts/info_graphic_general_draw");
+const axios = require("axios");
 
 const url =
   "http://" + process.env.LOTTIE_WEB_HOST + ":" + process.env.LOTTIE_WEB_PORT;
 console.log(url);
+
+async function getRedirectedUrl(redirectUrl) {
+  return redirectUrl;
+  return axios.get(redirectUrl).then(response => {
+    // console.log(response);
+    return response.request.res.responseUrl;
+  });
+}
 
 async function exportInfo(trip) {
   try {
@@ -17,13 +26,14 @@ async function exportInfo(trip) {
         return {
           ...item,
           fromTime: moment(item.fromTime).format("LL"),
-          highlights: item.highlights.join(", ")
+          highlights: item.highlights.join(", "),
+          signedUrl: item.signedUrl
         };
       })
     };
 
+    // const fetchedUrl = response.request.res.responseURL;
     console.log("trip", trip);
-    const startTimer = new Date().getTime();
 
     const canvasAdaptor = await genericDraw.draw(trip, info_graphic_type);
     canvasAdaptor.draw();

@@ -51,17 +51,19 @@ const data = {
 
 const infographicTypes = require("./info_graphic_type");
 const genericDraw = require("./info_graphic_general_draw");
+const fs = require("fs");
+
 const startTimer = new Date().getTime();
 
 (async () => {
-  // setTimeout(async() => {
-
   const canvasAdaptor = await genericDraw.draw(
     data,
     infographicTypes.INFOGRAPHIC_TYPE.FIRST_RELEASED
   );
   canvasAdaptor.draw();
-  await canvasAdaptor.export("output.png");
+  // let buf = await canvasAdaptor.toBufferPng();
+  // fs.writeFileSync("output.png", buf);
+  let buf = await canvasAdaptor.toBufferJpeg();
+  fs.writeFileSync("output.jpeg", buf);
   console.log(`TIMER ${new Date().getTime() - startTimer} ms: completed`);
-  // }, 1000);
 })();
