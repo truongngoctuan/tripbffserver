@@ -77,48 +77,60 @@ class CanvasAdaptor {
           position.y + height / 2
         );
 
+        const scaleWidth = options.width / width;
+        const scaleHeight = options.height / height;
+        const scale = _.max([scaleWidth, scaleHeight]);
+        raster.scale(scale);
+
+        const deltaWidth = width - options.width;
+        const deltaHeight = height - options.height;
+        //setup image cover
+        raster.position = new paper.Point(
+          raster.position.x - (deltaWidth > 0 ? deltaWidth / 2 : 0),
+          raster.position.y - (deltaHeight > 0 ? deltaHeight / 2 : 0)
+        );
+
         if (options.width && options.height) {
           // Use clipMask to create a custom polygon clip mask:
-          var path = new paper.Path.Rectangle(
-            position.x,
-            position.y,
-            options.width,
-            options.height
-          );
-          // path.clipMask = true;
+          // var path = new paper.Path.Rectangle(
+          //   position.x,
+          //   position.y,
+          //   options.width,
+          //   options.height
+          // );
+          // // path.clipMask = true;
+
+          var path2;
           if (options.clipPath) {
-            var path2 = new paper.Path(options.clipPath);
-            // path2.position = new paper.Point(position.x, position.y);
-            const scalePathWidth = options.width / path2.bounds.width;
-            const scalePathHeight = options.height / path2.bounds.height;
-            const scalePath = _.max([scalePathWidth, scalePathHeight]);
+            path2 = new paper.Path(options.clipPath);
+            path2.position = new paper.Point(
+              raster.position.x,
+              raster.position.y
+            );
+
+            const scalePath = options.width / path2.bounds.width;
             path2.scale(scalePath);
+            const deltaPathWidth = path2.bounds.width - options.width;
+            raster.position = new paper.Point(
+              raster.position.x - (deltaPathWidth > 0 ? deltaPathWidth / 2 : 0),
+              raster.position.y - (deltaPathWidth > 0 ? deltaPathWidth / 2 : 0)
+            );
+
             path2.style = {
               strokeColor: "#f00",
-              strokeWidth: 2,
-            }
-            // path2.clipMask = true;
+              strokeWidth: 2
+            };
+
+            path2.clipMask = true;
           }
-
-          const scaleWidth = options.width / width;
-          const scaleHeight = options.height / height;
-          const scale = _.max([scaleWidth, scaleHeight]);
-          raster.scale(scale);
-
-          const deltaWidth = width - options.width;
-          const deltaHeight = height - options.height;
-          console.log("deltaWidth", deltaWidth);
-          //setup image cover
-          raster.position = new paper.Point(
-            raster.position.x - (deltaWidth > 0 ? deltaWidth / 2 : 0),
-            raster.position.y - (deltaHeight > 0 ? deltaHeight / 2 : 0)
-          );
 
           // It is better to add the path and the raster in a group (but not mandatory)
           var group = new paper.Group();
           group.addChild(raster);
+          if (path2) {
+            group.addChild(path2);
+          }
           // group.addChild(path);
-          // group.addChild(path2);
         }
 
         if (cb) {

@@ -7,6 +7,7 @@
 const utils = require("../utils");
 const config_infographic_01 = require("../../configs/info_graphic_01/config");
 const commonFunc = require("../commonFunc");
+const _ = require("lodash");
 var globalConfig = {};
 var w = 940;
 var h = 1500;
@@ -425,7 +426,7 @@ async function draw(canvasAdaptor, trip) {
   );
   let promises = [];
 
-  let locationNoImage = trip.locations.find(item => item.signedUrl == "");
+  let locationNoImage = trip.locations.find(item => item.signedUrl == "" || _.isEmpty(item.signedUrl));
 
   if (locationNoImage) {
     // load default image if location has no image
