@@ -1,0 +1,21 @@
+version: '3'
+services:
+  redis:
+    image: redis
+    restart: always
+    container_name: info_redis
+    ports:
+      - 6379:6379
+  infographic:
+    image: "tripbff/infographic"
+    # networks:
+    #   - api_network
+    environment: # read from .env file
+      # - SERVER_HOST=localhost
+      - WAIT_HOSTS=redis:6379
+    depends_on:
+      - redis
+# networks:
+#   api_network:
+#     external:
+#       name: mnet
