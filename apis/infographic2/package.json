@@ -19,7 +19,6 @@
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^1.18.9",
-    "dotenv": "^6.1.0",
     "fabric": "3.3.2",
     "btoa": "1.2.1",
     "canvg": "2.0.0",
@@ -28,6 +27,7 @@
   },
   "dependencies": {
     "lodash": "4.17.15",
+    "dotenv": "^6.1.0",
     "axios": "^0.18.0",
     "moment": "^2.22.2",
     "redis": "^2.8.0",
