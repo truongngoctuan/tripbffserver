@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "http-server ./LottieWeb/ -p 4050",
     "serve": "nodemon --delay 100ms --watch . --exec node ./scripts/export-infographic-test.js",
     "serve-paper": "nodemon --delay 100ms --watch . --exec node index-paper.js",
     "serve-paper-lottie": "nodemon --delay 100ms --watch . --exec node index-paper-lottie.js",
@@ -18,25 +17,24 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "nodemon": "^1.18.9",
+    "dotenv": "^6.1.0",
+    "fabric": "3.3.2",
+    "btoa": "1.2.1",
+    "canvg": "2.0.0",
+    "lottie-web": "5.5.7",
+    "lottie-node": "1.0.0"
   },
   "dependencies": {
     "lodash": "4.17.15",
     "axios": "^0.18.0",
-    "http-server": "^0.11.1",
     "moment": "^2.22.2",
-    "nodemon": "^1.18.9",
     "redis": "^2.8.0",
     "rsmq": "^0.9.3",
-    "dotenv": "^6.1.0",
-    "fabric": "3.3.2",
-    "canvas": "2.5.0",
+    "canvas": "2.6.0",
     "jsdom": "15.1.1",
-    "btoa": "1.2.1",
-    "canvg": "2.0.0",
     "xmldom": "0.1.27",
     "svg2img": "0.6.1",
-    "lottie-web": "5.5.7",
-    "lottie-node": "1.0.0",
     "paper": "0.12.3",
     "paper-jsdom-canvas": "0.12.3"
   }

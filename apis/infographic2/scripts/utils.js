@@ -54,6 +54,20 @@ class CanvasAdaptor {
     const buf = paper.view.element.toBuffer();
     fs.writeFileSync(file, buf);
   }
+
+  toBufferJpeg(file) {
+    return paper.view.element.toBuffer("image/jpeg", {
+      quality: 0.9
+    });
+  }
+
+  toBufferPng(file) {
+    return paper.view.element.toBuffer("image/png", {
+      compressionLevel: 3,
+      filters: canvas.PNG_FILTER_NONE
+    });
+  }
+
   resize(w, h) {
     paper.view.viewSize = new paper.Size(w, h);
   }
