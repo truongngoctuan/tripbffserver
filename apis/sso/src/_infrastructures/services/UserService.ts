@@ -46,10 +46,10 @@ export class UserService {
       });
   }
 
-  async insertDefaultLocale(userId) {
+  async insertDefaultLocale(userId, locale) {
     var userSetting = new UserSettingDocument({
       userId: userId,
-      locale: "en"
+      locale: locale
     });
     userSetting.save();
   }
