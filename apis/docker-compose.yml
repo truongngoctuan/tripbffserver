@@ -49,17 +49,6 @@ services:
       - REDIS_HOST=192.168.1.5
       - REDIS_PORT=6379
       # - REDIS_SECRET=asd
-      - LOTTIE_WEB_HOST=192.168.1.5
-      - LOTTIE_WEB_PORT=4050
-    # depends_on: 
-    #  - redis
-  lottie-web:
-    image: "tripbff/lottie-web"
-    container_name: tripbff-lottie-web
-    ports:
-      - "4050:80"
-    # networks:
-    #   - api_network
 # networks:
 #   api_network:
 #     external:
