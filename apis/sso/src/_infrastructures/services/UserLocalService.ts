@@ -51,8 +51,6 @@ export class UserLocalService implements IUserLocalService {
       logins: [userLogin]
     });
 
-    // insert locale default is en for first time registered
-    await IoC.userService.insertDefaultLocale(finalUser.userId);
     return finalUser.save().then(() => toUserVM(finalUser));
   }
 
