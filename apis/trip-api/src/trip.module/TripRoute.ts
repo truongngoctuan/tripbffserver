@@ -23,8 +23,7 @@ module.exports = {
         var trips = await minimizedTripQueryHandler.list(userId);
 
         if (!trips) return Err("can't get data after create trip");
-
-        trips = trips.filter(item => item.isDeleted != true);
+                
         console.log(trips.length)
         return trips;
       },
