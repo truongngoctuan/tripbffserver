@@ -86,8 +86,6 @@ module "ecs-infographic-services" {
   api_redis_gateway_port      = 6379
   api_trip_api_gateway        = "trip-api.${var.domain}"
   api_trip_api_gateway_port   = 80
-  api_lottie_web_gateway      = "lottie-web.${var.domain}"
-  api_lottie_web_gateway_port = 80
 }
 
 module "instances" {
@@ -127,14 +125,6 @@ resource "aws_route53_record" "sso" {
 resource "aws_route53_record" "trip-api" {
   zone_id = "${data.aws_route53_zone.selected.zone_id}"
   name    = "trip-api.${data.aws_route53_zone.selected.name}"
-  type    = "A"
-  ttl     = "30"
-  records = [module.instances.eip_public_ip]
-}
-
-resource "aws_route53_record" "lottie-web" {
-  zone_id = "${data.aws_route53_zone.selected.zone_id}"
-  name    = "lottie-web.${data.aws_route53_zone.selected.name}"
   type    = "A"
   ttl     = "30"
   records = [module.instances.eip_public_ip]

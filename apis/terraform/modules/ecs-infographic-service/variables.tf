@@ -9,12 +9,6 @@ variable "sub_domain" {
   default     = "infographic"
 }
 
-variable "lottie_sub_domain" {
-  type        = "string"
-  description = "sub domain name, for example whoami"
-  default     = "lottie-web"
-}
-
 variable "cluster_id" {
   description = "The ECS cluster ID"
   type        = string
