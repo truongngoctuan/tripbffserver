@@ -30,8 +30,8 @@ resource "aws_ecs_task_definition" "tripbff-sso" {
       ],
       "dockerLabels": {
         "traefik.enable": "true",
-        "traefik.frontend.rule": "Host: ${var.sub_domain}.${var.domain}",
-        "traefik.backend.rule": "Host: ${var.sub_domain}.${var.domain}"
+        "traefik.frontend.rule": "Host: ${var.sub_domain}-${var.stage}.${var.domain}",
+        "traefik.backend.rule": "Host: ${var.sub_domain}-${var.stage}.${var.domain}"
       },
       "logConfiguration": {
         "logDriver": "awslogs",

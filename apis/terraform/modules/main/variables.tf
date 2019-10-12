@@ -81,3 +81,8 @@ variable "mongodb" {
   description = "sso mongodb connection string"
   type        = string
 }
+
+variable "key_name" {
+  description = "ec2 key pair"
+  type        = string
+}

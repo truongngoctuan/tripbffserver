@@ -21,5 +21,6 @@ module "this" {
   domain                     = local.domain
   aws_id                     = var.aws_id
   aws_key                    = var.aws_key
-  aws_account_code = "arn:aws:iam::883134154478:user/dev-access"
+  aws_account_code           = "arn:aws:iam::883134154478:user/dev-access"
+  key_name                   = "tripbff-ec2-key-pair"
 }
