@@ -79,7 +79,6 @@ module "ecs-infographic-services" {
   source                      = "../ecs-infographic-service"
   cluster_id                  = aws_ecs_cluster.cluster.id
   repository_url              = var.infographic_repository_url
-  lottie_web_repository_url   = var.lottie_web_repository_url
   mongodb                     = var.mongodb
   domain                      = var.domain
   api_redis_gateway           = module.instances.private_ip
