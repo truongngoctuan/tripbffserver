@@ -68,3 +68,7 @@ variable "api_trip_api_gateway_port" {
   type        = number
   # default     = "8000"
 }
+
+variable "s3_bucket" {
+  type        = string
+}

@@ -23,11 +23,6 @@ variable "aws_key" {
   description = "AWS_SECRET_ACCESS_KEY"
 }
 
-variable "aws_account_code" {
-  description = "account code used to grant permission, For example: arn:aws:iam::xxx:user/yyy"
-  type        = string
-}
-
 variable "ecs_task_execution_role_name" {
   description = "ECS task execution role name"
   default     = "myEcsTaskExecutionRole"
@@ -76,12 +71,17 @@ variable "infographic_repository_url" {
   description = "infographic repository"
   type        = string
 }
-variable "lottie_web_repository_url" {
-  description = "lottie_web repository"
-  type        = string
-}
 
 variable "mongodb" {
   description = "sso mongodb connection string"
+  type        = string
+}
+
+variable "key_name" {
+  description = "ec2 key pair"
+  type        = string
+}
+
+variable "s3_bucket" {
   type        = string
 }

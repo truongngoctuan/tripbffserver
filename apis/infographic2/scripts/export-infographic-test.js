@@ -12,7 +12,7 @@ const data = {
       feeling: "Tuyệt vời",
       activity: "Đi bộ đường dài ngắn ngày",
       highlights: "Đẹp, Nguy hiểm",
-      signedUrl: "http://placekitten.com/1300/1000"
+      signedUrl: "http://placekitten.com/700/500"
     },
     {
       locationId: "2b877a4c-5bf9-4315-a8b4-02f44971879d",
@@ -34,16 +34,16 @@ const data = {
       highlights: "Đẹp, Đồ ăn ngon",
       // signedUrl: "http://placekitten.com/800/600"
     },
-    {
-      locationId: "731b2d4e-dddb-4a06-b59a-72d43e969df7",
-      name: "Y Tý",
-      fromTime: "September 11, 2019",
-      toTime: "2019-09-11T03:17:00.000Z",
-      feeling: "Ngớ ngẩn",
-      activity: "Săn mây",
-      highlights: "Đẹp, Nguy hiểm",
-      // signedUrl: "http://placekitten.com/900/1200"
-    }
+    // {
+    //   locationId: "731b2d4e-dddb-4a06-b59a-72d43e969df7",
+    //   name: "Y Tý",
+    //   fromTime: "September 11, 2019",
+    //   toTime: "2019-09-11T03:17:00.000Z",
+    //   feeling: "Ngớ ngẩn",
+    //   activity: "Săn mây",
+    //   highlights: "Đẹp, Nguy hiểm",
+    //   // signedUrl: "http://placekitten.com/900/1200"
+    // }
   ],
   locale: "vi",
   numberOfDays: 1

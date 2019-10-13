@@ -102,8 +102,8 @@ class CanvasAdaptor {
           const deltaHeight = height - options.height;
           //setup image cover
           raster.position = new paper.Point(
-            raster.position.x - (deltaWidth > 0 ? deltaWidth / 2 : 0),
-            raster.position.y - (deltaHeight > 0 ? deltaHeight / 2 : 0)
+            raster.position.x - deltaWidth / 2,
+            raster.position.y - deltaHeight / 2
           );
 
           if (!options.clipPath) {
@@ -152,11 +152,11 @@ class CanvasAdaptor {
         if (cb) {
           cb({
             // imageResult: raster,
-            width,
-            height
+            width: raster.width,
+            height: raster.height
           });
         }
-        resolve({ width, height });
+        resolve({ width: raster.width, height: raster.height });
       };
 
       raster.onError = err => {

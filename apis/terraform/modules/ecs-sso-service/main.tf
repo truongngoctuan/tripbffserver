@@ -30,14 +30,14 @@ resource "aws_ecs_task_definition" "tripbff-sso" {
       ],
       "dockerLabels": {
         "traefik.enable": "true",
-        "traefik.frontend.rule": "Host: ${var.sub_domain}.${var.domain}",
-        "traefik.backend.rule": "Host: ${var.sub_domain}.${var.domain}"
+        "traefik.frontend.rule": "Host: ${var.sub_domain}-${var.stage}.${var.domain}",
+        "traefik.backend.rule": "Host: ${var.sub_domain}-${var.stage}.${var.domain}"
       },
       "logConfiguration": {
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "${aws_cloudwatch_log_group.log1.name}",
+          "awslogs-group": "tripbff-${var.stage}",
           "awslogs-region": "ap-southeast-1",
           "awslogs-stream-prefix": "ecs"
         }
@@ -47,10 +47,10 @@ resource "aws_ecs_task_definition" "tripbff-sso" {
   DEFINITION
 }
 
-resource "aws_cloudwatch_log_group" "log1" {
-  name              = "tripbff-sso"
-  retention_in_days = 14
-}
+# resource "aws_cloudwatch_log_group" "log1" {
+#   name              = "tripbff-sso"
+#   retention_in_days = 14
+# }
 
 resource "aws_ecs_service" "tripbff-sso-service" {
   name            = "tripbff-sso-service"

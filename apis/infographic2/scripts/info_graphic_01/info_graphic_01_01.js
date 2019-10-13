@@ -40,7 +40,6 @@ async function drawContent(canvasAdaptor, trip) {
   let locationName_px = startPoint_px,
     locationName_py = startPoint_py;
 
-    console.log("locationName", locationName);
   let locationNameNode = canvasAdaptor.drawText(
     locationName.toUpperCase(),
     {
@@ -129,19 +128,20 @@ async function draw(canvasAdaptor, trip) {
   var imgUri = trip.locations[0].signedUrl && !_.isEmpty(trip.locations[0].signedUrl)
     ? trip.locations[0].signedUrl
     : "./data/images/EmptyImage01.jpg";
-
+  console.log("original w h", `${w} ${h}`)
   await canvasAdaptor.drawImage(
     imgUri,
     { x: 0, y: 0 },
     {
+      width: w,
+      height: h
     },
     ({ width, height }) => {
-      var ratio = width / height;
-      var h = w / ratio;
+      // var ratio = width / height;
+      // var h = w / ratio;
 
       h += content_height + footer_height;
-      console.log("w", w);
-      console.log("h", h);
+      console.log("new w h", `${w} ${h}`)
       canvasAdaptor.resize(w, h);
     }
   );

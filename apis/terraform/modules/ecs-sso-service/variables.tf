@@ -6,7 +6,11 @@ variable "domain" {
 variable "sub_domain" {
   type        = "string"
   description = "sub domain name, for example whoami"
-  default = "sso"
+  default     = "sso"
+}
+
+variable "stage" {
+  type = "string"
 }
 
 variable "cluster_id" {
