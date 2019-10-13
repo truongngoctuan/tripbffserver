@@ -14,6 +14,6 @@ module "this" {
   domain                     = local.domain
   aws_id                     = var.aws_id
   aws_key                    = var.aws_key
-  aws_account_code           = "arn:aws:iam::866404760327:user/tripbff-dev-access"
   key_name                   = "tripbff-inte-kp"
+  s3_bucket                  = "tripbff-inte"
 }

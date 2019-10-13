@@ -25,7 +25,7 @@ resource "aws_ecs_task_definition" "tripbff-trip-api" {
         },
         {
           "name": "S3_BUCKET",
-          "value": "${var.name}-${var.stage}"
+          "value": "${var.s3_bucket}"
         },
         {
           "name": "S3_REGION",

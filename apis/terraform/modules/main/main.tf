@@ -7,15 +7,6 @@ locals {
   resources_name = "${local.namespace}-${local.stage}"
 }
 
-#----- S3--------
-module "s3-bucket" {
-  source = "../s3"
-
-  name             = local.namespace
-  stage            = local.stage
-  aws_account_code = var.aws_account_code
-}
-
 #----- ECS  Services--------
 
 # We have one ECS cluster that instances will register with
@@ -74,6 +65,7 @@ module "ecs-trip_api-services" {
   api_trip_api_gateway_port = 80                                      # 8000
   aws_id                    = var.aws_id
   aws_key                   = var.aws_key
+  s3_bucket                 = var.s3_bucket
 }
 
 module "ecs-infographic-services" {
