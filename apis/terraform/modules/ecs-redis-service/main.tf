@@ -19,7 +19,7 @@ resource "aws_ecs_task_definition" "tripbff-redis" {
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "${aws_cloudwatch_log_group.log1.name}",
+          "awslogs-group": "tripbff-${var.stage}",
           "awslogs-region": "ap-southeast-1",
           "awslogs-stream-prefix": "ecs"
         }
@@ -29,10 +29,10 @@ resource "aws_ecs_task_definition" "tripbff-redis" {
   DEFINITION
 }
 
-resource "aws_cloudwatch_log_group" "log1" {
-  name              = "tripbff-redis"
-  retention_in_days = 14
-}
+# resource "aws_cloudwatch_log_group" "log1" {
+#   name              = "tripbff-redis"
+#   retention_in_days = 14
+# }
 
 resource "aws_ecs_service" "tripbff-redis-service" {
   name            = "tripbff-redis-service"

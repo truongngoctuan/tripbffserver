@@ -23,6 +23,7 @@ module "ecs-traefik-services" {
   ecs_cluster_name   = aws_ecs_cluster.cluster.name
   ecs_cluster_region = local.region
   domain             = var.domain
+  stage              = var.stage
   # http://ec2-18-136-37-156.ap-southeast-1.compute.amazonaws.com
   # domain = "ec2-${replace(module.instances.eip_public_ip, ".", "-")}.ap-southeast-1.compute.amazonaws.com"
 }
@@ -48,6 +49,7 @@ module "ecs-redis-services" {
   cluster_id     = aws_ecs_cluster.cluster.id
   domain         = var.domain
   repository_url = var.redis_repository_url
+  stage          = var.stage
 }
 
 module "ecs-trip_api-services" {
@@ -74,10 +76,16 @@ module "ecs-infographic-services" {
   repository_url            = var.infographic_repository_url
   mongodb                   = var.mongodb
   domain                    = var.domain
+  stage                     = var.stage
   api_redis_gateway         = module.instances.private_ip
   api_redis_gateway_port    = 6379
   api_trip_api_gateway      = "trip-api-${local.stage}.${var.domain}"
   api_trip_api_gateway_port = 80
+}
+
+resource "aws_cloudwatch_log_group" "log1" {
+  name              = "tripbff-${var.stage}"
+  retention_in_days = 14
 }
 
 module "instances" {
