@@ -151,3 +151,5 @@ Follow this [link](https://medium.com/@wolovim/deploying-create-react-app-to-s3-
 s3 bucket `www.tripbff.com`, Current website http://www.tripbff.com.s3-website-ap-southeast-1.amazonaws.com/
 
 [setup domain forward](https://medium.com/front-end-weekly/connecting-a-domain-to-an-aws-ec2-instance-using-route53-69faffddda39)
+
+> Dockerfile for redis: need better way to handle binding

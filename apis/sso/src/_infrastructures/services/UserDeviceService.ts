@@ -25,7 +25,7 @@ export class UserDeviceService {
     return toUserVM(userDb);
   }
 
-  async register(uniqueDeviceId: any) {
+  async register(uniqueDeviceId: any, locale: string) {
     const userDb = await Users.findOne({ userName: uniqueDeviceId });
     if (userDb) throw "user existed";
 
@@ -43,8 +43,7 @@ export class UserDeviceService {
       logins: [userLogin]
     });
 
-    // insert locale default is en for first time registered
-    await IoC.userService.insertDefaultLocale(finalUser.userId);
+    await IoC.userService.insertDefaultLocale(finalUser.userId, locale);
 
     return finalUser.save().then(() => toUserVM(finalUser));
   }

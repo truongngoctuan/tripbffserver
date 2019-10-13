@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  prometheus:
+      image: prom/prometheus
+      container_name: tripbff-prometheus
+      restart: always
+      ports:
+        - "9090:9090"
+      volumes:
+        - ./prometheus-server/config:/etc/prometheus # default config file
+  
+  grafana:
+      image: grafana/grafana
+      container_name: tripbff-grafana
+      restart: always
+      ports:
+        - "2999:3000"

@@ -7,7 +7,7 @@ import { IoC } from '../IoC';
 
 //POST login route (optional, everyone has access)
 router.post('/device/login', auth.optional, async (req, res, next) => {
-  const { body: { uniqueDeviceId } } = req;
+  const { body: { uniqueDeviceId, locale } } = req;
   console.log("device:" + uniqueDeviceId);
 
   if (!uniqueDeviceId) {
@@ -26,7 +26,7 @@ router.post('/device/login', auth.optional, async (req, res, next) => {
       return res.json(authUser);
     }
 
-    const newUser = await IoC.userDeviceService.register(uniqueDeviceId);
+    const newUser = await IoC.userDeviceService.register(uniqueDeviceId, locale);
     const result = await IoC.userDeviceService.login(uniqueDeviceId);
     return res.json(result);
   }

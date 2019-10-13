@@ -4,10 +4,23 @@ import { resolveThumbnailImageUrlFromExternalStorageId } from "./ImageUrlResolve
 export class MinimizedTripQueryHandler {
   constructor(private TripsRepository: ITripsRepository) { }
 
+  compareTrip = (firstEle: ITripMinimized, secondEle: ITripMinimized) => {
+    if (firstEle.fromDate > secondEle.fromDate)
+        return -1;
+    
+      if (firstEle.fromDate < secondEle.fromDate)
+        return 1;
+
+    return 0;
+  }
+
   async list(ownerId: string): Promise<ITripMinimized[]> {
     return this.TripsRepository.list(ownerId)
       .then(trips => {
-        return trips.map(trip => this.updateTripImageExternalUrl(trip));
+        var allTrips = trips.map(trip => this.updateTripImageExternalUrl(trip));
+        allTrips = allTrips.filter(item => item.isDeleted != true);
+        allTrips.sort(this.compareTrip);
+        return allTrips;
       });
   }
 
