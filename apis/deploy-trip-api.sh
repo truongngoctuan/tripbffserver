@@ -1,2 +1,2 @@
-$(aws ecr get-login --no-include-email --region ap-southeast-1)
-aws ecs update-service --cluster tripbff-inte-cluster --service tripbff-trip-api-service --force-new-deployment
+$(aws ecr get-login --no-include-email --region ap-southeast-1 --profile tripbff)
+aws ecs update-service --cluster tripbff-preinte --service tripbff-trip-api-service --force-new-deployment --profile tripbff
