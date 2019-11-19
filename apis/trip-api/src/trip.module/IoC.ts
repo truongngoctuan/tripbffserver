@@ -18,6 +18,7 @@ import { HighlightRepository } from "./_infrastructures/repositories/HighlightRe
 
 import mongoose from "mongoose";
 import {initSchemas} from "./_infrastructures/models/mongoosed";
+import SearchLocationRepository from "./_infrastructures/repositories/SearchLocationRepository";
 const mg = initSchemas(mongoose);
 
 const tripEventRepository = new TripEventRepository();
@@ -38,8 +39,9 @@ const imageService: IImageService = new ImageS3Service();
 
 const dataSourceQueryHandler = new DataSourceQueryHandler(
   new FeelingRepository(),
-  new ActivityRepository(),
-  new HighlightRepository());
+  new ActivityRepository(),  
+  new HighlightRepository(),
+  new SearchLocationRepository());
 
 export const IoC = {
   tripCommandHandler,
