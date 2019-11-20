@@ -39,8 +39,8 @@ export class DataSourceQueryHandler {
     return results;
   }
 
-  async getSearchLocations(): Promise<ISearchLocation[]> {
-    var results = this.SearchLocationRepository.list();
+  async getSearchLocations(query: string): Promise<ISearchLocation[]> {
+    var results = this.SearchLocationRepository.list(query);
     return results;
   }
 };

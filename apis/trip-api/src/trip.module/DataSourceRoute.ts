@@ -35,8 +35,9 @@ module.exports = {
     server.route({
       method: "GET",
       path: "/getSearchLocations",
-      handler: async function(request) {                   
-        var searchLocations = dataSourceQueryHandler.getSearchLocations();
+      handler: async function(request) { 
+        var params = request.query as any;
+        var searchLocations = dataSourceQueryHandler.getSearchLocations(params.title);
         return searchLocations;
       },
       options: {

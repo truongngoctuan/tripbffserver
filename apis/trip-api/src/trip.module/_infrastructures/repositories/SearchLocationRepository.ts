@@ -1,7 +1,8 @@
 import { ISearchLocationRepository } from "../../_core/models/ISearchLocationRepository";
-import { SearchLocationDocument } from "../models/SearchLocationModel";
+import { SearchLocationDocument, ISearchLocationDocument } from "../models/SearchLocationModel";
 import { ISearchLocationModel } from "../models/ISearchLocationModel";
 import { ISearchLocation } from "../../_core/models/ISearchLocation";
+import { DocumentQuery } from "mongoose";
 
 export class SearchLocationRepository implements ISearchLocationRepository {
     toLocation(o: ISearchLocationModel): ISearchLocation {
@@ -13,8 +14,17 @@ export class SearchLocationRepository implements ISearchLocationRepository {
         }
     }
 
-    public async list() {
-        var locations = await SearchLocationDocument.find();
+    public async list(query: string) {
+        var locations;
+
+        if (query) {            
+            var regex = ".*" + query + ".*";            
+            locations = await SearchLocationDocument.find({ title: { $regex: regex, $options: "i" } });
+        }
+        else {
+            locations = await SearchLocationDocument.find();
+        }
+
         return locations.map(f => this.toLocation(f));
     } 
 
