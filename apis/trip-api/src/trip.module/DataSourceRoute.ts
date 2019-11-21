@@ -41,7 +41,7 @@ module.exports = {
         return searchLocations;
       },
       options: {
-        auth: "simple",
+        // auth: "simple",
         tags: ["api"]
       }
     });
@@ -70,7 +70,7 @@ module.exports = {
       },
       options: {
         tags: ["api"],
-        auth: "simple"
+        // auth: "simple"
       }
     });
 

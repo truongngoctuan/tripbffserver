@@ -12,6 +12,8 @@ const SearchLocationSchema = new Schema({
     lat: Number
 });
 
+SearchLocationSchema.index({ title: "text" })
+
 export const SearchLocationDocument: Model<ISearchLocationDocument> = mongoose.model<ISearchLocationDocument>(
   "SearchLocation",
   SearchLocationSchema

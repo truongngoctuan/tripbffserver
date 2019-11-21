@@ -17,9 +17,30 @@ export class SearchLocationRepository implements ISearchLocationRepository {
     public async list(query: string) {
         var locations;
 
-        if (query) {            
-            var regex = ".*" + query + ".*";            
-            locations = await SearchLocationDocument.find({ title: { $regex: regex, $options: "i" } });
+        if (query) {  
+            var queryItems = query.split(' ');
+            var newQuery = '';
+
+            queryItems.forEach(item => {                
+                item = item.toLowerCase();
+
+                if (item.startsWith('d')) {
+                    var newItem = item.replace('d', 'đ');
+                    newQuery = query.replace(item, newItem);
+                }
+            }); 
+
+            console.log('new query: ' + newQuery);
+
+            var phrase = "\"" + query + "\"";            
+            locations = await SearchLocationDocument.find({ $text: { $search: phrase } });
+
+            if (newQuery) {
+                var newPhrase = "\"" + newQuery + "\"";            
+                var newLocations = await SearchLocationDocument.find({ $text: { $search: newPhrase } });
+                console.log('new locations: ' + JSON.stringify(newLocations));
+                locations.push(newLocations);
+            }
         }
         else {
             locations = await SearchLocationDocument.find();
