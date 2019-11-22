@@ -41,7 +41,7 @@ export class SearchLocationRepository implements ISearchLocationRepository {
             queries.forEach(async queryItem => {
                 var phrase = "\"" + queryItem + "\""; 
                 console.log('phrase: ' + phrase);           
-                var searchLocations = await SearchLocationDocument.find({ $text: { $search: phrase } }, { score: { $meta: "textScore" } }).sort( { score: { $meta: "textScore" } } );   
+                var searchLocations = await SearchLocationDocument.find({ $text: { $search: phrase } });   
                 console.log('search locations: ' + JSON.stringify(searchLocations));
                 locations = locations.concat(searchLocations);
             });                      
