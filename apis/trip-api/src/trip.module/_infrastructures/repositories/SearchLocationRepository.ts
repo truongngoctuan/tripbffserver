@@ -15,39 +15,62 @@ export class SearchLocationRepository implements ISearchLocationRepository {
     }
 
     public async list(query: string) {
-        var locations;
+        var locations: ISearchLocationDocument[] = [];
 
         if (query) {  
-            var queryItems = query.split(' ');
-            var newQuery = '';
+            var queryItems = query.split(' '),                
+                queries: string[] = [],
+                allQueryArrays: any[] = [];
 
             queryItems.forEach(item => {                
                 item = item.toLowerCase();
 
                 if (item.startsWith('d')) {
                     var newItem = item.replace('d', 'đ');
-                    newQuery = query.replace(item, newItem);
+                    allQueryArrays.push([item, newItem]);
                 }
-            }); 
+                else {
+                    allQueryArrays.push([item]);
+                }
+            });            
 
-            console.log('new query: ' + newQuery);
+            var queries = this.allPossibleCases(allQueryArrays);
 
-            var phrase = "\"" + query + "\"";            
-            locations = await SearchLocationDocument.find({ $text: { $search: phrase } });
+            console.log('all queries: ' + JSON.stringify(queries));
 
-            if (newQuery) {
-                var newPhrase = "\"" + newQuery + "\"";            
-                var newLocations = await SearchLocationDocument.find({ $text: { $search: newPhrase } });
-                console.log('new locations: ' + JSON.stringify(newLocations));
-                locations.push(newLocations);
-            }
+            queries.forEach(async queryItem => {
+                var phrase = "\"" + queryItem + "\""; 
+                console.log('phrase: ' + phrase);           
+                var searchLocations = await SearchLocationDocument.find({ $text: { $search: phrase } }, { score: { $meta: "textScore" } }).sort( { score: { $meta: "textScore" } } );   
+                console.log('search locations: ' + JSON.stringify(searchLocations));
+                locations = locations.concat(searchLocations);
+            });                      
         }
         else {
             locations = await SearchLocationDocument.find();
         }
-
+                
         return locations.map(f => this.toLocation(f));
     } 
+    
+    private allPossibleCases(arr: any[]) {
+        var result: string[] = [];
+
+        if (arr.length == 1) {
+          result = arr[0];
+        } 
+        else {
+          var allCasesOfRest: string[] = this.allPossibleCases(arr.slice(1));  // recur with the rest of array
+          
+          for (var i = 0; i < allCasesOfRest.length; i++) {
+            for (var j = 0; j < arr[0].length; j++) {
+              result.push(arr[0][j] + " " + allCasesOfRest[i]);
+            }
+          }
+        }
+      
+        return result;
+    }
 
     public async insertMany(locations: Array<ISearchLocation>) {        
         var searchLocationDocuments = locations.map(f => {
