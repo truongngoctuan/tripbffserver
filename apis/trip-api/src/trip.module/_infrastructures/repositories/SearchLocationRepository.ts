@@ -3,6 +3,7 @@ import { SearchLocationDocument, ISearchLocationDocument } from "../models/Searc
 import { ISearchLocationModel } from "../models/ISearchLocationModel";
 import { ISearchLocation } from "../../_core/models/ISearchLocation";
 import { DocumentQuery } from "mongoose";
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 
 export class SearchLocationRepository implements ISearchLocationRepository {
     toLocation(o: ISearchLocationModel): ISearchLocation {
@@ -34,17 +35,14 @@ export class SearchLocationRepository implements ISearchLocationRepository {
                 }
             });            
 
-            var queries = this.allPossibleCases(allQueryArrays);
+            var queries = this.allPossibleCases(allQueryArrays),
+                numberOfQuery = queries.length;
 
-            console.log('all queries: ' + JSON.stringify(queries));
-
-            queries.forEach(async queryItem => {
-                var phrase = "\"" + queryItem + "\""; 
-                console.log('phrase: ' + phrase);           
+            for (var i = 0; i < numberOfQuery; i++) {
+                var phrase = "\"" + queries[i] + "\"";      
                 var searchLocations = await SearchLocationDocument.find({ $text: { $search: phrase } });   
-                console.log('search locations: ' + JSON.stringify(searchLocations));
                 locations = locations.concat(searchLocations);
-            });                      
+            }                  
         }
         else {
             locations = await SearchLocationDocument.find();
