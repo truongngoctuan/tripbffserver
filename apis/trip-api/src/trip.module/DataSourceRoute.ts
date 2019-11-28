@@ -34,10 +34,10 @@ module.exports = {
     
     server.route({
       method: "GET",
-      path: "/getSearchLocations",
+      path: "/trips/searchLocations",
       handler: async function(request) { 
         var params = request.query as any;
-        var searchLocations = dataSourceQueryHandler.getSearchLocations(params.title);
+        var searchLocations: ISearchLocation[] = await dataSourceQueryHandler.getSearchLocations(params.title);
         return searchLocations;
       },
       options: {

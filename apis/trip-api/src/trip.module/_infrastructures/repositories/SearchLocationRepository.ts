@@ -40,9 +40,15 @@ export class SearchLocationRepository implements ISearchLocationRepository {
 
             for (var i = 0; i < numberOfQuery; i++) {
                 var phrase = "\"" + queries[i] + "\"";      
-                var searchLocations = await SearchLocationDocument.find({ $text: { $search: phrase } });   
+                var searchLocations = 
+                    await SearchLocationDocument.find({ $text: { $search: phrase } }, { score: { $meta: "textScore" } })
+                                                .sort( { score: { $meta: "textScore" } })
+                                                .limit(6);   
                 locations = locations.concat(searchLocations);
-            }                  
+            }          
+            
+            if (locations.length > 6)
+                locations = locations.slice(0, 6);
         }
         else {
             locations = await SearchLocationDocument.find();
