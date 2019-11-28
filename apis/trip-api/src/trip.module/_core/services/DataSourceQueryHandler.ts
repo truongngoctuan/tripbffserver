@@ -2,12 +2,15 @@ import { IActivity, IFeeling, IHighlight } from "../models/ITrip";
 import { IFeelingRepository } from "../models/IFeelingRepository";
 import { IActivityRepository } from "../models/IActivityRepository";
 import { IHighlightRepository } from "../models/IHighlightRepository";
+import { ISearchLocationRepository } from "../models/ISearchLocationRepository";
+import { ISearchLocation } from "../models/ISearchLocation";
 
 export class DataSourceQueryHandler {
   constructor(
     private FeelingRepository: IFeelingRepository,
     private ActivityRepository: IActivityRepository,
-    private HighlightRepository: IHighlightRepository) {}
+    private HighlightRepository: IHighlightRepository,
+    private SearchLocationRepository: ISearchLocationRepository) {}
 
   async getFeelingById(id: number): Promise<IFeeling | undefined> {
     return this.FeelingRepository.get(id);
@@ -33,6 +36,11 @@ export class DataSourceQueryHandler {
 
   async getHighlights(): Promise<IHighlight[]> {
     var results = this.HighlightRepository.list();
+    return results;
+  }
+
+  async getSearchLocations(query: string): Promise<ISearchLocation[]> {
+    var results = this.SearchLocationRepository.list(query);
     return results;
   }
 };

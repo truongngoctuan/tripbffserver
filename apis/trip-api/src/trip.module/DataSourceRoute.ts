@@ -5,8 +5,12 @@ import { IFeeling, IActivity, IHighlight } from "./_core/models/ITrip";
 import { ActivityRepository } from "./_infrastructures/repositories/ActivityRepository";
 import { HighlightRepository } from "./_infrastructures/repositories/HighlightRepository";
 import { RegisterNotifyRepository } from "./_infrastructures/repositories/RegisterNotifyRepository";
+import { SearchLocationRepository } from "./_infrastructures/repositories/SearchLocationRepository";
 import uuid4 from 'uuid/v4';
 import moment = require("moment");
+import { ISearchLocation } from "./_core/models/ISearchLocation";
+var fs = require('fs'),
+    path = require('path');
 
 const dataSourceQueryHandler = IoC.dataSourceQueryHandler;
 
@@ -28,6 +32,48 @@ module.exports = {
       }
     });
     
+    server.route({
+      method: "GET",
+      path: "/trips/searchLocations",
+      handler: async function(request) { 
+        var params = request.query as any;
+        var searchLocations: ISearchLocation[] = await dataSourceQueryHandler.getSearchLocations(params.title);
+        return searchLocations;
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"]
+      }
+    });
+
+    server.route({
+      method: "POST",
+      path: "/insertSearchLocations",
+      handler: async function(request) {   
+        // read from file        
+        var filePath = path.join(__dirname, '/_appData/TravelData');
+        
+        fs.readFile(filePath, function(err: any, data: any){
+          if (!err) {
+            // store data to DB            
+            var result = JSON.parse(data);
+            var locations = result.Locations as Array<ISearchLocation>;
+
+            var searchLocationRepository = new SearchLocationRepository(); 
+            searchLocationRepository.insertMany(locations);
+          } else {
+              console.log(err);
+          }
+        });
+        
+        return true;
+      },
+      options: {
+        tags: ["api"],
+        auth: "simple"
+      }
+    });
+
     server.route({
       method: "POST",
       path: "/registerNotify",
