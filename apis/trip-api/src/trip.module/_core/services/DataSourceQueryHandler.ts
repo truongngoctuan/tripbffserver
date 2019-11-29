@@ -4,6 +4,7 @@ import { IActivityRepository } from "../models/IActivityRepository";
 import { IHighlightRepository } from "../models/IHighlightRepository";
 import { ISearchLocationRepository } from "../models/ISearchLocationRepository";
 import { ISearchLocation } from "../models/ISearchLocation";
+import { calculateDistance } from "../services/CommonService";
 
 export class DataSourceQueryHandler {
   constructor(
@@ -42,5 +43,30 @@ export class DataSourceQueryHandler {
   async getSearchLocations(query: string): Promise<ISearchLocation[]> {
     var results = this.SearchLocationRepository.list(query);
     return results;
+  }
+
+  async getNearestLocationByCoordinate(lat: number, long: number): Promise<ISearchLocation | undefined> {
+    let locations = await this.SearchLocationRepository.list("");
+    let nearestLocation = undefined;
+    let smallestDistance = 0;
+    let index = 0;
+
+    locations.forEach(location => {
+      let distance = calculateDistance(lat, long, location.lat, location.long);
+
+      if (index == 0)
+        smallestDistance = distance;
+      else {
+        if (distance < smallestDistance)
+        {
+          smallestDistance = distance;
+          nearestLocation = location;
+        }
+      }      
+
+      index++;
+    });
+
+    return nearestLocation;
   }
 };
