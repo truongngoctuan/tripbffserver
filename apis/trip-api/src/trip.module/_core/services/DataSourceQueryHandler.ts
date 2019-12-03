@@ -45,28 +45,30 @@ export class DataSourceQueryHandler {
     return results;
   }
 
-  async getNearestLocationByCoordinate(lat: number, long: number): Promise<ISearchLocation | undefined> {
-    let locations = await this.SearchLocationRepository.list("");
-    let nearestLocation = undefined;
-    let smallestDistance = 0;
-    let index = 0;
+  async getTopNearerLocationsByCoordinate(lat: number, long: number): Promise<ISearchLocation[]> {
+    let locations = await this.SearchLocationRepository.list("");    
+    let sortLocations: any[] = [];
 
     locations.forEach(location => {
-      let distance = calculateDistance(lat, long, location.lat, location.long);
-
-      if (index == 0)
-        smallestDistance = distance;
-      else {
-        if (distance < smallestDistance)
-        {
-          smallestDistance = distance;
-          nearestLocation = location;
-        }
-      }      
-
-      index++;
+      let distance = calculateDistance(lat, long, location.lat, location.long);         
+      sortLocations.push({
+        distance: distance,
+        location: location
+      });      
     });
+    
+    sortLocations.sort(compareLocation);
 
-    return nearestLocation;
+    let topNearerLocations = sortLocations.slice(0, 4).map(lo => 
+      {
+        return lo.location;
+      }
+    );
+
+    return topNearerLocations;
   }
 };
+
+  function compareLocation(a: any, b: any) {
+    return a.distance - b.distance;
+  }

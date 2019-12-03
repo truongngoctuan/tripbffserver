@@ -76,10 +76,10 @@ module.exports = {
 
     server.route({
       method: "GET",
-      path: "/trips/getNearestLocationByCoordinate",
+      path: "/trips/getTopNearerLocationsByCoordinate",
       handler: async function(request) { 
         var { lat, long } = request.query as any;
-        var nearestLocation = await dataSourceQueryHandler.getNearestLocationByCoordinate(lat, long);
+        var nearestLocation = await dataSourceQueryHandler.getTopNearerLocationsByCoordinate(lat, long);
         return nearestLocation;
       },
       options: {
