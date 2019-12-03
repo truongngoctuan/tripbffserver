@@ -75,6 +75,20 @@ module.exports = {
     });
 
     server.route({
+      method: "GET",
+      path: "/trips/getTopNearerLocationsByCoordinate",
+      handler: async function(request) { 
+        var { lat, long } = request.query as any;
+        var nearestLocation = await dataSourceQueryHandler.getTopNearerLocationsByCoordinate(lat, long);
+        return nearestLocation;
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"]
+      }
+    });
+
+    server.route({
       method: "POST",
       path: "/registerNotify",
       handler: async function(request) {   
