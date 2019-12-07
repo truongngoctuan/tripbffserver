@@ -19,7 +19,8 @@ export type ILoginLocal = {
     email: string;
     hash: string;
     salt: string;
-  }
+  },
+  loggedInDate
 }
 
 export type ILoginFacebook = {
@@ -31,14 +32,16 @@ export type ILoginFacebook = {
     name?: string;
     first_name?: string;
     last_name?: string;
-  }
+  },
+  loggedInDate
 };
 
 export type ILoginDevice = {
   loginType: "DEVICE",
   device: {
     uniqueDeviceId: string,
-  }
+  },
+  loggedInDate
 };
 
 export interface IUserAuth {
