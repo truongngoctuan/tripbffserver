@@ -78,7 +78,8 @@ export class TripRepository implements ITripRepository {
       name,
       fromDate: moment(fromDate).toDate(),
       toDate: moment(toDate).toDate(),
-      isDeleted: isDeleted
+      isDeleted: isDeleted,
+      createdDate: new Date()
     }
     var userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) {
