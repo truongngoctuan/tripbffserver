@@ -18,7 +18,8 @@ function getUserLoginLocal(email: string, password: string): ILoginLocal {
     local: {
       email,
       salt, hash
-    }
+    },
+    loggedInDate: new Date()
   };
 };
 

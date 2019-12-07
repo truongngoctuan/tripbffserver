@@ -33,7 +33,8 @@ export class UserDeviceService {
       loginType: "DEVICE",
       device: {
         uniqueDeviceId,
-      }
+      },
+      loggedInDate: new Date()
     };
 
     const finalUser = new Users({

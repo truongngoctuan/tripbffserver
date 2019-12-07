@@ -60,7 +60,8 @@ export class UserFacebookService {
         ...verifyResult,
         facebookUserId,
         accessToken: access_token,
-      }
+      },
+      loggedInDate: new Date()
     }
 
     let finalUser;

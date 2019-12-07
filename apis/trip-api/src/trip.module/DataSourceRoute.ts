@@ -50,22 +50,33 @@ module.exports = {
       method: "POST",
       path: "/insertSearchLocations",
       handler: async function(request) {   
-        // read from file        
-        var filePath = path.join(__dirname, '/_appData/TravelData');
-        
-        fs.readFile(filePath, function(err: any, data: any){
+        // read from file    
+        var fileTravelPath = path.join(__dirname, '/_appData/TravelData');    
+        var fileRestaurantPath = path.join(__dirname, '/_appData/RestaurantData');
+        var searchLocationRepository = new SearchLocationRepository();
+
+        fs.readFile(fileTravelPath, function(err: any, data: any){
           if (!err) {
             // store data to DB            
             var result = JSON.parse(data);
             var locations = result.Locations as Array<ISearchLocation>;
-
-            var searchLocationRepository = new SearchLocationRepository(); 
             searchLocationRepository.insertMany(locations);
           } else {
               console.log(err);
           }
         });
         
+        fs.readFile(fileRestaurantPath, function(err: any, data: any){
+          if (!err) {
+            // store data to DB            
+            var result = JSON.parse(data);
+            var locations = result.Locations as Array<ISearchLocation>;
+            searchLocationRepository.insertMany(locations);
+          } else {
+              console.log(err);
+          }
+        });
+
         return true;
       },
       options: {

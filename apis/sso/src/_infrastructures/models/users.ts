@@ -20,6 +20,7 @@ const LoginsSchema = new Schema({
     first_name: String,
     last_name: String,
   },
+  loggedInDate: Date
 });
 
 const UsersSchema = new Schema({
