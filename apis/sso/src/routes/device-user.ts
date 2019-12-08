@@ -19,7 +19,7 @@ router.post('/device/login', auth.optional, async (req, res, next) => {
   }
 
   try {
-    const dbUser = await IoC.userDeviceService.getById(uniqueDeviceId);
+    const dbUser = await IoC.userDeviceService.getById(uniqueDeviceId);    
 
     if (dbUser) {
       const authUser = await IoC.userDeviceService.login(uniqueDeviceId);

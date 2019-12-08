@@ -7,7 +7,7 @@ router.post('/facebook/verify',
   //  passport.authenticate('facebook', { failureRedirect: '/login' }),
   async (req, res, next) => {
     const { body: { access_token, user_id, logged_user_id } } = req;
-
+  
     const dbUser = await IoC.userFacebookService.getById(user_id);
     console.log("db user", dbUser);
 
