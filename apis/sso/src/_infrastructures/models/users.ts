@@ -7,6 +7,9 @@ const { Schema } = mongoose;
 
 const LoginsSchema = new Schema({
   loginType: String,
+  device: {
+    uniqueDeviceId: String,
+  },
   local: {
     email: String,
     hash: String,
