@@ -1,3 +1,7 @@
+import { SearchLocationRepository } from "../../_infrastructures/repositories/SearchLocationRepository";
+import { ISearchLocation } from "../models/ISearchLocation";
+var fs = require('fs'),
+    path = require('path');
 
 export function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
   var R = 6371*1000; // Radius of the earth in meter
@@ -14,4 +18,19 @@ export function calculateDistance(lat1: number, lon1: number, lat2: number, lon2
 
 function deg2rad(deg: any) {
     return deg * (Math.PI/180)
+}
+
+export function insertSearchLocations(filePath: string) {
+  var searchLocationRepository = new SearchLocationRepository();
+
+  fs.readFile(filePath, function(err: any, data: any){
+    if (!err) {
+      // store data to DB            
+      var result = JSON.parse(data);
+      var locations = result.Locations as Array<ISearchLocation>;
+      searchLocationRepository.insertMany(locations);
+    } else {
+        console.log(err);
+    }
+  });
 }

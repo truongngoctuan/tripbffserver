@@ -9,6 +9,7 @@ import { SearchLocationRepository } from "./_infrastructures/repositories/Search
 import uuid4 from 'uuid/v4';
 import moment = require("moment");
 import { ISearchLocation } from "./_core/models/ISearchLocation";
+import { insertSearchLocations } from "./_core/services/CommonService";
 var fs = require('fs'),
     path = require('path');
 
@@ -50,32 +51,16 @@ module.exports = {
       method: "POST",
       path: "/insertSearchLocations",
       handler: async function(request) {   
-        // read from file    
+
         var fileTravelPath = path.join(__dirname, '/_appData/TravelData');    
         var fileRestaurantPath = path.join(__dirname, '/_appData/RestaurantData');
-        var searchLocationRepository = new SearchLocationRepository();
+        var fileEduPath = path.join(__dirname, '/_appData/EducationData');
+        var fileEntertainPath = path.join(__dirname, '/_appData/EntertainData');
 
-        fs.readFile(fileTravelPath, function(err: any, data: any){
-          if (!err) {
-            // store data to DB            
-            var result = JSON.parse(data);
-            var locations = result.Locations as Array<ISearchLocation>;
-            searchLocationRepository.insertMany(locations);
-          } else {
-              console.log(err);
-          }
-        });
-        
-        fs.readFile(fileRestaurantPath, function(err: any, data: any){
-          if (!err) {
-            // store data to DB            
-            var result = JSON.parse(data);
-            var locations = result.Locations as Array<ISearchLocation>;
-            searchLocationRepository.insertMany(locations);
-          } else {
-              console.log(err);
-          }
-        });
+        insertSearchLocations(fileTravelPath);
+        insertSearchLocations(fileRestaurantPath);
+        insertSearchLocations(fileEduPath);
+        insertSearchLocations(fileEntertainPath);
 
         return true;
       },
