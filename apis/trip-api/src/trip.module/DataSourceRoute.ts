@@ -66,7 +66,7 @@ module.exports = {
       },
       options: {
         tags: ["api"],
-        auth: "simple"
+        // auth: "simple"
       }
     });
 
