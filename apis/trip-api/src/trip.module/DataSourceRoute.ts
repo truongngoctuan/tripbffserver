@@ -5,8 +5,13 @@ import { IFeeling, IActivity, IHighlight } from "./_core/models/ITrip";
 import { ActivityRepository } from "./_infrastructures/repositories/ActivityRepository";
 import { HighlightRepository } from "./_infrastructures/repositories/HighlightRepository";
 import { RegisterNotifyRepository } from "./_infrastructures/repositories/RegisterNotifyRepository";
+import { SearchLocationRepository } from "./_infrastructures/repositories/SearchLocationRepository";
 import uuid4 from 'uuid/v4';
 import moment = require("moment");
+import { ISearchLocation } from "./_core/models/ISearchLocation";
+import { insertSearchLocations } from "./_core/services/CommonService";
+var fs = require('fs'),
+    path = require('path');
 
 const dataSourceQueryHandler = IoC.dataSourceQueryHandler;
 
@@ -28,6 +33,57 @@ module.exports = {
       }
     });
     
+    server.route({
+      method: "GET",
+      path: "/trips/searchLocations",
+      handler: async function(request) { 
+        var params = request.query as any;
+        var searchLocations: ISearchLocation[] = await dataSourceQueryHandler.getSearchLocations(params.title);
+        return searchLocations;
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"]
+      }
+    });
+
+    server.route({
+      method: "POST",
+      path: "/insertSearchLocations",
+      handler: async function(request) {   
+
+        var fileTravelPath = path.join(__dirname, '/_appData/TravelData');    
+        var fileRestaurantPath = path.join(__dirname, '/_appData/RestaurantData');
+        var fileEduPath = path.join(__dirname, '/_appData/EducationData');
+        var fileEntertainPath = path.join(__dirname, '/_appData/EntertainData');
+
+        insertSearchLocations(fileTravelPath);
+        insertSearchLocations(fileRestaurantPath);
+        insertSearchLocations(fileEduPath);
+        insertSearchLocations(fileEntertainPath);
+
+        return true;
+      },
+      options: {
+        tags: ["api"],
+        auth: "simple"
+      }
+    });
+
+    server.route({
+      method: "GET",
+      path: "/trips/getTopNearerLocationsByCoordinate",
+      handler: async function(request) { 
+        var { lat, long } = request.query as any;
+        var nearestLocation = await dataSourceQueryHandler.getTopNearerLocationsByCoordinate(lat, long);
+        return nearestLocation;
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"]
+      }
+    });
+
     server.route({
       method: "POST",
       path: "/registerNotify",

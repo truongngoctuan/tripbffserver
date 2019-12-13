@@ -19,6 +19,7 @@ module.exports = {
         fromTime: Joi.string(),
         toTime: Joi.string(),
         location: Joi.object({
+          name: Joi.string(),
           long: Joi.number().required(),
           lat: Joi.number().required(),
           address: Joi.string(),
@@ -41,6 +42,7 @@ module.exports = {
         lat: Joi.number(),
 
         address: Joi.string(),
+        name: Joi.string()
       }),
       images: Joi.array().items(
         Joi.object({

@@ -20,20 +20,29 @@ export class UserDeviceService {
 
   }
 
+  async getUserByDeviceId(uniqueDeviceId: string) {
+    const userDb = await Users.findOne(
+      { logins: { $elemMatch: { loginType: "DEVICE", device: { uniqueDeviceId: uniqueDeviceId } } } }
+    );
+    
+    return userDb;
+  }
+
   async getById(uniqueDeviceId: string) {
-    const userDb = await Users.findOne({ userName: getUserName(uniqueDeviceId) });
+    const userDb = await this.getUserByDeviceId(uniqueDeviceId);
     return toUserVM(userDb);
   }
 
   async register(uniqueDeviceId: any, locale: string) {
-    const userDb = await Users.findOne({ userName: uniqueDeviceId });
+    const userDb = await this.getUserByDeviceId(uniqueDeviceId);
     if (userDb) throw "user existed";
 
     let userLogin: ILoginDevice = {
       loginType: "DEVICE",
       device: {
         uniqueDeviceId,
-      }
+      },
+      loggedInDate: new Date()
     };
 
     const finalUser = new Users({
@@ -49,7 +58,7 @@ export class UserDeviceService {
   }
 
   async authenticate(uniqueDeviceId) {
-    const user = await Users.findOne({ userName: getUserName(uniqueDeviceId) });
+    const user = await this.getUserByDeviceId(uniqueDeviceId);
     const userLoginLocal = _.find(user.logins, login => login.loginType == "DEVICE") as ILoginDevice;
 
     if (!user || !validatePassword(userLoginLocal, uniqueDeviceId)) {
@@ -60,7 +69,7 @@ export class UserDeviceService {
 
   //generate jwt
   async login(uniqueDeviceId: any) {
-    const user = await Users.findOne({ userName: getUserName(uniqueDeviceId) });
+    const user = await this.getUserByDeviceId(uniqueDeviceId);
     if (!user) {
       throw "uniqueDeviceId is invalid";
     }

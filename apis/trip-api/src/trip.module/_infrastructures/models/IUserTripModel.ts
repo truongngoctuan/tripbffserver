@@ -14,7 +14,8 @@ export interface ITripModel {
   toDate: Date;
   locations?: Array<ITripLocationModel>;
   infographics?: Array<IInfographicModel>;
-  isDeleted: boolean
+  isDeleted: boolean,
+  createdDate: Date
 }
 
 export interface ITripLocationModel {
