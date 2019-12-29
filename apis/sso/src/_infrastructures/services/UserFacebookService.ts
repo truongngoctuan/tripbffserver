@@ -39,7 +39,7 @@ export class UserFacebookService {
     return toUserVM(userDb);
   }
 
-  async register(facebookUserId: string, access_token: string, logged_user_id: string) {
+  async register(facebookUserId: string, access_token: string, logged_user_id: string, facebook_user_email: string) {
     const userDb = await Users.findOne({ userName: getUserName(facebookUserId) });
     if (userDb) throw "user existed";
 
@@ -60,6 +60,7 @@ export class UserFacebookService {
         ...verifyResult,
         facebookUserId,
         accessToken: access_token,
+        email: facebook_user_email
       },
       loggedInDate: new Date()
     }
