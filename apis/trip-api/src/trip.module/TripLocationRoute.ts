@@ -3,7 +3,7 @@ import { Err } from "../_shared/utils";
 import { IoC } from "./IoC";
 import { CUtils } from "../_shared/ControllerUtils";
 import uuid4 from "uuid/v4";
-import { IHighlight } from "./_core/models/ITrip";
+import { IHighlight, ITripLocation } from "./_core/models/ITrip";
 import moment = require("moment");
 
 const tripCommandHandler = IoC.tripCommandHandler;
@@ -21,7 +21,7 @@ module.exports = {
       async handler(request) {
         try {
           console.log("POST", request.url.path);
-          const selectedLocations = request.payload as any;
+          const selectedLocations = request.payload as ITripLocation[];
           // console.log("selectedLocations", selectedLocations);
           const tripId = request.params.id;
           const ownerId = CUtils.getUserId(request);
@@ -65,7 +65,7 @@ module.exports = {
       async handler(request) {
         try {
           console.log("POST", request.url);
-          const selectedLocation = request.payload as any;
+          const selectedLocation = request.payload as ITripLocation;
           const tripId = request.params.id;
           const ownerId = CUtils.getUserId(request);
 
