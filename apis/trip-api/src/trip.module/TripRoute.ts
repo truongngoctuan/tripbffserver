@@ -8,7 +8,6 @@ import moment = require("moment-timezone");
 
 console.log("checking current time in server", moment().format());
 
-
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
 const minimizedTripQueryHandler = IoC.minimizedTripsQueryHandler;
@@ -17,7 +16,6 @@ import { joiTripSchema } from "./JoiSchemas";
 
 module.exports = {
   init: function(server: Server): void {
-
     server.route({
       method: "GET",
       path: "/trips",
@@ -26,7 +24,7 @@ module.exports = {
         const trips = await minimizedTripQueryHandler.list(userId);
 
         if (!trips) return Err("can't get data after create trip");
-                
+
         console.log(trips.length);
         return trips;
       },
@@ -68,7 +66,7 @@ module.exports = {
           }
         }
       }
-    });    
+    });
 
     type postPayloadType = {
       name: string;
@@ -78,7 +76,7 @@ module.exports = {
     const postPayloadSchema = Joi.object({
       name: Joi.string().required(),
       fromDate: Joi.string().required(),
-      toDate: Joi.string().required(),
+      toDate: Joi.string().required()
     });
 
     server.route({
@@ -104,7 +102,10 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            const queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
+            const queryResult = await tripQueryHandler.GetById(
+              ownerId,
+              tripId.toString()
+            );
 
             if (!queryResult) return Err("can't get data after create trip");
             return queryResult.tripId;
@@ -152,7 +153,10 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            const queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
+            const queryResult = await tripQueryHandler.GetById(
+              ownerId,
+              tripId.toString()
+            );
 
             if (!queryResult) return Err("can't get data after patch trip");
             return queryResult;
@@ -206,7 +210,7 @@ module.exports = {
           }
         }
       }
-    });    
+    });
 
     server.route({
       method: "DELETE",
@@ -237,6 +241,6 @@ module.exports = {
           }
         }
       }
-    });  
+    });
   }
 };
