@@ -1,5 +1,5 @@
 import { Server } from "hapi";
-const Joi = require("joi");
+import Joi from "joi";
 import uuid from "uuid/v1";
 import { Err } from "../_shared/utils";
 import { IoC } from "./IoC";
@@ -13,8 +13,11 @@ const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
 const minimizedTripQueryHandler = IoC.minimizedTripsQueryHandler;
 
+import { joiTripSchema } from "./JoiSchemas";
+
 module.exports = {
-  init: function(server: Server) {
+  init: function(server: Server): void {
+
     server.route({
       method: "GET",
       path: "/trips",
@@ -29,7 +32,13 @@ module.exports = {
       },
       options: {
         auth: "simple",
-        tags: ["api"]
+        tags: ["api"],
+        notes: ["get full list of trips"],
+        response: {
+          status: {
+            200: Joi.array().items(joiTripSchema)
+          }
+        }
       }
     });
 
@@ -51,6 +60,11 @@ module.exports = {
         validate: {
           params: {
             id: Joi.required().description("the id for the todo item")
+          }
+        },
+        response: {
+          status: {
+            200: joiTripSchema
           }
         }
       }
@@ -105,6 +119,11 @@ module.exports = {
               .required()
               .description("the toDate")
           }
+        },
+        response: {
+          status: {
+            200: joiTripSchema
+          }
         }
       }
     });
@@ -158,6 +177,11 @@ module.exports = {
             toDate: Joi.string()
               .description("the toDate")
           }
+        },
+        response: {
+          status: {
+            200: joiTripSchema
+          }
         }
       }
     });
@@ -180,6 +204,11 @@ module.exports = {
         validate: {
           params: {
             id: Joi.required().description("the id for the todo item")
+          }
+        },
+        response: {
+          status: {
+            200: Joi.array().items(joiTripSchema)
           }
         }
       }

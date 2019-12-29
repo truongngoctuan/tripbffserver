@@ -9,48 +9,12 @@ import moment = require("moment");
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
 const dataSourceQueryHandler = IoC.dataSourceQueryHandler;
-const Joi = require("joi");
+import Joi from "joi";
+import { joiLocationSchema } from "./JoiSchemas";
 
 module.exports = {
-  init(server: Server) {
-    const locationsSchema = Joi.array().items(
-      Joi.object({
-        name: Joi.string(),
-        fromTime: Joi.string(),
-        toTime: Joi.string(),
-        location: Joi.object({
-          name: Joi.string(),
-          long: Joi.number().required(),
-          lat: Joi.number().required(),
-          address: Joi.string(),
-        }),
-        images: Joi.array().items(
-          Joi.object({
-            url: Joi.string().required(),
-            time: Joi.date().required(),
-          }),
-        ),
-      }),
-    );
-
-    const locationSchema = Joi.object({
-      name: Joi.string(),
-      fromTime: Joi.string(),
-      toTime: Joi.string(),
-      location: Joi.object({
-        long: Joi.number(),
-        lat: Joi.number(),
-
-        address: Joi.string(),
-        name: Joi.string()
-      }),
-      images: Joi.array().items(
-        Joi.object({
-          url: Joi.string(),
-        }),
-      ),
-    });
-
+  init(server: Server): void {
+    
     //todo merge 2 addLocation into one endpoint
     server.route({
       method: "POST",
@@ -91,7 +55,7 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          payload: locationsSchema,
+          payload: Joi.array().items(joiLocationSchema),
         },
       },
     });
@@ -128,7 +92,7 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          payload: locationSchema,
+          payload: joiLocationSchema,
         },
       },
     });
