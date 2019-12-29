@@ -1,4 +1,4 @@
-import { IFeelingModel } from "./IFeelingModel"
+import { IFeelingModel } from "./IFeelingModel";
 import { IActivityModel } from "./IActivityModel";
 import { IHighlightModel } from "./IHighlightModel";
 
@@ -14,13 +14,13 @@ export interface ITripModel {
   toDate: Date;
   locations?: Array<ITripLocationModel>;
   infographics?: Array<IInfographicModel>;
-  isDeleted: boolean,
-  createdDate: Date
+  isDeleted: boolean;
+  createdDate: Date;
 }
 
 export interface ITripLocationModel {
   locationId: string;
-  name: string
+  name: string;
   location: {
     long: number;
     lat: number;

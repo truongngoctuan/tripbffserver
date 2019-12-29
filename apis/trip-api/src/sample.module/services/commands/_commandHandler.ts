@@ -7,7 +7,7 @@ import { CreateFooCommand, createFoo } from "./createFoo";
 import { UpdateFooCommand, updateFoo } from "./updateFoo";
 
 type FooCommand = CreateFooCommand | UpdateFooCommand;
-var staticHandlers = new Map<String, CommandFunc>();
+const staticHandlers = new Map<string, CommandFunc>();
 staticRegister(createFoo);
 staticRegister(updateFoo);
 
@@ -28,7 +28,7 @@ export class FooCommandHandler {
     this.eventHandler = new EventHandler(fooEventRepository);
     this.handlers = staticHandlers;
   }
-  private handlers = new Map<String, CommandFunc>();
+  private handlers = new Map<string, CommandFunc>();
 
   // register(
   //   type: String,

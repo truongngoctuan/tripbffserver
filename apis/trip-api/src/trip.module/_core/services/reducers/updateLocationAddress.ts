@@ -18,7 +18,7 @@ export function updateLocationAddress(
                 long: event.long,
                 lat: event.lat
             }
-        }
+        };
     })
   };
 }

@@ -10,16 +10,16 @@ export class FeelingRepository implements IFeelingRepository {
             label_en: o.label_en,
             label_vi: o.label_vi,
             icon: o.icon
-        }
+        };
     }
 
     public async list() {
-        var feelings = await FeelingDocument.find();
+        const feelings = await FeelingDocument.find();
         return feelings.map(f => this.toFeeling(f));
     } 
 
     public async get(id: number) {
-        var feeling = await FeelingDocument.findOne({feelingId: id});
+        const feeling = await FeelingDocument.findOne({feelingId: id});
 
         if (!feeling)
             return undefined;
@@ -28,8 +28,8 @@ export class FeelingRepository implements IFeelingRepository {
     }
 
     public async insert(feeling: IFeeling) {
-        var { feelingId, label_en, label_vi, icon } = feeling;
-        var feelingDocument = new FeelingDocument({
+        const { feelingId, label_en, label_vi, icon } = feeling;
+        const feelingDocument = new FeelingDocument({
             feelingId: feelingId,
             label_en: label_en,
             label_vi: label_vi,
@@ -40,7 +40,7 @@ export class FeelingRepository implements IFeelingRepository {
     }
 
     public async insertMany(feelings: Array<IFeeling>) {
-        var feelingDocuments = feelings.map(f => {
+        const feelingDocuments = feelings.map(f => {
             return new FeelingDocument({
                 feelingId: f.feelingId,
                 label_en: f.label_en,
@@ -52,8 +52,8 @@ export class FeelingRepository implements IFeelingRepository {
     }
 
     public async update(payload: IFeeling) {
-        var { feelingId, label_en, label_vi, icon } = payload;
-        var feeling = await FeelingDocument.findOne(feelingId);
+        const { feelingId, label_en, label_vi, icon } = payload;
+        const feeling = await FeelingDocument.findOne(feelingId);
 
         if (feeling) {
             feeling.label_en = label_en;
@@ -64,4 +64,4 @@ export class FeelingRepository implements IFeelingRepository {
     }
 }
 
-export default FeelingRepository
+export default FeelingRepository;

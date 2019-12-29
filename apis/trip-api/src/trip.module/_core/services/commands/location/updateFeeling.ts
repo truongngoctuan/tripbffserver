@@ -4,14 +4,14 @@ import { ServiceBus } from "../../TripServiceBus";
 import { Succeed } from "../../../../../_shared/utils";
 
 export type UpdateLocationFeelingCommand = {
-  type: "UpdateLocationFeeling",
-  ownerId: string,
-  tripId: string,
-  locationId: string,
-  feelingId: string,
-  label_en: string,
-  label_vi: string,
-  feelingIcon: string
+  type: "UpdateLocationFeeling";
+  ownerId: string;
+  tripId: string;
+  locationId: string;
+  feelingId: string;
+  label_en: string;
+  label_vi: string;
+  feelingIcon: string;
 };
 
 export async function UpdateLocationFeeling(
@@ -22,7 +22,7 @@ export async function UpdateLocationFeeling(
 ) {
   const { ownerId, tripId, locationId, feelingId, label_en, label_vi , feelingIcon } = command;
 
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "LocationFeelingUpdated",
     ownerId,
     tripId,

@@ -54,7 +54,7 @@ describe("s3 service", () => {
 
         // Act
         const relativeImageUrl = `test/redcat_thumbnail_${moment().unix()}.png`;
-        console.log("uploading file")
+        console.log("uploading file");
         await writeBuffer(relativeImageUrl, buffer);
 
         // Assert
@@ -63,7 +63,7 @@ describe("s3 service", () => {
         resolve(true);
       });
 
-    })
+    });
 
   }, 5000);
-})
+});

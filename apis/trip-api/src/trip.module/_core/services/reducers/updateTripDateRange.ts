@@ -10,7 +10,7 @@ export function updateTripDateRange(
 
   const { fromDate, toDate } = command;
 
-  var filteredLocations: ITripLocation[] = [];
+  let filteredLocations: ITripLocation[] = [];
 
 
   if (fromDate) {

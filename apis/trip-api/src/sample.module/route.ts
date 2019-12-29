@@ -21,7 +21,7 @@ module.exports = {
       path: "/hello",
       handler: async function(request, h) {
         try {
-          var result = await fooQueryHandler.list();
+          const result = await fooQueryHandler.list();
           return result;
         } catch (error) {
           console.log(error);
@@ -46,9 +46,9 @@ module.exports = {
       handler: async function(request, h) {
         try {
           const { name, description } = request.payload as any;
-          var fooId = Math.floor(Math.random() * 100);
+          const fooId = Math.floor(Math.random() * 100);
 
-          var commandResult = await fooCommandHandler.exec({
+          const commandResult = await fooCommandHandler.exec({
             type: "createFoo",
             fooId: fooId.toString(),
             name,
@@ -56,7 +56,7 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            var queryResult = await fooQueryHandler.GetById(fooId.toString());
+            const queryResult = await fooQueryHandler.GetById(fooId.toString());
             return queryResult;
           }
 
@@ -83,9 +83,9 @@ module.exports = {
       handler: async function(request, h) {
         try {
           const { name, description } = request.payload as any;
-          var fooId = request.params.id;
+          const fooId = request.params.id;
 
-          var commandResult = await fooCommandHandler.exec({
+          const commandResult = await fooCommandHandler.exec({
             type: "updateFoo",
             fooId: fooId.toString(),
             name,
@@ -93,7 +93,7 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            var queryResult = await fooQueryHandler.GetById(fooId.toString());
+            const queryResult = await fooQueryHandler.GetById(fooId.toString());
             return queryResult;
           }
 

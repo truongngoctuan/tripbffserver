@@ -2,16 +2,16 @@ export type FooEvent = FooCreatedEvent | FooUpdatedEvent;
 
 export type FooCreatedEvent = {
   type: "FooCreated";
-  fooId: String;
-  name: String;
-  description: String;
+  fooId: string;
+  name: string;
+  description: string;
 };
 
 export type FooUpdatedEvent = {
   type: "FooUpdated";
-  fooId: String;
-  name: String;
-  description: String;
+  fooId: string;
+  name: string;
+  description: string;
 };
 
 export class EventHandler {
@@ -25,5 +25,5 @@ export class EventHandler {
 
 export interface IFooEventRepository {
   save: (event: FooEvent) => Promise<void>;
-  getAll: (id: String) => Promise<FooEvent[]>;
+  getAll: (id: string) => Promise<FooEvent[]>;
 }

@@ -24,7 +24,7 @@ export async function updateTrip(command: UpdateTripCommand, eventHandler: Event
     return Succeed();
   }
 
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "TripUpdated",
     ownerId,
     tripId,

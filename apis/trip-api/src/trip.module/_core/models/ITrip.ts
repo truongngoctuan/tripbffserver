@@ -7,12 +7,12 @@ export interface ITrip {
   toDate: Moment;
   locations: Array<ITripLocation>;
   infographics: Array<IInfographic>;
-  isDeleted: boolean
+  isDeleted: boolean;
 }
 
 export interface ITripLocation {
   locationId: string;
-  name: string,
+  name: string;
   location: {
     long: number;
     lat: number;
@@ -46,22 +46,22 @@ export interface IInfographic {
 export type InfographicStatus = "CREATED" | "EXPORTED" | "FAILED";
 
 export interface IFeeling {
-  feelingId: string,
-  label_en: string,
-  label_vi: string,
-  icon: string
+  feelingId: string;
+  label_en: string;
+  label_vi: string;
+  icon: string;
 }
 
 export interface IActivity {
-  activityId: string,
-  label_en: string,
-  label_vi: string,
-  icon: string
+  activityId: string;
+  label_en: string;
+  label_vi: string;
+  icon: string;
 }
 
 export interface IHighlight {
-  highlightId: string,
-  label_en: string,
-  label_vi: string,
-  highlightType: string
+  highlightId: string;
+  label_en: string;
+  label_vi: string;
+  highlightType: string;
 }

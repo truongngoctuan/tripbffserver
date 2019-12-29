@@ -11,7 +11,7 @@ export function fileExtensionMapping(mimeType: string) {
 const _FileExtensionMappings: any = {
   "image/jpeg": "jpeg",
   "image/png": "png",
-}
+};
 
 const _mappings: any = {
   ".323": "text/h323",
@@ -574,4 +574,4 @@ const _mappings: any = {
   ".xwd": "image/x-xwindowdump",
   ".z": "application/x-compress",
   ".zip": "application/x-zip-compressed",
-}
+};

@@ -1,13 +1,13 @@
-const Inert = require('inert');
-const Vision = require('vision');
-const HapiSwagger = require('hapi-swagger');
-const Pack = require('../../package');
+const Inert = require("inert");
+const Vision = require("vision");
+const HapiSwagger = require("hapi-swagger");
+const Pack = require("../../package");
 
 async function addSwaggerUi(server) {
 
     const swaggerOptions = {
         info: {
-            title: 'Test API Documentation',
+            title: "Test API Documentation",
             version: Pack.version,
         },
     };

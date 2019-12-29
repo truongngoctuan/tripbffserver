@@ -1,21 +1,21 @@
 export interface CommandResult {
   isSucceed: boolean;
-  errors?: String[];
-  data: String;
+  errors?: string[];
+  data: string;
 }
 
-export function Err(message: String): CommandResult {
+export function Err(message: string): CommandResult {
   return {
     isSucceed: false,
     errors: [message],
-    data: ''
+    data: ""
   };
 }
 
 export function Succeed(): CommandResult {
   return {
     isSucceed: true,
-    data: ''
+    data: ""
   };
 }
 
@@ -23,8 +23,8 @@ export function BadRequest(message: ReturnCode): CommandResult {
   return {
     isSucceed: false,
     errors: [message],
-    data: ''
-  }
+    data: ""
+  };
 }
 
 export function setupExtraFunction() {
@@ -33,7 +33,7 @@ export function setupExtraFunction() {
   if (!String.prototype.padStart) {
     String.prototype.padStart = function padStart(targetLength, padString) {
         targetLength = targetLength >> 0; //truncate if number, or convert non-number to 0;
-        padString = String(typeof padString !== 'undefined' ? padString : ' ');
+        padString = String(typeof padString !== "undefined" ? padString : " ");
         if (this.length >= targetLength) {
             return String(this);
         } else {

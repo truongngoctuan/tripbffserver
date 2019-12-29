@@ -135,7 +135,7 @@ module.exports = {
 
             if (tripEvents) {
               const exportedInfoEvent = tripEvents.find(event =>
-                event.type == 'InfographicExported' && event.infographicId == inforgraphicId) as any;
+                event.type == "InfographicExported" && event.infographicId == inforgraphicId) as any;
 
               if (exportedInfoEvent) {
                 clearInterval(getEventInterval);

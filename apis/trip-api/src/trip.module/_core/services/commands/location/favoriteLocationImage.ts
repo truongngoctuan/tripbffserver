@@ -23,13 +23,13 @@ export async function FavoriteLocationImage(
 
   const state = await reducers.getCurrentState(tripId);
   const location = _.find(state.locations, loc => loc.locationId == locationId);
-  if (!location) return BadRequest("LocationNotFound")
+  if (!location) return BadRequest("LocationNotFound");
 
   const image = _.find(location.images, img => img.imageId == imageId);
   if (!image) return BadRequest("LocationImageNotFound");
   if (image.isFavorite != isFavorite) {
 
-    var event: TripEvent = {
+    const event: TripEvent = {
       type: "LocationImagesFavored",
       ownerId,
       tripId,

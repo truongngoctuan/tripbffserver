@@ -1,4 +1,4 @@
-const AuthBearer = require('hapi-auth-bearer-token');
+const AuthBearer = require("hapi-auth-bearer-token");
 const jwt = require("jsonwebtoken");
 
 // const PREFIX = "login-session";
@@ -56,9 +56,9 @@ const jwt = require("jsonwebtoken");
 
 async function addAuth(server) {
 
-    await server.register(AuthBearer)
+    await server.register(AuthBearer);
 
-    server.auth.strategy('simple', 'bearer-access-token', {
+    server.auth.strategy("simple", "bearer-access-token", {
 
         allowQueryToken: true, // optional, false by default
         validate: async (request, token, h) => {
@@ -86,7 +86,7 @@ async function addAuth(server) {
                 user: { id, userName },
             };
             const artifacts = {
-                test: 'info'
+                test: "info"
             };
 
             return {

@@ -18,7 +18,7 @@ export function updateLocationFeeling(
                 label_vi: event.label_vi,
                 icon: event.feelingIcon
             }
-        }
+        };
     })
   };
 }

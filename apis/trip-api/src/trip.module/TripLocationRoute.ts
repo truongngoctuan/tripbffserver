@@ -2,7 +2,7 @@ import { Server } from "hapi";
 import { Err } from "../_shared/utils";
 import { IoC } from "./IoC";
 import { CUtils } from "../_shared/ControllerUtils";
-import uuid4 from 'uuid/v4';
+import uuid4 from "uuid/v4";
 import { IHighlight } from "./_core/models/ITrip";
 import moment = require("moment");
 
@@ -182,7 +182,7 @@ module.exports = {
           const tripId: string = request.params.tripId;
           const locationId: string = request.params.locationId;
           const feeling = request.payload as any;
-          console.log('feeling: ' + JSON.stringify(feeling));
+          console.log("feeling: " + JSON.stringify(feeling));
 
           if (feeling) {
             const ownerId = CUtils.getUserId(request);
@@ -271,7 +271,7 @@ module.exports = {
           const tripId: string = request.params.tripId;
           const locationId: string = request.params.locationId;
           const highlights = request.payload as Array<IHighlight>;
-          console.log('selected highlights: ' + JSON.stringify(highlights));
+          console.log("selected highlights: " + JSON.stringify(highlights));
 
           if (highlights) {
             const ownerId = CUtils.getUserId(request);

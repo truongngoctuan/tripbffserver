@@ -20,11 +20,11 @@ export class TripQueryHandler {
       });
   }
 
-  async getThumbnailUrlByExternalId(externalId: string) : Promise<string> {
+  async getThumbnailUrlByExternalId(externalId: string): Promise<string> {
     return resolveThumbnailImageUrlFromExternalStorageId(externalId);
   }
 
-  async getExternalUrlByExternalId(externalId: string) : Promise<string> {
+  async getExternalUrlByExternalId(externalId: string): Promise<string> {
     return resolveImageUrlFromExternalStorageId(externalId);
   }
 

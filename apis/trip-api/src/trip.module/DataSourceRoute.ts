@@ -6,12 +6,12 @@ import { ActivityRepository } from "./_infrastructures/repositories/ActivityRepo
 import { HighlightRepository } from "./_infrastructures/repositories/HighlightRepository";
 import { RegisterNotifyRepository } from "./_infrastructures/repositories/RegisterNotifyRepository";
 import { SearchLocationRepository } from "./_infrastructures/repositories/SearchLocationRepository";
-import uuid4 from 'uuid/v4';
+import uuid4 from "uuid/v4";
 import moment = require("moment");
 import { ISearchLocation } from "./_core/models/ISearchLocation";
 import { insertSearchLocations } from "./_core/services/CommonService";
-var fs = require('fs'),
-    path = require('path');
+const fs = require("fs"),
+    path = require("path");
 
 const dataSourceQueryHandler = IoC.dataSourceQueryHandler;
 
@@ -37,8 +37,8 @@ module.exports = {
       method: "GET",
       path: "/trips/searchLocations",
       handler: async function(request) { 
-        var params = request.query as any;
-        var searchLocations: ISearchLocation[] = await dataSourceQueryHandler.getSearchLocations(params.title);
+        const params = request.query as any;
+        const searchLocations: ISearchLocation[] = await dataSourceQueryHandler.getSearchLocations(params.title);
         return searchLocations;
       },
       options: {
@@ -52,10 +52,10 @@ module.exports = {
       path: "/insertSearchLocations",
       handler: async function(request) {   
 
-        var fileTravelPath = path.join(__dirname, '/_appData/TravelData');    
-        var fileRestaurantPath = path.join(__dirname, '/_appData/RestaurantData');
-        var fileEduPath = path.join(__dirname, '/_appData/EducationData');
-        var fileEntertainPath = path.join(__dirname, '/_appData/EntertainData');
+        const fileTravelPath = path.join(__dirname, "/_appData/TravelData");    
+        const fileRestaurantPath = path.join(__dirname, "/_appData/RestaurantData");
+        const fileEduPath = path.join(__dirname, "/_appData/EducationData");
+        const fileEntertainPath = path.join(__dirname, "/_appData/EntertainData");
 
         insertSearchLocations(fileTravelPath);
         insertSearchLocations(fileRestaurantPath);
@@ -74,8 +74,8 @@ module.exports = {
       method: "GET",
       path: "/trips/getTopNearerLocationsByCoordinate",
       handler: async function(request) { 
-        var { lat, long } = request.query as any;
-        var nearestLocation = await dataSourceQueryHandler.getTopNearerLocationsByCoordinate(lat, long);
+        const { lat, long } = request.query as any;
+        const nearestLocation = await dataSourceQueryHandler.getTopNearerLocationsByCoordinate(lat, long);
         return nearestLocation;
       },
       options: {
@@ -88,10 +88,10 @@ module.exports = {
       method: "POST",
       path: "/registerNotify",
       handler: async function(request) {   
-        var rawData = request.payload as any;
-        var data = JSON.parse(rawData);
-        let repository = new RegisterNotifyRepository();
-        let createdDate = moment();
+        const rawData = request.payload as any;
+        const data = JSON.parse(rawData);
+        const repository = new RegisterNotifyRepository();
+        const createdDate = moment();
         repository.insert({
           email: data.email,
           createdDate
@@ -109,8 +109,8 @@ module.exports = {
       method: "GET",
       path: "/registerNotify/list",
       handler: async function(request) {
-        let repository = new RegisterNotifyRepository();
-        let registeredItems = await repository.list();
+        const repository = new RegisterNotifyRepository();
+        const registeredItems = await repository.list();
         return registeredItems;
       },
       options: {
@@ -123,11 +123,11 @@ module.exports = {
         method: "GET",
         path: "/trips/feelings",
         handler: async function(request) {
-          var feelings = await dataSourceQueryHandler.getFeelings();
+          const feelings = await dataSourceQueryHandler.getFeelings();
 
-          for (var i = 0; i < feelings.length; i++) {
-            let item = feelings[i];
-            let signedUrl = item.icon ? await IoC.fileService.signGetIcon(item.icon) : "";
+          for (let i = 0; i < feelings.length; i++) {
+            const item = feelings[i];
+            const signedUrl = item.icon ? await IoC.fileService.signGetIcon(item.icon) : "";
             item.icon = signedUrl;
           }
 
@@ -144,8 +144,8 @@ module.exports = {
       method: "POST",
       path: "/trips/feelings/insert",
       handler: async function(request) {
-        var feelingRepo =  new FeelingRepository();
-        var feelings: Array<IFeeling> = [
+        const feelingRepo =  new FeelingRepository();
+        const feelings: Array<IFeeling> = [
           {
             feelingId: uuid4(),
             label_en: "Beautiful",
@@ -405,11 +405,11 @@ module.exports = {
       method: "GET",
       path: "/trips/activities",
       handler: async function(request) {
-        var activities = await dataSourceQueryHandler.getActivities();
+        const activities = await dataSourceQueryHandler.getActivities();
 
-        for (var i = 0; i < activities.length; i++) {
-          let item = activities[i];
-          let signedUrl = item.icon ? await IoC.fileService.signGetIcon(item.icon) : "";
+        for (let i = 0; i < activities.length; i++) {
+          const item = activities[i];
+          const signedUrl = item.icon ? await IoC.fileService.signGetIcon(item.icon) : "";
           item.icon = signedUrl;
         }
 
@@ -426,8 +426,8 @@ module.exports = {
       method: "POST",
       path: "/trips/activities/insert",
       handler: async function(request) {
-        var activityRepo =  new ActivityRepository();
-        var activities: Array<IActivity> = [
+        const activityRepo =  new ActivityRepository();
+        const activities: Array<IActivity> = [
           {
             activityId: uuid4(),
             label_en: "Eat & Drink",
@@ -602,7 +602,7 @@ module.exports = {
         method: "GET",
         path: "/trips/highlights",
         handler: async function(request) {
-          var highlights = dataSourceQueryHandler.getHighlights();
+          const highlights = dataSourceQueryHandler.getHighlights();
           return highlights;
         },
         options: {
@@ -616,8 +616,8 @@ module.exports = {
         method: "POST",
         path: "/trips/highlights/insert",
         handler: async function(request) {
-          var highlightRepo =  new HighlightRepository();
-          var highlights: Array<IHighlight> = [
+          const highlightRepo =  new HighlightRepository();
+          const highlights: Array<IHighlight> = [
             {
                 highlightId: uuid4(),
                 label_en: "Beautiful",

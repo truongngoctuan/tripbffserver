@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run serve",
-    "build": "npm run build-ts && npm run copy && npm run tslint",
+    "build": "npm run build-ts && npm run copy && npm run lint",
     "serve": "node dist/index.js",
     "copy:data": "cp -r src/trip.module/_appData/ dist/trip.module/_appData/",
     "copy": "npm run copy:data",
@@ -13,7 +13,7 @@
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
-    "tslint": "tslint --force -c tslint.json -p tsconfig.json",
+    "lint": "tsc --noEmit && eslint '*/**/*.{js,ts}' --quiet --fix",
     "debug": "npm run build && npm run watch-debug",
     "serve-debug": "nodemon --inspect=8001 dist/index.js",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\"",
@@ -60,9 +60,10 @@
     "jest": "^24.7.1",
     "mongodb-memory-server": "^5.0.2",
     "nodemon": "^1.18.4",
-    "tslint": "^5.12.0",
-    "tslint-config-airbnb": "^5.11.1",
-    "typescript": "^3.1.6"
+    "eslint": "6.8.0",
+    "typescript": "^3.1.6",
+    "@typescript-eslint/parser":"2.13.0",
+    "@typescript-eslint/eslint-plugin": "2.13.0"
   },
   "jest": {
     "testEnvironment": "node",

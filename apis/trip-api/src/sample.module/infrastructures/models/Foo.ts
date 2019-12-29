@@ -5,8 +5,8 @@ const Schema = mongoose.Schema;
 
 // this is db model, schemas
 export interface IFoo {
-  name: String;
-  description: String;
+  name: string;
+  description: string;
 }
 
 export interface IFooModel extends IFoo, Document {}

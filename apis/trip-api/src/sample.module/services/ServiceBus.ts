@@ -17,9 +17,9 @@ export class ServiceBus {
     console.log(
       `hi there, I am emiting a event, cheers${JSON.stringify(event)}`
     );
-    var fooId = event.fooId;
+    const fooId = event.fooId;
 
-    var state = await this.fooRepository.get(fooId);
+    let state = await this.fooRepository.get(fooId);
     state = await this.reducer.updateState(state as IFoo, event);
 
     if (event.type == "FooCreated") {

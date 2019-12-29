@@ -17,4 +17,4 @@ export const TripFunctions: Array<CommandFunc> = [
   updatePatchTrip,
   importTrip,
   deleteTrip
-]
+];

@@ -10,16 +10,16 @@ export class ActivityRepository implements IActivityRepository {
             label_en: o.label_en,
             label_vi: o.label_vi,
             icon: o.icon
-        }
+        };
     }
 
     public async list() {
-        var activities = await ActivityDocument.find();
+        const activities = await ActivityDocument.find();
         return activities.map(f => this.toActivity(f));
     } 
 
     public async get(id: number) {
-        var activity = await ActivityDocument.findOne({activityId: id});
+        const activity = await ActivityDocument.findOne({activityId: id});
 
         if (!activity)
             return undefined;
@@ -28,8 +28,8 @@ export class ActivityRepository implements IActivityRepository {
     }
 
     public async insert(activity: IActivity) {
-        var { activityId, label_en, label_vi, icon } = activity;
-        var activityDocument = new ActivityDocument({
+        const { activityId, label_en, label_vi, icon } = activity;
+        const activityDocument = new ActivityDocument({
             activityId: activityId,
             label_en: label_en,
             label_vi: label_vi,
@@ -40,7 +40,7 @@ export class ActivityRepository implements IActivityRepository {
     }
 
     public async insertMany(activities: Array<IActivity>) {
-        var activityDocuments = activities.map(f => {
+        const activityDocuments = activities.map(f => {
             return new ActivityDocument({
                 activityId: f.activityId,
                 label_en: f.label_en,
@@ -52,8 +52,8 @@ export class ActivityRepository implements IActivityRepository {
     }
 
     public async update(payload: IActivity) {
-        var { activityId, label_en, label_vi, icon } = payload;
-        var activity = await ActivityDocument.findOne(activityId);
+        const { activityId, label_en, label_vi, icon } = payload;
+        const activity = await ActivityDocument.findOne(activityId);
 
         if (activity) {
             activity.label_en = label_en;
@@ -64,4 +64,4 @@ export class ActivityRepository implements IActivityRepository {
     }
 }
 
-export default ActivityRepository
+export default ActivityRepository;

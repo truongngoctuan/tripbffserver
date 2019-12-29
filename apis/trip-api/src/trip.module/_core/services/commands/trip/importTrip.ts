@@ -4,14 +4,14 @@ import { ServiceBus } from "../../TripServiceBus";
 import { CommandResult, Succeed } from "../../../../../_shared/utils";
 import { ITripLocation } from "../../../models/ITrip";
 import moment from "moment";
-import _ from 'lodash';
-import uuid4 from 'uuid/v4';
+import _ from "lodash";
+import uuid4 from "uuid/v4";
 
 export type ImportTripCommand = {
   type: "importTrip";
   ownerId: string;
   tripId: string;
-  locations: Array<ITripLocation>
+  locations: Array<ITripLocation>;
 };
 
 export async function importTrip(command: ImportTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus): Promise<CommandResult> {
@@ -28,11 +28,11 @@ export async function importTrip(command: ImportTripCommand, eventHandler: Event
     _.each(loc.images, img => {
       img.imageId = uuid4();
       img.time = moment(img.time);
-    })
-  })
+    });
+  });
 
 
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "TripImportLocations",
     ownerId,
     tripId,

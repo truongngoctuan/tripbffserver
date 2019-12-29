@@ -23,7 +23,7 @@ export async function AddLocationImage(
 ) {
   const { ownerId, tripId, locationId, imageId, url, time } = command;
 
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "LocationImageAdded",
     ownerId,
     tripId,

@@ -13,7 +13,7 @@ export function updateLocationHighlight(
         return item.locationId !== event.locationId ? item : {
             ...item,
             highlights: event.highlights
-        }
+        };
     })
   };
 }

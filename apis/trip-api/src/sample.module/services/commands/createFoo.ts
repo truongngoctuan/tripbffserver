@@ -5,16 +5,16 @@ import { CommandResult, Succeed } from "../../../_shared/utils";
 
 export type CreateFooCommand = {
   type: "createFoo";
-  fooId: String;
-  name: String;
-  description: String;
+  fooId: string;
+  name: string;
+  description: string;
 };
 
 export async function createFoo(command: CreateFooCommand, eventHandler: EventHandler, reducers: FooReducers, emitter: ServiceBus): Promise<CommandResult> {
   //validate
 
   const { fooId, name, description } = command;
-  var event: FooEvent = {
+  const event: FooEvent = {
     type: "FooCreated",
     fooId,
     name,

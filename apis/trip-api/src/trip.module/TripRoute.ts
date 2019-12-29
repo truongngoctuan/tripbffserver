@@ -2,7 +2,7 @@ import { Server } from "hapi";
 const Joi = require("joi");
 import uuid from "uuid/v1";
 import { Err } from "../_shared/utils";
-import { IoC } from "./IoC"
+import { IoC } from "./IoC";
 import { CUtils } from "../_shared/ControllerUtils";
 import moment = require("moment-timezone");
 
@@ -20,11 +20,11 @@ module.exports = {
       path: "/trips",
       handler: async function(request) {
         const userId = CUtils.getUserId(request);
-        var trips = await minimizedTripQueryHandler.list(userId);
+        const trips = await minimizedTripQueryHandler.list(userId);
 
         if (!trips) return Err("can't get data after create trip");
                 
-        console.log(trips.length)
+        console.log(trips.length);
         return trips;
       },
       options: {
@@ -37,11 +37,11 @@ module.exports = {
       method: "GET",
       path: "/trips/minimized/{id}",
       handler: async function(request) {
-        var tripId = request.params.id;
+        const tripId = request.params.id;
         const userId = CUtils.getUserId(request);
 
         console.log("trip id :" + tripId);
-        var trip = await minimizedTripQueryHandler.getById(userId, tripId);
+        const trip = await minimizedTripQueryHandler.getById(userId, tripId);
         if (!trip) throw "trip not found";
         return trip;
       },
@@ -66,10 +66,10 @@ module.exports = {
         console.log("trip to date:" + toDate);
 
         try {
-          var tripId = uuid();
+          const tripId = uuid();
           const ownerId = CUtils.getUserId(request);
 
-          var commandResult = await tripCommandHandler.exec({
+          const commandResult = await tripCommandHandler.exec({
             type: "createTrip",
             ownerId,
             tripId: tripId.toString(),
@@ -79,7 +79,7 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            var queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
+            const queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
 
             if (!queryResult) return Err("can't get data after create trip");
             return queryResult.tripId;
@@ -113,7 +113,7 @@ module.exports = {
       method: "PATCH",
       path: "/trips/{id}",
       handler: async function(request) {
-        var tripId = request.params.id;
+        const tripId = request.params.id;
         const { name, fromDate, toDate } = request.payload as any;
         console.log("trip name", name);
         console.log("trip from date:", fromDate);
@@ -122,7 +122,7 @@ module.exports = {
         try {
           const ownerId = CUtils.getUserId(request);
 
-          var commandResult = await tripCommandHandler.exec({
+          const commandResult = await tripCommandHandler.exec({
             type: "updatePatchTrip",
             ownerId,
             tripId,
@@ -132,7 +132,7 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            var queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
+            const queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
 
             if (!queryResult) return Err("can't get data after patch trip");
             return queryResult;
@@ -166,11 +166,11 @@ module.exports = {
       method: "GET",
       path: "/trips/{id}",
       handler: async function(request) {
-        var tripId = request.params.id;
+        const tripId = request.params.id;
         const userId = CUtils.getUserId(request);
 
         console.log("trip id :" + tripId);
-        var trip = await tripQueryHandler.GetById(userId, tripId);
+        const trip = await tripQueryHandler.GetById(userId, tripId);
         if (!trip) throw "trip not found";
         return trip;
       },
@@ -189,10 +189,10 @@ module.exports = {
       method: "DELETE",
       path: "/trips/{id}",
       handler: async function(request) {
-        var tripId = request.params.id;
+        const tripId = request.params.id;
         const ownerId = CUtils.getUserId(request);
 
-        var commandResult = await tripCommandHandler.exec({
+        const commandResult = await tripCommandHandler.exec({
           type: "deleteTrip",
           ownerId,
           tripId,
