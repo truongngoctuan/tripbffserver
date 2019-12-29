@@ -5,7 +5,6 @@ import { IFeeling, IActivity, IHighlight } from "./_core/models/ITrip";
 import { ActivityRepository } from "./_infrastructures/repositories/ActivityRepository";
 import { HighlightRepository } from "./_infrastructures/repositories/HighlightRepository";
 import { RegisterNotifyRepository } from "./_infrastructures/repositories/RegisterNotifyRepository";
-import { SearchLocationRepository } from "./_infrastructures/repositories/SearchLocationRepository";
 import uuid4 from "uuid/v4";
 import moment = require("moment");
 import { ISearchLocation } from "./_core/models/ISearchLocation";

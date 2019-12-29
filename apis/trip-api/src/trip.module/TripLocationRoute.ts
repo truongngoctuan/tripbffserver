@@ -8,7 +8,6 @@ import moment = require("moment");
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
-const dataSourceQueryHandler = IoC.dataSourceQueryHandler;
 import Joi from "joi";
 import { joiLocationSchema } from "./JoiSchemas";
 
