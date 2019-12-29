@@ -70,11 +70,22 @@ module.exports = {
       }
     });    
 
+    type postPayloadType = {
+      name: string;
+      fromDate: string;
+      toDate: string;
+    };
+    const postPayloadSchema = Joi.object({
+      name: Joi.string().required(),
+      fromDate: Joi.string().required(),
+      toDate: Joi.string().required(),
+    });
+
     server.route({
       method: "POST",
       path: "/trips",
       handler: async function(request) {
-        const { name, fromDate, toDate } = request.payload as any;
+        const { name, fromDate, toDate } = request.payload as postPayloadType;
         console.log("trip name :" + name);
         console.log("trip from date:" + fromDate);
         console.log("trip to date:" + toDate);
@@ -88,8 +99,8 @@ module.exports = {
             ownerId,
             tripId: tripId.toString(),
             name,
-            fromDate,
-            toDate
+            fromDate: moment(fromDate),
+            toDate: moment(toDate)
           });
 
           if (commandResult.isSucceed) {
@@ -108,17 +119,7 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          payload: {
-            name: Joi.string()
-              .required()
-              .description("the id for the todo item"),
-            fromDate: Joi.string()
-              .required()
-              .description("the fromDate"),
-            toDate: Joi.string()
-              .required()
-              .description("the toDate")
-          }
+          payload: postPayloadSchema
         },
         response: {
           status: {
@@ -133,7 +134,7 @@ module.exports = {
       path: "/trips/{id}",
       handler: async function(request) {
         const tripId = request.params.id;
-        const { name, fromDate, toDate } = request.payload as any;
+        const { name, fromDate, toDate } = request.payload as postPayloadType;
         console.log("trip name", name);
         console.log("trip from date:", fromDate);
         console.log("trip to date:", toDate);
@@ -169,14 +170,7 @@ module.exports = {
           params: {
             id: Joi.required().description("the id for the todo item")
           },
-          payload: {
-            name: Joi.string()
-              .description("the id for the todo item"),
-            fromDate: Joi.string()
-              .description("the fromDate"),
-            toDate: Joi.string()
-              .description("the toDate")
-          }
+          payload: postPayloadSchema
         },
         response: {
           status: {
@@ -203,7 +197,7 @@ module.exports = {
         tags: ["api"],
         validate: {
           params: {
-            id: Joi.required().description("the id for the todo item")
+            id: Joi.required()
           }
         },
         response: {
@@ -239,7 +233,7 @@ module.exports = {
         tags: ["api"],
         validate: {
           params: {
-            id: Joi.required().description("the id for the todo item")
+            id: Joi.required()
           }
         }
       }
