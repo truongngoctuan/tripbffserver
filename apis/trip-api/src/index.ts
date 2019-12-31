@@ -13,7 +13,7 @@ console.log("checking current time in server", moment().format());
 console.log(moment.tz.guess());
 // -------------------
 
-import { Server } from "hapi";
+import { Server } from "@hapi/hapi";
 import { registerModules } from "./trip.module/_core/services/commands";
 const authService = require("./bootstraping/authentication.js");
 const swaggerUiService = require("./bootstraping/swagger-documentation");

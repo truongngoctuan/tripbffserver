@@ -1,6 +1,6 @@
-import { Server, ResponseToolkit } from "hapi";
+import { Server, ResponseToolkit } from "@hapi/hapi";
 import { IoC } from "./IoC";
-import Joi from "joi";
+import Joi from "@hapi/joi";
 
 const tripQueryHandler = IoC.tripQueryHandler;
 

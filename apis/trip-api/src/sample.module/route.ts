@@ -1,10 +1,10 @@
-import { Server } from "hapi";
+import { Server } from "@hapi/hapi";
 import { FooRepository } from "./infrastructures/repositories/FooRepository";
 import { FooCommandHandler } from "./services/commands/_commandHandler";
 import { ServiceBus } from "./services/ServiceBus";
 import { FooQueryHandler } from "./services/FooQuery";
 import { FooEventRepository } from "./infrastructures/repositories/FooEventRepository";
-const Joi = require("joi");
+const Joi = require("@hapi/joi");
 
 const fooEventRepository = new FooEventRepository();
 const fooRepository = new FooRepository();

@@ -1,4 +1,4 @@
-import { Server } from "hapi";
+import { Server } from "@hapi/hapi";
 import { IoC } from "./IoC";
 import { FeelingRepository } from "./_infrastructures/repositories/FeelingRepository";
 import { IFeeling, IActivity, IHighlight } from "./_core/models/ITrip";

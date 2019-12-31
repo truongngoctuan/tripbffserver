@@ -2,8 +2,6 @@ import { ISearchLocationRepository } from "../../_core/models/ISearchLocationRep
 import { SearchLocationDocument, ISearchLocationDocument } from "../models/SearchLocationModel";
 import { ISearchLocationModel } from "../models/ISearchLocationModel";
 import { ISearchLocation } from "../../_core/models/ISearchLocation";
-import { DocumentQuery } from "mongoose";
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 
 export class SearchLocationRepository implements ISearchLocationRepository {
     toLocation(o: ISearchLocationModel): ISearchLocation {
@@ -19,9 +17,9 @@ export class SearchLocationRepository implements ISearchLocationRepository {
         let locations: ISearchLocationDocument[] = [];
 
         if (query) {  
-            var queryItems = query.split(" "),                
-                queries: string[] = [],
-                allQueryArrays: any[] = [];
+            const queryItems = query.split(" ");
+            let queries: string[] = [];
+            const allQueryArrays: any[] = [];
 
             queryItems.forEach(item => {                
                 item = item.toLowerCase();
@@ -35,8 +33,8 @@ export class SearchLocationRepository implements ISearchLocationRepository {
                 }
             });            
 
-            var queries = this.allPossibleCases(allQueryArrays),
-                numberOfQuery = queries.length;
+            queries = this.allPossibleCases(allQueryArrays);
+            const numberOfQuery = queries.length;
 
             for (let i = 0; i < numberOfQuery; i++) {
                 const phrase = "\"" + queries[i] + "\"";      

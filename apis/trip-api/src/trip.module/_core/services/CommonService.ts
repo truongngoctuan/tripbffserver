@@ -3,6 +3,10 @@ import { ISearchLocation } from "../models/ISearchLocation";
 const fs = require("fs"),
     path = require("path");
 
+function deg2rad(deg: number): number {
+  return deg * (Math.PI/180);
+}
+
 export function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const R = 6371*1000; // Radius of the earth in meter
   const dLat = deg2rad(lat2-lat1);  // deg2rad below
@@ -16,11 +20,7 @@ export function calculateDistance(lat1: number, lon1: number, lat2: number, lon2
   return d;
 }
 
-function deg2rad(deg: any) {
-    return deg * (Math.PI/180);
-}
-
-export function insertSearchLocations(filePath: string) {
+export function insertSearchLocations(filePath: string): void {
   const searchLocationRepository = new SearchLocationRepository();
 
   fs.readFile(filePath, function(err: any, data: any){

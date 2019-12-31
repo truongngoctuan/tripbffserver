@@ -1,4 +1,4 @@
-import { Server } from "hapi";
+import { Server } from "@hapi/hapi";
 import { IoC } from "./IoC";
 import { CUtils } from "../_shared/ControllerUtils";
 

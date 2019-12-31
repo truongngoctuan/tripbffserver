@@ -1,8 +1,8 @@
-import { Server } from "hapi";
+import { Server } from "@hapi/hapi";
 import uuid from "uuid/v1";
 import { IoC } from "./IoC";
 import { CUtils } from "../_shared/ControllerUtils";
-import Joi from "joi";
+import Joi from "@hapi/joi";
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripEventQueryHandler = IoC.tripEventQueryHandler;

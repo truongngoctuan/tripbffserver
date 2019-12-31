@@ -1,4 +1,4 @@
-import { Request } from "hapi";
+import { Request } from "@hapi/hapi";
 
 function getUserId(request: Request): string {
   // todo check and throw appropriate error

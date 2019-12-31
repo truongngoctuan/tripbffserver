@@ -1,4 +1,4 @@
-import { Server } from "hapi";
+import { Server } from "@hapi/hapi";
 import { Err } from "../_shared/utils";
 import { IoC } from "./IoC";
 import { CUtils } from "../_shared/ControllerUtils";
@@ -8,7 +8,7 @@ import moment = require("moment");
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
-import Joi from "joi";
+import Joi from "@hapi/joi";
 import { joiLocationSchema } from "./JoiSchemas";
 
 module.exports = {
@@ -20,7 +20,6 @@ module.exports = {
       path: "/trips/{id}/locations",
       async handler(request) {
         try {
-          console.log("POST", request.url.path);
           const selectedLocations = request.payload as ITripLocation[];
           // console.log("selectedLocations", selectedLocations);
           const tripId = request.params.id;
@@ -101,7 +100,6 @@ module.exports = {
       path: "/trips/{tripId}/locations/{locationId}",
       async handler(request) {
         try {
-          console.log("DELETE", request.url.path);
           const tripId: string = request.params.tripId;
           const locationId: string = request.params.locationId;
 

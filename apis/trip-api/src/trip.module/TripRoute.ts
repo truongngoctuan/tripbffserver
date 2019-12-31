@@ -1,5 +1,5 @@
-import { Server } from "hapi";
-import Joi from "joi";
+import { Server } from "@hapi/hapi";
+import Joi from "@hapi/joi";
 import uuid from "uuid/v1";
 import { Err } from "../_shared/utils";
 import { IoC } from "./IoC";
@@ -12,7 +12,7 @@ const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
 const minimizedTripQueryHandler = IoC.minimizedTripsQueryHandler;
 
-import { joiTripSchema } from "./JoiSchemas";
+import { joiTripSchema, joiTripsSchema } from "./JoiSchemas";
 
 module.exports = {
   init: function(server: Server): void {
@@ -33,11 +33,9 @@ module.exports = {
         tags: ["api"],
         notes: ["get full list of trips"],
         response: {
-          status: {
-            200: Joi.array().items(joiTripSchema)
-          }
+          schema: joiTripsSchema
         }
-      }
+      },
     });
 
     server.route({
@@ -61,9 +59,7 @@ module.exports = {
           }
         },
         response: {
-          status: {
-            200: joiTripSchema
-          }
+          schema: joiTripSchema
         }
       }
     });
@@ -123,9 +119,7 @@ module.exports = {
           payload: postPayloadSchema
         },
         response: {
-          status: {
-            200: joiTripSchema
-          }
+          schema: Joi.string()
         }
       }
     });
