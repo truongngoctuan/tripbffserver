@@ -9,7 +9,7 @@ import moment = require("moment");
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
 import Joi from "@hapi/joi";
-import { joiLocationSchema } from "./JoiSchemas";
+import { joiLocationSchema, IdSchema } from "./JoiSchemas";
 
 module.exports = {
   init(server: Server): void {
@@ -321,9 +321,7 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: Joi.object({
-            id: Joi.required().description("the id for the todo item"),
-          }),
+          params: IdSchema,
         },
       },
     });

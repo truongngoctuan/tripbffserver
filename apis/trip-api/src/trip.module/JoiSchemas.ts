@@ -2,6 +2,15 @@ import Joi from "@hapi/joi";
 
 // Joi.extend(require("@hapi/joi-date"));
 
+// generic validation
+
+export const IdSchema = Joi.object({
+  id: Joi.required().description("External Id")
+});
+
+// -------------------------------------------------------------------
+// trip specific validation
+
 export const joiLocationSchema = Joi.object({
   name: Joi.string(),
   fromTime: Joi.string(),
@@ -41,3 +50,14 @@ export const joiTripSchema = Joi.object({
 });
 
 export const joiTripsSchema = Joi.array().items(joiTripSchema);
+
+export const joiMinimizedTripSchema = Joi.object({
+  tripId: Joi.string(),
+  name: Joi.string(),
+  fromDate: Joi.date(),
+  toDate: Joi.date(),
+  locationImages: Joi.array().optional().items(Joi.string()),
+  isDeleted: Joi.boolean()
+});
+
+export const joiMinimizedTripsSchema = Joi.array().items(joiMinimizedTripSchema);

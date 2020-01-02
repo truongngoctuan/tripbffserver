@@ -12,7 +12,7 @@ const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
 const minimizedTripQueryHandler = IoC.minimizedTripsQueryHandler;
 
-import { joiTripSchema, joiTripsSchema } from "./JoiSchemas";
+import { joiTripSchema, joiMinimizedTripsSchema, IdSchema } from "./JoiSchemas";
 
 module.exports = {
   init: function(server: Server): void {
@@ -33,7 +33,8 @@ module.exports = {
         tags: ["api"],
         notes: ["get full list of trips"],
         response: {
-          schema: joiTripsSchema
+          // todo setup date/moment validation correctly
+          // schema: joiMinimizedTripsSchema
         }
       },
     });
@@ -54,9 +55,7 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: Joi.object({
-            id: Joi.required().description("the id for the todo item")
-          })
+          params: IdSchema
         },
         response: {
           schema: joiTripSchema
@@ -165,9 +164,7 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: Joi.object({
-            id: Joi.required().description("the id for the todo item")
-          }),
+          params: IdSchema,
           payload: postPayloadSchema
         },
         response: {
@@ -194,9 +191,7 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: Joi.object({
-            id: Joi.required()
-          })
+          params: IdSchema
         },
         response: {
           status: {
@@ -230,9 +225,7 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: Joi.object({
-            id: Joi.required()
-          })
+          params: IdSchema
         }
       }
     });

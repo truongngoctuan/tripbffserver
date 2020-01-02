@@ -1,6 +1,7 @@
 import { Server, ResponseToolkit } from "@hapi/hapi";
 import { IoC } from "./IoC";
 import Joi from "@hapi/joi";
+import { IdSchema } from "./JoiSchemas";
 
 const tripQueryHandler = IoC.tripQueryHandler;
 
@@ -115,9 +116,7 @@ module.exports = {
         // auth: "simple",
         tags: ["api"],
         validate: {
-          params: Joi.object({
-            id: Joi.required().description("the external id")
-          }),
+          params: IdSchema,
           query: Joi.object({
             s: Joi.number().description("size"),
           }),
@@ -171,9 +170,7 @@ module.exports = {
         // auth: "simple",
         tags: ["api"],
         validate: {
-          params: Joi.object({
-            id: Joi.required().description("the external id")
-          }),
+          params: IdSchema,
           query: Joi.object({
             s: Joi.number().description("size"),
           }),
@@ -204,9 +201,7 @@ module.exports = {
         // auth: "simple",
         tags: ["api"],
         validate: {
-          params: Joi.object({
-            id: Joi.required().description("the id for the todo item")
-          }),
+          params: IdSchema,
         },
       },
     });
