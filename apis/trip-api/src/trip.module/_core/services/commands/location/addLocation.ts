@@ -9,7 +9,7 @@ export type AddLocationCommand = {
   type: "AddLocation";
   ownerId: string;
   tripId: string;
-  location: ITripLocation
+  location: ITripLocation;
 };
 
 export async function AddLocation(
@@ -20,7 +20,7 @@ export async function AddLocation(
 ) {
   const { ownerId, tripId, location } = command;
 
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "LocationAdded",
     ownerId,
     tripId,

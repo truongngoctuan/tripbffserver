@@ -1,14 +1,14 @@
-import { Server } from "hapi";
-const uuid = require("uuid/v1");
+import { Server } from "@hapi/hapi";
+import uuid from "uuid/v1";
 import { IoC } from "./IoC";
 import { CUtils } from "../_shared/ControllerUtils";
-const Joi = require("joi");
+import Joi from "@hapi/joi";
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripEventQueryHandler = IoC.tripEventQueryHandler;
 
 module.exports = {
-  init(server: Server) {
+  init(server: Server): void {
     server.route({
       method: "POST",
       path: "/trips/{id}/infographics",
@@ -118,14 +118,14 @@ module.exports = {
       path: "/trips/{tripId}/infographics/{infographicId}",
       async handler(request, h) {
         const tripId = request.params.tripId;
-        const inforgraphicId = request.params.infographicId;
+        const infographicId = request.params.infographicId;
 
         return new Promise((resolve, reject) => {
           let counter = 0;
           const getEventInterval = setInterval(async () => {
             counter += 1;
             if (counter > 60) {
-              console.log(`setInterval ${counter} running for ${inforgraphicId}. Stop interval, return timeout`);
+              console.log(`setInterval ${counter} running for ${infographicId}. Stop interval, return timeout`);
               clearInterval(getEventInterval);
               const error2 = new Error("request timeout");
               reject(error2);
@@ -135,7 +135,7 @@ module.exports = {
 
             if (tripEvents) {
               const exportedInfoEvent = tripEvents.find(event =>
-                event.type == 'InfographicExported' && event.infographicId == inforgraphicId) as any;
+                event.type == "InfographicExported" && event.infographicId == infographicId) as any;
 
               if (exportedInfoEvent) {
                 clearInterval(getEventInterval);
@@ -160,10 +160,10 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
+          params: Joi.object({
             tripId: Joi.required().description("the tripId for the todo item"),
             infographicId: Joi.required().description("the id for the todo item"),
-          },
+          }),
         },
       },
     });

@@ -17,7 +17,7 @@ export class MinimizedTripQueryHandler {
   async list(ownerId: string): Promise<ITripMinimized[]> {
     return this.TripsRepository.list(ownerId)
       .then(trips => {
-        var allTrips = trips.map(trip => this.updateTripImageExternalUrl(trip));
+        let allTrips = trips.map(trip => this.updateTripImageExternalUrl(trip));
         allTrips = allTrips.filter(item => item.isDeleted != true);
         allTrips.sort(this.compareTrip);
         return allTrips;
@@ -39,7 +39,7 @@ export class MinimizedTripQueryHandler {
         address: locationImage.address,
         description: locationImage.description,
         imageUrl: locationImage.imageUrl === "" ? "" : resolveThumbnailImageUrlFromExternalStorageId(locationImage.imageUrl),
-      }
+      };
     });
     return trip;
   }

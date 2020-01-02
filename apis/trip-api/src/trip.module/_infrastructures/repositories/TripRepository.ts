@@ -43,7 +43,7 @@ export class TripRepository implements ITripRepository {
               label_en: item.label_en,
               label_vi: item.label_vi,
               highlightType: item.highlightType
-            }
+            };
           }) : undefined
         };
       }),
@@ -64,7 +64,7 @@ export class TripRepository implements ITripRepository {
   }
 
   public async list(ownerId: string) {
-    var userTrips = await this.getUserTrips(ownerId);
+    const userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) return [];
 
     return userTrips.trips.map(item => this.toTripDto(item));
@@ -73,15 +73,15 @@ export class TripRepository implements ITripRepository {
   public async create(ownerId: string, payload: ITrip) {
     const { tripId: id, name, fromDate, toDate, isDeleted } = payload;
 
-    var trip: ITripModel = {
+    const trip: ITripModel = {
       tripId: id,
       name,
       fromDate: moment(fromDate).toDate(),
       toDate: moment(toDate).toDate(),
       isDeleted: isDeleted,
       createdDate: new Date()
-    }
-    var userTrips = await this.getUserTrips(ownerId);
+    };
+    let userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) {
       userTrips = new this._mg.UserTripDocument({
         userId: ownerId
@@ -91,16 +91,16 @@ export class TripRepository implements ITripRepository {
     userTrips.trips.push(trip);
     await userTrips.save();
 
-    var tripModel = userTrips.trips[userTrips.trips.length - 1];
+    const tripModel = userTrips.trips[userTrips.trips.length - 1];
 
     return this.toTripDto(tripModel);
   }
 
   public async update(ownerId: string, payload: ITrip) {
-    var userTrips = await this.getUserTrips(ownerId);
+    const userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) throw "can't find Trip from user id = " + ownerId;
 
-    var trip = _.find(userTrips.trips, trip => trip.tripId === payload.tripId);
+    const trip = _.find(userTrips.trips, trip => trip.tripId === payload.tripId);
     if (!trip) throw "can't find Trip with id = " + payload.tripId;
 
     trip.name = payload.name;
@@ -127,19 +127,19 @@ export class TripRepository implements ITripRepository {
     await userTrips.save();
   }
 
-  public async get(ownerId: string, id: String) {
-    var trip = await this.getTripModel(ownerId, id);
+  public async get(ownerId: string, id: string) {
+    const trip = await this.getTripModel(ownerId, id);
     if (!trip) return undefined;
     
     return this.toTripDto(trip);
   }
 
-  async getTripModel(ownerId: string, id: String) {
-    var userTrips = await this.getUserTrips(ownerId);
+  async getTripModel(ownerId: string, id: string) {
+    const userTrips = await this.getUserTrips(ownerId);
     
     if (!userTrips) return undefined;
 
-    var trip = _.find(userTrips.trips, trip => trip.tripId === id);
+    const trip = _.find(userTrips.trips, trip => trip.tripId === id);
     if (!trip) return undefined;
     return trip;
   }

@@ -5,9 +5,9 @@ import { ServiceBus } from "../ServiceBus";
 
 export type UpdateFooCommand = {
   type: "updateFoo";
-  fooId: String;
-  name: String;
-  description: String;
+  fooId: string;
+  name: string;
+  description: string;
 };
 
 export async function updateFoo(command: UpdateFooCommand, eventHandler: EventHandler, reducers: FooReducers, emitter: ServiceBus) {
@@ -21,7 +21,7 @@ export async function updateFoo(command: UpdateFooCommand, eventHandler: EventHa
     return Succeed();
   }
 
-  var event: FooEvent = {
+  const event: FooEvent = {
     type: "FooUpdated",
     fooId,
     name,

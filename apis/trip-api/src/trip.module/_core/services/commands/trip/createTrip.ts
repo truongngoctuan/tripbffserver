@@ -18,7 +18,7 @@ export async function createTrip(command: CreateTripCommand, eventHandler: Event
   //todo validation on fromDate, toDate
   //todo add error code as 
   const { ownerId, tripId, name, fromDate, toDate } = command;
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "TripCreated",
     ownerId,
     tripId,

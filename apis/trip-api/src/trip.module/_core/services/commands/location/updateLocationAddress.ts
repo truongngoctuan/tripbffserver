@@ -4,14 +4,14 @@ import { ServiceBus } from "../../TripServiceBus";
 import { Succeed } from "../../../../../_shared/utils";
 
 export type UpdateLocationAddressCommand = {
-  type: "UpdateLocationAddress",
-  ownerId: string,
-  tripId: string,
-  locationId: string,
-  name: string,
-  address: string,
-  long: number,
-  lat: number
+  type: "UpdateLocationAddress";
+  ownerId: string;
+  tripId: string;
+  locationId: string;
+  name: string;
+  address: string;
+  long: number;
+  lat: number;
 };
 
 export async function UpdateLocationAddress(
@@ -22,7 +22,7 @@ export async function UpdateLocationAddress(
 ) {
   const { ownerId, tripId, locationId, name, address, long, lat } = command;
 
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "LocationAddressUpdated",
     ownerId,
     tripId,

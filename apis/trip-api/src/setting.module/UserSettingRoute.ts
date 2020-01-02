@@ -1,4 +1,4 @@
-import { Server } from "hapi";
+import { Server } from "@hapi/hapi";
 import { IoC } from "./IoC";
 import { CUtils } from "../_shared/ControllerUtils";
 
@@ -10,9 +10,9 @@ module.exports = {
         path: "/setting/feedback",
         handler: async function(request) {
           try {
-            var { feedback, email } = request.payload as any;
+            const { feedback, email } = request.payload as any;
             const userId = CUtils.getUserId(request);
-            var userFeedback = {
+            const userFeedback = {
               userId,
               feedback,
               email
@@ -36,7 +36,7 @@ module.exports = {
         path: "/setting/feedback",
         handler: async function(request) {
           try {          
-            let feedbacks = await IoC.userFeedbackRepository.list();
+            const feedbacks = await IoC.userFeedbackRepository.list();
             return feedbacks;
           }
           catch(error) {
@@ -55,9 +55,9 @@ module.exports = {
         path: "/setting/locale",
         handler: async function(request) {
           try {
-            var { locale } = request.payload as any;
+            const { locale } = request.payload as any;
             const userId = CUtils.getUserId(request);
-            var userSetting = {
+            const userSetting = {
               userId,
               locale
             };
@@ -75,4 +75,4 @@ module.exports = {
         }
       });      
   }    
-}
+};

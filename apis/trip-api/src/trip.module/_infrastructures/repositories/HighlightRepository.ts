@@ -10,16 +10,16 @@ export class HighlightRepository implements IHighlightRepository {
             label_en: o.label_en,
             label_vi: o.label_vi,
             highlightType: o.highlightType
-        }
+        };
     }
 
     public async list() {
-        var highlights = await HighlightDocument.find();
+        const highlights = await HighlightDocument.find();
         return highlights.map(f => this.toHighlight(f));
     } 
 
     public async get(id: number) {
-        var highlight = await HighlightDocument.findOne({highlightId: id});
+        const highlight = await HighlightDocument.findOne({highlightId: id});
 
         if (!highlight)
             return undefined;
@@ -28,8 +28,8 @@ export class HighlightRepository implements IHighlightRepository {
     }
 
     public async insert(highlight: IHighlight) {
-        var { highlightId, label_en, label_vi, highlightType } = highlight;
-        var highlightDocument = new HighlightDocument({
+        const { highlightId, label_en, label_vi, highlightType } = highlight;
+        const highlightDocument = new HighlightDocument({
             highlightId: highlightId,
             label_en: label_en,
             label_vi: label_vi,
@@ -40,7 +40,7 @@ export class HighlightRepository implements IHighlightRepository {
     }
 
     public async insertMany(highlights: Array<IHighlight>) {
-        var highlightDocuments = highlights.map(f => {
+        const highlightDocuments = highlights.map(f => {
             return new HighlightDocument({
                 highlightId: f.highlightId,
                 label_en: f.label_en,
@@ -52,8 +52,8 @@ export class HighlightRepository implements IHighlightRepository {
     }
 
     public async update(payload: IHighlight) {
-        var { highlightId, label_en, label_vi, highlightType } = payload;
-        var highlight = await HighlightDocument.findOne(highlightId);
+        const { highlightId, label_en, label_vi, highlightType } = payload;
+        const highlight = await HighlightDocument.findOne(highlightId);
 
         if (highlight) {
             highlight.label_en = label_en;
@@ -64,4 +64,4 @@ export class HighlightRepository implements IHighlightRepository {
     }
 }
 
-export default HighlightRepository
+export default HighlightRepository;

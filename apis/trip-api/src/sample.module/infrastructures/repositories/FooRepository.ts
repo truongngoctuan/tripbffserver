@@ -12,13 +12,13 @@ export class FooRepository implements IFooRepository {
   }
 
   public async list() {
-    var foos = await Foo.find().exec();
+    const foos = await Foo.find().exec();
     return foos.map(item => this.toFooDto(item));
   }
 
   public async create(payload: IFoo) {
     const { id, name, description } = payload;
-    var foo = new Foo({
+    const foo = new Foo({
       id,
       name,
       description
@@ -29,7 +29,7 @@ export class FooRepository implements IFooRepository {
   }
 
   public async update(payload: IFoo) {
-    var foo = await Foo.findOne()
+    const foo = await Foo.findOne()
       .where("id")
       .equals(payload.id)
       .exec();
@@ -41,8 +41,8 @@ export class FooRepository implements IFooRepository {
     await foo.save();
   }
 
-  public async get(id: String) {
-    var foo = await Foo.findOne()
+  public async get(id: string) {
+    const foo = await Foo.findOne()
       .where("id")
       .equals(id)
       .exec();

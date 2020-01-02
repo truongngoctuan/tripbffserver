@@ -1,4 +1,4 @@
-import { IFeelingModel } from "./IFeelingModel"
+import { IFeelingModel } from "./IFeelingModel";
 import { IActivityModel } from "./IActivityModel";
 import { IHighlightModel } from "./IHighlightModel";
 

@@ -13,7 +13,7 @@ export type ExportInfographicCommand = {
   ownerId: string;
   tripId: string;
   infographicId: string;
-  locale: string
+  locale: string;
 };
 
 export async function exportInfographic(
@@ -28,7 +28,7 @@ export async function exportInfographic(
   const trip = await reducers.getCurrentState(tripId);
   if (!trip) throw "trip not found";
 
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "InfographicCreated",
     ownerId,
     tripId,
@@ -37,7 +37,7 @@ export async function exportInfographic(
 
   eventHandler.save(event);
 
-  var jobExportInfo = {
+  const jobExportInfo = {
     ownerId,
     tripId,
     infographicId,
@@ -65,8 +65,8 @@ export async function exportInfographic(
         signedUrl = resolveSignOnlyThumbnailImageUrlFromExternalStorageId(imageId);
       }
 
-      var feeling: string = "",
-          activity: string = "",
+      let feeling = "",
+          activity = "",
           highlights: Array<string> = [];
 
       if(item.feeling) {

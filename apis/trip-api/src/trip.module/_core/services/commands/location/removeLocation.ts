@@ -24,7 +24,7 @@ export async function RemoveLocation(
   const location = _.find(state.locations, loc => loc.locationId == locationId);
   if (!location) return BadRequest("LocationNotFound");
 
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "LocationRemoved",
     ownerId,
     tripId,

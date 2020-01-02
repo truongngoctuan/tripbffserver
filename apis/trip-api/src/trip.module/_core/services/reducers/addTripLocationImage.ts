@@ -9,20 +9,20 @@ export function addTripLocationImage(
 ): ITrip {
 
   //get location
-  var locationIdx = _.findIndex(
+  const locationIdx = _.findIndex(
     prevState.locations,
     loc => loc.locationId == command.locationId
   );
 
-  var location = prevState.locations[locationIdx];
+  const location = prevState.locations[locationIdx];
 
   const { imageId, url, time } = command;
-  var newImage: ITripLocationImage = {
+  const newImage: ITripLocationImage = {
     imageId, url, time,
     externalUrl: "", //todo: should it be optional ?
     thumbnailExternalUrl: "",
     isFavorite: false,
-  }
+  };
   //update state
   location.images.push(newImage);
   location.images = _.sortBy(location.images, [img => img.time]);

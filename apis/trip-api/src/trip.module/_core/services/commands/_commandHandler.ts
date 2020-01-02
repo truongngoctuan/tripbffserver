@@ -5,10 +5,10 @@ import { CommandResult, Err } from "../../../../_shared/utils";
 import { IJobDispatcher } from "../../models/IJobDispatcher";
 import { TripBCommand } from ".";
 
-var staticHandlers = new Map<string, CommandFunc>();
+const staticHandlers = new Map<string, CommandFunc>();
 
 export function staticRegister(func: CommandFunc) {
-  console.log("register command handler", func.name)
+  console.log("register command handler", func.name);
   staticHandlers.set(func.name, func as CommandFunc);
 }
 
