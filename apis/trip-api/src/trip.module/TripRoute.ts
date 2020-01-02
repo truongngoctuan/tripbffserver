@@ -54,9 +54,9 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
+          params: Joi.object({
             id: Joi.required().description("the id for the todo item")
-          }
+          })
         },
         response: {
           schema: joiTripSchema
@@ -165,9 +165,9 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
+          params: Joi.object({
             id: Joi.required().description("the id for the todo item")
-          },
+          }),
           payload: postPayloadSchema
         },
         response: {
@@ -194,9 +194,9 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
+          params: Joi.object({
             id: Joi.required()
-          }
+          })
         },
         response: {
           status: {
@@ -230,9 +230,9 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
+          params: Joi.object({
             id: Joi.required()
-          }
+          })
         }
       }
     });

@@ -321,9 +321,9 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
+          params: Joi.object({
             id: Joi.required().description("the id for the todo item"),
-          },
+          }),
         },
       },
     });
@@ -502,9 +502,9 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          payload: {
+          payload: Joi.object({
             isFavorite: Joi.boolean().description("mark the image favorite/highlighted or not"),
-          },
+          }),
         },
       },
     });
@@ -547,10 +547,10 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          payload: {
+          payload: Joi.object({
             url: Joi.string().description("storage url in mobile device"),
             time: Joi.string().description("time taken"),
-          },
+          }),
         },
       },
     });
@@ -596,9 +596,9 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          payload: {
+          payload: Joi.object({
             deletingIds: Joi.array().description("delete image with list of ids"),
-          },
+          }),
         },
       },
     });

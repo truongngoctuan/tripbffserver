@@ -2,7 +2,7 @@ import Joi from "@hapi/joi";
 
 // Joi.extend(require("@hapi/joi-date"));
 
-export const joiLocationSchema = {
+export const joiLocationSchema = Joi.object({
   name: Joi.string(),
   fromTime: Joi.string(),
   toTime: Joi.string(),
@@ -18,7 +18,7 @@ export const joiLocationSchema = {
       url: Joi.string(),
     }),
   ),
-};
+});
 
 export const joiInfographicSchema = {
 
@@ -30,7 +30,7 @@ export const joiInfographicSchema = {
 //   externalStorageId?: string; //this id will exist after image binary is uploaded to server
 // }
 
-export const joiTripSchema = {
+export const joiTripSchema = Joi.object({
   tripId: Joi.string(),
   name: Joi.string(),
   fromDate: Joi.date(),
@@ -38,6 +38,6 @@ export const joiTripSchema = {
   locations: Joi.array().optional().items(joiLocationSchema),
   infographics: Joi.array().optional().items(joiInfographicSchema),
   isDeleted: Joi.boolean()
-};
+});
 
 export const joiTripsSchema = Joi.array().items(joiTripSchema);
