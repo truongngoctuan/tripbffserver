@@ -160,10 +160,10 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
+          params: Joi.object({
             tripId: Joi.required().description("the tripId for the todo item"),
             infographicId: Joi.required().description("the id for the todo item"),
-          },
+          }),
         },
       },
     });

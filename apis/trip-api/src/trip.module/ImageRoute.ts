@@ -115,12 +115,12 @@ module.exports = {
         // auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
+          params: Joi.object({
             id: Joi.required().description("the external id")
-          },
-          query: {
+          }),
+          query: Joi.object({
             s: Joi.number().description("size"),
-          },
+          }),
         },
         response: {
         },
@@ -171,12 +171,12 @@ module.exports = {
         // auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
+          params: Joi.object({
             id: Joi.required().description("the external id")
-          },
-          query: {
+          }),
+          query: Joi.object({
             s: Joi.number().description("size"),
-          },
+          }),
         },
         response: {
         },
@@ -204,9 +204,9 @@ module.exports = {
         // auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
+          params: Joi.object({
             id: Joi.required().description("the id for the todo item")
-          },
+          }),
         },
       },
     });
