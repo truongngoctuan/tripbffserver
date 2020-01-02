@@ -4,7 +4,7 @@ import { FooCommandHandler } from "./services/commands/_commandHandler";
 import { ServiceBus } from "./services/ServiceBus";
 import { FooQueryHandler } from "./services/FooQuery";
 import { FooEventRepository } from "./infrastructures/repositories/FooEventRepository";
-const Joi = require("@hapi/joi");
+import Joi from "@hapi/joi";
 
 const fooEventRepository = new FooEventRepository();
 const fooRepository = new FooRepository();
@@ -15,7 +15,7 @@ const fooCommandHandler = new FooCommandHandler(
 const fooQueryHandler = new FooQueryHandler(new FooRepository());
 
 module.exports = {
-  init: function(server: Server) {
+  init: function(server: Server): void {
     server.route({
       method: "GET",
       path: "/hello",
@@ -31,12 +31,7 @@ module.exports = {
       },
       options: {
         auth: "simple",
-        tags: ["api"],
-        validate: {
-          //   params: {
-          //     id: Joi.required().description("the id for the todo item")
-          //   }
-        }
+        tags: ["api"]
       }
     });
 
@@ -69,10 +64,10 @@ module.exports = {
         // auth: "simple",
         tags: ["api"],
         validate: {
-          payload: {
+          payload: Joi.object({
             name: Joi.required().description("name"),
             description: Joi.required().description("description")
-          }
+          })
         }
       }
     });
@@ -106,13 +101,13 @@ module.exports = {
         // auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
+          params: Joi.object({
             id: Joi.required().description("the id for the todo item")
-          },
-          payload: {
+          }),
+          payload: Joi.object({
             name: Joi.required().description("name"),
             description: Joi.required().description("description")
-          }
+          })
         }
       }
     });
