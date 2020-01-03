@@ -13,33 +13,27 @@ module.exports = {
       method: "POST",
       path: "/trips/{tripId}/infographics",
       async handler(request) {
-        try {
-          const tripId: string = request.params.tripId;
-          const { locale } = request.payload as any;
+        const tripId: string = request.params.tripId;
+        const { locale } = request.payload as any;
 
-          const ownerId = CUtils.getUserId(request);
+        const ownerId = CUtils.getUserId(request);
 
-          const infographicId = uuid();
+        const infographicId = uuid();
 
-          const commandResult = await tripCommandHandler.exec({
-            type: "exportInfographic",
-            ownerId,
-            tripId,
-            infographicId,
-            locale,
-          });
+        const commandResult = await tripCommandHandler.exec({
+          type: "exportInfographic",
+          ownerId,
+          tripId,
+          infographicId,
+          locale,
+        });
 
-          if (commandResult.isSucceed) {
-            return infographicId;
-          }
-
-          console.log("err: " + commandResult.errors);
-          return commandResult.errors;
-        } catch (error) {
-          console.log("ERROR: POST /trips/{id}/infographics");
-          console.log(error);
-          throw error;
+        if (commandResult.isSucceed) {
+          return infographicId;
         }
+
+        console.log("err: " + commandResult.errors);
+        return commandResult.errors;
       },
       options: {
         auth: "simple",
