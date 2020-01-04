@@ -10,8 +10,9 @@ module.exports = {
             method: "GET",
             path: "/statistics/growthCharts",
             handler: async function(request) {
-              try {  
-                var chartsData = await userTripQueryHandler.getGrowthCharts(moment('2019-12-02'), moment('2020-01-01'));
+              try { 
+                var { fromDate, toDate } = request.query as any;
+                var chartsData = await userTripQueryHandler.getGrowthCharts(moment(fromDate), moment(toDate));
                 return chartsData;
               }
               catch(error) {
