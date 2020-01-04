@@ -11,7 +11,7 @@ module.exports = {
             path: "/statistics/growthCharts",
             handler: async function(request) {
               try {  
-                var chartsData = await userTripQueryHandler.getGrowthCharts(moment('2019-12-01'), moment('2020-01-01'));
+                var chartsData = await userTripQueryHandler.getGrowthCharts(moment('2019-12-02'), moment('2020-01-01'));
                 return chartsData;
               }
               catch(error) {
@@ -20,7 +20,7 @@ module.exports = {
               }          
             },
             options: {
-              //auth: "simple",
+              auth: "simple",
               tags: ["api"]         
             }
           });       
