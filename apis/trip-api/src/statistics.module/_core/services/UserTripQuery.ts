@@ -8,15 +8,7 @@ import { IUserTrip } from "../models/IUserTrip";
 export class UserTripQueryHandler {
   constructor(private UserTripRepository: IUserTripRepository) { }  
 
-  async getGrowthCharts(fromDate: Moment, toDate: Moment): Promise<IGrowthChart> {      
-    let data: IGrowthChart = {
-      totalUsers: [],
-      totalFacebookUsers: [],
-      totalCreatedTripUsers: [],
-      totalExportedInfographicUsers: [],
-      totalShareInfographicUsers: []
-    };    
-
+  async getGrowthCharts(fromDate: Moment, toDate: Moment): Promise<IGrowthChart[]> {  
     let userTrips : IUserTrip[] = await this.UserTripRepository.list(fromDate, toDate); 
     let iterationDate = fromDate.startOf('day');    
     let dataPerDays = [];
@@ -66,29 +58,55 @@ export class UserTripQueryHandler {
       ).values()
     ];
     
+    let totalUsers: IGrowthChartItem[] = [],
+        totalFacebookUsers: IGrowthChartItem[] = [],
+        totalCreatedTripUsers: IGrowthChartItem[] = [],
+        totalExportedInfographicUsers: IGrowthChartItem[] = [],
+        totalShareInfographicUsers: IGrowthChartItem[] = [];
     sums.forEach(element => {
-      data.totalUsers.push({
-        week: element.weekLabel,
-        value: element.totalUsers
+      totalUsers.push({
+        x: element.weekLabel,
+        y: element.totalUsers
       });
-      data.totalFacebookUsers.push({
-        week: element.weekLabel,
-        value: element.totalFacebookUsers
+      totalFacebookUsers.push({
+        x: element.weekLabel,
+        y: element.totalFacebookUsers
       });
-      data.totalCreatedTripUsers.push({
-        week: element.weekLabel,
-        value: element.totalCreatedTripUsers
+      totalCreatedTripUsers.push({
+        x: element.weekLabel,
+        y: element.totalCreatedTripUsers
       });
-      data.totalExportedInfographicUsers.push({
-        week: element.weekLabel,
-        value: element.totalExportedInfographicUsers
+      totalExportedInfographicUsers.push({
+        x: element.weekLabel,
+        y: element.totalExportedInfographicUsers
       });
-      data.totalShareInfographicUsers.push({
-        week: element.weekLabel,
-        value: element.totalShareInfographicUsers
+      totalShareInfographicUsers.push({
+        x: element.weekLabel,
+        y: element.totalShareInfographicUsers
       });
     });
     
+    let data: IGrowthChart[] = [{
+      category: "Total Users",
+      data: totalUsers
+    },
+    {
+      category: "Total Facebook Users",
+      data: totalFacebookUsers
+    },
+    {
+      category: "Total Created Trip Users",
+      data: totalCreatedTripUsers
+    },
+    {
+      category: "Total Exported Infographic Users",
+      data: totalExportedInfographicUsers
+    },
+    {
+      category: "Total Shared Infographic Users",
+      data: totalShareInfographicUsers
+    }
+    ];   
     return data;
   }  
 };

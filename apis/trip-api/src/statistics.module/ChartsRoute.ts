@@ -20,8 +20,9 @@ module.exports = {
               }          
             },
             options: {
-              auth: "simple",
-              tags: ["api"]         
+              //auth: "simple",
+              tags: ["api"],
+              cors: true      
             }
           });       
   }    
