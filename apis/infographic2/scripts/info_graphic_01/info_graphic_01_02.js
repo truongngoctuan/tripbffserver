@@ -15,18 +15,13 @@ let w = globalConfig.infographic.width;
 let h = globalConfig.infographic.height;
 
 function drawHeader(canvasAdaptor, trip) {
-  canvasAdaptor.drawRect({
-    x: 0,
-    y: 0,
-    width: w,
-    height: globalConfig.header.height,
-    backgroundColor: globalConfig.header.background
-  });
-
-  // .append("rect")
-  // .attr("width", w)
-  // .attr("height", globalConfig.header.height)
-  // .attr("fill", globalConfig.header.background);
+  // canvasAdaptor.drawRect({
+  //   x: 0,
+  //   y: 0,
+  //   width: w,
+  //   height: globalConfig.header.height,
+  //   backgroundColor: globalConfig.header.background
+  // });
 
   let tripNameNode = canvasAdaptor.drawText(
     trip.name.toUpperCase(),

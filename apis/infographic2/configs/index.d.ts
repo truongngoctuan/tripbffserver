@@ -14,10 +14,22 @@ export namespace InfographicConfig {
     | ContainerBlock
     | ImageBlock
     | TextBlock
+    | TripNameTextBlock
+    | TripInfoTextBlock
     | LocationImageBlock
     | LocationNameTextBlock
     | LocationFeelingTextBlock
     | LocationHightLightsTextBlock;
+
+  type TripNameTextBlock = {
+    type: "text";
+    text: "{{trip.name}}"
+  } & BaseTextBlock;
+
+  type TripInfoTextBlock = {
+    type: "text";
+    text: "{{trip.info}}"
+  } & BaseTextBlock;
 
   type LocationBlock = {
     type: "location";
@@ -25,29 +37,34 @@ export namespace InfographicConfig {
   };
 
   type LocationNameTextBlock = {
-    type: "location-name-text";
-  } & BaseTextBlock
+    type: "text";
+    text: "{{location.name}}"
+  } & BaseTextBlock;
 
   type LocationFeelingTextBlock = {
-    type: "location-feeling-text";
-  } & BaseTextBlock
+    type: "text";
+    text: "{{location.feeling}}"
+  } & BaseTextBlock;
 
   type LocationHightLightsTextBlock = {
-    type: "location-high-lights-text";
-  } & BaseTextBlock
+    type: "text";
+    text: "{{location.hight-lights}}"
+  } & BaseTextBlock;
 
   // todo not sure if this is the correct choice
   type ContainerBlock = {
     type: "container";
     blocks: BasicBlock[];
-  } & StackPosition;
+    positioning?: StackPosition;
+  };
 
   type ImageBlock = {
     type: "image";
     url: string;
     // width: number;
     // height: number;
-  } & RelativePosition;
+    positioning: Positioning;
+  };
 
   type BaseTextBlock = {
     fontSize?: string;
@@ -56,8 +73,8 @@ export namespace InfographicConfig {
     fontWeight?: string;
     textAnchor?: string;
     textTransform?: string;
-
-  } & RelativePosition;
+    positioning: Positioning;
+  };
 
   type TextBlock = {
     type: "text";
@@ -69,6 +86,8 @@ export namespace InfographicConfig {
     width: number;
     height: number;
   };
+
+  type Positioning = StackPosition | RelativePosition;
 
   type StackPosition = {
     height: number;

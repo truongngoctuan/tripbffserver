@@ -92,7 +92,7 @@ var config_01_02 = {
   }
 };
 
-config_01_0304 = {
+var config_01_0304 = {
   infographic: {
     width: 940,
     height: 1500,
