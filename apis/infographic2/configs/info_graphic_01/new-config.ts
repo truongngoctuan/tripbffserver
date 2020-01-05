@@ -250,3 +250,8 @@ var config_01_02: InfographicConfig.Infographic = {
   ]
 
 };
+
+module.exports = {
+  config_01_01: config_01_01,
+  config_01_02: config_01_02,
+};

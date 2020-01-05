@@ -106,6 +106,7 @@ class CanvasAdaptor {
             raster.position.y - deltaHeight / 2
           );
 
+          var group = new paper.Group();
           if (!options.clipPath) {
             // Use clipMask to create a custom polygon clip mask:
             var path = new paper.Path.Rectangle(
@@ -117,9 +118,9 @@ class CanvasAdaptor {
             path.clipMask = true;
 
             // It is better to add the path and the raster in a group (but not mandatory)
-            var group = new paper.Group();
             group.addChild(raster);
             group.addChild(path);
+
           } else {
             var path2 = new paper.Path(options.clipPath);
             path2.position = new paper.Point(
@@ -143,7 +144,6 @@ class CanvasAdaptor {
             path2.clipMask = true;
 
             // It is better to add the path and the raster in a group (but not mandatory)
-            var group = new paper.Group();
             group.addChild(raster);
             group.addChild(path2);
           }
@@ -152,11 +152,11 @@ class CanvasAdaptor {
         if (cb) {
           cb({
             // imageResult: raster,
-            width: raster.width,
-            height: raster.height
+            width: group.bounds.width,
+            height: group.bounds.height
           });
         }
-        resolve({ width: raster.width, height: raster.height });
+        resolve({ width: group.bounds.width, height: group.bounds.height });
       };
 
       raster.onError = err => {

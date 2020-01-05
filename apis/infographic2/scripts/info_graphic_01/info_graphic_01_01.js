@@ -1,14 +1,14 @@
-const globalInfographic01Config = require("../../configs/info_graphic_01/config");
+const globalInfographic01Config = require("../../configs/info_graphic_01/config2");
 const commonFunc = require("../commonFunc");
 const _ = require("lodash");
 
 var globalConfig = globalInfographic01Config.config_01_01;
 
-var w = globalConfig.infographic.width,
-  h = globalConfig.infographic.height,
-  content_height = globalConfig.infographic.content_height,
-  paddingLeftRight = globalConfig.infographic.paddingLeftRight,
-  c_paddingTop = globalConfig.infographic.c_paddingTop;
+// var w = globalConfig.infographic.width,
+//   h = globalConfig.infographic.height,
+//   content_height = globalConfig.infographic.content_height,
+//   paddingLeftRight = globalConfig.infographic.paddingLeftRight,
+//   c_paddingTop = globalConfig.infographic.c_paddingTop;
 
 async function drawContent(canvasAdaptor, trip) {
   let startPoint_px = paddingLeftRight,
@@ -54,7 +54,7 @@ async function drawContent(canvasAdaptor, trip) {
       wrapNumber: w - paddingLeftRight
     }
   );
-  
+
   let locationNameNodeBbox = locationNameNode.bounds;
   var nextElementYCoordinate =
     locationNameNodeBbox.y +
@@ -62,7 +62,7 @@ async function drawContent(canvasAdaptor, trip) {
     globalConfig.location.paddingTop;
 
   if (nodeFeelingActivity) {
-    console.log("nodeFeelingActivity", nodeFeelingActivity)
+    console.log("nodeFeelingActivity", nodeFeelingActivity);
     let feelingActivityNode = canvasAdaptor.drawText(
       nodeFeelingActivity,
       {
@@ -85,7 +85,7 @@ async function drawContent(canvasAdaptor, trip) {
   }
 
   if (highlights) {
-    console.log("highlights", highlights)
+    console.log("highlights", highlights);
     let hightlightNode = canvasAdaptor.drawText(
       highlights,
       {
@@ -107,26 +107,152 @@ async function drawContent(canvasAdaptor, trip) {
       globalConfig.location.paddingTop;
   }
 
-  await canvasAdaptor.drawImage(
-    "./data/images/App_Signature.png",
-    {
-      x: w - globalConfig.footer.marginRight,
-      y: h - globalConfig.footer.marginBottom
-    }
-  );
+  await canvasAdaptor.drawImage("./data/images/App_Signature.png", {
+    x: w - globalConfig.footer.marginRight,
+    y: h - globalConfig.footer.marginBottom
+  });
 }
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-async function draw(canvasAdaptor, trip) {
+async function renderLessBlock(canvasAdaptor, blockConfig, trip, cursor) {
+  console.log(
+    _.repeat("----", cursor.level) + "render-less block",
+    blockConfig.type
+  );
+}
+
+async function renderLocationImage(canvasAdaptor, blockConfig, trip, cursor) {
+  console.log(
+    _.repeat("----", cursor.level) + "render block",
+    blockConfig.type
+  );
+  console.log("cursor", cursor);
 
   // load default image if location has no image
-  var imgUri = trip.locations[0].signedUrl && !_.isEmpty(trip.locations[0].signedUrl)
-    ? trip.locations[0].signedUrl
-    : "./data/images/EmptyImage01.jpg";
-  console.log("original w h", `${w} ${h}`)
+  var imgUri =
+    trip.locations[0].signedUrl && !_.isEmpty(trip.locations[0].signedUrl)
+      ? trip.locations[0].signedUrl
+      : "./data/images/EmptyImage01.jpg";
+  var result = await canvasAdaptor.drawImage(
+    imgUri,
+    { x: 0, y: 0 },
+    {
+      width: blockConfig.width,
+      height: blockConfig.height
+    }
+  );
+
+  // ({ width, height }) => {
+  // h += content_height;
+  console.log("new w h", `${result.width} ${result.height}`);
+  canvasAdaptor.resize(blockConfig.width, blockConfig.height + 500);
+  // }
+
+  return _.assign({}, cursor, { y: cursor.y + result.height });
+}
+
+async function renderTextBlock(canvasAdaptor, blockConfig, trip, cursor) {
+  console.log(
+    _.repeat("----", cursor.level) + "render block",
+    blockConfig.type
+  );
+  console.log("cursor", cursor);
+
+  let feelingLabel = commonFunc.getFeelingLabel(trip.locale);
+
+  let location = trip.locations[0],
+    locationName = capitalizeFirstLetter(location.name) + ".",
+    feeling = location.feeling ? feelingLabel + " " + location.feeling : "",
+    activity = location.activity,
+    highlights = location.highlights.toLowerCase(),
+    nodeFeelingActivity = "";
+
+  if (activity)
+    nodeFeelingActivity = capitalizeFirstLetter(activity.toLowerCase());
+  if (feeling) {
+    feeling = capitalizeFirstLetter(feeling.toLowerCase());
+    nodeFeelingActivity = nodeFeelingActivity
+      ? nodeFeelingActivity + ". " + feeling
+      : feeling;
+  }
+  if (nodeFeelingActivity) nodeFeelingActivity += ".";
+
+  if (highlights) highlights = capitalizeFirstLetter(highlights) + ".";
+
+
+  let locationNameNode = canvasAdaptor.drawText(
+    locationName.toUpperCase(),
+    {
+      x: cursor.x,
+      y: cursor.y
+    },
+    {
+      color: blockConfig.color,
+      font: blockConfig.fontFamily,
+      fontSize: blockConfig.fontSize,
+      fontWeight: blockConfig.fontWeight,
+      textAnchor: blockConfig.textAnchor,
+      textTransform: blockConfig.textTransform
+      // wrapNumber: w - paddingLeftRight
+    }
+  );
+
+  let locationNameNodeBbox = locationNameNode.bounds;
+
+  return _.assign({}, cursor, { y: cursor.y + locationNameNodeBbox.height });
+}
+
+async function renderBlock(
+  canvasAdaptor,
+  blockConfig,
+  trip,
+  cursor = { x: 0, y: 0, level: 0 }
+) {
+  if (blockConfig.type === "container" || blockConfig.type === "location") {
+    console.log(
+      _.repeat("----", cursor.level) + "render block",
+      blockConfig.type
+    );
+  }
+
+  if (!_.isEmpty(blockConfig.blocks)) {
+    var nextCursor = _.assign({}, cursor, { level: cursor.level + 1 });
+    for (var i = 0; i < blockConfig.blocks.length; i++) {
+      var childBlock = blockConfig.blocks[i];
+      var next = await renderBlock(
+        canvasAdaptor,
+        childBlock,
+        trip,
+        _.assign({}, nextCursor, { level: cursor.level + 1 })
+      );
+      if (!_.isEmpty(next)) nextCursor = next;
+    }
+    return;
+  }
+
+  if (blockConfig.type === "text") {
+    return await renderTextBlock(canvasAdaptor, blockConfig, trip, cursor);
+  } else if (blockConfig.type === "location-image") {
+    return await renderLocationImage(canvasAdaptor, blockConfig, trip, cursor);
+  } else {
+    return await renderLessBlock(canvasAdaptor, blockConfig, trip, cursor);
+  }
+}
+
+async function draw(canvasAdaptor, trip) {
+  await renderBlock(canvasAdaptor, globalConfig, trip);
+  canvasAdaptor.drawBackground(globalConfig.backgroundColor);
+  return;
+
+  // load default image if location has no image
+  var imgUri =
+    trip.locations[0].signedUrl && !_.isEmpty(trip.locations[0].signedUrl)
+      ? trip.locations[0].signedUrl
+      : "./data/images/EmptyImage01.jpg";
+  console.log("original w h", `${w} ${h}`);
   await canvasAdaptor.drawImage(
     imgUri,
     { x: 0, y: 0 },
@@ -139,7 +265,7 @@ async function draw(canvasAdaptor, trip) {
       // var h = w / ratio;
 
       h += content_height;
-      console.log("new w h", `${w} ${h}`)
+      console.log("new w h", `${w} ${h}`);
       canvasAdaptor.resize(w, h);
     }
   );
