@@ -1,36 +1,32 @@
 var config_01_01 = {
   infographic: {
-    width: 1280,
-    height: 1280,
-    content_height: 300,
-    paddingLeftRight: 20,
-    c_paddingTop: 60,
-    footer_height: 0,
-    background: "#e3d1a2"
+    width: 1280, //
+    height: 1280, //
+    content_height: 300, //
+    paddingLeftRight: 20, //
+    c_paddingTop: 60, //
+    background: "#e3d1a2" //
   },
   location: {
     name: {
-      fontSize: "64px",
-      fontFamily: "Roboto",
-      color: "#d0363b",
-      fontWeight: "bold",
-      textAnchor: "start",
-      textTransform: "uppercase"
+      fontSize: "64px", //
+      fontFamily: "Roboto", //
+      color: "#d0363b", //
+      fontWeight: "bold", //
+      textAnchor: "start", //
+      textTransform: "uppercase" //
     },
     description: {
-      fontSize: "48px",
-      fontFamily: "Roboto",
-      color: "#121113",
-      textAnchor: "start"
+      fontSize: "48px", //
+      fontFamily: "Roboto", //
+      color: "#121113", //
+      textAnchor: "start" //
     },
-    paddingTop: 30,
-    lineNumber: 1
+    paddingTop: 30 //
   },
   footer: {
-    marginBottom: 80,
-    marginRight: 200,
-    imageWidth: 180,
-    imageHeight: 60
+    marginBottom: 80, //
+    marginRight: 200, //
   }
 };
 
