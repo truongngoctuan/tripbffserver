@@ -186,7 +186,7 @@ class CanvasAdaptor {
   _drawText(text, position, options) {
     var fontSize = parseInt((options.fontSize || "30px").replace("px", ""));
     var textNode = new paper.PointText(
-      new paper.Point(position.x, position.y + fontSize / 2)
+      new paper.Point(position.x, position.y + fontSize)
     );
 
     // textNode.content = text;

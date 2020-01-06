@@ -50,7 +50,7 @@ var config_01_01 = {
             {
               // location highlights
               type: "text",
-              text: "{{location.hight-lights}}}}",
+              text: "{{location.hight-lights}}",
               fontSize: "48px",
               fontFamily: "Roboto",
               color: "#121113",

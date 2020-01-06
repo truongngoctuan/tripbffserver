@@ -182,9 +182,19 @@ async function renderTextBlock(canvasAdaptor, blockConfig, trip, cursor) {
 
   if (highlights) highlights = capitalizeFirstLetter(highlights) + ".";
 
+  let text = blockConfig.text;
+  if (text === "{{location.name}}") {
+    text = locationName.toUpperCase();
+  }
+  if (text === "{{location.feeling}}") {
+    text = nodeFeelingActivity;
+  }
+  if (text === "{{location.hight-lights}}") {
+    text = highlights;
+  }
 
   let locationNameNode = canvasAdaptor.drawText(
-    locationName.toUpperCase(),
+    text,
     {
       x: cursor.x,
       y: cursor.y
