@@ -37,7 +37,7 @@ var config_01_01 = {
                             textAnchor: "start",
                             textTransform: "uppercase",
                             positioning: {
-                                top: 60,
+                                top: 20,
                                 left: 20
                             }
                         },
@@ -50,7 +50,7 @@ var config_01_01 = {
                             color: "#121113",
                             textAnchor: "start",
                             positioning: {
-                                top: 60,
+                                top: 20,
                                 left: 20
                             }
                         },
@@ -63,7 +63,7 @@ var config_01_01 = {
                             color: "#121113",
                             textAnchor: "start",
                             positioning: {
-                                top: 60,
+                                top: 20,
                                 left: 20
                             }
                         }
@@ -75,7 +75,6 @@ var config_01_01 = {
             // render footer image
             type: "image",
             url: "./data/images/App_Signature.png",
-            // todo should review this one
             positioning: {
                 right: 200,
                 bottom: 80

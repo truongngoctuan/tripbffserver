@@ -86,7 +86,7 @@ class CanvasAdaptor {
       var group = undefined;
 
       raster.onLoad = function(e) {
-        console.log("image loaded");
+        // console.log("image loaded");
         const { width, height } = raster;
         raster.position = new paper.Point(
           position.x + width / 2,
@@ -97,7 +97,7 @@ class CanvasAdaptor {
           const scaleWidth = options.width / width;
           const scaleHeight = options.height / height;
           const scale = _.max([scaleWidth, scaleHeight]);
-          console.log("scale", scale);
+          // console.log("scale", scale);
           raster.scale(scale);
 
           const deltaWidth = width - options.width;

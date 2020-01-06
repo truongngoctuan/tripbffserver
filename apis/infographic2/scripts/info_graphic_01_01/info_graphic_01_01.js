@@ -8,19 +8,21 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function log(level, message, data = undefined) {
+  if (data) console.log(_.repeat("    ", level) + message, data);
+  else console.log(_.repeat("    ", level) + message);
+}
+
 async function renderLessBlock(canvasAdaptor, blockConfig, trip, cursor) {
-  console.log(
-    _.repeat("----", cursor.level) + "render-less block",
-    blockConfig.type
-  );
+  log(cursor.level, "render-less block", blockConfig.type);
+  log(cursor.level, "cursor", cursor);
+
+  return cursor;
 }
 
 async function renderLocationImage(canvasAdaptor, blockConfig, trip, cursor) {
-  console.log(
-    _.repeat("----", cursor.level) + "render block",
-    blockConfig.type
-  );
-  console.log("cursor", cursor);
+  log(cursor.level, "render block", blockConfig.type);
+  log(cursor.level, "cursor", cursor);
 
   // load default image if location has no image
   var imgUri =
@@ -36,21 +38,27 @@ async function renderLocationImage(canvasAdaptor, blockConfig, trip, cursor) {
     }
   );
 
-  // ({ width, height }) => {
-  // h += content_height;
-  console.log("new w h", `${result.width} ${result.height}`);
-  // canvasAdaptor.resize(blockConfig.width, blockConfig.height + 500);
-  // }
+  log(cursor.level, "new w h", `${result.width} ${result.height}`);
 
   return _.assign({}, cursor, { y: cursor.y + result.height });
 }
 
+async function renderImage(canvasAdaptor, blockConfig, trip, cursor) {
+  log(cursor.level, "render block", blockConfig.type);
+  log(cursor.level, "cursor", cursor);
+
+  const relativePosition = getRelativePosition(cursor, blockConfig.positioning);
+  log(cursor.level, "relative position", relativePosition);
+
+  await canvasAdaptor.drawImage(blockConfig.url, {
+    x: relativePosition.x,
+    y: relativePosition.y
+  });
+}
+
 async function renderTextBlock(canvasAdaptor, blockConfig, trip, cursor) {
-  console.log(
-    _.repeat("----", cursor.level) + "render block",
-    blockConfig.type
-  );
-  console.log("cursor", cursor);
+  log(cursor.level, "render block", blockConfig.type);
+  log(cursor.level, "cursor", cursor);
 
   let feelingLabel = commonFunc.getFeelingLabel(trip.locale);
 
@@ -86,10 +94,7 @@ async function renderTextBlock(canvasAdaptor, blockConfig, trip, cursor) {
 
   let locationNameNode = canvasAdaptor.drawText(
     text,
-    {
-      x: cursor.x,
-      y: cursor.y
-    },
+    getRelativePosition(cursor, blockConfig.positioning),
     {
       color: blockConfig.color,
       font: blockConfig.fontFamily,
@@ -106,6 +111,19 @@ async function renderTextBlock(canvasAdaptor, blockConfig, trip, cursor) {
   return _.assign({}, cursor, { y: cursor.y + locationNameNodeBbox.height });
 }
 
+function getRelativePosition(cursor, positioning) {
+  var x = cursor.x;
+  var y = cursor.y;
+
+  if (positioning.left) x = x + positioning.left;
+  if (positioning.right) x = x + cursor.width - positioning.right;
+
+  if (positioning.top) y = y + positioning.top;
+  if (positioning.bottom) y = cursor.height - positioning.bottom;
+
+  return { x, y };
+}
+
 async function renderBlock(
   canvasAdaptor,
   blockConfig,
@@ -113,14 +131,21 @@ async function renderBlock(
   cursor = { x: 0, y: 0, level: 0, height: 0 }
 ) {
   if (blockConfig.type === "container" || blockConfig.type === "location") {
-    console.log(
-      _.repeat("----", cursor.level) + "render block",
-      blockConfig.type
-    );
+    log(cursor.level, "render block", blockConfig.type);
+  }
+
+  var nextCursor = _.assign({}, cursor, { level: cursor.level + 1 });
+
+  if (blockConfig.type === "container") {
+    const deltaHeight = _.get(blockConfig, "positioning.height");
+    if (deltaHeight > 0) {
+      canvasAdaptor.resize(cursor.width, cursor.height + deltaHeight);
+      log(cursor.level, deltaHeight);
+      nextCursor.height = nextCursor.height + deltaHeight;
+    }
   }
 
   if (!_.isEmpty(blockConfig.blocks)) {
-    var nextCursor = _.assign({}, cursor, { level: cursor.level + 1 });
     for (var i = 0; i < blockConfig.blocks.length; i++) {
       var childBlock = blockConfig.blocks[i];
       var next = await renderBlock(
@@ -134,23 +159,17 @@ async function renderBlock(
   }
 
   if (blockConfig.type === "container") {
-    const deltaHeight = _.get(blockConfig, "positioning.height");
-    if (deltaHeight > 0) {
-      canvasAdaptor.resize(cursor.width, cursor.height + deltaHeight);
-      console.log(deltaHeight);
-
-      return _.assign({}, cursor, {
-        y: cursor.y + deltaHeight,
-        height: cursor.height + deltaHeight
-      });
-    }
+    return nextCursor;
+  } else if (blockConfig.type === "location") {
+    return nextCursor;
   } else if (blockConfig.type === "text") {
     return await renderTextBlock(canvasAdaptor, blockConfig, trip, cursor);
   } else if (blockConfig.type === "location-image") {
     return await renderLocationImage(canvasAdaptor, blockConfig, trip, cursor);
-  } else {
-    return await renderLessBlock(canvasAdaptor, blockConfig, trip, cursor);
+  } else if (blockConfig.type === "image") {
+    return await renderImage(canvasAdaptor, blockConfig, trip, cursor);
   }
+  return await renderLessBlock(canvasAdaptor, blockConfig, trip, cursor);
 }
 
 async function draw(canvasAdaptor, trip) {
