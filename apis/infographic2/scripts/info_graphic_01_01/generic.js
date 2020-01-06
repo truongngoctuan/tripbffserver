@@ -18,13 +18,9 @@ async function renderLessBlock(canvasAdaptor, blockConfig, trip, cursor) {
 }
 
 async function renderLocation(canvasAdaptor, blockConfig, trip, cursor) {
-  log(cursor.level, "render block", blockConfig.type);
+  // log(cursor.level, "render block", blockConfig.type);
 
-  if (blockConfig.positioning) log(cursor.level, "a", _.assign({}, cursor, getRelativePosition(cursor, blockConfig.positioning)))
-  // return cursor;
-  return blockConfig.positioning
-    ? _.assign({}, cursor, getRelativePosition(cursor, blockConfig.positioning))
-    : cursor;
+  return _.assign({}, cursor, { location: cursor.location + 1 });
 }
 
 async function renderLocationImage(canvasAdaptor, blockConfig, trip, cursor) {
@@ -34,8 +30,8 @@ async function renderLocationImage(canvasAdaptor, blockConfig, trip, cursor) {
 
   // load default image if location has no image
   var imgUri =
-    trip.locations[0].signedUrl && !_.isEmpty(trip.locations[0].signedUrl)
-      ? trip.locations[0].signedUrl
+    trip.locations[cursor.location].signedUrl && !_.isEmpty(trip.locations[cursor.location].signedUrl)
+      ? trip.locations[cursor.location].signedUrl
       : "./data/images/EmptyImage01.jpg";
   var result = await canvasAdaptor.drawImage(
     imgUri,
@@ -70,7 +66,7 @@ async function renderTextBlock(canvasAdaptor, blockConfig, trip, cursor) {
 
   let feelingLabel = commonFunc.getFeelingLabel(trip.locale);
 
-  let location = trip.locations[0],
+  let location = trip.locations[cursor.location],
     locationName = capitalizeFirstLetter(location.name) + ".",
     feeling = location.feeling ? feelingLabel + " " + location.feeling : "",
     activity = location.activity,
@@ -157,7 +153,11 @@ async function renderBlock(
 
   if (blockConfig.type === "location") {
     if (blockConfig.positioning) {
-      nextCursor = _.assign({}, cursor, getRelativePosition(cursor, blockConfig.positioning));
+      nextCursor = _.assign(
+        {},
+        cursor,
+        getRelativePosition(cursor, blockConfig.positioning)
+      );
     }
   }
 
@@ -177,7 +177,7 @@ async function renderBlock(
   if (blockConfig.type === "container") {
     return nextCursor;
   } else if (blockConfig.type === "location") {
-    return cursor;
+    return await renderLocation(canvasAdaptor, blockConfig, trip, cursor);
   } else if (blockConfig.type === "text") {
     return await renderTextBlock(canvasAdaptor, blockConfig, trip, cursor);
   } else if (blockConfig.type === "location-image") {
@@ -194,7 +194,8 @@ async function renderInfographic(canvasAdaptor, infographicConfig, trip) {
     y: 0,
     level: 0,
     width: infographicConfig.width,
-    height: 0
+    height: 0,
+    location: 0
   };
   await renderBlock(canvasAdaptor, infographicConfig, trip, defaultCursor);
   canvasAdaptor.drawBackground(infographicConfig.backgroundColor);
