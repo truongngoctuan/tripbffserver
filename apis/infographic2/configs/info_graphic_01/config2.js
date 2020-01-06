@@ -16,7 +16,7 @@ var config_01_01 = {
                             type: "location-image",
                             width: 1280,
                             height: 1280
-                        },
+                        }
                     ]
                 },
                 {
@@ -90,6 +90,9 @@ var config_01_02 = {
     blocks: [
         {
             type: "container",
+            positioning: {
+                height: 300
+            },
             blocks: [
                 {
                     type: "text",
@@ -111,7 +114,7 @@ var config_01_02 = {
                     fontWeight: "bold",
                     textTransform: "uppercase",
                     positioning: {},
-                    text: "{{trip.info}}}}"
+                    text: "{{trip.info}}"
                 }
             ]
         },
@@ -122,50 +125,73 @@ var config_01_02 = {
                     type: "container",
                     blocks: [
                         {
-                            type: "location-image",
-                            width: 1280 / 2,
-                            height: 840,
+                            type: "container",
+                            positioning: {
+                                height: 840
+                            },
+                            blocks: [
+                                {
+                                    type: "location-image",
+                                    width: 1280 / 2,
+                                    height: 840
+                                    // svgWidth: 630,
+                                    // svgHeight: 840,
+                                    // viewBoxWidth: 288.5,
+                                    // viewBoxHeight: 384.1,
+                                    // clipPath: "M2.5 2.5H286v379.1H2.5z",
+                                    // paddingTop: 20,
+                                    // paddingBetweenImage: 5
+                                }
+                            ]
                         },
                         {
-                            // location name
-                            type: "text",
-                            text: "{{location.name}}",
-                            fontSize: "64px",
-                            fontFamily: "Roboto",
-                            color: "#d0363b",
-                            fontWeight: "bold",
-                            textAnchor: "start",
-                            textTransform: "uppercase",
+                            type: "container",
                             positioning: {
-                                top: 60,
-                                left: 20
-                            }
-                        },
-                        {
-                            // location feeling
-                            type: "text",
-                            text: "{{location.feeling}}",
-                            fontSize: "48px",
-                            fontFamily: "Roboto",
-                            color: "#121113",
-                            textAnchor: "start",
-                            positioning: {
-                                top: 60,
-                                left: 20
-                            }
-                        },
-                        {
-                            // location highlights
-                            type: "text",
-                            text: "{{location.hight-lights}}",
-                            fontSize: "48px",
-                            fontFamily: "Roboto",
-                            color: "#121113",
-                            textAnchor: "start",
-                            positioning: {
-                                top: 60,
-                                left: 20
-                            }
+                                height: 300
+                            },
+                            blocks: [
+                                {
+                                    // location name
+                                    type: "text",
+                                    text: "{{location.name}}",
+                                    fontSize: "64px",
+                                    fontFamily: "Roboto",
+                                    color: "#d0363b",
+                                    fontWeight: "bold",
+                                    textAnchor: "start",
+                                    textTransform: "uppercase",
+                                    positioning: {
+                                        top: 60,
+                                        left: 20
+                                    }
+                                },
+                                {
+                                    // location feeling
+                                    type: "text",
+                                    text: "{{location.feeling}}",
+                                    fontSize: "48px",
+                                    fontFamily: "Roboto",
+                                    color: "#121113",
+                                    textAnchor: "start",
+                                    positioning: {
+                                        top: 60,
+                                        left: 20
+                                    }
+                                },
+                                {
+                                    // location highlights
+                                    type: "text",
+                                    text: "{{location.hight-lights}}",
+                                    fontSize: "48px",
+                                    fontFamily: "Roboto",
+                                    color: "#121113",
+                                    textAnchor: "start",
+                                    positioning: {
+                                        top: 60,
+                                        left: 20
+                                    }
+                                }
+                            ]
                         }
                     ]
                 },
@@ -175,7 +201,14 @@ var config_01_02 = {
                         {
                             type: "location-image",
                             width: 1280 / 2,
-                            height: 840,
+                            height: 840
+                            // svgWidth: 630,
+                            // svgHeight: 840,
+                            // viewBoxWidth: 288.5,
+                            // viewBoxHeight: 384.1,
+                            // clipPath: "M2.5 2.5H286v379.1H2.5z",
+                            // paddingTop: 20,
+                            // paddingBetweenImage: 5
                         },
                         {
                             // location name
@@ -219,14 +252,13 @@ var config_01_02 = {
                             }
                         }
                     ]
-                },
+                }
             ]
         },
         {
             // render footer image
             type: "image",
-            url: "put something here",
-            // todo should review this one
+            url: "./data/images/App_Signature.png",
             positioning: {
                 right: 200,
                 bottom: 80
@@ -236,5 +268,5 @@ var config_01_02 = {
 };
 module.exports = {
     config_01_01: config_01_01,
-    config_01_02: config_01_02,
+    config_01_02: config_01_02
 };
