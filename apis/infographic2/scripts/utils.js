@@ -83,6 +83,8 @@ class CanvasAdaptor {
         ? new paper.Raster(source)
         : new paper.Raster(loadLocalImage(source));
 
+      var group = undefined;
+
       raster.onLoad = function(e) {
         console.log("image loaded");
         const { width, height } = raster;
@@ -106,7 +108,7 @@ class CanvasAdaptor {
             raster.position.y - deltaHeight / 2
           );
 
-          var group = new paper.Group();
+          group = new paper.Group();
           if (!options.clipPath) {
             // Use clipMask to create a custom polygon clip mask:
             var path = new paper.Path.Rectangle(
@@ -152,11 +154,14 @@ class CanvasAdaptor {
         if (cb) {
           cb({
             // imageResult: raster,
-            width: group.bounds.width,
-            height: group.bounds.height
+            width: group ? group.bounds.width : raster.bounds.width,
+            height: group ? group.bounds.height : raster.bounds.height
           });
         }
-        resolve({ width: group.bounds.width, height: group.bounds.height });
+        resolve({
+          width: group ? group.bounds.width : raster.bounds.width,
+          height: group ? group.bounds.height : raster.bounds.height
+        });
       };
 
       raster.onError = err => {

@@ -7,7 +7,7 @@ export namespace InfographicConfig {
     width: number;
     height?: number; //maybe just remove it
     blocks: Block[];
-  } & Background;
+  } & Background & ContainerBlock;
 
   type Block = LocationBlock | BasicBlock;
   type BasicBlock =
@@ -54,7 +54,7 @@ export namespace InfographicConfig {
   // todo not sure if this is the correct choice
   type ContainerBlock = {
     type: "container";
-    blocks: BasicBlock[];
+    blocks: Block[];
     positioning?: StackPosition;
   };
 

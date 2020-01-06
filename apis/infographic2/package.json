@@ -13,7 +13,9 @@
     "serve-lottie-web": "nodemon --delay 100ms --watch . --exec node index-lottie-web.js",
     "serve-fabric": "nodemon --delay 100ms --watch . --exec node index-fabric2.js",
     "serve:production": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "build-watch": "tsc -w"
   },
   "author": "",
   "license": "ISC",
@@ -23,10 +25,11 @@
     "btoa": "1.2.1",
     "canvg": "2.0.0",
     "lottie-web": "5.5.7",
-    "lottie-node": "1.0.0"
+    "lottie-node": "1.0.0",
+    "typescript": "3.4.3"
   },
   "dependencies": {
-    "lodash": "4.17.15",
+    "lodash": "^4.17.15",
     "dotenv": "^6.1.0",
     "axios": "^0.18.0",
     "moment": "^2.22.2",

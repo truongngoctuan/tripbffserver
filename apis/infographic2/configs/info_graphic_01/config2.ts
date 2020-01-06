@@ -1,17 +1,25 @@
-import { InfographicConfig } from "..";
+import { InfographicConfig } from "../index";
 
 var config_01_01: InfographicConfig.Infographic = {
   width: 1280,
   backgroundColor: "#e3d1a2",
-
+  type: "container",
   blocks: [
     {
       type: "location",
       blocks: [
         {
-          type: "location-image",
-          width: 1280,
-          height: 1280
+          type: "container",
+          positioning: {
+            height: 1280
+          },
+          blocks: [
+            {
+              type: "location-image",
+              width: 1280,
+              height: 1280
+            },
+          ]
         },
         {
           type: "container",
@@ -38,7 +46,7 @@ var config_01_01: InfographicConfig.Infographic = {
             {
               // location feeling
               type: "text",
-              text: "{{location.feeling}}}}",
+              text: "{{location.feeling}}",
               fontSize: "48px",
               fontFamily: "Roboto",
               color: "#121113",
@@ -51,7 +59,7 @@ var config_01_01: InfographicConfig.Infographic = {
             {
               // location highlights
               type: "text",
-              text: "{{location.hight-lights}}}}",
+              text: "{{location.hight-lights}}",
               fontSize: "48px",
               fontFamily: "Roboto",
               color: "#121113",
@@ -68,7 +76,7 @@ var config_01_01: InfographicConfig.Infographic = {
     {
       // render footer image
       type: "image",
-      url: "put something here",
+      url: "./data/images/App_Signature.png",
 
       // todo should review this one
       positioning: {
@@ -83,6 +91,7 @@ var config_01_02: InfographicConfig.Infographic = {
   width: 1280,
   // height: 1500,
   backgroundColor: "rgb(254, 255, 246)",
+  type: "container",
   blocks: [
     {
       type: "container",
