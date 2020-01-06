@@ -12,14 +12,25 @@ function log(level, message, data = undefined) {
 
 async function renderLessBlock(canvasAdaptor, blockConfig, trip, cursor) {
   log(cursor.level, "render-less block", blockConfig.type);
-  log(cursor.level, "cursor", cursor);
+  // log(cursor.level, "cursor", cursor);
 
   return cursor;
+}
+
+async function renderLocation(canvasAdaptor, blockConfig, trip, cursor) {
+  log(cursor.level, "render block", blockConfig.type);
+
+  if (blockConfig.positioning) log(cursor.level, "a", _.assign({}, cursor, getRelativePosition(cursor, blockConfig.positioning)))
+  // return cursor;
+  return blockConfig.positioning
+    ? _.assign({}, cursor, getRelativePosition(cursor, blockConfig.positioning))
+    : cursor;
 }
 
 async function renderLocationImage(canvasAdaptor, blockConfig, trip, cursor) {
   log(cursor.level, "render block", blockConfig.type);
   log(cursor.level, "cursor", cursor);
+  // log(cursor.level, "cursor2", getRelativePosition(cursor, blockConfig.positioning));
 
   // load default image if location has no image
   var imgUri =
@@ -89,6 +100,7 @@ async function renderTextBlock(canvasAdaptor, blockConfig, trip, cursor) {
     text = highlights;
   }
 
+  // log(cursor.level, "anchor", blockConfig.textAnchor);
   let locationNameNode = canvasAdaptor.drawText(
     text,
     getRelativePosition(cursor, blockConfig.positioning),
@@ -143,6 +155,12 @@ async function renderBlock(
     }
   }
 
+  if (blockConfig.type === "location") {
+    if (blockConfig.positioning) {
+      nextCursor = _.assign({}, cursor, getRelativePosition(cursor, blockConfig.positioning));
+    }
+  }
+
   if (!_.isEmpty(blockConfig.blocks)) {
     for (var i = 0; i < blockConfig.blocks.length; i++) {
       var childBlock = blockConfig.blocks[i];
@@ -159,7 +177,7 @@ async function renderBlock(
   if (blockConfig.type === "container") {
     return nextCursor;
   } else if (blockConfig.type === "location") {
-    return nextCursor;
+    return cursor;
   } else if (blockConfig.type === "text") {
     return await renderTextBlock(canvasAdaptor, blockConfig, trip, cursor);
   } else if (blockConfig.type === "location-image") {

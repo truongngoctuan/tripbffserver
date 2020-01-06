@@ -92,6 +92,7 @@ var config_01_02: InfographicConfig.Infographic = {
   backgroundColor: "rgb(254, 255, 246)",
   type: "container",
   blocks: [
+    // header
     {
       type: "container",
       positioning: {
@@ -124,83 +125,13 @@ var config_01_02: InfographicConfig.Infographic = {
     },
     {
       type: "container",
+      positioning: {
+        height: 840 + 300
+      },
       blocks: [
+        // first location
         {
-          type: "container",
-          blocks: [
-            {
-              type: "container",
-              positioning: {
-                height: 840
-              },
-              blocks: [
-                {
-                  type: "location-image",
-                  width: 1280 / 2,
-                  height: 840
-                  // svgWidth: 630,
-                  // svgHeight: 840,
-                  // viewBoxWidth: 288.5,
-                  // viewBoxHeight: 384.1,
-                  // clipPath: "M2.5 2.5H286v379.1H2.5z",
-                  // paddingTop: 20,
-                  // paddingBetweenImage: 5
-                }
-              ]
-            },
-            {
-              type: "container",
-              positioning: {
-                height: 300
-              },
-              blocks: [
-                {
-                  // location name
-                  type: "text",
-                  text: "{{location.name}}",
-                  fontSize: "64px",
-                  fontFamily: "Roboto",
-                  color: "#d0363b",
-                  fontWeight: "bold",
-                  textAnchor: "start",
-                  textTransform: "uppercase",
-                  positioning: {
-                    top: 60,
-                    left: 20
-                  }
-                },
-                {
-                  // location feeling
-                  type: "text",
-                  text: "{{location.feeling}}",
-                  fontSize: "48px",
-                  fontFamily: "Roboto",
-                  color: "#121113",
-                  textAnchor: "start",
-                  positioning: {
-                    top: 60,
-                    left: 20
-                  }
-                },
-                {
-                  // location highlights
-                  type: "text",
-                  text: "{{location.hight-lights}}",
-                  fontSize: "48px",
-                  fontFamily: "Roboto",
-                  color: "#121113",
-                  textAnchor: "start",
-                  positioning: {
-                    top: 60,
-                    left: 20
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        {
-          type: "container",
+          type: "location",
           blocks: [
             {
               type: "location-image",
@@ -256,7 +187,69 @@ var config_01_02: InfographicConfig.Infographic = {
               }
             }
           ]
-        }
+        },
+        // second location
+        {
+          type: "location",
+          positioning: {
+            left: 1280 / 2
+          },
+          blocks: [
+            {
+              type: "location-image",
+              width: 1280 / 2,
+              height: 840
+              // svgWidth: 630,
+              // svgHeight: 840,
+              // viewBoxWidth: 288.5,
+              // viewBoxHeight: 384.1,
+              // clipPath: "M2.5 2.5H286v379.1H2.5z",
+              // paddingTop: 20,
+              // paddingBetweenImage: 5
+            },
+            {
+              // location name
+              type: "text",
+              text: "{{location.name}}",
+              fontSize: "64px",
+              fontFamily: "Roboto",
+              color: "#d0363b",
+              fontWeight: "bold",
+              textAnchor: "start",
+              textTransform: "uppercase",
+              positioning: {
+                top: 80,
+                left: 20
+              }
+            },
+            {
+              // location feeling
+              type: "text",
+              text: "{{location.feeling}}",
+              fontSize: "48px",
+              fontFamily: "Roboto",
+              color: "#121113",
+              textAnchor: "start",
+              positioning: {
+                top: 60,
+                left: 20
+              }
+            },
+            {
+              // location highlights
+              type: "text",
+              text: "{{location.hight-lights}}",
+              fontSize: "48px",
+              fontFamily: "Roboto",
+              color: "#121113",
+              textAnchor: "start",
+              positioning: {
+                top: 60,
+                left: 20
+              }
+            }
+          ]
+        },
       ]
     },
     {

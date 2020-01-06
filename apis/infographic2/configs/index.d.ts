@@ -34,6 +34,7 @@ export namespace InfographicConfig {
   type LocationBlock = {
     type: "location";
     blocks: BasicBlock[];
+    positioning?: RelativePosition;
   };
 
   type LocationNameTextBlock = {
