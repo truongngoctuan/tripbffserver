@@ -1,5 +1,5 @@
 import { Server } from "hapi";
-import { IoC } from "./IoC"
+import { IoC } from "./IoC";
 import moment = require("moment");
 const userTripQueryHandler = IoC.userTripQueryHandler;
 
@@ -11,8 +11,8 @@ module.exports = {
             path: "/statistics/growthCharts",
             handler: async function(request) {
               try { 
-                var { fromDate, toDate } = request.query as any;
-                var chartsData = await userTripQueryHandler.getGrowthCharts(moment(fromDate), moment(toDate));
+                const { fromDate, toDate } = request.query as any;
+                const chartsData = await userTripQueryHandler.getGrowthCharts(moment(fromDate), moment(toDate));
                 return chartsData;
               }
               catch(error) {
@@ -27,4 +27,4 @@ module.exports = {
             }
           });       
   }    
-}
+};

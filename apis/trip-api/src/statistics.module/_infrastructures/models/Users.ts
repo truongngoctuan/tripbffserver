@@ -1,5 +1,5 @@
-import mongoose, { Model, Document } from 'mongoose';
-import { IUser } from '../../_core/models/IUser';
+import mongoose, { Model, Document } from "mongoose";
+import { IUser } from "../../_core/models/IUser";
 
 export interface IUserDocument extends IUser, Document { }
 

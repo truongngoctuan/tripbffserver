@@ -8,7 +8,7 @@ export interface IUser {
 }
 
 export type ILogin = {
-  loginType: "login type..."
+  loginType: "login type...";
 }
   | ILoginLocal
   | ILoginFacebook
@@ -16,34 +16,34 @@ export type ILogin = {
   ;
 
 export type ILoginLocal = {
-  loginType: "LOCAL",
+  loginType: "LOCAL";
   local: {
     email: string;
     hash: string;
     salt: string;
-  },
-  loggedInDate: Date
+  };
+  loggedInDate: Date;
 }
 
 export type ILoginFacebook = {
-  loginType: "FACEBOOK",
+  loginType: "FACEBOOK";
   facebook: {
-    facebookUserId: string,
-    accessToken: string,
+    facebookUserId: string;
+    accessToken: string;
     id?: string;
     name?: string;
     first_name?: string;
     last_name?: string;
-    email?: string
-  },
-  loggedInDate: Date
+    email?: string;
+  };
+  loggedInDate: Date;
 };
 
 export type ILoginDevice = {
-  loginType: "DEVICE",
+  loginType: "DEVICE";
   device: {
-    uniqueDeviceId: string,
-  },
-  loggedInDate: Date
+    uniqueDeviceId: string;
+  };
+  loggedInDate: Date;
 };
 

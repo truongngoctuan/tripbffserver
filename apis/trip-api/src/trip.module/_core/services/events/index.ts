@@ -21,6 +21,7 @@ export type TripEvent =
   | TripLocationUpdatedDescriptionEvent
   | InfographicCreatedEvent
   | InfographicExportedEvent
+  | InfographicSharedEvent
   | TripDeletedEvent;
 
 export type TripImportLocationsEvent = {
@@ -158,6 +159,13 @@ export type InfographicExportedEvent = {
   tripId: string;
   infographicId: string;
   externalStorageId: string;
+};
+
+export type InfographicSharedEvent = {
+  type: "InfographicShared";
+  ownerId: string;
+  tripId: string;
+  infographicId: string;
 };
 
 export class EventHandler {

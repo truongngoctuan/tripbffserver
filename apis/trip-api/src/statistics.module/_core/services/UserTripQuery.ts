@@ -9,26 +9,26 @@ export class UserTripQueryHandler {
   constructor(private UserTripRepository: IUserTripRepository) { }  
 
   async getGrowthCharts(fromDate: Moment, toDate: Moment): Promise<IGrowthChart[]> {  
-    let userTrips : IUserTrip[] = await this.UserTripRepository.list(fromDate, toDate); 
-    let iterationDate = fromDate.startOf('day');    
-    let dataPerDays = [];
+    const userTrips: IUserTrip[] = await this.UserTripRepository.list(fromDate, toDate); 
+    const iterationDate = fromDate.startOf("day");    
+    const dataPerDays = [];
     
     while(iterationDate <= toDate) {
-      let userTripsPerDay = 
+      const userTripsPerDay = 
         userTrips.filter(s => 
-          s.logins.filter(lo => lo.loginType === 'DEVICE' &&
-            moment(lo.loggedInDate).startOf('day').toDate().getTime() === iterationDate.toDate().getTime()).length > 0);
+          s.logins.filter(lo => lo.loginType === "DEVICE" &&
+            moment(lo.loggedInDate).startOf("day").toDate().getTime() === iterationDate.toDate().getTime()).length > 0);
 
-      var dataPerDay = {
-        weekLabel: iterationDate.format('W-GGGG'),
+      const dataPerDay = {
+        weekLabel: iterationDate.format("W-GGGG"),
         totalUsers: userTripsPerDay.length,
-        totalFacebookUsers: userTripsPerDay.filter(s => s.logins.filter(lo => lo.loginType === 'FACEBOOK').length > 0).length,
+        totalFacebookUsers: userTripsPerDay.filter(s => s.logins.filter(lo => lo.loginType === "FACEBOOK").length > 0).length,
         totalCreatedTripUsers: userTripsPerDay.filter(s => s.trips.length > 0).length,
         totalExportedInfographicUsers: userTripsPerDay.filter(s => s.trips.filter(t => t.infographics.length > 0).length > 0).length,
-        totalShareInfographicUsers: userTripsPerDay.filter(s => s.trips.filter(t => t.infographics.filter(i => i.status === 'EXPORTED').length > 0).length > 0).length
+        totalShareInfographicUsers: userTripsPerDay.filter(s => s.trips.filter(t => t.infographics.filter(i => i.status === "EXPORTED").length > 0).length > 0).length
       };
       dataPerDays.push(dataPerDay);
-      iterationDate.add(1, 'day');
+      iterationDate.add(1, "day");
     } 
 
     const sums = [
@@ -49,16 +49,16 @@ export class UserTripQueryHandler {
             prev.totalExportedInfographicUsers += totalExportedInfographicUsers;
             prev.totalShareInfographicUsers += totalShareInfographicUsers;
           } else {
-            map.set(key, Object.assign({}, item))
+            map.set(key, Object.assign({}, item));
           }
           
-          return map
+          return map;
         },
         new Map()
       ).values()
     ];
     
-    let totalUsers: IGrowthChartItem[] = [],
+    const totalUsers: IGrowthChartItem[] = [],
         totalFacebookUsers: IGrowthChartItem[] = [],
         totalCreatedTripUsers: IGrowthChartItem[] = [],
         totalExportedInfographicUsers: IGrowthChartItem[] = [],
@@ -86,7 +86,7 @@ export class UserTripQueryHandler {
       });
     });
     
-    let data: IGrowthChart[] = [{
+    const data: IGrowthChart[] = [{
       category: "Total Users",
       data: totalUsers
     },

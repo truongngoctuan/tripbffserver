@@ -113,6 +113,42 @@ module.exports = {
       },
     });
 
+
+    server.route({
+      method: "PUT",
+      path: "/trips/{id}/infographics/{infoId}/share",
+      async handler(request) {
+        try {
+          const tripId: string = request.params.id;
+          const infographicId: string = request.params.infoId;
+
+          const { ownerId } = request.payload as any;
+
+          const commandResult = await tripCommandHandler.exec({
+            type: "finishShareInfographic",
+            ownerId,
+            tripId,
+            infographicId
+          });
+
+          if (commandResult.isSucceed) {
+            return true;
+          }
+
+          console.log("err: " + commandResult.errors);
+          return commandResult.errors;
+        } catch (error) {
+          console.log("ERROR: PUT /trips/{id}/infographics/{infoId}", error);
+          throw false;
+        }
+      },
+      options: {
+        // todo add auth for internal communication
+        // auth: "simple",
+        tags: ["api"],
+      },
+    });
+
     server.route({
       method: "GET",
       path: "/trips/{tripId}/infographics/{infographicId}",
