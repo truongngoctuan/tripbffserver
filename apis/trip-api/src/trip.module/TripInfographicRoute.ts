@@ -138,13 +138,13 @@ module.exports = {
           console.log("err: " + commandResult.errors);
           return commandResult.errors;
         } catch (error) {
-          console.log("ERROR: PUT /trips/{id}/infographics/{infoId}", error);
+          console.log("ERROR: PUT /trips/{id}/infographics/{infoId}/share", error);
           throw false;
         }
       },
       options: {
         // todo add auth for internal communication
-        // auth: "simple",
+        auth: "simple",
         tags: ["api"],
       },
     });
