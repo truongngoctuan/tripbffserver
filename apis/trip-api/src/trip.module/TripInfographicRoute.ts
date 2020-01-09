@@ -115,12 +115,12 @@ module.exports = {
 
 
     server.route({
-      method: "PUT",
-      path: "/trips/{id}/infographics/{infoId}/share",
+      method: "PATCH",
+      path: "/trips/{tripId}/infographics/{infographicId}/share",
       async handler(request) {
         try {
-          const tripId: string = request.params.id;
-          const infographicId: string = request.params.infoId;
+          const tripId: string = request.params.tripId;
+          const infographicId: string = request.params.infographicId;
 
           const { ownerId } = request.payload as any;
 
