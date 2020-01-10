@@ -122,8 +122,7 @@ module.exports = {
           const tripId: string = request.params.tripId;
           const infographicId: string = request.params.infographicId;
 
-          const { ownerId } = request.payload as any;
-
+          const ownerId = CUtils.getUserId(request);
           const commandResult = await tripCommandHandler.exec({
             type: "finishShareInfographic",
             ownerId,
@@ -138,12 +137,11 @@ module.exports = {
           console.log("err: " + commandResult.errors);
           return commandResult.errors;
         } catch (error) {
-          console.log("ERROR: PUT /trips/{id}/infographics/{infoId}/share", error);
+          console.log("ERROR: PATCH /trips/{id}/infographics/{infoId}/share", error);
           throw false;
         }
       },
       options: {
-        // todo add auth for internal communication
         auth: "simple",
         tags: ["api"],
       },
