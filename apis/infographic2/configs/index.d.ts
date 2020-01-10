@@ -86,6 +86,7 @@ export namespace InfographicConfig {
     type: "location-image";
     width: number;
     height: number;
+    positioning?: Positioning;
   };
 
   type Positioning = StackPosition | RelativePosition;

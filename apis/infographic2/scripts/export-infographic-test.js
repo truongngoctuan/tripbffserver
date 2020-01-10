@@ -22,7 +22,7 @@ const data = {
       feeling: "Yên bình",
       activity: "Ngắm ruộng lúa",
       highlights: "Đẹp, Rẻ",
-      // signedUrl: "http://placekitten.com/1200/1200"
+      signedUrl: "http://placekitten.com/1200/1200"
     },
     {
       locationId: "1f611a70-abde-4e5d-95d3-ae5e7959a9cb",
