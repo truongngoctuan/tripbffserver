@@ -25,12 +25,12 @@ async function renderLocation(canvasAdaptor, blockConfig, trip, cursor) {
 
 async function renderLocationImage(canvasAdaptor, blockConfig, trip, cursor) {
   log(cursor.level, "render block", blockConfig.type);
-  log(cursor.level, "cursor", cursor);
-  // log(cursor.level, "cursor2", getRelativePosition(cursor, blockConfig.positioning));
+  // log(cursor.level, "cursor", cursor);
 
   // load default image if location has no image
   var imgUri =
-    trip.locations[cursor.location].signedUrl && !_.isEmpty(trip.locations[cursor.location].signedUrl)
+    trip.locations[cursor.location].signedUrl &&
+    !_.isEmpty(trip.locations[cursor.location].signedUrl)
       ? trip.locations[cursor.location].signedUrl
       : "./data/images/EmptyImage01.jpg";
   var result = await canvasAdaptor.drawImage(
@@ -49,7 +49,7 @@ async function renderLocationImage(canvasAdaptor, blockConfig, trip, cursor) {
 
 async function renderImage(canvasAdaptor, blockConfig, trip, cursor) {
   log(cursor.level, "render block", blockConfig.type);
-  log(cursor.level, "cursor", cursor);
+  // log(cursor.level, "cursor", cursor);
 
   const relativePosition = getRelativePosition(cursor, blockConfig.positioning);
   log(cursor.level, "relative position", relativePosition);
@@ -62,7 +62,7 @@ async function renderImage(canvasAdaptor, blockConfig, trip, cursor) {
 
 async function renderTextBlock(canvasAdaptor, blockConfig, trip, cursor) {
   log(cursor.level, "render block", blockConfig.type);
-  log(cursor.level, "cursor", cursor);
+  // log(cursor.level, "cursor", cursor);
 
   let feelingLabel = commonFunc.getFeelingLabel(trip.locale);
 
@@ -95,21 +95,40 @@ async function renderTextBlock(canvasAdaptor, blockConfig, trip, cursor) {
   if (text === "{{location.hight-lights}}") {
     text = highlights;
   }
+  if (text === "{{trip.name}}") {
+    text = trip.name.toUpperCase();
+  }
+  if (text === "{{trip.info}}") {
+    let numberOfDays = trip.numberOfDays,
+      numberOfLocations = trip.locations.length,
+      dayLabel = commonFunc.getDayLabel(trip.locale, numberOfDays),
+      locationLabel = commonFunc.getLocationLabel(
+        trip.locale,
+        numberOfLocations
+      );
 
-  // log(cursor.level, "anchor", blockConfig.textAnchor);
-  let locationNameNode = canvasAdaptor.drawText(
-    text,
-    getRelativePosition(cursor, blockConfig.positioning),
-    {
-      color: blockConfig.color,
-      font: blockConfig.fontFamily,
-      fontSize: blockConfig.fontSize,
-      fontWeight: blockConfig.fontWeight,
-      textAnchor: blockConfig.textAnchor,
-      textTransform: blockConfig.textTransform
-      // wrapNumber: w - paddingLeftRight
-    }
-  );
+    let dayText = " " + dayLabel + ", ",
+      locationText = " " + locationLabel,
+      basicTripInfo = numberOfDays + dayText + numberOfLocations + locationText;
+
+    text = basicTripInfo;
+  }
+
+  var relativePosition = getRelativePosition(cursor, blockConfig.positioning);
+  if (blockConfig.textAnchor === "middle") {
+    relativePosition.x = relativePosition.x + cursor.width / 2;
+  }
+
+  let locationNameNode = canvasAdaptor.drawText(text, relativePosition, {
+    color: blockConfig.color,
+    font: blockConfig.fontFamily,
+    fontSize: blockConfig.fontSize,
+    fontWeight: blockConfig.fontWeight,
+    textAnchor: blockConfig.textAnchor,
+    textTransform: blockConfig.textTransform,
+    wrapNumber: blockConfig.width
+    // wrapNumber: w - paddingLeftRight
+  });
 
   let locationNameNodeBbox = locationNameNode.bounds;
 
@@ -146,7 +165,7 @@ async function renderBlock(
     const deltaHeight = _.get(blockConfig, "positioning.height");
     if (deltaHeight > 0) {
       canvasAdaptor.resize(cursor.width, cursor.height + deltaHeight);
-      log(cursor.level, deltaHeight);
+      // log(cursor.level, deltaHeight);
       nextCursor.height = nextCursor.height + deltaHeight;
     }
   }
@@ -164,6 +183,8 @@ async function renderBlock(
   if (!_.isEmpty(blockConfig.blocks)) {
     for (var i = 0; i < blockConfig.blocks.length; i++) {
       var childBlock = blockConfig.blocks[i];
+      log(cursor.level + 1, "cursor info", `w=${cursor.width} h=${cursor.height}`);
+
       var next = await renderBlock(
         canvasAdaptor,
         childBlock,

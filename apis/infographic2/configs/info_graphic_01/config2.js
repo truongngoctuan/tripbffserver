@@ -167,7 +167,8 @@ var config_01_02 = {
                             positioning: {
                                 top: 60,
                                 left: 20
-                            }
+                            },
+                            width: 1280 / 2 - 40
                         },
                         {
                             // location highlights
@@ -214,7 +215,7 @@ var config_01_02 = {
                             textAnchor: "start",
                             textTransform: "uppercase",
                             positioning: {
-                                top: 80,
+                                top: 60,
                                 left: 20
                             }
                         },
@@ -229,7 +230,8 @@ var config_01_02 = {
                             positioning: {
                                 top: 60,
                                 left: 20
-                            }
+                            },
+                            width: 1280 / 2 - 40
                         },
                         {
                             // location highlights
