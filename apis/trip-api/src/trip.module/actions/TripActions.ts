@@ -46,7 +46,7 @@ export async function createTripAction(
   name: string,
   fromDate: string,
   toDate: string
-): Promise<string | CommandResult> {
+): Promise<string | CommandResult | string[] | undefined> { // todo refactor return commandResult.errors
   console.log("trip name :" + name);
   console.log("trip from date:" + fromDate);
   console.log("trip to date:" + toDate);
@@ -81,7 +81,7 @@ export async function patchTripAction(
   name: string,
   fromDate: string,
   toDate: string
-): Promise<ITrip | CommandResult> {
+): Promise<ITrip | CommandResult | string[] | undefined> { // todo refactor return commandResult.errors
   console.log("trip name", name);
   console.log("trip from date:", fromDate);
   console.log("trip to date:", toDate);
@@ -111,7 +111,7 @@ export async function patchTripAction(
 export async function deleteTripAction(
   ownerId: string,
   tripId: string
-): Promise<boolean | CommandResult> {
+): Promise<boolean | CommandResult | string[] | undefined> { // todo refactor return commandResult.errors
   const commandResult = await tripCommandHandler.exec({
     type: "deleteTrip",
     ownerId,

@@ -22,6 +22,7 @@ import { favorTripLocationImage } from "./favorTripLocationImage";
 import { updateLocationHighlight } from "./updateLocationHighlight";
 import { updateLocationDescription } from "./updateLocationDescription";
 import { deleteTrip } from "./deleteTrip";
+import finishShareInfographic from "./finishShareInfographic";
 
 // var staticEventHandlers = new Map<string, Function>();
 
@@ -98,6 +99,8 @@ export class TripReducers {
         return createInfographic(state, event);
       case "InfographicExported":
         return finishCreateInfographic(state, event);
+      case "InfographicShared": 
+        return finishShareInfographic(state, event);
       case "TripDeleted":
         return deleteTrip(state, event);
       default:
