@@ -7,7 +7,7 @@ export interface ITrip {
   fromDate: Moment;
   toDate: Moment;
   infographics: Array<IInfographic>;
-  isDeleted: boolean
+  isDeleted: boolean;
 }
 
 export interface IInfographic {

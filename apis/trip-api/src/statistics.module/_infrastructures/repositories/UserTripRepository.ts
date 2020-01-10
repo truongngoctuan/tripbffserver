@@ -8,8 +8,8 @@ export class UserTripRepository implements IUserTripRepository {
   constructor(private _mg: IMongooseSchemas) {
   }   
 
-  public async list(fromDate: Moment, toDate: Moment) : Promise<Array<IUserTrip>> {
-    var userTrips = await this._mg.UsersDocument
+  public async list(fromDate: Moment, toDate: Moment): Promise<Array<IUserTrip>> {
+    const userTrips = await this._mg.UsersDocument
     .aggregate(
       [{$match: {
         logins: 
@@ -26,10 +26,10 @@ export class UserTripRepository implements IUserTripRepository {
       
                 }
       }}, {$lookup: {
-        from: 'usertrips',
-        localField: 'userId',
-        foreignField: 'userId',
-        as: 'trip'
+        from: "usertrips",
+        localField: "userId",
+        foreignField: "userId",
+        as: "trip"
       }}, {
         $project: {
             userId: 1,
@@ -45,7 +45,7 @@ export class UserTripRepository implements IUserTripRepository {
       }}]);    
      
     return userTrips.map(item => {
-      let userTrip: IUserTrip  = {
+      const userTrip: IUserTrip  = {
         userId: item.userId,
         logins: item.logins,
         trips: item.trip.length > 0 ? item.trip[0].trips : []

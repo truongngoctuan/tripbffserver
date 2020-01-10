@@ -43,7 +43,7 @@ export interface IInfographic {
   externalStorageId?: string; //this id will exist after image binary is uploaded to server
 }
 
-export type InfographicStatus = "CREATED" | "EXPORTED" | "FAILED";
+export type InfographicStatus = "CREATED" | "EXPORTED" | "FAILED" | "SHARED";
 
 export interface IFeeling {
   feelingId: string;

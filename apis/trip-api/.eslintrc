@@ -11,6 +11,10 @@
     //a whole discussion about prefix `I` or not
     // https://stackoverflow.com/questions/31876947/confused-about-the-interface-and-class-coding-guidelines-for-typescript/41967120#41967120
     "@typescript-eslint/interface-name-prefix": "off",
-    "@typescript-eslint/camelcase": ["error", { "properties": "never" }]
+    "@typescript-eslint/camelcase": ["warn", { "properties": "never" }],
+    "@typescript-eslint/no-var-requires": "warn",
+    "@typescript-eslint/no-use-before-define": "warn",
+    "@typescript-eslint/no-empty-function": "warn",
+    "prefer-const": "warn"
   }
 }

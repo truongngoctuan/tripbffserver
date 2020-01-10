@@ -3,12 +3,12 @@ import { IUserTripDocument, UserTripSchema } from "./UserTripModel";
 import { IUserDocument, UsersSchema } from "./Users";
 
 export interface IMongooseSchemas {
-  UserTripsDocument: Model<IUserTripDocument>
-  UsersDocument: Model<IUserDocument>
+  UserTripsDocument: Model<IUserTripDocument>;
+  UsersDocument: Model<IUserDocument>;
 }
 
 export function initSchemas(mongoose: any) {
-  console.log('mongoose models: ' + mongoose.models);
+  console.log("mongoose models: " + mongoose.models);
   const UserTripsDocument: Model<IUserTripDocument> = 
      mongoose.models && mongoose.models.UserTrip
         ? mongoose.models.UserTrip 
@@ -22,7 +22,7 @@ export function initSchemas(mongoose: any) {
   const SchemaCollections: IMongooseSchemas = {
     UserTripsDocument,
     UsersDocument
-  }
+  };
 
   return SchemaCollections;
 }

@@ -113,6 +113,40 @@ module.exports = {
       },
     });
 
+
+    server.route({
+      method: "PATCH",
+      path: "/trips/{tripId}/infographics/{infographicId}/share",
+      async handler(request) {
+        try {
+          const tripId: string = request.params.tripId;
+          const infographicId: string = request.params.infographicId;
+
+          const ownerId = CUtils.getUserId(request);
+          const commandResult = await tripCommandHandler.exec({
+            type: "finishShareInfographic",
+            ownerId,
+            tripId,
+            infographicId
+          });
+
+          if (commandResult.isSucceed) {
+            return true;
+          }
+
+          console.log("err: " + commandResult.errors);
+          return commandResult.errors;
+        } catch (error) {
+          console.log("ERROR: PATCH /trips/{id}/infographics/{infoId}/share", error);
+          throw false;
+        }
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+      },
+    });
+
     server.route({
       method: "GET",
       path: "/trips/{tripId}/infographics/{infographicId}",
