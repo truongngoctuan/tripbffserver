@@ -26,20 +26,20 @@
     "canvg": "2.0.0",
     "lottie-web": "5.5.7",
     "lottie-node": "1.0.0",
-    "typescript": "3.4.3"
+    "typescript": "3.4.3",
+    "@types/lodash": "4.14.108"
   },
   "dependencies": {
     "lodash": "^4.17.15",
     "dotenv": "^6.1.0",
-    "axios": "^0.18.0",
+    "axios": "^0.19.1",
     "moment": "^2.22.2",
     "redis": "^2.8.0",
     "rsmq": "^0.9.3",
-    "canvas": "2.5.0",
-    "jsdom": "15.1.1",
+    "canvas": "^2.6.1",
+    "jsdom": "^15.2.1",
     "xmldom": "0.1.27",
     "svg2img": "0.6.1",
-    "paper": "0.12.3",
-    "paper-jsdom-canvas": "0.12.3"
+    "paper": "^0.12.4"
   }
 }

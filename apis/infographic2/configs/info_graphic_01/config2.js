@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var config_01_01 = {
     width: 1280,
     backgroundColor: "#e3d1a2",
@@ -264,7 +266,7 @@ var config_01_02 = {
 };
 var config_01_others = {
     width: 2060,
-    height: 4200,
+    height: 2200,
     // height: 4200,
     // paddingLeftRight: 10,
     backgroundColor: "#e3d1a2",
@@ -275,6 +277,7 @@ var config_01_others = {
     blocks: [
         {
             type: "location",
+            height: 500,
             blocks: [
                 {
                     type: "location-image",
@@ -293,6 +296,7 @@ var config_01_others = {
                 },
                 {
                     type: "container",
+                    backgroundColor: "#fff",
                     positioning: {
                         height: 500
                     },

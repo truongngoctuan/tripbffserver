@@ -2,6 +2,9 @@ export namespace InfographicConfig {
   type Background = {
     backgroundColor?: string;
   };
+  type Height = {
+    height?: number;
+  }
 
   type Infographic = {
     width: number;
@@ -35,7 +38,7 @@ export namespace InfographicConfig {
     type: "location";
     blocks: BasicBlock[];
     positioning?: RelativePosition;
-  };
+  } & Height;
 
   type LocationNameTextBlock = {
     type: "text";
@@ -57,7 +60,7 @@ export namespace InfographicConfig {
     type: "container";
     blocks: Block[];
     positioning?: StackPosition;
-  };
+  } & Background;
 
   type ImageBlock = {
     type: "image";
@@ -80,6 +83,7 @@ export namespace InfographicConfig {
   type TextBlock = {
     type: "text";
     text: string;
+    width?: number;
   } & BaseTextBlock;
 
   type LocationImageBlock = {

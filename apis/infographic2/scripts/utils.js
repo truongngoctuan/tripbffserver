@@ -1,19 +1,31 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 const { registerFont } = require("canvas");
-const paper = require("paper-jsdom-canvas");
+const paper_jsdom_canvas_1 = __importDefault(require("./paper-jsdom-canvas"));
+// import paper from "paper";
 const fs = require("fs");
 // const path = require("path");
 const _ = require("lodash");
-
 registerFont("./fonts/Pfennig.ttf", { family: "Pfennig" });
 registerFont("./fonts/Roboto-Regular.ttf", {
-  family: "Roboto"
+    family: "Roboto"
 });
 registerFont("./fonts/Roboto-Bold.ttf", {
-  family: "Roboto",
-  style: "normal",
-  weight: "bold"
+    family: "Roboto",
+    style: "normal",
+    weight: "bold"
 });
-
 // todo: add this into node_modules/paper/dist/node/canvas.js
 // todo: to load font into canvas
 // try {
@@ -23,336 +35,275 @@ registerFont("./fonts/Roboto-Bold.ttf", {
 //   Canvas = a.Canvas;
 // } catch(error) {
 class CanvasAdaptor {
-  constructor(w = 300, h = 300) {
-    //use the canvas in paper so that we can magically register font
-    var canvas = paper.Canvas(w, h);
-    // var canvas = createCanvas(w, h);
-    // const ctx = canvas.getContext("2d");
-    // ctx.fillStyle = "white";
-    // ctx.fillRect(0, 0, w, h);
-    // console.log(ctx.font);
-    // ctx.fillStyle = "red";
-    // ctx.font = '10px "sans-serif"';
-    // ctx.fillText("123456789 Everyoooooooooooone hates this font :(", 50, 50);
-    // ctx.font = '10px "Roboto"';
-    // ctx.fillText("123456789 Everyoooooooooooone hates this font :(", 50, 80);
-    // ctx.font = '10px "Pfennig"';
-    // ctx.fillText("123456789 Everyoooooooooooone hates this font :(", 50, 120);
-    // const buf = canvas.toBuffer();
-    // fs.writeFileSync("output2.png", buf);
-    // ------paper
-    // Create an empty project and a view for the canvas:
-    paper.setup(canvas);
-
-    this.canvas = canvas;
-    this.paper = paper;
-  }
-  draw() {
-    this.paper.view.draw();
-  }
-  export(file) {
-    const buf = paper.view.element.toBuffer();
-    fs.writeFileSync(file, buf);
-  }
-
-  toBufferJpeg() {
-    return paper.view.element.toBuffer("image/jpeg", {
-      quality: 0.9
-    });
-  }
-
-  toBufferPng() {
-    return paper.view.element.toBuffer("image/png", {
-      compressionLevel: 3,
-      filters: paper.Canvas.PNG_FILTER_NONE
-    });
-  }
-
-  resize(w, h) {
-    paper.view.viewSize = new paper.Size(w, h);
-  }
-  // set name(name) {
-  //   this._name = name.charAt(0).toUpperCase() + name.slice(1);
-  // }
-  // get name() {
-  //   return this._name;
-  // }
-  async drawImage(source, position, options = {}, cb) {
-    return new Promise((resolve, reject) => {
-      var raster = source.startsWith("http")
-        ? new paper.Raster(source)
-        : new paper.Raster(loadLocalImage(source));
-
-      var group = undefined;
-
-      raster.onLoad = function(e) {
-        // console.log("image loaded");
-        const { width, height } = raster;
-        raster.position = new paper.Point(
-          position.x + width / 2,
-          position.y + height / 2
-        );
-
-        if (options.width && options.height) {
-          const scaleWidth = options.width / width;
-          const scaleHeight = options.height / height;
-          const scale = _.max([scaleWidth, scaleHeight]);
-          // console.log("scale", scale);
-          raster.scale(scale);
-
-          const deltaWidth = width - options.width;
-          const deltaHeight = height - options.height;
-          //setup image cover
-          raster.position = new paper.Point(
-            raster.position.x - deltaWidth / 2,
-            raster.position.y - deltaHeight / 2
-          );
-
-          group = new paper.Group();
-          if (!options.clipPath) {
-            // Use clipMask to create a custom polygon clip mask:
-            var path = new paper.Path.Rectangle(
-              position.x,
-              position.y,
-              options.width,
-              options.height
-            );
-            path.clipMask = true;
-
-            // It is better to add the path and the raster in a group (but not mandatory)
-            group.addChild(raster);
-            group.addChild(path);
-
-          } else {
-            var path2 = new paper.Path(options.clipPath);
-            path2.position = new paper.Point(
-              raster.position.x,
-              raster.position.y
-            );
-
-            const scalePath = options.width / path2.bounds.width;
-            path2.scale(scalePath);
-            const deltaPathWidth = path2.bounds.width - options.width;
-            raster.position = new paper.Point(
-              raster.position.x - (deltaPathWidth > 0 ? deltaPathWidth / 2 : 0),
-              raster.position.y - (deltaPathWidth > 0 ? deltaPathWidth / 2 : 0)
-            );
-
-            path2.style = {
-              strokeColor: "#f00",
-              strokeWidth: 2
-            };
-
-            path2.clipMask = true;
-
-            // It is better to add the path and the raster in a group (but not mandatory)
-            group.addChild(raster);
-            group.addChild(path2);
-          }
-        }
-
-        if (cb) {
-          cb({
-            // imageResult: raster,
-            width: group ? group.bounds.width : raster.bounds.width,
-            height: group ? group.bounds.height : raster.bounds.height
-          });
-        }
-        resolve({
-          width: group ? group.bounds.width : raster.bounds.width,
-          height: group ? group.bounds.height : raster.bounds.height
+    constructor(w = 300, h = 300) {
+        //use the canvas in paper so that we can magically register font
+        var canvas = paper_jsdom_canvas_1.default.Canvas(w, h);
+        // var canvas = createCanvas(w, h);
+        // const ctx = canvas.getContext("2d");
+        // ctx.fillStyle = "white";
+        // ctx.fillRect(0, 0, w, h);
+        // console.log(ctx.font);
+        // ctx.fillStyle = "red";
+        // ctx.font = '10px "sans-serif"';
+        // ctx.fillText("123456789 Everyoooooooooooone hates this font :(", 50, 50);
+        // ctx.font = '10px "Roboto"';
+        // ctx.fillText("123456789 Everyoooooooooooone hates this font :(", 50, 80);
+        // ctx.font = '10px "Pfennig"';
+        // ctx.fillText("123456789 Everyoooooooooooone hates this font :(", 50, 120);
+        // const buf = canvas.toBuffer();
+        // fs.writeFileSync("output2.png", buf);
+        // ------paper
+        // Create an empty project and a view for the canvas:
+        paper_jsdom_canvas_1.default.setup(canvas);
+        this.canvas = canvas;
+        this.paper = paper_jsdom_canvas_1.default;
+    }
+    //use this method to go directly to a lower layer, reduce complexity of setup custom draw methods
+    getPaper() {
+        return this.paper;
+    }
+    draw() {
+        this.paper.view.draw();
+    }
+    export(file) {
+        const buf = paper_jsdom_canvas_1.default.view.element.toBuffer();
+        fs.writeFileSync(file, buf);
+    }
+    toBufferJpeg() {
+        return paper_jsdom_canvas_1.default.view.element.toBuffer("image/jpeg", {
+            quality: 0.9
         });
-      };
-
-      raster.onError = err => {
-        console.log("error on load image", err);
-        reject(err);
-      };
-    });
-  }
-
-  drawBackground(backgroundColor) {
-    var rect = new paper.Path.Rectangle({
-      point: [0, 0],
-      size: paper.view.size
-    });
-    rect.sendToBack();
-    rect.fillColor = backgroundColor;
-  }
-
-  drawRect(options) {
-    var rect = new paper.Path.Rectangle(
-      new paper.Point(options.x, options.y),
-      new paper.Size(options.width, options.height)
-    );
-    rect.fillColor = options.backgroundColor;
-  }
-
-  _drawText(text, position, options) {
-    var fontSize = parseInt((options.fontSize || "30px").replace("px", ""));
-    var textNode = new paper.PointText(
-      new paper.Point(position.x, position.y + fontSize)
-    );
-
-    // textNode.content = text;
-    textNode.style = {
-      fontSize,
-      fillColor: options.color,
-      fontFamily: options.font != "Roboto" ? "Pfennig" : "Roboto",
-      fontWeight: options.fontWeight
-    };
-
-    return textNode;
-  }
-
-  drawText(text, position, options) {
-    if (options.wrapNumber) {
-      return this._drawTextWrap(text, position, options);
     }
-
-    let textNode = this._drawText(text, position, options);
-    textNode.content = text;
-
-    // handle textAnchor manually
-    this._textAnchor(textNode, options.textAnchor);
-
-    return {
-      bounds: {
-        x: textNode.bounds.x,
-        y: textNode.bounds.y,
-        width: textNode.bounds.width,
-        height: textNode.bounds.height
-      }
-    };
-  }
-
-  _drawTextWrap(text, position, options) {
-    let textNode = this._drawText(text, position, options);
-    // textNode.content = text;
-    const width = options.wrapNumber;
-    let words = text
-      .trim()
-      .split(/\s+/)
-      .reverse();
-    let previousLine = "";
-    let word = "";
-
-    while ((word = words.pop())) {
-      textNode.content = previousLine + " " + word;
-      if (textNode.bounds.width > width) {
-        previousLine += "\n" + word;
-      } else {
-        previousLine = _.isEmpty(previousLine)
-          ? word
-          : previousLine + " " + word;
-      }
+    toBufferPng() {
+        return paper_jsdom_canvas_1.default.view.element.toBuffer("image/png", {
+            compressionLevel: 3,
+            filters: paper_jsdom_canvas_1.default.Canvas.PNG_FILTER_NONE
+        });
     }
-
-    textNode.content = previousLine;
-
-    // handle textAnchor manually
-    this._textAnchor(textNode, options.textAnchor);
-
-    return {
-      bounds: {
-        x: textNode.bounds.x,
-        y: textNode.bounds.y,
-        width: textNode.bounds.width,
-        height: textNode.bounds.height
-      }
-    };
-  }
-
-  _textAnchor(textNode, textAnchor) {
-    // handle textAnchor manually
-    if (textAnchor === "middle") {
-      textNode.point = new paper.Point(
-        textNode.point.x - textNode.bounds.width / 2,
-        textNode.point.y
-      );
-    } else if (textAnchor === "end") {
-      textNode.point = new paper.Point(
-        textNode.point.x - textNode.bounds.width,
-        textNode.point.y
-      );
+    resize(w, h) {
+        paper_jsdom_canvas_1.default.view.viewSize = new paper_jsdom_canvas_1.default.Size(w, h);
     }
-  }
-
-  // async drawTextWrap(text, position, options) {
-  //   const widthToWrap = options.width;
-  //   // let textNode = this._drawText(text, position, options);
-  //   // let newText = text;
-  //   let svgText2 = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-  //   <style>
-  //     text  { font: italic 12px serif; font-size: 20px; }
-  //     tspan { font: bold 10px sans-serif; fill: red; }
-  //   </style>
-
-  //   <text x="${position.x}" y="${position.y}" class="small">
-  //     You are aaaa
-  //     <tspan>not</tspan>
-  //     a banana!
-  //     a banana!
-  //     a banana!
-  //     a banana!
-  //   </text>
-  // </svg>`;
-  //   return new Promise((resolve, reject) => {
-  //     paper.project.importSVG(svgText2, textNode => {
-  //       // console.log(textNode);
-  //       var fontSize = parseInt((options.fontSize || "30px").replace("px", ""));
-  //       textNode.style = {
-  //         fontSize,
-  //         fillColor: options.color,
-  //         fontFamily: options.font != "Roboto" ? "Pfennig" : "Roboto",
-  //         fontWeight: options.fontWeight,
-  //       };
-  //       textNode.fillColor ="#f00"
-
-  //       textNode.position = new paper.Point(
-  //         position.x,
-  //         position.y + fontSize / 2
-  //       );
-  //       resolve({
-  //         bounds: {
-  //           x: textNode.bounds.x,
-  //           y: textNode.bounds.y,
-  //           width: textNode.bounds.width,
-  //           height: textNode.bounds.height
-  //         }
-  //       });
-  //     });
-  //   });
-  // }
-  drawLine(options) {
-    let line = new paper.Path.Line(
-      new paper.Point(options.x1, options.y1),
-      new paper.Point(options.x2, options.y2)
-    );
-    line.style = {
-      strokeColor: options.strokeColor,
-      strokeWidth: options.strokeWidth
-    };
-  }
-  drawCircle(options) {
-    let circle = new paper.Path.Circle(
-      new paper.Point(options.x, options.y),
-      options.r
-    );
-    circle.style = {
-      fillColor: options.fillColor
-    };
-  }
+    // set name(name) {
+    //   this._name = name.charAt(0).toUpperCase() + name.slice(1);
+    // }
+    // get name() {
+    //   return this._name;
+    // }
+    drawImage(source, position, options = {}, cb) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => {
+                var raster = source.startsWith("http")
+                    ? new paper_jsdom_canvas_1.default.Raster(source)
+                    : new paper_jsdom_canvas_1.default.Raster(loadLocalImage(source));
+                var group = undefined;
+                raster.onLoad = function (e) {
+                    // console.log("image loaded");
+                    const { width, height } = raster;
+                    raster.position = new paper_jsdom_canvas_1.default.Point(position.x + width / 2, position.y + height / 2);
+                    if (options.width && options.height) {
+                        const scaleWidth = options.width / width;
+                        const scaleHeight = options.height / height;
+                        const scale = _.max([scaleWidth, scaleHeight]);
+                        // console.log("scale", scale);
+                        raster.scale(scale);
+                        const deltaWidth = width - options.width;
+                        const deltaHeight = height - options.height;
+                        //setup image cover
+                        raster.position = new paper_jsdom_canvas_1.default.Point(raster.position.x - deltaWidth / 2, raster.position.y - deltaHeight / 2);
+                        group = new paper_jsdom_canvas_1.default.Group();
+                        if (!options.clipPath) {
+                            // Use clipMask to create a custom polygon clip mask:
+                            var path = new paper_jsdom_canvas_1.default.Path.Rectangle(position.x, position.y, options.width, options.height);
+                            path.clipMask = true;
+                            // It is better to add the path and the raster in a group (but not mandatory)
+                            group.addChild(raster);
+                            group.addChild(path);
+                        }
+                        else {
+                            var path2 = new paper_jsdom_canvas_1.default.Path(options.clipPath);
+                            path2.position = new paper_jsdom_canvas_1.default.Point(raster.position.x, raster.position.y);
+                            const scalePath = options.width / path2.bounds.width;
+                            path2.scale(scalePath);
+                            const deltaPathWidth = path2.bounds.width - options.width;
+                            raster.position = new paper_jsdom_canvas_1.default.Point(raster.position.x - (deltaPathWidth > 0 ? deltaPathWidth / 2 : 0), raster.position.y - (deltaPathWidth > 0 ? deltaPathWidth / 2 : 0));
+                            path2.style = {
+                                strokeColor: "#f00",
+                                strokeWidth: 2
+                            };
+                            path2.clipMask = true;
+                            // It is better to add the path and the raster in a group (but not mandatory)
+                            group.addChild(raster);
+                            group.addChild(path2);
+                        }
+                    }
+                    if (cb) {
+                        cb({
+                            // imageResult: raster,
+                            width: group ? group.bounds.width : raster.bounds.width,
+                            height: group ? group.bounds.height : raster.bounds.height
+                        });
+                    }
+                    resolve({
+                        width: group ? group.bounds.width : raster.bounds.width,
+                        height: group ? group.bounds.height : raster.bounds.height
+                    });
+                };
+                raster.onError = err => {
+                    console.log("error on load image", err);
+                    reject(err);
+                };
+            });
+        });
+    }
+    drawBackground(backgroundColor) {
+        var rect = new paper_jsdom_canvas_1.default.Path.Rectangle({
+            point: [0, 0],
+            size: paper_jsdom_canvas_1.default.view.size
+        });
+        rect.sendToBack();
+        rect.fillColor = backgroundColor;
+    }
+    drawRect(options) {
+        var rect = new paper_jsdom_canvas_1.default.Path.Rectangle(new paper_jsdom_canvas_1.default.Point(options.x, options.y), new paper_jsdom_canvas_1.default.Size(options.width, options.height));
+        rect.fillColor = options.backgroundColor;
+    }
+    _drawText(text, position, options) {
+        var fontSize = parseInt((options.fontSize || "30px").replace("px", ""));
+        var textNode = new paper_jsdom_canvas_1.default.PointText(new paper_jsdom_canvas_1.default.Point(position.x, position.y + fontSize));
+        // textNode.content = text;
+        textNode.style = {
+            fontSize,
+            fillColor: options.color,
+            fontFamily: options.font != "Roboto" ? "Pfennig" : "Roboto",
+            fontWeight: options.fontWeight
+        };
+        return textNode;
+    }
+    drawText(text, position, options) {
+        if (options.wrapNumber) {
+            return this._drawTextWrap(text, position, options);
+        }
+        let textNode = this._drawText(text, position, options);
+        textNode.content = text;
+        // handle textAnchor manually
+        this._textAnchor(textNode, options.textAnchor);
+        return {
+            bounds: {
+                x: textNode.bounds.x,
+                y: textNode.bounds.y,
+                width: textNode.bounds.width,
+                height: textNode.bounds.height
+            }
+        };
+    }
+    _drawTextWrap(text, position, options) {
+        let textNode = this._drawText(text, position, options);
+        // textNode.content = text;
+        const width = options.wrapNumber;
+        let words = text
+            .trim()
+            .split(/\s+/)
+            .reverse();
+        let previousLine = "";
+        let word = "";
+        while ((word = words.pop())) {
+            textNode.content = previousLine + " " + word;
+            if (textNode.bounds.width > width) {
+                previousLine += "\n" + word;
+            }
+            else {
+                previousLine = _.isEmpty(previousLine)
+                    ? word
+                    : previousLine + " " + word;
+            }
+        }
+        textNode.content = previousLine;
+        // handle textAnchor manually
+        this._textAnchor(textNode, options.textAnchor);
+        return {
+            bounds: {
+                x: textNode.bounds.x,
+                y: textNode.bounds.y,
+                width: textNode.bounds.width,
+                height: textNode.bounds.height
+            }
+        };
+    }
+    _textAnchor(textNode, textAnchor) {
+        // handle textAnchor manually
+        if (textAnchor === "middle") {
+            textNode.point = new paper_jsdom_canvas_1.default.Point(textNode.point.x - textNode.bounds.width / 2, textNode.point.y);
+        }
+        else if (textAnchor === "end") {
+            textNode.point = new paper_jsdom_canvas_1.default.Point(textNode.point.x - textNode.bounds.width, textNode.point.y);
+        }
+    }
+    // async drawTextWrap(text, position, options) {
+    //   const widthToWrap = options.width;
+    //   // let textNode = this._drawText(text, position, options);
+    //   // let newText = text;
+    //   let svgText2 = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    //   <style>
+    //     text  { font: italic 12px serif; font-size: 20px; }
+    //     tspan { font: bold 10px sans-serif; fill: red; }
+    //   </style>
+    //   <text x="${position.x}" y="${position.y}" class="small">
+    //     You are aaaa
+    //     <tspan>not</tspan>
+    //     a banana!
+    //     a banana!
+    //     a banana!
+    //     a banana!
+    //   </text>
+    // </svg>`;
+    //   return new Promise((resolve, reject) => {
+    //     paper.project.importSVG(svgText2, textNode => {
+    //       // console.log(textNode);
+    //       var fontSize = parseInt((options.fontSize || "30px").replace("px", ""));
+    //       textNode.style = {
+    //         fontSize,
+    //         fillColor: options.color,
+    //         fontFamily: options.font != "Roboto" ? "Pfennig" : "Roboto",
+    //         fontWeight: options.fontWeight,
+    //       };
+    //       textNode.fillColor ="#f00"
+    //       textNode.position = new paper.Point(
+    //         position.x,
+    //         position.y + fontSize / 2
+    //       );
+    //       resolve({
+    //         bounds: {
+    //           x: textNode.bounds.x,
+    //           y: textNode.bounds.y,
+    //           width: textNode.bounds.width,
+    //           height: textNode.bounds.height
+    //         }
+    //       });
+    //     });
+    //   });
+    // }
+    drawLine(options) {
+        let line = new paper_jsdom_canvas_1.default.Path.Line(new paper_jsdom_canvas_1.default.Point(options.x1, options.y1), new paper_jsdom_canvas_1.default.Point(options.x2, options.y2));
+        line.style = {
+            strokeColor: options.strokeColor,
+            strokeWidth: options.strokeWidth
+        };
+    }
+    drawCircle(options) {
+        let circle = new paper_jsdom_canvas_1.default.Path.Circle(new paper_jsdom_canvas_1.default.Point(options.x, options.y), options.r);
+        circle.style = {
+            fillColor: options.fillColor
+        };
+    }
 }
-
+exports.CanvasAdaptor = CanvasAdaptor;
 function loadLocalImage(file) {
-  // read binary data
-  var bitmap = fs.readFileSync(file);
-  // convert binary data to base64 encoded string
-  var stringBase64 = Buffer.from(bitmap).toString("base64");
-  return "data:image/png;base64," + stringBase64;
+    // read binary data
+    var bitmap = fs.readFileSync(file);
+    // convert binary data to base64 encoded string
+    var stringBase64 = Buffer.from(bitmap).toString("base64");
+    return "data:image/png;base64," + stringBase64;
 }
-
 module.exports = {
-  CanvasAdaptor
+    CanvasAdaptor
 };
