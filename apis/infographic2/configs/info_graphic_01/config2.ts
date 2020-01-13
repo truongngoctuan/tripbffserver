@@ -2,7 +2,9 @@ import { InfographicConfig } from "../index";
 
 var config_01_01: InfographicConfig.Infographic = {
   width: 1280,
+  height: 1280 + 300,
   backgroundColor: "#e3d1a2",
+
   type: "container",
   blocks: [
     {

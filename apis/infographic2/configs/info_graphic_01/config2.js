@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var config_01_01 = {
     width: 1280,
+    height: 1280 + 300,
     backgroundColor: "#e3d1a2",
     type: "container",
     blocks: [
