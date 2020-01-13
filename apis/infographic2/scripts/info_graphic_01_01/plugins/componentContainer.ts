@@ -8,7 +8,7 @@ const strokeColorByLevel = {
   3: "blue",
   4: "green"
 };
-export function componentContainer(
+export async function componentContainer(
   baseFuncs: Function[],
   canvasAdaptor: CanvasAdaptor,
   blockConfig: InfographicConfig.ContainerBlock,

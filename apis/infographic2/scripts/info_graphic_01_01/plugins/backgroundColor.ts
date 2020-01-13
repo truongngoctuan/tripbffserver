@@ -1,7 +1,7 @@
 import { InfographicConfig } from "../../../configs/index";
 const _ = require("lodash");
 
-export function backgroundColor(baseFuncs: Function[],
+export async function backgroundColor(baseFuncs: Function[],
   canvasAdaptor,
   blockConfig: InfographicConfig.Background,
   cursor

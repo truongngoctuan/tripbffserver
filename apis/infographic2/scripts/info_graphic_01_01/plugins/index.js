@@ -1,24 +1,28 @@
 const { backgroundColor } = require("./backgroundColor");
 const { componentContainer } = require("./componentContainer");
+const { componentText } = require("./componentText");
 
 const _ = require("lodash");
 
 const PLUGINS = {
-  componentContainer: "componentContainer"
-  // backgroundColor: "backgroundColor"
+  componentContainer: "componentContainer",
+  componentText: "componentText",
+  backgroundColor: "backgroundColor"
 };
 
 const plugins = {
   componentContainer,
+  componentText,
   backgroundColor
 };
 
 const registeredPlugins = {
   container: [PLUGINS.componentContainer, PLUGINS.backgroundColor],
-  location: [PLUGINS.componentContainer]
+  location: [PLUGINS.componentContainer],
+  text: [PLUGINS.componentText]
 };
 
-function executePlugins(blockType, canvasAdaptor, blockConfig, cursor) {
+function executePlugins(blockType, canvasAdaptor, blockConfig, cursor, trip) {
   let baseFuncs = [];
   const blockPlugins = registeredPlugins[blockType];
   // console.log(blockPlugins);
@@ -38,7 +42,8 @@ function executePlugins(blockType, canvasAdaptor, blockConfig, cursor) {
       baseFuncs.slice(0, baseFuncs.length - 1),
       canvasAdaptor,
       blockConfig,
-      cursor
+      cursor,
+      trip
     );
   }
 }

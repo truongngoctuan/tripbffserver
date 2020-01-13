@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const _ = require("lodash");
 const strokeColorByLevel = {
@@ -8,28 +16,30 @@ const strokeColorByLevel = {
     4: "green"
 };
 function componentContainer(baseFuncs, canvasAdaptor, blockConfig, cursor) {
-    const paper = canvasAdaptor.getPaper();
-    const { width, height } = blockConfig;
-    let newBounds = {
-        x: cursor.x,
-        y: cursor.y,
-        width: width ? width : cursor.width,
-        height: height ? height : cursor.height
-    };
-    if (blockConfig.positioning) {
-        const newXY = getRelativePosition(cursor, blockConfig.positioning);
-        // console.log("newXY", newXY)
-        newBounds = _.assign(newBounds, newXY);
-    }
-    // console.log("cursor", cursor);
-    // console.log("newBounds", newBounds);
-    const rect = new paper.Shape.Rectangle(new paper.Point(newBounds.x, newBounds.y), new paper.Size(newBounds.width, newBounds.height));
-    rect.strokeColor = new paper.Color(strokeColorByLevel[cursor.level]);
-    rect.strokeWidth = 10;
-    if (_.isEmpty(baseFuncs))
-        return _.assign({}, cursor, newBounds);
-    const lastBaseFunc = baseFuncs[baseFuncs.length - 1];
-    return lastBaseFunc(baseFuncs.slice(0, baseFuncs.length - 1), canvasAdaptor, blockConfig, _.assign({}, cursor, newBounds));
+    return __awaiter(this, void 0, void 0, function* () {
+        const paper = canvasAdaptor.getPaper();
+        const { width, height } = blockConfig;
+        let newBounds = {
+            x: cursor.x,
+            y: cursor.y,
+            width: width ? width : cursor.width,
+            height: height ? height : cursor.height
+        };
+        if (blockConfig.positioning) {
+            const newXY = getRelativePosition(cursor, blockConfig.positioning);
+            // console.log("newXY", newXY)
+            newBounds = _.assign(newBounds, newXY);
+        }
+        // console.log("cursor", cursor);
+        // console.log("newBounds", newBounds);
+        const rect = new paper.Shape.Rectangle(new paper.Point(newBounds.x, newBounds.y), new paper.Size(newBounds.width, newBounds.height));
+        rect.strokeColor = new paper.Color(strokeColorByLevel[cursor.level]);
+        rect.strokeWidth = 10;
+        if (_.isEmpty(baseFuncs))
+            return _.assign({}, cursor, newBounds);
+        const lastBaseFunc = baseFuncs[baseFuncs.length - 1];
+        return lastBaseFunc(baseFuncs.slice(0, baseFuncs.length - 1), canvasAdaptor, blockConfig, _.assign({}, cursor, newBounds));
+    });
 }
 exports.componentContainer = componentContainer;
 function getRelativePosition(bounds, positioning) {

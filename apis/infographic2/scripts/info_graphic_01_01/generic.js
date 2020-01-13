@@ -8,12 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const commonFunc = require("../commonFunc");
 const _ = require("lodash");
 const { executePlugins } = require("./plugins/index");
-function capitalizeFirstLetter(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
 function log(level, message, data = undefined) {
     if (data)
         console.log(_.repeat("    ", level) + message, data);
@@ -59,60 +55,6 @@ function renderImage(canvasAdaptor, blockConfig, trip, cursor) {
         yield canvasAdaptor.drawImage(blockConfig.url, getRelativePosition(cursor, blockConfig.positioning));
     });
 }
-function renderTextBlock(canvasAdaptor, blockConfig, trip, cursor) {
-    return __awaiter(this, void 0, void 0, function* () {
-        log(cursor.level, "render block", blockConfig.type);
-        // log(cursor.level, "cursor", cursor);
-        let feelingLabel = commonFunc.getFeelingLabel(trip.locale);
-        let location = trip.locations[cursor.location], locationName = capitalizeFirstLetter(location.name) + ".", feeling = location.feeling ? feelingLabel + " " + location.feeling : "", activity = location.activity, highlights = location.highlights.toLowerCase(), nodeFeelingActivity = "";
-        if (activity)
-            nodeFeelingActivity = capitalizeFirstLetter(activity.toLowerCase());
-        if (feeling) {
-            feeling = capitalizeFirstLetter(feeling.toLowerCase());
-            nodeFeelingActivity = nodeFeelingActivity
-                ? nodeFeelingActivity + ". " + feeling
-                : feeling;
-        }
-        if (nodeFeelingActivity)
-            nodeFeelingActivity += ".";
-        if (highlights)
-            highlights = capitalizeFirstLetter(highlights) + ".";
-        let text = blockConfig.text;
-        if (text === "{{location.name}}") {
-            text = locationName.toUpperCase();
-        }
-        if (text === "{{location.feeling}}") {
-            text = nodeFeelingActivity;
-        }
-        if (text === "{{location.hight-lights}}") {
-            text = highlights;
-        }
-        if (text === "{{trip.name}}") {
-            text = trip.name.toUpperCase();
-        }
-        if (text === "{{trip.info}}") {
-            let numberOfDays = trip.numberOfDays, numberOfLocations = trip.locations.length, dayLabel = commonFunc.getDayLabel(trip.locale, numberOfDays), locationLabel = commonFunc.getLocationLabel(trip.locale, numberOfLocations);
-            let dayText = " " + dayLabel + ", ", locationText = " " + locationLabel, basicTripInfo = numberOfDays + dayText + numberOfLocations + locationText;
-            text = basicTripInfo;
-        }
-        var relativePosition = getRelativePosition(cursor, blockConfig.positioning);
-        if (blockConfig.textAnchor === "middle") {
-            relativePosition.x = relativePosition.x + cursor.width / 2;
-        }
-        let locationNameNode = canvasAdaptor.drawText(text, relativePosition, {
-            color: blockConfig.color,
-            font: blockConfig.fontFamily,
-            fontSize: blockConfig.fontSize,
-            fontWeight: blockConfig.fontWeight,
-            textAnchor: blockConfig.textAnchor,
-            textTransform: blockConfig.textTransform,
-            wrapNumber: blockConfig.width
-            // wrapNumber: w - paddingLeftRight
-        });
-        let locationNameNodeBbox = locationNameNode.bounds;
-        return _.assign({}, cursor, { y: cursor.y + locationNameNodeBbox.height });
-    });
-}
 function getRelativePosition(cursor, positioning) {
     var x = cursor.x;
     var y = cursor.y;
@@ -139,23 +81,14 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
             isFixedHeight = blockConfig.height > 0;
             const deltaHeight = blockConfig.height;
             if (deltaHeight > 0) {
-                //   canvasAdaptor.resize(cursor.width, cursor.height + deltaHeight);
-                //   // log(cursor.level, deltaHeight);
                 nextCursor.height = nextCursor.height + deltaHeight;
             }
-            nextCursor = executePlugins(blockConfig.type, canvasAdaptor, blockConfig, cursor);
+            nextCursor = yield executePlugins(blockConfig.type, canvasAdaptor, blockConfig, cursor, trip);
             console.log("nextCursor return container", nextCursor);
         }
         if (blockConfig.type === "location") {
             isFixedHeight = blockConfig.height > 0;
-            // if (blockConfig.positioning) {
-            //   nextCursor = _.assign(
-            //     {},
-            //     cursor,
-            //     getRelativePosition(cursor, blockConfig.positioning)
-            //   );
-            // }
-            nextCursor = executePlugins(blockConfig.type, canvasAdaptor, blockConfig, cursor);
+            nextCursor = yield executePlugins(blockConfig.type, canvasAdaptor, blockConfig, cursor, trip);
             // console.log("nextCursor return location", nextCursor);
         }
         var totalHeight = 0;
@@ -202,7 +135,6 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
         }
         if (blockConfig.type === "container") {
             //reset cursor
-            // console.log("nextCursor", nextCursor);
             return _.assign({}, nextCursor, {
                 x: cursor.x,
                 y: cursor.y + nextCursor.height
@@ -212,7 +144,8 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
             return yield renderLocation(canvasAdaptor, blockConfig, trip, cursor);
         }
         else if (blockConfig.type === "text") {
-            return yield renderTextBlock(canvasAdaptor, blockConfig, trip, cursor);
+            return yield executePlugins(blockConfig.type, canvasAdaptor, blockConfig, cursor, trip);
+            // return await renderTextBlock(canvasAdaptor, blockConfig, trip, cursor);
         }
         else if (blockConfig.type === "location-image") {
             return yield renderLocationImage(canvasAdaptor, blockConfig, trip, cursor);
@@ -238,7 +171,7 @@ function renderInfographic(canvasAdaptor, infographicConfig, trip) {
         const finalCursor = yield renderBlock(canvasAdaptor, infographicConfig, trip, defaultCursor);
         console.log("final cursor", finalCursor);
         canvasAdaptor.resize(finalCursor.totalWidth, finalCursor.totalHeight);
-        // canvasAdaptor.resize(2000, 4000);
+        // canvasAdaptor.resize(2000, 2000);
         canvasAdaptor.drawBackground(infographicConfig.backgroundColor);
         return;
     });
