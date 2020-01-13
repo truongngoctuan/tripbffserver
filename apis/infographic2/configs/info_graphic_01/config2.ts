@@ -298,8 +298,13 @@ var config_01_others: InfographicConfig.Infographic = {
         },
         {
           type: "container",
-          backgroundColor: "#fff",
+          // backgroundColor: "#fff",
+          width: 2060 / 2,
           height: 500,
+          positioning: {
+            left: 2060 / 2,
+            top: 0
+          },
           blocks: [
             {
               // location name

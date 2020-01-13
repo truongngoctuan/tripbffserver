@@ -105,7 +105,7 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
                 if (previousChildBlock &&
                     (previousChildBlock.type === "container" ||
                         previousChildBlock.type === "location" ||
-                        previousChildBlock.type === "location-image" ||
+                        // previousChildBlock.type === "location-image" ||
                         previousChildBlock.type === "text")) {
                     isStackingHeight = true;
                     console.log("debugging", cursor.y + " " + totalHeight);

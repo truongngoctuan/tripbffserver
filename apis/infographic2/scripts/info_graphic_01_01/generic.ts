@@ -130,7 +130,7 @@ async function renderBlock(
         previousChildBlock &&
         (previousChildBlock.type === "container" ||
           previousChildBlock.type === "location" ||
-          previousChildBlock.type === "location-image" ||
+          // previousChildBlock.type === "location-image" ||
           previousChildBlock.type === "text")
       ) {
         isStackingHeight = true;
