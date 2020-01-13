@@ -248,13 +248,19 @@ var config_01_02 = {
             ]
         },
         {
-            // render footer image
-            type: "image",
-            url: "./data/images/App_Signature.png",
-            positioning: {
-                right: 200,
-                bottom: 80
-            }
+            type: "container",
+            height: 70,
+            blocks: [
+                {
+                    // render footer image
+                    type: "image",
+                    url: "./data/images/App_Signature.png",
+                    positioning: {
+                        right: 200,
+                        bottom: 80
+                    }
+                }
+            ]
         }
     ]
 };

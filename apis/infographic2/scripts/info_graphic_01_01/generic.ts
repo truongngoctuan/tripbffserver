@@ -154,7 +154,7 @@ function getRelativePosition(cursor, positioning) {
   if (positioning.right) x = x + cursor.width - positioning.right;
 
   if (positioning.top) y = y + positioning.top;
-  if (positioning.bottom) y = cursor.height - positioning.bottom;
+  if (positioning.bottom) y = y + cursor.height - positioning.bottom;
 
   return { x, y };
 }

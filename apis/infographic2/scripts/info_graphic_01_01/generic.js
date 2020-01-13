@@ -125,7 +125,7 @@ function getRelativePosition(cursor, positioning) {
     if (positioning.top)
         y = y + positioning.top;
     if (positioning.bottom)
-        y = cursor.height - positioning.bottom;
+        y = y + cursor.height - positioning.bottom;
     return { x, y };
 }
 function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
