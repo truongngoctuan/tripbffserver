@@ -2,15 +2,17 @@ export namespace InfographicConfig {
   type Background = {
     backgroundColor?: string;
   };
-  type Height = {
+  type WidthHeight = {
+    width?: number;
     height?: number;
-  }
+  };
 
   type Infographic = {
     width: number;
     height?: number; //maybe just remove it
     blocks: Block[];
-  } & Background & ContainerBlock;
+  } & Background &
+    ContainerBlock;
 
   type Block = LocationBlock | BasicBlock;
   type BasicBlock =
@@ -26,41 +28,41 @@ export namespace InfographicConfig {
 
   type TripNameTextBlock = {
     type: "text";
-    text: "{{trip.name}}"
+    text: "{{trip.name}}";
   } & BaseTextBlock;
 
   type TripInfoTextBlock = {
     type: "text";
-    text: "{{trip.info}}"
+    text: "{{trip.info}}";
   } & BaseTextBlock;
 
   type LocationBlock = {
     type: "location";
     blocks: BasicBlock[];
-    positioning?: RelativePosition;
-  } & Height;
+    positioning?: Positioning;
+  } & WidthHeight;
 
   type LocationNameTextBlock = {
     type: "text";
-    text: "{{location.name}}"
+    text: "{{location.name}}";
   } & BaseTextBlock;
 
   type LocationFeelingTextBlock = {
     type: "text";
-    text: "{{location.feeling}}"
+    text: "{{location.feeling}}";
   } & BaseTextBlock;
 
   type LocationHightLightsTextBlock = {
     type: "text";
-    text: "{{location.hight-lights}}"
+    text: "{{location.hight-lights}}";
   } & BaseTextBlock;
 
   // todo not sure if this is the correct choice
   type ContainerBlock = {
     type: "container";
     blocks: Block[];
-    positioning?: StackPosition;
-  } & Background;
+    positioning?: Positioning;
+  } & Background & WidthHeight;
 
   type ImageBlock = {
     type: "image";
@@ -93,9 +95,15 @@ export namespace InfographicConfig {
     positioning?: Positioning;
   };
 
-  type Positioning = StackPosition | RelativePosition;
+  type Positioning = {
+    // width?: number;
+    // height?: number;
+  } & RelativePosition;
+  
+  // StackPosition | RelativePosition;
 
   type StackPosition = {
+    width?: number;
     height: number;
   };
 
@@ -105,4 +113,13 @@ export namespace InfographicConfig {
     right?: number;
     bottom?: number;
   };
+
+  // type Bounds = {
+  //   top?: number;
+  //   bottom?: number;
+  //   left?: number;
+  //   right?: number;
+  //   width?: number;
+  //   height: number;
+  // }
 }

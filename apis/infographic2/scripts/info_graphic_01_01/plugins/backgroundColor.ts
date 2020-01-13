@@ -23,8 +23,8 @@ export function backgroundColor(baseFuncs: Function[],
     });
   }
 
-  if (_.isEmpty(baseFuncs)) return;
+  if (_.isEmpty(baseFuncs)) return cursor;
 
   const lastBaseFunc = baseFuncs[baseFuncs.length - 1];
-  lastBaseFunc(baseFuncs.slice(0, baseFuncs.length - 1), canvasAdaptor, blockConfig, cursor);
+  return lastBaseFunc(baseFuncs.slice(0, baseFuncs.length - 1), canvasAdaptor, blockConfig, cursor);
 }

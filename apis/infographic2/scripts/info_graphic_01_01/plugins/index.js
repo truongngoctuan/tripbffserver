@@ -4,7 +4,7 @@ const { componentContainer } = require("./componentContainer");
 const _ = require("lodash");
 
 const PLUGINS = {
-  componentContainer: "componentContainer",
+  componentContainer: "componentContainer"
   // backgroundColor: "backgroundColor"
 };
 
@@ -14,10 +14,8 @@ const plugins = {
 };
 
 const registeredPlugins = {
-  container: [
-    PLUGINS.componentContainer,
-    PLUGINS.backgroundColor
-  ]
+  container: [PLUGINS.componentContainer, PLUGINS.backgroundColor],
+  location: [PLUGINS.componentContainer]
 };
 
 function executePlugins(blockType, canvasAdaptor, blockConfig, cursor) {
@@ -36,7 +34,7 @@ function executePlugins(blockType, canvasAdaptor, blockConfig, cursor) {
     }
 
     const lastBaseFunc = baseFuncs[baseFuncs.length - 1];
-    lastBaseFunc(
+    return lastBaseFunc(
       baseFuncs.slice(0, baseFuncs.length - 1),
       canvasAdaptor,
       blockConfig,

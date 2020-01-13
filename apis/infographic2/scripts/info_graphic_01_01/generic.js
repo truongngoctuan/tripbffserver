@@ -128,51 +128,94 @@ function getRelativePosition(cursor, positioning) {
         y = cursor.height - positioning.bottom;
     return { x, y };
 }
-function renderBlock(canvasAdaptor, blockConfig, trip, cursor = { x: 0, y: 0, level: 0, width: 0, height: 0 }) {
+function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
     return __awaiter(this, void 0, void 0, function* () {
         if (blockConfig.type === "container" || blockConfig.type === "location") {
             log(cursor.level, "render block", blockConfig.type);
         }
         var nextCursor = _.assign({}, cursor, { level: cursor.level + 1 });
+        let isFixedHeight = false;
         if (blockConfig.type === "container") {
-            const deltaHeight = _.get(blockConfig, "positioning.height");
+            isFixedHeight = blockConfig.height > 0;
+            const deltaHeight = blockConfig.height;
             if (deltaHeight > 0) {
-                canvasAdaptor.resize(cursor.width, cursor.height + deltaHeight);
-                // log(cursor.level, deltaHeight);
+                //   canvasAdaptor.resize(cursor.width, cursor.height + deltaHeight);
+                //   // log(cursor.level, deltaHeight);
                 nextCursor.height = nextCursor.height + deltaHeight;
             }
-            executePlugins(blockConfig.type, canvasAdaptor, blockConfig, cursor);
+            nextCursor = executePlugins(blockConfig.type, canvasAdaptor, blockConfig, cursor);
+            console.log("nextCursor return container", nextCursor);
         }
         if (blockConfig.type === "location") {
-            if (blockConfig.positioning) {
-                nextCursor = _.assign({}, cursor, getRelativePosition(cursor, blockConfig.positioning));
-            }
+            isFixedHeight = blockConfig.height > 0;
+            // if (blockConfig.positioning) {
+            //   nextCursor = _.assign(
+            //     {},
+            //     cursor,
+            //     getRelativePosition(cursor, blockConfig.positioning)
+            //   );
+            // }
+            nextCursor = executePlugins(blockConfig.type, canvasAdaptor, blockConfig, cursor);
+            // console.log("nextCursor return location", nextCursor);
         }
+        var totalHeight = 0;
         if (!_.isEmpty(blockConfig.blocks)) {
+            let isStackingHeight = false;
             for (var i = 0; i < blockConfig.blocks.length; i++) {
+                var previousChildBlock = i != 0 ? blockConfig.blocks[i - 1] : undefined;
                 var childBlock = blockConfig.blocks[i];
-                log(cursor.level + 1, "cursor info", `w=${cursor.width} h=${cursor.height}`);
-                var next = yield renderBlock(canvasAdaptor, childBlock, trip, _.assign({}, nextCursor, { level: cursor.level + 1 }));
+                // log(
+                //   cursor.level + 1,
+                //   "cursor info",
+                //   `w=${cursor.width} h=${cursor.height}`
+                // );
+                if (previousChildBlock &&
+                    (previousChildBlock.type === "container" ||
+                        previousChildBlock.type === "location" ||
+                        previousChildBlock.type === "location-image" ||
+                        previousChildBlock.type === "text")) {
+                    isStackingHeight = true;
+                }
+                var next = yield renderBlock(canvasAdaptor, childBlock, trip, _.assign({}, nextCursor, {
+                    level: cursor.level + 1,
+                    y: isStackingHeight ? cursor.y + totalHeight : cursor.y
+                }));
+                if (!isFixedHeight &&
+                    next &&
+                    (childBlock.type === "container" || childBlock.type === "location")) {
+                    totalHeight += next.height;
+                }
                 if (!_.isEmpty(next))
                     nextCursor = next;
             }
         }
+        if (blockConfig.type === "container" || blockConfig.type === "location") {
+            if (isFixedHeight) {
+                nextCursor.totalHeight = blockConfig.height;
+            }
+            else {
+                nextCursor.totalHeight = totalHeight;
+            }
+            // log(cursor.level, "cursor", nextCursor);
+            // log(cursor.level, "totalHeight", nextCursor.totalHeight);
+        }
         if (blockConfig.type === "container") {
+            // console.log("nextCursor", nextCursor);
             return nextCursor;
         }
         else if (blockConfig.type === "location") {
-            return yield renderLocation(canvasAdaptor, blockConfig, trip, cursor);
+            return yield renderLocation(canvasAdaptor, blockConfig, trip, nextCursor);
         }
         else if (blockConfig.type === "text") {
-            return yield renderTextBlock(canvasAdaptor, blockConfig, trip, cursor);
+            return yield renderTextBlock(canvasAdaptor, blockConfig, trip, nextCursor);
         }
         else if (blockConfig.type === "location-image") {
-            return yield renderLocationImage(canvasAdaptor, blockConfig, trip, cursor);
+            return yield renderLocationImage(canvasAdaptor, blockConfig, trip, nextCursor);
         }
         else if (blockConfig.type === "image") {
-            return yield renderImage(canvasAdaptor, blockConfig, trip, cursor);
+            return yield renderImage(canvasAdaptor, blockConfig, trip, nextCursor);
         }
-        return yield renderLessBlock(canvasAdaptor, blockConfig, trip, cursor);
+        return yield renderLessBlock(canvasAdaptor, blockConfig, trip, nextCursor);
     });
 }
 function renderInfographic(canvasAdaptor, infographicConfig, trip) {
@@ -183,9 +226,14 @@ function renderInfographic(canvasAdaptor, infographicConfig, trip) {
             level: 0,
             width: infographicConfig.width,
             height: 0,
+            totalWidth: infographicConfig.width,
+            totalHeight: 0,
             location: 0
         };
-        yield renderBlock(canvasAdaptor, infographicConfig, trip, defaultCursor);
+        const finalCursor = yield renderBlock(canvasAdaptor, infographicConfig, trip, defaultCursor);
+        console.log("final cursor", finalCursor);
+        canvasAdaptor.resize(finalCursor.totalWidth, finalCursor.totalHeight);
+        // canvasAdaptor.resize(2000, 4000);
         canvasAdaptor.drawBackground(infographicConfig.backgroundColor);
         return;
     });

@@ -10,9 +10,7 @@ var config_01_01: InfographicConfig.Infographic = {
       blocks: [
         {
           type: "container",
-          positioning: {
-            height: 1280
-          },
+          height: 1280,
           blocks: [
             {
               type: "location-image",
@@ -24,9 +22,7 @@ var config_01_01: InfographicConfig.Infographic = {
         {
           type: "container",
           // content_height: 300,
-          positioning: {
-            height: 300
-          },
+          height: 300,
           blocks: [
             {
               // location name
@@ -95,9 +91,7 @@ var config_01_02: InfographicConfig.Infographic = {
     // header
     {
       type: "container",
-      positioning: {
-        height: 300
-      },
+      height: 300,
       blocks: [
         {
           type: "text",
@@ -125,14 +119,13 @@ var config_01_02: InfographicConfig.Infographic = {
     },
     {
       type: "container",
-      positioning: {
-        height: 1000
-      },
+      height: 1000,
       backgroundColor: "#fff",
       blocks: [
         // first location
         {
           type: "location",
+          width: 1280 / 2,
           blocks: [
             {
               type: "location-image",
@@ -190,69 +183,70 @@ var config_01_02: InfographicConfig.Infographic = {
             }
           ]
         },
-        // second location
-        {
-          type: "location",
-          positioning: {
-            left: 1280 / 2
-          },
-          blocks: [
-            {
-              type: "location-image",
-              width: 1280 / 2,
-              height: 840
-              // svgWidth: 630,
-              // svgHeight: 840,
-              // viewBoxWidth: 288.5,
-              // viewBoxHeight: 384.1,
-              // clipPath: "M2.5 2.5H286v379.1H2.5z",
-              // paddingTop: 20,
-              // paddingBetweenImage: 5
-            },
-            {
-              // location name
-              type: "text",
-              text: "{{location.name}}",
-              fontSize: "64px",
-              fontFamily: "Roboto",
-              color: "#d0363b",
-              fontWeight: "bold",
-              textAnchor: "start",
-              textTransform: "uppercase",
-              positioning: {
-                top: 60,
-                left: 20
-              }
-            },
-            {
-              // location feeling
-              type: "text",
-              text: "{{location.feeling}}",
-              fontSize: "48px",
-              fontFamily: "Roboto",
-              color: "#121113",
-              textAnchor: "start",
-              positioning: {
-                top: 60,
-                left: 20
-              },
-              width: 1280 / 2 - 40
-            },
-            {
-              // location highlights
-              type: "text",
-              text: "{{location.hight-lights}}",
-              fontSize: "48px",
-              fontFamily: "Roboto",
-              color: "#121113",
-              textAnchor: "start",
-              positioning: {
-                top: 60,
-                left: 20
-              }
-            }
-          ]
-        }
+        // // second location
+        // {
+        //   type: "location",
+        //   width: 1280 / 2,
+        //   positioning: {
+        //     left: 1280 / 2
+        //   },
+        //   blocks: [
+        //     {
+        //       type: "location-image",
+        //       width: 1280 / 2,
+        //       height: 840
+        //       // svgWidth: 630,
+        //       // svgHeight: 840,
+        //       // viewBoxWidth: 288.5,
+        //       // viewBoxHeight: 384.1,
+        //       // clipPath: "M2.5 2.5H286v379.1H2.5z",
+        //       // paddingTop: 20,
+        //       // paddingBetweenImage: 5
+        //     },
+        //     {
+        //       // location name
+        //       type: "text",
+        //       text: "{{location.name}}",
+        //       fontSize: "64px",
+        //       fontFamily: "Roboto",
+        //       color: "#d0363b",
+        //       fontWeight: "bold",
+        //       textAnchor: "start",
+        //       textTransform: "uppercase",
+        //       positioning: {
+        //         top: 60,
+        //         left: 20
+        //       }
+        //     },
+        //     {
+        //       // location feeling
+        //       type: "text",
+        //       text: "{{location.feeling}}",
+        //       fontSize: "48px",
+        //       fontFamily: "Roboto",
+        //       color: "#121113",
+        //       textAnchor: "start",
+        //       positioning: {
+        //         top: 60,
+        //         left: 20
+        //       },
+        //       width: 1280 / 2 - 40
+        //     },
+        //     {
+        //       // location highlights
+        //       type: "text",
+        //       text: "{{location.hight-lights}}",
+        //       fontSize: "48px",
+        //       fontFamily: "Roboto",
+        //       color: "#121113",
+        //       textAnchor: "start",
+        //       positioning: {
+        //         top: 60,
+        //         left: 20
+        //       }
+        //     }
+        //   ]
+        // }
       ]
     },
     {
@@ -274,9 +268,6 @@ var config_01_others: InfographicConfig.Infographic = {
   // paddingLeftRight: 10,
   backgroundColor: "#e3d1a2",
   type: "container",
-  positioning: {
-    height: 4200
-  },
   blocks: [
     {
       type: "location",
@@ -300,9 +291,7 @@ var config_01_others: InfographicConfig.Infographic = {
         {
           type: "container",
           backgroundColor: "#fff",
-          positioning: {
-            height: 500
-          },
+          height: 500,
           blocks: [
             {
               // location name

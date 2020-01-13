@@ -2,6 +2,12 @@ import { InfographicConfig } from "../../../configs/index";
 import { CanvasAdaptor } from "../../utils";
 const _ = require("lodash");
 
+const strokeColorByLevel = {
+  1: "green",
+  2: "red",
+  3: "blue",
+  4: "green"
+};
 export function componentContainer(
   baseFuncs: Function[],
   canvasAdaptor: CanvasAdaptor,
@@ -10,36 +16,59 @@ export function componentContainer(
 ) {
   const paper = canvasAdaptor.getPaper();
 
-  const rect = new paper.Shape.Rectangle(
+  const { width, height } = blockConfig;
+  
+  let newBounds = {
+    x: cursor.x,
+    y: cursor.y,
+    width: width ? width : cursor.width,
+    height: height ? height : cursor.height
+  };
+
+  if (blockConfig.positioning) {
+    const newXY = getRelativePosition(cursor, blockConfig.positioning);
+    // console.log("newXY", newXY)
+    newBounds = _.assign(newBounds, newXY);
+  }
+  // console.log("cursor", cursor);
+  console.log("newBounds", newBounds);
+
+  const rect222 = new paper.Shape.Rectangle(
     new paper.Point(0, 0),
-    new paper.Size(100, 200)
+    new paper.Size(600, 300)
   );
-  rect.strokeColor = new paper.Color("#0f0");
+  rect222.strokeColor = new paper.Color("#ff0");
+  rect222.strokeWidth = 10;
 
-  // // console.log("backgroundColor", blockConfig);
-  // const { backgroundColor } = blockConfig;
-  // if (backgroundColor) {
-  //   // console.log("backgroundColor", backgroundColor);
-  //   const { x, y, width, height } = cursor;
-  //   console.log(`cursor${x} ${y} ${width} ${height}`);
 
-  //   //todo use fillColor in the current layer
-  //   canvasAdaptor.drawRect({
-  //     x,
-  //     y,
-  //     width,
-  //     height,
-  //     backgroundColor
-  //   });
-  // }
+  const rect = new paper.Shape.Rectangle(
+    new paper.Point(newBounds.x, newBounds.y),
+    new paper.Size(newBounds.width, newBounds.height)
+  );
+  rect.strokeColor = new paper.Color(strokeColorByLevel[cursor.level]);
+  rect.strokeWidth = 10;
 
-  if (_.isEmpty(baseFuncs)) return;
+  if (_.isEmpty(baseFuncs)) return _.assign({}, cursor, newBounds);
 
   const lastBaseFunc = baseFuncs[baseFuncs.length - 1];
-  lastBaseFunc(
+  return lastBaseFunc(
     baseFuncs.slice(0, baseFuncs.length - 1),
     canvasAdaptor,
     blockConfig,
-    cursor
+    _.assign({}, cursor, newBounds)
   );
+}
+
+function getRelativePosition(bounds, positioning) {
+  var x = bounds.x;
+  var y = bounds.y;
+  if (!positioning) return { x, y };
+
+  if (positioning.left) x = x + positioning.left;
+  if (positioning.right) x = x + bounds.width - positioning.right;
+
+  if (positioning.top) y = y + positioning.top;
+  if (positioning.bottom) y = bounds.height - positioning.bottom;
+
+  return { x, y };
 }
