@@ -31,15 +31,7 @@ export function componentContainer(
     newBounds = _.assign(newBounds, newXY);
   }
   // console.log("cursor", cursor);
-  console.log("newBounds", newBounds);
-
-  const rect222 = new paper.Shape.Rectangle(
-    new paper.Point(0, 0),
-    new paper.Size(600, 300)
-  );
-  rect222.strokeColor = new paper.Color("#ff0");
-  rect222.strokeWidth = 10;
-
+  // console.log("newBounds", newBounds);
 
   const rect = new paper.Shape.Rectangle(
     new paper.Point(newBounds.x, newBounds.y),

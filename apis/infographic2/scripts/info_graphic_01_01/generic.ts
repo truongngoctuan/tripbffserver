@@ -221,11 +221,12 @@ async function renderBlock(
       if (
         previousChildBlock &&
         (previousChildBlock.type === "container" ||
-        previousChildBlock.type === "location" ||
-        previousChildBlock.type === "location-image" ||
-        previousChildBlock.type === "text")
+          previousChildBlock.type === "location" ||
+          previousChildBlock.type === "location-image" ||
+          previousChildBlock.type === "text")
       ) {
         isStackingHeight = true;
+        console.log("debugging", cursor.y + " " + totalHeight);
       }
 
       var next = await renderBlock(
@@ -234,7 +235,7 @@ async function renderBlock(
         trip,
         _.assign({}, nextCursor, {
           level: cursor.level + 1,
-          y: isStackingHeight ? cursor.y + totalHeight : cursor.y
+          y: isStackingHeight ? nextCursor.y : cursor.y
         })
       );
 
@@ -262,18 +263,22 @@ async function renderBlock(
   }
 
   if (blockConfig.type === "container") {
+    //reset cursor
     // console.log("nextCursor", nextCursor);
-    return nextCursor;
+    return _.assign({}, nextCursor, {
+      x: cursor.x,
+      y: cursor.y + nextCursor.height
+    });
   } else if (blockConfig.type === "location") {
-    return await renderLocation(canvasAdaptor, blockConfig, trip, nextCursor);
+    return await renderLocation(canvasAdaptor, blockConfig, trip, cursor);
   } else if (blockConfig.type === "text") {
-    return await renderTextBlock(canvasAdaptor, blockConfig, trip, nextCursor);
+    return await renderTextBlock(canvasAdaptor, blockConfig, trip, cursor);
   } else if (blockConfig.type === "location-image") {
-    return await renderLocationImage(canvasAdaptor, blockConfig, trip, nextCursor);
+    return await renderLocationImage(canvasAdaptor, blockConfig, trip, cursor);
   } else if (blockConfig.type === "image") {
-    return await renderImage(canvasAdaptor, blockConfig, trip, nextCursor);
+    return await renderImage(canvasAdaptor, blockConfig, trip, cursor);
   }
-  return await renderLessBlock(canvasAdaptor, blockConfig, trip, nextCursor);
+  return await renderLessBlock(canvasAdaptor, blockConfig, trip, cursor);
 }
 
 async function renderInfographic(

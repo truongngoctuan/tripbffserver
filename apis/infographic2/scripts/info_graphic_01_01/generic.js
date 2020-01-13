@@ -175,10 +175,11 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
                         previousChildBlock.type === "location-image" ||
                         previousChildBlock.type === "text")) {
                     isStackingHeight = true;
+                    console.log("debugging", cursor.y + " " + totalHeight);
                 }
                 var next = yield renderBlock(canvasAdaptor, childBlock, trip, _.assign({}, nextCursor, {
                     level: cursor.level + 1,
-                    y: isStackingHeight ? cursor.y + totalHeight : cursor.y
+                    y: isStackingHeight ? nextCursor.y : cursor.y
                 }));
                 if (!isFixedHeight &&
                     next &&
@@ -200,22 +201,26 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
             // log(cursor.level, "totalHeight", nextCursor.totalHeight);
         }
         if (blockConfig.type === "container") {
+            //reset cursor
             // console.log("nextCursor", nextCursor);
-            return nextCursor;
+            return _.assign({}, nextCursor, {
+                x: cursor.x,
+                y: cursor.y + nextCursor.height
+            });
         }
         else if (blockConfig.type === "location") {
-            return yield renderLocation(canvasAdaptor, blockConfig, trip, nextCursor);
+            return yield renderLocation(canvasAdaptor, blockConfig, trip, cursor);
         }
         else if (blockConfig.type === "text") {
-            return yield renderTextBlock(canvasAdaptor, blockConfig, trip, nextCursor);
+            return yield renderTextBlock(canvasAdaptor, blockConfig, trip, cursor);
         }
         else if (blockConfig.type === "location-image") {
-            return yield renderLocationImage(canvasAdaptor, blockConfig, trip, nextCursor);
+            return yield renderLocationImage(canvasAdaptor, blockConfig, trip, cursor);
         }
         else if (blockConfig.type === "image") {
-            return yield renderImage(canvasAdaptor, blockConfig, trip, nextCursor);
+            return yield renderImage(canvasAdaptor, blockConfig, trip, cursor);
         }
-        return yield renderLessBlock(canvasAdaptor, blockConfig, trip, nextCursor);
+        return yield renderLessBlock(canvasAdaptor, blockConfig, trip, cursor);
     });
 }
 function renderInfographic(canvasAdaptor, infographicConfig, trip) {
