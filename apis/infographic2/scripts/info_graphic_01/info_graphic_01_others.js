@@ -310,28 +310,6 @@ function drawFooter(canvasAdaptor) {
   );
 }
 
-// function drawSvg(canvasAdaptor, uri, coordinate, config) {
-//     d3.xml(uri).then(data => {
-//         var svgNode = data.documentElement;
-//         svgNode.setAttribute("id", config.elementId);
-//         canvasAdaptor.node().append(svgNode);
-
-//         if (config.type == 'location') styleLocationItem(canvasAdaptor, coordinate, config);
-//         else if (config.type == 'date') styleDateItem(canvasAdaptor, coordinate, config);
-//     });
-// }
-
-function drawImage(canvasAdaptor, coordinate, uri, config) {
-  var svgCanvas = canvasAdaptor.append("svg:image");
-  svgCanvas
-    .attr("xlink:href", uri)
-    .attr("x", coordinate.x)
-    .attr("y", coordinate.y)
-    .attr("width", config.width)
-    .attr("height", config.height)
-    .attr("clip-path", config.imageClipPath);
-}
-
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }

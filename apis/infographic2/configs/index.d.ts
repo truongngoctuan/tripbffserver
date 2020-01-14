@@ -19,6 +19,7 @@ export namespace InfographicConfig {
     | ContainerBlock
     | ImageBlock
     | TextBlock
+    | LineBlock
     | TripNameTextBlock
     | TripInfoTextBlock
     | LocationImageBlock
@@ -87,6 +88,16 @@ export namespace InfographicConfig {
     text: string;
     width?: number;
   } & BaseTextBlock;
+
+  type LineBlock = {
+    type: "line",
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+    strokeColor: string;
+    strokeWidth: number;
+  }
 
   type LocationImageBlock = {
     type: "location-image";

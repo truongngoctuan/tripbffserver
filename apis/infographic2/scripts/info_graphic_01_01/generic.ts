@@ -2,7 +2,7 @@ import { InfographicConfig } from "../../configs";
 import { CanvasAdaptor } from "../utils";
 import { Cursor } from ".";
 
-const _ = require("lodash");
+import _ from "lodash";
 const { executePlugins } = require("./plugins/index");
 
 function log(level: number, message: string, data: any = undefined) {
@@ -105,7 +105,7 @@ async function renderBlock(
       cursor,
       trip
     );
-    console.log("nextCursor return container", nextCursor);
+    // console.log("nextCursor return container", nextCursor);
   }
 
   if (blockConfig.type === "location") {
@@ -140,7 +140,7 @@ async function renderBlock(
           previousChildBlock.type === "text")
       ) {
         isStackingHeight = true;
-        console.log("debugging", cursor.y + " " + totalHeight);
+        // console.log("debugging", cursor.y + " " + totalHeight);
       }
 
       var next = await renderBlock(
@@ -194,7 +194,7 @@ async function renderBlock(
         width: cursor.width
       })
     );
-  } else if (blockConfig.type === "text") {
+  } else if (_.findIndex(["text", "line"], type => blockConfig.type === type) !== -1) {
     return await executePlugins(
       blockConfig.type,
       canvasAdaptor,

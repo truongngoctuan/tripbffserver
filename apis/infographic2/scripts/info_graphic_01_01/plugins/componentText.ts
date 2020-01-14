@@ -4,12 +4,6 @@ import { getRelativePosition } from "./utils";
 const commonFunc = require("../../commonFunc");
 const _ = require("lodash");
 
-const strokeColorByLevel = {
-  1: "green",
-  2: "red",
-  3: "blue",
-  4: "green"
-};
 export async function componentText(
   baseFuncs: Function[],
   canvasAdaptor: CanvasAdaptor,

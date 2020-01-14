@@ -1,25 +1,29 @@
 const { backgroundColor } = require("./backgroundColor");
 const { componentContainer } = require("./componentContainer");
 const { componentText } = require("./componentText");
+const { componentLine } = require("./componentLine");
 
 const _ = require("lodash");
 
 const PLUGINS = {
   componentContainer: "componentContainer",
   componentText: "componentText",
+  componentLine: "componentLine",
   backgroundColor: "backgroundColor"
 };
 
 const plugins = {
   componentContainer,
   componentText,
+  componentLine,
   backgroundColor
 };
 
 const registeredPlugins = {
   container: [PLUGINS.componentContainer, PLUGINS.backgroundColor],
   location: [PLUGINS.componentContainer],
-  text: [PLUGINS.componentText]
+  text: [PLUGINS.componentText],
+  line: [PLUGINS.componentLine]
 };
 
 function executePlugins(blockType, canvasAdaptor, blockConfig, cursor, trip) {

@@ -7,14 +7,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const _ = require("lodash");
+const lodash_1 = __importDefault(require("lodash"));
 const { executePlugins } = require("./plugins/index");
 function log(level, message, data = undefined) {
     if (data)
-        console.log(_.repeat("    ", level) + message, data);
+        console.log(lodash_1.default.repeat("    ", level) + message, data);
     else
-        console.log(_.repeat("    ", level) + message);
+        console.log(lodash_1.default.repeat("    ", level) + message);
 }
 function renderLessBlock(canvasAdaptor, blockConfig, trip, cursor) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -26,7 +29,7 @@ function renderLessBlock(canvasAdaptor, blockConfig, trip, cursor) {
 function renderLocation(canvasAdaptor, blockConfig, trip, cursor) {
     return __awaiter(this, void 0, void 0, function* () {
         // log(cursor.level, "render block", blockConfig.type);
-        return _.assign({}, cursor, { location: cursor.location + 1 });
+        return lodash_1.default.assign({}, cursor, { location: cursor.location + 1 });
     });
 }
 function renderLocationImage(canvasAdaptor, blockConfig, trip, cursor) {
@@ -35,7 +38,7 @@ function renderLocationImage(canvasAdaptor, blockConfig, trip, cursor) {
         // log(cursor.level, "cursor", cursor);
         // load default image if location has no image
         var imgUri = trip.locations[cursor.location].signedUrl &&
-            !_.isEmpty(trip.locations[cursor.location].signedUrl)
+            !lodash_1.default.isEmpty(trip.locations[cursor.location].signedUrl)
             ? trip.locations[cursor.location].signedUrl
             : "./data/images/EmptyImage01.jpg";
         var result = (yield canvasAdaptor.drawImage(imgUri, getRelativePosition(cursor, blockConfig.positioning), {
@@ -44,7 +47,7 @@ function renderLocationImage(canvasAdaptor, blockConfig, trip, cursor) {
             clipPath: blockConfig.clipPath
         }));
         // log(cursor.level, "new w h", `${result.width} ${result.height}`);
-        return _.assign({}, cursor, { y: cursor.y + result.height });
+        return lodash_1.default.assign({}, cursor, { y: cursor.y + result.height });
     });
 }
 function renderImage(canvasAdaptor, blockConfig, trip, cursor) {
@@ -76,7 +79,7 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
         if (blockConfig.type === "container" || blockConfig.type === "location") {
             log(cursor.level, "render block", blockConfig.type);
         }
-        var nextCursor = _.assign({}, cursor, { level: cursor.level + 1 });
+        var nextCursor = lodash_1.default.assign({}, cursor, { level: cursor.level + 1 });
         let isFixedHeight = false;
         if (blockConfig.type === "container") {
             isFixedHeight = blockConfig.height > 0;
@@ -85,7 +88,7 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
                 nextCursor.height = nextCursor.height + deltaHeight;
             }
             nextCursor = yield executePlugins(blockConfig.type, canvasAdaptor, blockConfig, cursor, trip);
-            console.log("nextCursor return container", nextCursor);
+            // console.log("nextCursor return container", nextCursor);
         }
         if (blockConfig.type === "location") {
             isFixedHeight = blockConfig.height > 0;
@@ -93,7 +96,7 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
             // console.log("nextCursor return location", nextCursor);
         }
         var totalHeight = 0;
-        if (!_.isEmpty(blockConfig.blocks)) {
+        if (!lodash_1.default.isEmpty(blockConfig.blocks)) {
             let isStackingHeight = false;
             for (var i = 0; i < blockConfig.blocks.length; i++) {
                 var previousChildBlock = i != 0 ? blockConfig.blocks[i - 1] : undefined;
@@ -109,9 +112,9 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
                         // previousChildBlock.type === "location-image" ||
                         previousChildBlock.type === "text")) {
                     isStackingHeight = true;
-                    console.log("debugging", cursor.y + " " + totalHeight);
+                    // console.log("debugging", cursor.y + " " + totalHeight);
                 }
-                var next = yield renderBlock(canvasAdaptor, childBlock, trip, _.assign({}, nextCursor, {
+                var next = yield renderBlock(canvasAdaptor, childBlock, trip, lodash_1.default.assign({}, nextCursor, {
                     level: cursor.level + 1,
                     y: isStackingHeight ? nextCursor.y : cursor.y
                 }));
@@ -120,7 +123,7 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
                     (childBlock.type === "container" || childBlock.type === "location")) {
                     totalHeight += next.height;
                 }
-                if (!_.isEmpty(next))
+                if (!lodash_1.default.isEmpty(next))
                     nextCursor = next;
             }
         }
@@ -136,20 +139,20 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
         }
         if (blockConfig.type === "container") {
             //reset cursor
-            return _.assign({}, nextCursor, {
+            return lodash_1.default.assign({}, nextCursor, {
                 x: cursor.x,
                 y: cursor.y + nextCursor.height,
                 width: cursor.width
             });
         }
         else if (blockConfig.type === "location") {
-            return yield renderLocation(canvasAdaptor, blockConfig, trip, _.assign({}, nextCursor, {
+            return yield renderLocation(canvasAdaptor, blockConfig, trip, lodash_1.default.assign({}, nextCursor, {
                 x: cursor.x,
                 y: cursor.y + nextCursor.height,
                 width: cursor.width
             }));
         }
-        else if (blockConfig.type === "text") {
+        else if (lodash_1.default.findIndex(["text", "line"], type => blockConfig.type === type) !== -1) {
             return yield executePlugins(blockConfig.type, canvasAdaptor, blockConfig, cursor, trip);
             // return await renderTextBlock(canvasAdaptor, blockConfig, trip, cursor);
         }
@@ -177,7 +180,7 @@ function renderInfographic(canvasAdaptor, infographicConfig, trip) {
         const finalCursor = yield renderBlock(canvasAdaptor, infographicConfig, trip, defaultCursor);
         console.log("final cursor", finalCursor);
         canvasAdaptor.resize(finalCursor.totalWidth, finalCursor.totalHeight);
-        // canvasAdaptor.resize(2000, 2000);
+        canvasAdaptor.resize(3000, 3000);
         canvasAdaptor.drawBackground(infographicConfig.backgroundColor);
         return;
     });

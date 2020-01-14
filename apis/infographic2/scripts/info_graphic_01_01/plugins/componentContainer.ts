@@ -20,12 +20,14 @@ export async function componentContainer(
 
   const rectOuter = new paper.Shape.Rectangle(
     new paper.Point(cursor.x, cursor.y),
-    new paper.Size(width ? width : cursor.width, height ? height : cursor.height)
+    new paper.Size(
+      width ? width : cursor.width,
+      height ? height : cursor.height
+    )
   );
   rectOuter.strokeColor = new paper.Color(strokeColorByLevel[cursor.level]);
-  rectOuter.strokeWidth = 1;
+  rectOuter.strokeWidth = 5;
 
-  
   let newBounds = {
     x: cursor.x,
     y: cursor.y,
@@ -34,9 +36,12 @@ export async function componentContainer(
   };
 
   if (blockConfig.positioning) {
-    const newXY = getRelativePosition(cursor, blockConfig.positioning);
+    const newRelativeBounds = getRelativeBounds(
+      cursor,
+      blockConfig.positioning
+    );
     // console.log("newXY", newXY)
-    newBounds = _.assign(newBounds, newXY);
+    newBounds = _.assign(newBounds, newRelativeBounds);
   }
   // console.log("cursor", cursor);
   // console.log("newBounds", newBounds);
@@ -46,7 +51,7 @@ export async function componentContainer(
     new paper.Size(newBounds.width, newBounds.height)
   );
   rect.strokeColor = new paper.Color(strokeColorByLevel[cursor.level]);
-  rect.strokeWidth = 5;
+  rect.strokeWidth = 1;
 
   if (_.isEmpty(baseFuncs)) return _.assign({}, cursor, newBounds);
 
@@ -59,16 +64,28 @@ export async function componentContainer(
   );
 }
 
-function getRelativePosition(bounds, positioning) {
+function getRelativeBounds(bounds, positioning) {
   var x = bounds.x;
   var y = bounds.y;
+  var width = bounds.width;
+  var height = bounds.height;
+
   if (!positioning) return { x, y };
 
-  if (positioning.left) x = x + positioning.left;
-  if (positioning.right) x = x + bounds.width - positioning.right;
+  if (positioning.left) {
+    x = x + positioning.left;
+    width -= positioning.left;
+  }
+  if (positioning.right) {
+    x = x + bounds.width - positioning.right;
+  }
 
-  if (positioning.top) y = y + positioning.top;
-  if (positioning.bottom) y = bounds.height - positioning.bottom;
+  if (positioning.top) {
+    y = y + positioning.top;
+  }
+  if (positioning.bottom) {
+    y = bounds.height - positioning.bottom;
+  }
 
-  return { x, y };
+  return { x, y, width, height };
 }

@@ -289,6 +289,15 @@ var config_01_others: InfographicConfig.Infographic = {
       height: 500,
       blocks: [
         {
+          type: "line",
+          x1: 2060 / 2,
+          y1: 60,
+          x2: 2060 / 2,
+          y2: 500 + 60,
+          strokeColor: "#121113",
+          strokeWidth: 10
+        },
+        {
           type: "location-image",
           width: 380,
           height: 371,
@@ -360,6 +369,15 @@ var config_01_others: InfographicConfig.Infographic = {
       height: 500,
       blocks: [
         {
+          type: "line",
+          x1: 2060 / 2,
+          y1: 60,
+          x2: 2060 / 2,
+          y2: 500 + 60,
+          strokeColor: "#121113",
+          strokeWidth: 10
+        },
+        {
           type: "location-image",
           width: 380,
           height: 371,
@@ -430,6 +448,15 @@ var config_01_others: InfographicConfig.Infographic = {
       type: "location",
       height: 500,
       blocks: [
+        {
+          type: "line",
+          x1: 2060 / 2,
+          y1: 60,
+          x2: 2060 / 2,
+          y2: 500 + 60,
+          strokeColor: "#121113",
+          strokeWidth: 10
+        },
         {
           type: "location-image",
           width: 380,
