@@ -152,7 +152,7 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
                 width: cursor.width
             }));
         }
-        else if (lodash_1.default.findIndex(["text", "line"], type => blockConfig.type === type) !== -1) {
+        else if (lodash_1.default.findIndex(["text", "line", "circle"], type => blockConfig.type === type) !== -1) {
             return yield executePlugins(blockConfig.type, canvasAdaptor, blockConfig, cursor, trip);
             // return await renderTextBlock(canvasAdaptor, blockConfig, trip, cursor);
         }

@@ -20,6 +20,7 @@ export namespace InfographicConfig {
     | ImageBlock
     | TextBlock
     | LineBlock
+    | CircleBlock
     | TripNameTextBlock
     | TripInfoTextBlock
     | LocationImageBlock
@@ -63,7 +64,8 @@ export namespace InfographicConfig {
     type: "container";
     blocks: Block[];
     positioning?: Positioning;
-  } & Background & WidthHeight;
+  } & Background &
+    WidthHeight;
 
   type ImageBlock = {
     type: "image";
@@ -90,14 +92,22 @@ export namespace InfographicConfig {
   } & BaseTextBlock;
 
   type LineBlock = {
-    type: "line",
+    type: "line";
     x1: number;
     y1: number;
     x2: number;
     y2: number;
     strokeColor: string;
     strokeWidth: number;
-  }
+  };
+
+  type CircleBlock = {
+    type: "circle";
+    x: number;
+    y: number;
+    r: number;
+    fillColor: string;
+  };
 
   type LocationImageBlock = {
     type: "location-image";
@@ -111,7 +121,7 @@ export namespace InfographicConfig {
     // width?: number;
     // height?: number;
   } & RelativePosition;
-  
+
   // StackPosition | RelativePosition;
 
   type StackPosition = {

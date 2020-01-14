@@ -298,6 +298,13 @@ var config_01_others: InfographicConfig.Infographic = {
           strokeWidth: 10
         },
         {
+          type: "circle",
+          x: 2060 / 2,
+          y: 60,
+          r: 24,
+          fillColor: "red"
+        },
+        {
           type: "location-image",
           width: 380,
           height: 371,
@@ -378,6 +385,13 @@ var config_01_others: InfographicConfig.Infographic = {
           strokeWidth: 10
         },
         {
+          type: "circle",
+          x: 2060 / 2,
+          y: 60,
+          r: 24,
+          fillColor: "red"
+        },
+        {
           type: "location-image",
           width: 380,
           height: 371,
@@ -456,6 +470,13 @@ var config_01_others: InfographicConfig.Infographic = {
           y2: 500 + 60,
           strokeColor: "#121113",
           strokeWidth: 10
+        },
+        {
+          type: "circle",
+          x: 2060 / 2,
+          y: 60,
+          r: 24,
+          fillColor: "red"
         },
         {
           type: "location-image",

@@ -194,7 +194,7 @@ async function renderBlock(
         width: cursor.width
       })
     );
-  } else if (_.findIndex(["text", "line"], type => blockConfig.type === type) !== -1) {
+  } else if (_.findIndex(["text", "line", "circle"], type => blockConfig.type === type) !== -1) {
     return await executePlugins(
       blockConfig.type,
       canvasAdaptor,
