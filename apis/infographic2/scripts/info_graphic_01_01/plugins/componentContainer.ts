@@ -14,9 +14,17 @@ export async function componentContainer(
   blockConfig: InfographicConfig.ContainerBlock,
   cursor
 ) {
+  const { width, height } = blockConfig;
+
   const paper = canvasAdaptor.getPaper();
 
-  const { width, height } = blockConfig;
+  const rectOuter = new paper.Shape.Rectangle(
+    new paper.Point(cursor.x, cursor.y),
+    new paper.Size(width ? width : cursor.width, height ? height : cursor.height)
+  );
+  rectOuter.strokeColor = new paper.Color(strokeColorByLevel[cursor.level]);
+  rectOuter.strokeWidth = 1;
+
   
   let newBounds = {
     x: cursor.x,
@@ -38,7 +46,7 @@ export async function componentContainer(
     new paper.Size(newBounds.width, newBounds.height)
   );
   rect.strokeColor = new paper.Color(strokeColorByLevel[cursor.level]);
-  rect.strokeWidth = 10;
+  rect.strokeWidth = 5;
 
   if (_.isEmpty(baseFuncs)) return _.assign({}, cursor, newBounds);
 

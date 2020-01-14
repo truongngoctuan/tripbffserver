@@ -89,7 +89,7 @@ class CanvasAdaptor {
     // get name() {
     //   return this._name;
     // }
-    drawImage(source, position, options = {}, cb) {
+    drawImage(source, position, options = {}, cb = undefined) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
                 var raster = source.startsWith("http")

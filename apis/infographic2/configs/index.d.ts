@@ -92,6 +92,7 @@ export namespace InfographicConfig {
     type: "location-image";
     width: number;
     height: number;
+    clipPath?: string;
     positioning?: Positioning;
   };
 

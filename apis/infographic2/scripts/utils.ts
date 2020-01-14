@@ -87,7 +87,7 @@ export class CanvasAdaptor {
   // get name() {
   //   return this._name;
   // }
-  async drawImage(source, position, options: { width?: number, height?: number, clipPath?: string } = {}, cb) {
+  async drawImage(source, position, options: { width?: number, height?: number, clipPath?: string } = {}, cb = undefined) {
     return new Promise((resolve, reject) => {
       var raster = source.startsWith("http")
         ? new paperShim.Raster(source)

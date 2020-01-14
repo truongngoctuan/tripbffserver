@@ -23,7 +23,12 @@ async function renderLocation(canvasAdaptor, blockConfig, trip, cursor) {
   return _.assign({}, cursor, { location: cursor.location + 1 });
 }
 
-async function renderLocationImage(canvasAdaptor, blockConfig, trip, cursor) {
+async function renderLocationImage(
+  canvasAdaptor: CanvasAdaptor,
+  blockConfig: InfographicConfig.LocationImageBlock,
+  trip,
+  cursor
+) {
   log(cursor.level, "render block", blockConfig.type);
   // log(cursor.level, "cursor", cursor);
 
@@ -33,16 +38,17 @@ async function renderLocationImage(canvasAdaptor, blockConfig, trip, cursor) {
     !_.isEmpty(trip.locations[cursor.location].signedUrl)
       ? trip.locations[cursor.location].signedUrl
       : "./data/images/EmptyImage01.jpg";
-  var result = await canvasAdaptor.drawImage(
+  var result = (await canvasAdaptor.drawImage(
     imgUri,
     getRelativePosition(cursor, blockConfig.positioning),
     {
       width: blockConfig.width,
-      height: blockConfig.height
+      height: blockConfig.height,
+      clipPath: blockConfig.clipPath
     }
-  );
+  )) as any;
 
-  log(cursor.level, "new w h", `${result.width} ${result.height}`);
+  // log(cursor.level, "new w h", `${result.width} ${result.height}`);
 
   return _.assign({}, cursor, { y: cursor.y + result.height });
 }
@@ -174,10 +180,20 @@ async function renderBlock(
     //reset cursor
     return _.assign({}, nextCursor, {
       x: cursor.x,
-      y: cursor.y + nextCursor.height
+      y: cursor.y + nextCursor.height,
+      width: cursor.width
     });
   } else if (blockConfig.type === "location") {
-    return await renderLocation(canvasAdaptor, blockConfig, trip, cursor);
+    return await renderLocation(
+      canvasAdaptor,
+      blockConfig,
+      trip,
+      _.assign({}, nextCursor, {
+        x: cursor.x,
+        y: cursor.y + nextCursor.height,
+        width: cursor.width
+      })
+    );
   } else if (blockConfig.type === "text") {
     return await executePlugins(
       blockConfig.type,

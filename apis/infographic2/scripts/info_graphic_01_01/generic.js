@@ -38,11 +38,12 @@ function renderLocationImage(canvasAdaptor, blockConfig, trip, cursor) {
             !_.isEmpty(trip.locations[cursor.location].signedUrl)
             ? trip.locations[cursor.location].signedUrl
             : "./data/images/EmptyImage01.jpg";
-        var result = yield canvasAdaptor.drawImage(imgUri, getRelativePosition(cursor, blockConfig.positioning), {
+        var result = (yield canvasAdaptor.drawImage(imgUri, getRelativePosition(cursor, blockConfig.positioning), {
             width: blockConfig.width,
-            height: blockConfig.height
-        });
-        log(cursor.level, "new w h", `${result.width} ${result.height}`);
+            height: blockConfig.height,
+            clipPath: blockConfig.clipPath
+        }));
+        // log(cursor.level, "new w h", `${result.width} ${result.height}`);
         return _.assign({}, cursor, { y: cursor.y + result.height });
     });
 }
@@ -137,11 +138,16 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
             //reset cursor
             return _.assign({}, nextCursor, {
                 x: cursor.x,
-                y: cursor.y + nextCursor.height
+                y: cursor.y + nextCursor.height,
+                width: cursor.width
             });
         }
         else if (blockConfig.type === "location") {
-            return yield renderLocation(canvasAdaptor, blockConfig, trip, cursor);
+            return yield renderLocation(canvasAdaptor, blockConfig, trip, _.assign({}, nextCursor, {
+                x: cursor.x,
+                y: cursor.y + nextCursor.height,
+                width: cursor.width
+            }));
         }
         else if (blockConfig.type === "text") {
             return yield executePlugins(blockConfig.type, canvasAdaptor, blockConfig, cursor, trip);
