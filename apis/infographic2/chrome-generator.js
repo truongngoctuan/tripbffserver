@@ -37,10 +37,7 @@ async function exportInfo(trip) {
 
     const canvasAdaptor = await genericDraw.draw(trip, info_graphic_type);
     canvasAdaptor.draw();
-    //todo return buffer jpg
     var resultBuf = await canvasAdaptor.toBufferJpeg();
-    //type: "jpeg",
-    //quality: 85
     console.log(`TIME ${new Date().getTime() - startTimer} ms: completed`);
     return resultBuf;
   } catch (err) {

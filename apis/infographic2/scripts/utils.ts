@@ -1,5 +1,6 @@
 const { registerFont } = require("canvas");
-const paper = require("paper-jsdom-canvas");
+import paperShim from "./paper-jsdom-canvas";
+// import paper from "paper";
 const fs = require("fs");
 // const path = require("path");
 const _ = require("lodash");
@@ -22,10 +23,13 @@ registerFont("./fonts/Roboto-Bold.ttf", {
 //   console.log("hello Canvas")
 //   Canvas = a.Canvas;
 // } catch(error) {
-class CanvasAdaptor {
+export class CanvasAdaptor {
+  canvas: any;
+  paper: paper.PaperScope;
+
   constructor(w = 300, h = 300) {
     //use the canvas in paper so that we can magically register font
-    var canvas = paper.Canvas(w, h);
+    var canvas = paperShim.Canvas(w, h);
     // var canvas = createCanvas(w, h);
     // const ctx = canvas.getContext("2d");
     // ctx.fillStyle = "white";
@@ -42,34 +46,40 @@ class CanvasAdaptor {
     // fs.writeFileSync("output2.png", buf);
     // ------paper
     // Create an empty project and a view for the canvas:
-    paper.setup(canvas);
+    paperShim.setup(canvas);
 
     this.canvas = canvas;
-    this.paper = paper;
+    this.paper = paperShim;
   }
+
+  //use this method to go directly to a lower layer, reduce complexity of setup custom draw methods
+  getPaper() {
+    return this.paper;
+  }
+
   draw() {
     this.paper.view.draw();
   }
   export(file) {
-    const buf = paper.view.element.toBuffer();
+    const buf = paperShim.view.element.toBuffer();
     fs.writeFileSync(file, buf);
   }
 
   toBufferJpeg() {
-    return paper.view.element.toBuffer("image/jpeg", {
+    return paperShim.view.element.toBuffer("image/jpeg", {
       quality: 0.9
     });
   }
 
   toBufferPng() {
-    return paper.view.element.toBuffer("image/png", {
+    return paperShim.view.element.toBuffer("image/png", {
       compressionLevel: 3,
-      filters: paper.Canvas.PNG_FILTER_NONE
+      filters: paperShim.Canvas.PNG_FILTER_NONE
     });
   }
 
   resize(w, h) {
-    paper.view.viewSize = new paper.Size(w, h);
+    paperShim.view.viewSize = new paperShim.Size(w, h);
   }
   // set name(name) {
   //   this._name = name.charAt(0).toUpperCase() + name.slice(1);
@@ -77,16 +87,18 @@ class CanvasAdaptor {
   // get name() {
   //   return this._name;
   // }
-  async drawImage(source, position, options = {}, cb) {
+  async drawImage(source, position, options: { width?: number, height?: number, clipPath?: string } = {}, cb = undefined) {
     return new Promise((resolve, reject) => {
       var raster = source.startsWith("http")
-        ? new paper.Raster(source)
-        : new paper.Raster(loadLocalImage(source));
+        ? new paperShim.Raster(source)
+        : new paperShim.Raster(loadLocalImage(source));
+
+      var group = undefined;
 
       raster.onLoad = function(e) {
-        console.log("image loaded");
+        // console.log("image loaded");
         const { width, height } = raster;
-        raster.position = new paper.Point(
+        raster.position = new paperShim.Point(
           position.x + width / 2,
           position.y + height / 2
         );
@@ -95,20 +107,21 @@ class CanvasAdaptor {
           const scaleWidth = options.width / width;
           const scaleHeight = options.height / height;
           const scale = _.max([scaleWidth, scaleHeight]);
-          console.log("scale", scale);
+          // console.log("scale", scale);
           raster.scale(scale);
 
           const deltaWidth = width - options.width;
           const deltaHeight = height - options.height;
           //setup image cover
-          raster.position = new paper.Point(
+          raster.position = new paperShim.Point(
             raster.position.x - deltaWidth / 2,
             raster.position.y - deltaHeight / 2
           );
 
+          group = new paperShim.Group();
           if (!options.clipPath) {
             // Use clipMask to create a custom polygon clip mask:
-            var path = new paper.Path.Rectangle(
+            var path = new paperShim.Path.Rectangle(
               position.x,
               position.y,
               options.width,
@@ -117,12 +130,12 @@ class CanvasAdaptor {
             path.clipMask = true;
 
             // It is better to add the path and the raster in a group (but not mandatory)
-            var group = new paper.Group();
             group.addChild(raster);
             group.addChild(path);
+
           } else {
-            var path2 = new paper.Path(options.clipPath);
-            path2.position = new paper.Point(
+            var path2 = new paperShim.Path(options.clipPath);
+            path2.position = new paperShim.Point(
               raster.position.x,
               raster.position.y
             );
@@ -130,7 +143,7 @@ class CanvasAdaptor {
             const scalePath = options.width / path2.bounds.width;
             path2.scale(scalePath);
             const deltaPathWidth = path2.bounds.width - options.width;
-            raster.position = new paper.Point(
+            raster.position = new paperShim.Point(
               raster.position.x - (deltaPathWidth > 0 ? deltaPathWidth / 2 : 0),
               raster.position.y - (deltaPathWidth > 0 ? deltaPathWidth / 2 : 0)
             );
@@ -143,7 +156,6 @@ class CanvasAdaptor {
             path2.clipMask = true;
 
             // It is better to add the path and the raster in a group (but not mandatory)
-            var group = new paper.Group();
             group.addChild(raster);
             group.addChild(path2);
           }
@@ -152,11 +164,14 @@ class CanvasAdaptor {
         if (cb) {
           cb({
             // imageResult: raster,
-            width: raster.width,
-            height: raster.height
+            width: group ? group.bounds.width : raster.bounds.width,
+            height: group ? group.bounds.height : raster.bounds.height
           });
         }
-        resolve({ width: raster.width, height: raster.height });
+        resolve({
+          width: group ? group.bounds.width : raster.bounds.width,
+          height: group ? group.bounds.height : raster.bounds.height
+        });
       };
 
       raster.onError = err => {
@@ -167,26 +182,26 @@ class CanvasAdaptor {
   }
 
   drawBackground(backgroundColor) {
-    var rect = new paper.Path.Rectangle({
+    var rect = new paperShim.Path.Rectangle({
       point: [0, 0],
-      size: paper.view.size
+      size: paperShim.view.size
     });
     rect.sendToBack();
     rect.fillColor = backgroundColor;
   }
 
   drawRect(options) {
-    var rect = new paper.Path.Rectangle(
-      new paper.Point(options.x, options.y),
-      new paper.Size(options.width, options.height)
+    var rect = new paperShim.Path.Rectangle(
+      new paperShim.Point(options.x, options.y),
+      new paperShim.Size(options.width, options.height)
     );
     rect.fillColor = options.backgroundColor;
   }
 
   _drawText(text, position, options) {
     var fontSize = parseInt((options.fontSize || "30px").replace("px", ""));
-    var textNode = new paper.PointText(
-      new paper.Point(position.x, position.y + fontSize / 2)
+    var textNode = new paperShim.PointText(
+      new paperShim.Point(position.x, position.y + fontSize)
     );
 
     // textNode.content = text;
@@ -261,12 +276,12 @@ class CanvasAdaptor {
   _textAnchor(textNode, textAnchor) {
     // handle textAnchor manually
     if (textAnchor === "middle") {
-      textNode.point = new paper.Point(
+      textNode.point = new paperShim.Point(
         textNode.point.x - textNode.bounds.width / 2,
         textNode.point.y
       );
     } else if (textAnchor === "end") {
-      textNode.point = new paper.Point(
+      textNode.point = new paperShim.Point(
         textNode.point.x - textNode.bounds.width,
         textNode.point.y
       );
@@ -320,9 +335,9 @@ class CanvasAdaptor {
   //   });
   // }
   drawLine(options) {
-    let line = new paper.Path.Line(
-      new paper.Point(options.x1, options.y1),
-      new paper.Point(options.x2, options.y2)
+    let line = new paperShim.Path.Line(
+      new paperShim.Point(options.x1, options.y1),
+      new paperShim.Point(options.x2, options.y2)
     );
     line.style = {
       strokeColor: options.strokeColor,
@@ -330,8 +345,8 @@ class CanvasAdaptor {
     };
   }
   drawCircle(options) {
-    let circle = new paper.Path.Circle(
-      new paper.Point(options.x, options.y),
+    let circle = new paperShim.Path.Circle(
+      new paperShim.Point(options.x, options.y),
       options.r
     );
     circle.style = {

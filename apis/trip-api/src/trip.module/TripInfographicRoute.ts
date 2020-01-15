@@ -11,50 +11,45 @@ module.exports = {
   init(server: Server): void {
     server.route({
       method: "POST",
-      path: "/trips/{id}/infographics",
+      path: "/trips/{tripId}/infographics",
       async handler(request) {
-        try {
-          const tripId: string = request.params.id;
-          const { locale } = request.payload as any;
+        const tripId: string = request.params.tripId;
+        const { locale } = request.payload as any;
 
-          const ownerId = CUtils.getUserId(request);
+        const ownerId = CUtils.getUserId(request);
 
-          const infographicId = uuid();
+        const infographicId = uuid();
 
-          const commandResult = await tripCommandHandler.exec({
-            type: "exportInfographic",
-            ownerId,
-            tripId,
-            infographicId,
-            locale,
-          });
+        const commandResult = await tripCommandHandler.exec({
+          type: "exportInfographic",
+          ownerId,
+          tripId,
+          infographicId,
+          locale,
+        });
 
-          if (commandResult.isSucceed) {
-            return infographicId;
-          }
-
-          console.log("err: " + commandResult.errors);
-          return commandResult.errors;
-        } catch (error) {
-          console.log("ERROR: POST /trips/{id}/infographics");
-          console.log(error);
-          throw error;
+        if (commandResult.isSucceed) {
+          return infographicId;
         }
+
+        console.log("err: " + commandResult.errors);
+        return commandResult.errors;
       },
       options: {
         auth: "simple",
         tags: ["api"],
+        description: "SERVER - 01 - Trigger a new event for flow's creating infographic"
       },
     });
 
     server.route({
       method: "GET",
-      path: "/trips/{id}/infographics/{infoId}/preUploadImage",
+      path: "/trips/{tripId}/infographics/{infoId}/preUploadImage",
       async handler(request) {
         try {
           const { mimeType } = request.query as any;
           console.log(mimeType);
-          const tripId: string = request.params.id;
+          const tripId: string = request.params.tripId;
 
           const category = `trips/${tripId}/infographics`;
           const result = await IoC.fileService.signUpload(category ? category : "images", mimeType);
@@ -69,15 +64,16 @@ module.exports = {
         // todo add auth for internal communication
         // auth: "simple",
         tags: ["api"],
+        description: "SERVER - 02 - sign to upload infographic into s3 (for infographic service)"
       },
     });
 
     server.route({
       method: "PUT",
-      path: "/trips/{id}/infographics/{infoId}",
+      path: "/trips/{tripId}/infographics/{infoId}",
       async handler(request) {
         try {
-          const tripId: string = request.params.id;
+          const tripId: string = request.params.tripId;
           const infographicId: string = request.params.infoId;
 
           const {
@@ -110,6 +106,7 @@ module.exports = {
         // todo add auth for internal communication
         // auth: "simple",
         tags: ["api"],
+        description: "SERVER - 03 - associate uploaded s3 with current infographic id"
       },
     });
 
@@ -149,10 +146,10 @@ module.exports = {
 
     server.route({
       method: "GET",
-      path: "/trips/{tripId}/infographics/{infographicId}",
+      path: "/trips/{tripId}/infographics/{infoId}",
       async handler(request, h) {
         const tripId = request.params.tripId;
-        const infographicId = request.params.infographicId;
+        const infographicId = request.params.infoId;
 
         return new Promise((resolve, reject) => {
           let counter = 0;
@@ -193,6 +190,7 @@ module.exports = {
       options: {
         auth: "simple",
         tags: ["api"],
+        description: "CLIENT - polling infographic data",
         validate: {
           params: Joi.object({
             tripId: Joi.required().description("the tripId for the todo item"),
