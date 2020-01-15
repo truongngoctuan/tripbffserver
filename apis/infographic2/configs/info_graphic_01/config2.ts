@@ -404,10 +404,10 @@ var config_01_others: InfographicConfig.Infographic = {
         },
         {
           type: "container",
-          width: 2060 / 2,
+          width: 2060 / 2 - 60,
           height: 500,
           positioning: {
-            left: 400,
+            left: 0,
             top: 0
           },
           blocks: [
