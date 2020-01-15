@@ -134,13 +134,11 @@ async function renderBlock(
         for (let iLoc = 0; iLoc < nLoc; iLoc++) {
           const locConfig = containerBlockConfig.blocks[iLoc % nLocConfig];
           childBlockConfigs.push(locConfig);
-        }        
-      }
-      else {
+        }
+      } else {
         childBlockConfigs = containerBlockConfig.blocks.slice(0, nLoc);
       }
       // console.log("childBlockConfigs.length", childBlockConfigs.length);
-
     } else {
       childBlockConfigs = [...containerBlockConfig.blocks];
     }
@@ -157,10 +155,10 @@ async function renderBlock(
 
       if (
         previousChildBlock &&
-        (previousChildBlock.type === "container" ||
-          previousChildBlock.type === "location" ||
-          // previousChildBlock.type === "location-image" ||
-          previousChildBlock.type === "text")
+        _.findIndex(
+          ["container", "locations", "location", "text"],
+          type => previousChildBlock.type === type
+        ) !== -1
       ) {
         isStackingHeight = true;
         // console.log("debugging", cursor.y + " " + totalHeight);
@@ -199,7 +197,7 @@ async function renderBlock(
     // log(cursor.level, "totalHeight", nextCursor.totalHeight);
   }
 
-  if (blockConfig.type === "container") {
+  if (blockConfig.type === "container" || blockConfig.type === "locations") {
     //reset cursor
     return _.assign({}, nextCursor, {
       x: cursor.x,

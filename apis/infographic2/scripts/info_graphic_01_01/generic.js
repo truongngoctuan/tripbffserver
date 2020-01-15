@@ -128,10 +128,7 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
                 //   `w=${cursor.width} h=${cursor.height}`
                 // );
                 if (previousChildBlock &&
-                    (previousChildBlock.type === "container" ||
-                        previousChildBlock.type === "location" ||
-                        // previousChildBlock.type === "location-image" ||
-                        previousChildBlock.type === "text")) {
+                    lodash_1.default.findIndex(["container", "locations", "location", "text"], type => previousChildBlock.type === type) !== -1) {
                     isStackingHeight = true;
                     // console.log("debugging", cursor.y + " " + totalHeight);
                 }
@@ -158,7 +155,7 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
             // log(cursor.level, "cursor", nextCursor);
             // log(cursor.level, "totalHeight", nextCursor.totalHeight);
         }
-        if (blockConfig.type === "container") {
+        if (blockConfig.type === "container" || blockConfig.type === "locations") {
             //reset cursor
             return lodash_1.default.assign({}, nextCursor, {
                 x: cursor.x,
