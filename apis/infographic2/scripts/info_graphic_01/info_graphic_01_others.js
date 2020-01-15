@@ -4,7 +4,6 @@
 // draw basic shape
 // https://www.dashingd3js.com/svg-basic-shapes-and-d3js
 
-const utils = require("../utils");
 const config_infographic_01 = require("../../configs/info_graphic_01/config");
 const commonFunc = require("../commonFunc");
 const _ = require("lodash");
