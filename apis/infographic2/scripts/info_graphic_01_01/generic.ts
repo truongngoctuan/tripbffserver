@@ -82,7 +82,7 @@ function getRelativePosition(cursor, positioning) {
 
 async function renderBlock(
   canvasAdaptor: CanvasAdaptor,
-  blockConfig,
+  blockConfig: InfographicConfig.Block,
   trip,
   cursor: Cursor
 ) {
@@ -121,11 +121,34 @@ async function renderBlock(
   }
 
   var totalHeight = 0;
-  if (!_.isEmpty(blockConfig.blocks)) {
+  if (!_.isEmpty((blockConfig as InfographicConfig.ContainerBlock).blocks)) {
+    const containerBlockConfig = blockConfig as InfographicConfig.ContainerBlock;
+
+    let childBlockConfigs: InfographicConfig.Block[] = [];
+    if (blockConfig.type === "locations") {
+      // nLoc > nLocConfig, clone locConfig until n == nLoc
+      // else keep just enough logConfig
+      const nLoc = trip.locations.length;
+      const nLocConfig = containerBlockConfig.blocks.length;
+      if (nLoc > nLocConfig) {
+        for (let iLoc = 0; iLoc < nLoc; iLoc++) {
+          const locConfig = containerBlockConfig.blocks[iLoc % nLocConfig];
+          childBlockConfigs.push(locConfig);
+        }        
+      }
+      else {
+        childBlockConfigs = containerBlockConfig.blocks.slice(0, nLoc);
+      }
+      // console.log("childBlockConfigs.length", childBlockConfigs.length);
+
+    } else {
+      childBlockConfigs = [...containerBlockConfig.blocks];
+    }
+
     let isStackingHeight = false;
-    for (var i = 0; i < blockConfig.blocks.length; i++) {
-      var previousChildBlock = i != 0 ? blockConfig.blocks[i - 1] : undefined;
-      var childBlock = blockConfig.blocks[i];
+    for (var i = 0; i < childBlockConfigs.length; i++) {
+      var previousChildBlock = i != 0 ? childBlockConfigs[i - 1] : undefined;
+      var childBlock = childBlockConfigs[i];
       // log(
       //   cursor.level + 1,
       //   "cursor info",
@@ -194,7 +217,12 @@ async function renderBlock(
         width: cursor.width
       })
     );
-  } else if (_.findIndex(["text", "line", "circle"], type => blockConfig.type === type) !== -1) {
+  } else if (
+    _.findIndex(
+      ["text", "line", "circle"],
+      type => blockConfig.type === type
+    ) !== -1
+  ) {
     return await executePlugins(
       blockConfig.type,
       canvasAdaptor,
@@ -236,7 +264,7 @@ async function renderInfographic(
   console.log("final cursor", finalCursor);
 
   canvasAdaptor.resize(finalCursor.totalWidth, finalCursor.totalHeight);
-  // canvasAdaptor.resize(2000, 2000);
+  // canvasAdaptor.resize(3000, 3000);
   canvasAdaptor.drawBackground(infographicConfig.backgroundColor);
 
   return;

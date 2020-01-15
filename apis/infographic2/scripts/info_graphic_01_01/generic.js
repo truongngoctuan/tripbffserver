@@ -97,10 +97,31 @@ function renderBlock(canvasAdaptor, blockConfig, trip, cursor) {
         }
         var totalHeight = 0;
         if (!lodash_1.default.isEmpty(blockConfig.blocks)) {
+            const containerBlockConfig = blockConfig;
+            let childBlockConfigs = [];
+            if (blockConfig.type === "locations") {
+                // nLoc > nLocConfig, clone locConfig until n == nLoc
+                // else keep just enough logConfig
+                const nLoc = trip.locations.length;
+                const nLocConfig = containerBlockConfig.blocks.length;
+                if (nLoc > nLocConfig) {
+                    for (let iLoc = 0; iLoc < nLoc; iLoc++) {
+                        const locConfig = containerBlockConfig.blocks[iLoc % nLocConfig];
+                        childBlockConfigs.push(locConfig);
+                    }
+                }
+                else {
+                    childBlockConfigs = containerBlockConfig.blocks.slice(0, nLoc);
+                }
+                // console.log("childBlockConfigs.length", childBlockConfigs.length);
+            }
+            else {
+                childBlockConfigs = [...containerBlockConfig.blocks];
+            }
             let isStackingHeight = false;
-            for (var i = 0; i < blockConfig.blocks.length; i++) {
-                var previousChildBlock = i != 0 ? blockConfig.blocks[i - 1] : undefined;
-                var childBlock = blockConfig.blocks[i];
+            for (var i = 0; i < childBlockConfigs.length; i++) {
+                var previousChildBlock = i != 0 ? childBlockConfigs[i - 1] : undefined;
+                var childBlock = childBlockConfigs[i];
                 // log(
                 //   cursor.level + 1,
                 //   "cursor info",
@@ -180,7 +201,7 @@ function renderInfographic(canvasAdaptor, infographicConfig, trip) {
         const finalCursor = yield renderBlock(canvasAdaptor, infographicConfig, trip, defaultCursor);
         console.log("final cursor", finalCursor);
         canvasAdaptor.resize(finalCursor.totalWidth, finalCursor.totalHeight);
-        canvasAdaptor.resize(3000, 3000);
+        // canvasAdaptor.resize(3000, 3000);
         canvasAdaptor.drawBackground(infographicConfig.backgroundColor);
         return;
     });

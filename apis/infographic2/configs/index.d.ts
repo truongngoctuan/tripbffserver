@@ -14,7 +14,7 @@ export namespace InfographicConfig {
   } & Background &
     ContainerBlock;
 
-  type Block = LocationBlock | BasicBlock;
+  type Block = LocationsBlocks | LocationBlock | BasicBlock;
   type BasicBlock =
     | ContainerBlock
     | ImageBlock
@@ -107,6 +107,11 @@ export namespace InfographicConfig {
     y: number;
     r: number;
     fillColor: string;
+  };
+
+  type LocationsBlocks = {
+    type: "locations";
+    blocks: LocationBlock[];
   };
 
   type LocationImageBlock = {
