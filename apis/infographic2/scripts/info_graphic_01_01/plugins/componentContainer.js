@@ -29,9 +29,8 @@ function componentContainer(baseFuncs, canvasAdaptor, blockConfig, cursor) {
             height: height ? height : cursor.height
         };
         if (blockConfig.positioning) {
-            const newRelativeBounds = getRelativeBounds(cursor, blockConfig.positioning);
+            newBounds = getRelativeBounds(newBounds, blockConfig.positioning);
             // console.log("newXY", newXY)
-            newBounds = _.assign(newBounds, newRelativeBounds);
         }
         // console.log("cursor", cursor);
         // console.log("newBounds", newBounds);
@@ -51,7 +50,7 @@ function getRelativeBounds(bounds, positioning) {
     var width = bounds.width;
     var height = bounds.height;
     if (!positioning)
-        return { x, y };
+        return { x, y, width, height };
     if (positioning.left) {
         x = x + positioning.left;
         width -= positioning.left;
