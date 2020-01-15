@@ -4,7 +4,6 @@
 // draw basic shape
 // https://www.dashingd3js.com/svg-basic-shapes-and-d3js
 
-const utils = require("../utils");
 const globalInfographic01Config = require("../../configs/info_graphic_01/config");
 const commonFunc = require("../commonFunc");
 const _ = require("lodash");
@@ -15,18 +14,10 @@ let w = globalConfig.infographic.width;
 let h = globalConfig.infographic.height;
 
 function drawHeader(canvasAdaptor, trip) {
-  // canvasAdaptor.drawRect({
-  //   x: 0,
-  //   y: 0,
-  //   width: w,
-  //   height: globalConfig.header.height,
-  //   backgroundColor: globalConfig.header.background
-  // });
-
   let tripNameNode = canvasAdaptor.drawText(
     trip.name.toUpperCase(),
     {
-      y: 50,
+      y: 20,
       x: w / 2
     },
     {
@@ -52,7 +43,7 @@ function drawHeader(canvasAdaptor, trip) {
   canvasAdaptor.drawText(
     basicTripInfo,
     {
-      y: tripNameNodeBbox.y + tripNameNodeBbox.height + 40,
+      y: tripNameNodeBbox.y + tripNameNodeBbox.height + 5,
       x: w / 2
     },
     {
@@ -159,17 +150,6 @@ async function drawContent(
   return nextElementYCoordinate;
 }
 
-function drawImage(svgImage, coordinate, uri, config) {
-  var svgCanvas = svgImage.append("svg:image");
-  svgCanvas
-    .attr("x", coordinate.x)
-    .attr("y", coordinate.y)
-    .attr("width", config.width)
-    .attr("height", config.height)
-    .attr("xlink:href", uri)
-    .attr("clip-path", config.imageClipPath);
-}
-
 async function drawFooter(canvasAdaptor) {
   await canvasAdaptor.drawImage(
     "data/images/App_Signature.png",
@@ -190,8 +170,6 @@ function capitalizeFirstLetter(string) {
 
 function onLoadImage(canvasAdaptor, imageResult, url, coordinate, index) {
   let ratio = imageResult.width / imageResult.height,
-    svgWidth = globalConfig.imageContainer.svgWidth,
-    svgHeight = globalConfig.imageContainer.svgHeight,
     viewBoxWidth = globalConfig.imageContainer.viewBoxWidth,
     viewBoxHeight = globalConfig.imageContainer.viewBoxHeight,
     width = viewBoxWidth,
@@ -202,40 +180,6 @@ function onLoadImage(canvasAdaptor, imageResult, url, coordinate, index) {
   } else {
     height = width / ratio;
   }
-
-  //   var svgImage = canvasAdaptor
-  //     .append("svg")
-  //     .attr("y", coordinate.y)
-  //     .attr("x", coordinate.x)
-  //     .attr("width", svgWidth)
-  //     .attr("height", svgHeight)
-  //     .attr("viewBox", "0 0 " + viewBoxWidth + " " + viewBoxHeight);
-
-  //   let clipPathId = "_id" + index;
-
-  //todo
-  // svgImage
-  //   .append("defs")
-  //   .append("clipPath")
-  //   .attr("id", clipPathId)
-  //   .append("path")
-  //   .attr("x", 0)
-  //   .attr("y", 0)
-  //   .attr("d", globalConfig.imageContainer.clipPath);
-
-  //   drawImage(
-  //     svgImage,
-  //     {
-  //       y: 0,
-  //       x: 0
-  //     },
-  //     url,
-  //     {
-  //       width: width,
-  //       height: height,
-  //       imageClipPath: "url(#" + clipPathId + ")"
-  //     }
-  //   );
 }
 
 async function draw(canvasAdaptor, trip) {
