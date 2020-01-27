@@ -2,6 +2,7 @@ const moment = require("moment");
 const { INFOGRAPHIC_TYPE } = require("./scripts/info_graphic_type");
 const genericDraw = require("./scripts/info_graphic_general_draw");
 const axios = require("axios");
+const _ = require("lodash");
 
 const url =
   "http://" + process.env.LOTTIE_WEB_HOST + ":" + process.env.LOTTIE_WEB_PORT;
@@ -26,21 +27,16 @@ async function exportInfo(trip) {
         return {
           ...item,
           fromTime: moment(item.fromTime).format("LL"),
-          highlights: item.highlights.join(", "),
+          highlights: _.isArray(item.highlights) ? item.highlights.join(", ") : item.highlights,
           signedUrl: item.signedUrl
         };
       })
     };
 
     // const fetchedUrl = response.request.res.responseURL;
-    console.log("trip", trip);
+    console.log("trip", JSON.stringify(trip));
 
-    const canvasAdaptor = await genericDraw.draw(trip, info_graphic_type);
-    canvasAdaptor.draw();
-    //todo return buffer jpg
-    var resultBuf = await canvasAdaptor.toBufferJpeg();
-    //type: "jpeg",
-    //quality: 85
+    const resultBuf = await genericDraw.draw(trip, info_graphic_type);
     console.log(`TIME ${new Date().getTime() - startTimer} ms: completed`);
     return resultBuf;
   } catch (err) {

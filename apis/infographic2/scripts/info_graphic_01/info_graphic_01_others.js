@@ -439,6 +439,7 @@ async function draw(canvasAdaptor, trip) {
       };
     });
   }
+  const startDownload = new Date().getTime();
 
   trip.locations.forEach((location, index) => {
     var coordinate = locationImageCoordinates[index];
@@ -462,6 +463,7 @@ async function draw(canvasAdaptor, trip) {
   });
 
   await Promise.all(promises);
+  console.log(`TIME ${new Date().getTime() - startDownload} ms: total images download completed`);
 
   canvasAdaptor.resize(w, h);
   canvasAdaptor.drawBackground(globalConfig.infographic.background);

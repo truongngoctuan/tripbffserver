@@ -17,7 +17,11 @@ async function draw(trip, infographicType) {
     }
   }
 
-  return canvasAdaptor;
+  canvasAdaptor.draw();
+  var resultBuf = await canvasAdaptor.toBufferJpeg();
+  canvasAdaptor.remove();
+
+  return resultBuf;
 }
 
 module.exports = {

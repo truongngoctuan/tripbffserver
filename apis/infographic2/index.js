@@ -35,6 +35,8 @@ async function actionExecAsync(data) {
 }
 
 async function uploadResult(ownerId, tripId, infographicId, buf) {
+  if (!tripId) return;
+  
   try {
     //pre upload
     const startPreUpload = new Date().getTime();

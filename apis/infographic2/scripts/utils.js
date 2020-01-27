@@ -47,6 +47,13 @@ class CanvasAdaptor {
     this.canvas = canvas;
     this.paper = paper;
   }
+  remove() {
+    this.paper.remove();
+    this.paper = null;
+    this.canvas.remove();
+    this.canvas = null;
+  }
+
   draw() {
     this.paper.view.draw();
   }
@@ -83,8 +90,13 @@ class CanvasAdaptor {
         ? new paper.Raster(source)
         : new paper.Raster(loadLocalImage(source));
 
+       const startDownload = new Date().getTime();
+      console.log(`image ${source} loading`)
+
       raster.onLoad = function(e) {
-        console.log("image loaded");
+        console.log(`TIME ${new Date().getTime() - startDownload} ms: download completed`);
+
+        console.log(`image ${source} loaded`);
         const { width, height } = raster;
         raster.position = new paper.Point(
           position.x + width / 2,
