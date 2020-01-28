@@ -297,8 +297,8 @@ function drawContent(canvasAdaptor, trip, numberOfLocations) {
   return locationImageCoordinates;
 }
 
-function drawFooter(canvasAdaptor) {
-  canvasAdaptor.drawImage(
+async function drawFooter(canvasAdaptor) {
+  await canvasAdaptor.drawImage(
     "data/images/App_Signature.png",
     {
       x: w - globalConfig.footer.marginRight,
@@ -337,7 +337,7 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function onLoadImage(canvasAdaptor, imageResult, url, coordinate, index) {
+function onLoadImage(imageResult, url, coordinate, index) {
   let ratio = imageResult.width / imageResult.height,
     svgWidth = globalConfig.location.image.svgWidth,
     svgHeight = globalConfig.location.image.svgHeight,
@@ -439,6 +439,7 @@ async function draw(canvasAdaptor, trip) {
       };
     });
   }
+  const startDownload = new Date().getTime();
 
   trip.locations.forEach((location, index) => {
     var coordinate = locationImageCoordinates[index];
@@ -451,7 +452,6 @@ async function draw(canvasAdaptor, trip) {
         })
         .then(imageResult =>
           onLoadImage(
-            canvasAdaptor,
             imageResult,
             location.signedUrl,
             coordinate,
@@ -462,11 +462,13 @@ async function draw(canvasAdaptor, trip) {
   });
 
   await Promise.all(promises);
+  const strTimer = `TIME ${new Date().getTime() - startDownload} ms: total images download completed`;
+  console.log(strTimer);
 
   canvasAdaptor.resize(w, h);
   canvasAdaptor.drawBackground(globalConfig.infographic.background);
 
-  drawFooter(canvasAdaptor);
+  await drawFooter(canvasAdaptor);
 }
 
 module.exports = {
