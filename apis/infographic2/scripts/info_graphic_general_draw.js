@@ -18,7 +18,7 @@ async function draw(trip, infographicType) {
   }
 
   canvasAdaptor.draw();
-  var resultBuf = await canvasAdaptor.toBufferJpeg();
+  var resultBuf = canvasAdaptor.toBufferJpeg();
   canvasAdaptor.remove();
 
   return resultBuf;
