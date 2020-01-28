@@ -26,7 +26,7 @@ async function exportInfo(trip) {
       locations: trip.locations.map(item => {
         return {
           ...item,
-          fromTime: moment(item.fromTime).format("LL"),
+          fromTime: moment(item.fromTime, "LL").format("LL"),
           highlights: _.isArray(item.highlights) ? item.highlights.join(", ") : item.highlights,
           signedUrl: item.signedUrl
         };

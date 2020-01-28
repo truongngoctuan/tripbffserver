@@ -29,14 +29,14 @@ async function actionExecAsync(data) {
     locale
   };
 
-  await exporter
-    .exportInfo(trip)
-    .then(buf => uploadResult(ownerId, tripId, infographicId, buf));
+  const buf = await exporter.exportInfo(trip);
+
+  await uploadResult(ownerId, tripId, infographicId, buf);
 }
 
 async function uploadResult(ownerId, tripId, infographicId, buf) {
   if (!tripId) return;
-  
+
   try {
     //pre upload
     const startPreUpload = new Date().getTime();

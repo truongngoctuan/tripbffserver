@@ -1,3 +1,5 @@
+'use strict';
+
 const { registerFont } = require("canvas");
 const paper = require("paper-jsdom-canvas");
 const fs = require("fs");
@@ -63,9 +65,11 @@ class CanvasAdaptor {
   }
 
   toBufferJpeg() {
-    return paper.view.element.toBuffer("image/jpeg", {
+    const buf = paper.view.element.toBuffer("image/jpeg", {
       quality: 0.9
     });
+
+    return buf;
   }
 
   toBufferPng() {
@@ -85,18 +89,23 @@ class CanvasAdaptor {
   //   return this._name;
   // }
   async drawImage(source, position, options = {}, cb) {
+
+
     return new Promise((resolve, reject) => {
-      var raster = source.startsWith("http")
+
+    var group = new paper.Group();
+    var raster;
+
+      raster = source.startsWith("http")
         ? new paper.Raster(source)
         : new paper.Raster(loadLocalImage(source));
 
-       const startDownload = new Date().getTime();
-      console.log(`image ${source} loading`)
+      const startDownload = new Date().getTime();
+      // console.log(`image ${source} loading`)
 
       raster.onLoad = function(e) {
-        console.log(`TIME ${new Date().getTime() - startDownload} ms: download completed`);
-
-        console.log(`image ${source} loaded`);
+        console.log(`TIME ${new Date().getTime() - startDownload} ms: image ${source} loaded`);
+        
         const { width, height } = raster;
         raster.position = new paper.Point(
           position.x + width / 2,
@@ -107,7 +116,7 @@ class CanvasAdaptor {
           const scaleWidth = options.width / width;
           const scaleHeight = options.height / height;
           const scale = _.max([scaleWidth, scaleHeight]);
-          console.log("scale", scale);
+          // console.log("scale", scale);
           raster.scale(scale);
 
           const deltaWidth = width - options.width;
@@ -128,8 +137,6 @@ class CanvasAdaptor {
             );
             path.clipMask = true;
 
-            // It is better to add the path and the raster in a group (but not mandatory)
-            var group = new paper.Group();
             group.addChild(raster);
             group.addChild(path);
           } else {
@@ -154,8 +161,6 @@ class CanvasAdaptor {
 
             path2.clipMask = true;
 
-            // It is better to add the path and the raster in a group (but not mandatory)
-            var group = new paper.Group();
             group.addChild(raster);
             group.addChild(path2);
           }
