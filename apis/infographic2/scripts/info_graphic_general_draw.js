@@ -22,7 +22,11 @@ async function info_v_01(trip, infographicType) {
     }
   }
 
-  return canvasAdaptor;
+  canvasAdaptor.draw();
+  var resultBuf = canvasAdaptor.toBufferJpeg();
+  canvasAdaptor.remove();
+
+  return resultBuf;
 }
 
 async function info_v_01_01(trip, infographicType) {

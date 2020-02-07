@@ -1,3 +1,5 @@
+'use strict';
+
 const { registerFont } = require("canvas");
 import paperShim from "./paper-jsdom-canvas";
 // import paper from "paper";
@@ -69,6 +71,8 @@ export class CanvasAdaptor {
     return paperShim.view.element.toBuffer("image/jpeg", {
       quality: 0.9
     });
+
+    return buf;
   }
 
   toBufferPng() {
@@ -94,6 +98,9 @@ export class CanvasAdaptor {
         : new paperShim.Raster(loadLocalImage(source));
 
       var group = undefined;
+
+      const startDownload = new Date().getTime();
+      // console.log(`image ${source} loading`)
 
       raster.onLoad = function(e) {
         // console.log("image loaded");

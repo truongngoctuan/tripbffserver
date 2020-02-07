@@ -4,7 +4,7 @@ module.exports = {
 
 const redisStore = {
   host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT,
+  port: process.env.REDIS_PORT
 };
 
 console.log("redisStore", redisStore);
@@ -25,7 +25,7 @@ function createQueue() {
       // console.log("Create error", err);
       // todo better handling the service
     }
-  
+
     console.log("queue created");
   });
 }
@@ -44,8 +44,14 @@ function receiveMessage(callBack) {
       //console.log("Message received.", resp);
       counter++;
       console.log("COUNTER", counter);
+      //this make sure we will delete this message anyway
+      // regardless it's a succeed or not
+      try {
+        await callBack(resp);
+      } catch (error) {
+        console.log("ERR", error);
+      }
       deleteMessage(resp.id);
-      await callBack(resp);
     } else {
       // console.log("no message received");
       SetTimeoutReceiveMessage();
@@ -75,8 +81,7 @@ function errorHandler(err) {
     console.log("ERR", "queueNotFound");
     console.log("attempting to create queue");
     createQueue();
-  }
-  else if (err) {
+  } else if (err) {
     console.log("ERR", "error on queue");
     console.log(err);
   }

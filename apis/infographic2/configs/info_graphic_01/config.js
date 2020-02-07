@@ -1,4 +1,4 @@
-var config_01_01 = {
+const config_01_01 = {
   infographic: {
     width: 1280,
     height: 1280,
@@ -30,7 +30,7 @@ var config_01_01 = {
   }
 };
 
-var config_01_02 = {
+const config_01_02 = {
   infographic: {
     width: 1280,
     height: 1500,
@@ -92,7 +92,7 @@ var config_01_02 = {
   }
 };
 
-var config_01_0304 = {
+const config_01_0304 = {
   infographic: {
     width: 940,
     height: 1500,
@@ -166,7 +166,7 @@ var config_01_0304 = {
   }
 };
 
-var config_01_0506 = {
+const config_01_0506 = {
   infographic: {
     width: 1280,
     height: 2600,
@@ -240,7 +240,7 @@ var config_01_0506 = {
   }
 };
 
-var config_01_others = {
+const config_01_others = {
   infographic: {
     width: 2060,
     height: 4200,
