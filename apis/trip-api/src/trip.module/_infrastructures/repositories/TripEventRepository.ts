@@ -3,8 +3,8 @@ import mongoose, { Model, Document } from "mongoose";
 const Schema = mongoose.Schema;
 
 interface ITripEvent {
-  TripId: String,
-  data: TripEvent,
+  TripId: string;
+  data: TripEvent;
 }
 interface ITripEventModel extends ITripEvent, Document {}
 
@@ -20,7 +20,7 @@ const TripEventModel: Model<ITripEventModel> = mongoose.model<ITripEventModel>(
 
 export class TripEventRepository implements ITripEventRepository {
   async save(event: TripEvent) {
-    var dbEvent = new TripEventModel({
+    const dbEvent = new TripEventModel({
       TripId: event.tripId,
       data: event,
     });
@@ -28,7 +28,7 @@ export class TripEventRepository implements ITripEventRepository {
   }
 
   async getAll(id: string): Promise<TripEvent[]> {
-    var Trips = await TripEventModel.find({ TripId: id }).exec();
+    const Trips = await TripEventModel.find({ TripId: id }).exec();
     return Trips.map(item => item.data);
   }
 }

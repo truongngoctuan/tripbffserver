@@ -1,4 +1,3 @@
-const utils = require("../utils");
 const globalInfographic01Config = require("../../configs/info_graphic_01/config");
 const commonFunc = require("../commonFunc");
 const _ = require("lodash");
@@ -8,13 +7,12 @@ var globalConfig = globalInfographic01Config.config_01_01;
 var w = globalConfig.infographic.width,
   h = globalConfig.infographic.height,
   content_height = globalConfig.infographic.content_height,
-  footer_height = globalConfig.infographic.footer_height,
   paddingLeftRight = globalConfig.infographic.paddingLeftRight,
   c_paddingTop = globalConfig.infographic.c_paddingTop;
 
 async function drawContent(canvasAdaptor, trip) {
   let startPoint_px = paddingLeftRight,
-    startPoint_py = h - content_height - footer_height + c_paddingTop;
+    startPoint_py = h - content_height + c_paddingTop;
 
   let feelingLabel = commonFunc.getFeelingLabel(trip.locale);
 
@@ -56,7 +54,7 @@ async function drawContent(canvasAdaptor, trip) {
       wrapNumber: w - paddingLeftRight
     }
   );
-  
+
   let locationNameNodeBbox = locationNameNode.bounds;
   var nextElementYCoordinate =
     locationNameNodeBbox.y +
@@ -64,7 +62,7 @@ async function drawContent(canvasAdaptor, trip) {
     globalConfig.location.paddingTop;
 
   if (nodeFeelingActivity) {
-    console.log("nodeFeelingActivity", nodeFeelingActivity)
+    console.log("nodeFeelingActivity", nodeFeelingActivity);
     let feelingActivityNode = canvasAdaptor.drawText(
       nodeFeelingActivity,
       {
@@ -87,7 +85,7 @@ async function drawContent(canvasAdaptor, trip) {
   }
 
   if (highlights) {
-    console.log("highlights", highlights)
+    console.log("highlights", highlights);
     let hightlightNode = canvasAdaptor.drawText(
       highlights,
       {
@@ -109,13 +107,10 @@ async function drawContent(canvasAdaptor, trip) {
       globalConfig.location.paddingTop;
   }
 
-  await canvasAdaptor.drawImage(
-    "./data/images/App_Signature.png",
-    {
-      x: w - globalConfig.footer.marginRight,
-      y: h - globalConfig.footer.marginBottom
-    }
-  );
+  await canvasAdaptor.drawImage("./data/images/App_Signature.png", {
+    x: w - globalConfig.footer.marginRight,
+    y: h - globalConfig.footer.marginBottom
+  });
 }
 
 function capitalizeFirstLetter(string) {
@@ -123,12 +118,12 @@ function capitalizeFirstLetter(string) {
 }
 
 async function draw(canvasAdaptor, trip) {
-
   // load default image if location has no image
-  var imgUri = trip.locations[0].signedUrl && !_.isEmpty(trip.locations[0].signedUrl)
-    ? trip.locations[0].signedUrl
-    : "./data/images/EmptyImage01.jpg";
-  console.log("original w h", `${w} ${h}`)
+  var imgUri =
+    trip.locations[0].signedUrl && !_.isEmpty(trip.locations[0].signedUrl)
+      ? trip.locations[0].signedUrl
+      : "./data/images/EmptyImage01.jpg";
+  console.log("original w h", `${w} ${h}`);
   await canvasAdaptor.drawImage(
     imgUri,
     { x: 0, y: 0 },
@@ -140,8 +135,8 @@ async function draw(canvasAdaptor, trip) {
       // var ratio = width / height;
       // var h = w / ratio;
 
-      h += content_height + footer_height;
-      console.log("new w h", `${w} ${h}`)
+      h += content_height;
+      console.log("new w h", `${w} ${h}`);
       canvasAdaptor.resize(w, h);
     }
   );

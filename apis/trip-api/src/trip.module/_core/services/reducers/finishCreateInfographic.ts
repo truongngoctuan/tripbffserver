@@ -6,11 +6,11 @@ export default function finishCreateInfographic(
   prevState: ITrip,
   command: InfographicExportedEvent
 ): ITrip {
-  var imageIdx = _.findIndex(
+  const imageIdx = _.findIndex(
     prevState.infographics,
     info => info.infographicId == command.infographicId
   );
-  var infographic = prevState.infographics[imageIdx];
+  const infographic = prevState.infographics[imageIdx];
   infographic.externalStorageId = command.externalStorageId;
   infographic.status = "EXPORTED";
 

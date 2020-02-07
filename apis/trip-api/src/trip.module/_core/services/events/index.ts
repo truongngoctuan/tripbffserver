@@ -21,6 +21,7 @@ export type TripEvent =
   | TripLocationUpdatedDescriptionEvent
   | InfographicCreatedEvent
   | InfographicExportedEvent
+  | InfographicSharedEvent
   | TripDeletedEvent;
 
 export type TripImportLocationsEvent = {
@@ -29,7 +30,7 @@ export type TripImportLocationsEvent = {
   tripId: string;
   locations: {
     locationId: string;
-    name: string,
+    name: string;
     location: {
       long: number;
       lat: number;
@@ -101,10 +102,10 @@ export type TripLocationUpdatedFeelingEvent = {
   ownerId: string;
   tripId: string;
   locationId: string;
-  feelingId: string,
-  label_en: string,
-  label_vi: string,
-  feelingIcon: string
+  feelingId: string;
+  label_en: string;
+  label_vi: string;
+  feelingIcon: string;
 }
 
 export type TripLocationUpdatedActivityEvent = {
@@ -112,10 +113,10 @@ export type TripLocationUpdatedActivityEvent = {
   ownerId: string;
   tripId: string;
   locationId: string;
-  activityId: string,
-  label_en: string,
-  label_vi: string,
-  activityIcon: string
+  activityId: string;
+  label_en: string;
+  label_vi: string;
+  activityIcon: string;
 }
 
 export type TripLocationUpdatedHighlightEvent = {
@@ -123,7 +124,7 @@ export type TripLocationUpdatedHighlightEvent = {
   ownerId: string;
   tripId: string;
   locationId: string;
-  highlights: Array<IHighlight>
+  highlights: Array<IHighlight>;
 }
 
 export type TripLocationUpdatedAddressEvent = {
@@ -131,10 +132,10 @@ export type TripLocationUpdatedAddressEvent = {
   ownerId: string;
   tripId: string;
   locationId: string;
-  name: string,
-  address: string,
-  long: number,
-  lat: number
+  name: string;
+  address: string;
+  long: number;
+  lat: number;
 }
 
 export type TripLocationUpdatedDescriptionEvent = {
@@ -142,7 +143,7 @@ export type TripLocationUpdatedDescriptionEvent = {
   ownerId: string;
   tripId: string;
   locationId: string;
-  description: string
+  description: string;
 }
 
 export type InfographicCreatedEvent = {
@@ -158,6 +159,13 @@ export type InfographicExportedEvent = {
   tripId: string;
   infographicId: string;
   externalStorageId: string;
+};
+
+export type InfographicSharedEvent = {
+  type: "InfographicShared";
+  ownerId: string;
+  tripId: string;
+  infographicId: string;
 };
 
 export class EventHandler {

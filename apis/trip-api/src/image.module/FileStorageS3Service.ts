@@ -42,7 +42,7 @@ export class FileStorageS3Service implements IFileStorageService2 {
   async save(fullPath: string) {
     const fileName = path.parse(fullPath).name;
 
-    var fileObject = new File({
+    const fileObject = new File({
       externalId: fileName,
       category: "",
       fileName: fullPath
@@ -68,7 +68,7 @@ export class FileStorageS3Service implements IFileStorageService2 {
   }
 
   async getInfoById(externalId: string) {
-    var fileObject = (await File.findOne({ externalId }).exec()) as IFileModel;
+    const fileObject = (await File.findOne({ externalId }).exec()) as IFileModel;
 
     if (fileObject == null) throw "file not found";
     const fileInfo: IFileInfo = this.getFileInfo(fileObject);
@@ -114,7 +114,7 @@ async function signPutUrl(fullPath: string, mimeType: string) {
   return pros;
 }
 
-async function signGetUrl(fullPath: string, expires: number = 60) {
+async function signGetUrl(fullPath: string, expires = 60) {
   const s3 = new aws.S3({
     accessKeyId: AWS_ACCESS_KEY_ID,
     secretAccessKey: AWS_SECRET_ACCESS_KEY,
@@ -154,7 +154,7 @@ async function signGetUrl(fullPath: string, expires: number = 60) {
 
 //expired: 60 days -> same time with user login expiration
 // will be re-signed again when user refresh trip profile or login again
-async function signGetIconUrl(fullPath: string, expires: number = 5184000) {
+async function signGetIconUrl(fullPath: string, expires = 5184000) {
   const s3 = new aws.S3({
     accessKeyId: AWS_ACCESS_KEY_ID,
     secretAccessKey: AWS_SECRET_ACCESS_KEY,

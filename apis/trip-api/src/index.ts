@@ -13,7 +13,7 @@ console.log("checking current time in server", moment().format());
 console.log(moment.tz.guess());
 // -------------------
 
-import { Server } from "hapi";
+import { Server } from "@hapi/hapi";
 import { registerModules } from "./trip.module/_core/services/commands";
 const authService = require("./bootstraping/authentication.js");
 const swaggerUiService = require("./bootstraping/swagger-documentation");
@@ -28,6 +28,7 @@ const tripLocationRoutes = require("./trip.module/TripLocationRoute");
 const tripInfographicRoutes = require("./trip.module/TripInfographicRoute");
 const dataSourceRoutes = require("./trip.module/DataSourceRoute");
 const userSettingRoutes = require("./setting.module/UserSettingRoute");
+const chartRoutes = require("./statistics.module/ChartsRoute");
 
 const redis = require("redis");
 
@@ -96,6 +97,7 @@ const redis = require("redis");
   imageRoutes.init(server);
   dataSourceRoutes.init(server);
   userSettingRoutes.init(server);
+  chartRoutes.init(server);
 
   registerModules();
 

@@ -22,6 +22,7 @@ import { favorTripLocationImage } from "./favorTripLocationImage";
 import { updateLocationHighlight } from "./updateLocationHighlight";
 import { updateLocationDescription } from "./updateLocationDescription";
 import { deleteTrip } from "./deleteTrip";
+import finishShareInfographic from "./finishShareInfographic";
 
 // var staticEventHandlers = new Map<string, Function>();
 
@@ -40,10 +41,10 @@ export class TripReducers {
     if (!this.TripEventRepository)
       throw "are you forgot to init TripEventRepository ?";
 
-    var events = await this.TripEventRepository.getAll(id);
+    const events = await this.TripEventRepository.getAll(id);
     // console.log("events");
     // console.log(JSON.stringify(events));
-    var state: ITrip = {
+    let state: ITrip = {
       tripId: "",
       name: "",
       fromDate: moment(),
@@ -77,9 +78,9 @@ export class TripReducers {
       case "LocationAdded":
         return addLocation(state, event);
       case "LocationFeelingUpdated":
-        return updateLocationFeeling(state, event)
+        return updateLocationFeeling(state, event);
       case "LocationActivityUpdated":
-        return updateLocationActivity(state, event)
+        return updateLocationActivity(state, event);
       case "LocationAddressUpdated":
         return updateLocationAddress(state, event);
       case "LocationHighlightUpdated":
@@ -98,6 +99,8 @@ export class TripReducers {
         return createInfographic(state, event);
       case "InfographicExported":
         return finishCreateInfographic(state, event);
+      case "InfographicShared": 
+        return finishShareInfographic(state, event);
       case "TripDeleted":
         return deleteTrip(state, event);
       default:
@@ -149,9 +152,9 @@ export class TripReducers {
             return {
               ...this.defaultImageValue,
               ...img
-            }
+            };
         })
-        }
+        };
       })
     };
   }
@@ -162,19 +165,19 @@ export class TripReducers {
   ): ITrip {
 
     //get location
-    var locationIdx = _.findIndex(
+    const locationIdx = _.findIndex(
       prevState.locations,
       loc => loc.locationId == command.locationId
     );
 
-    var location = prevState.locations[locationIdx];
+    const location = prevState.locations[locationIdx];
     if (location) {
       //get image
-      var imageIdx = _.findIndex(
+      const imageIdx = _.findIndex(
         location.images,
         img => img.imageId == command.imageId
       );
-      var image = location.images[imageIdx];
+      const image = location.images[imageIdx];
 
       if (image) {
         image.externalStorageId = command.externalStorageId;

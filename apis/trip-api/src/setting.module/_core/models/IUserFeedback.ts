@@ -1,6 +1,6 @@
 
 export interface IUserFeedback {
-    userId: string
+    userId: string;
     feedback: string;
     email: string;
 }

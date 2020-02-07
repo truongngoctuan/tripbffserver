@@ -4,11 +4,11 @@ import { ServiceBus } from "../../TripServiceBus";
 import { Succeed } from "../../../../../_shared/utils";
 
 export type UpdateLocationDescriptionCommand = {
-  type: "UpdateLocationDescription",
-  ownerId: string,
-  tripId: string,
-  locationId: string,
-  description: string
+  type: "UpdateLocationDescription";
+  ownerId: string;
+  tripId: string;
+  locationId: string;
+  description: string;
 };
 
 export async function UpdateLocationDescription(
@@ -19,7 +19,7 @@ export async function UpdateLocationDescription(
 ) {
   const { ownerId, tripId, locationId, description } = command;
 
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "LocationDescriptionUpdated",
     ownerId,
     tripId,

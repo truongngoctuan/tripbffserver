@@ -2,8 +2,6 @@ import { ISearchLocationRepository } from "../../_core/models/ISearchLocationRep
 import { SearchLocationDocument, ISearchLocationDocument } from "../models/SearchLocationModel";
 import { ISearchLocationModel } from "../models/ISearchLocationModel";
 import { ISearchLocation } from "../../_core/models/ISearchLocation";
-import { DocumentQuery } from "mongoose";
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 
 export class SearchLocationRepository implements ISearchLocationRepository {
     toLocation(o: ISearchLocationModel): ISearchLocation {
@@ -12,22 +10,22 @@ export class SearchLocationRepository implements ISearchLocationRepository {
             address: o.address,
             long: o.long,
             lat: o.lat
-        }
+        };
     }
 
     public async list(query: string) {
-        var locations: ISearchLocationDocument[] = [];
+        let locations: ISearchLocationDocument[] = [];
 
         if (query) {  
-            var queryItems = query.split(' '),                
-                queries: string[] = [],
-                allQueryArrays: any[] = [];
+            const queryItems = query.split(" ");
+            let queries: string[] = [];
+            const allQueryArrays: any[] = [];
 
             queryItems.forEach(item => {                
                 item = item.toLowerCase();
 
-                if (item.startsWith('d')) {
-                    var newItem = item.replace('d', 'đ');
+                if (item.startsWith("d")) {
+                    const newItem = item.replace("d", "đ");
                     allQueryArrays.push([item, newItem]);
                 }
                 else {
@@ -35,12 +33,12 @@ export class SearchLocationRepository implements ISearchLocationRepository {
                 }
             });            
 
-            var queries = this.allPossibleCases(allQueryArrays),
-                numberOfQuery = queries.length;
+            queries = this.allPossibleCases(allQueryArrays);
+            const numberOfQuery = queries.length;
 
-            for (var i = 0; i < numberOfQuery; i++) {
-                var phrase = "\"" + queries[i] + "\"";      
-                var searchLocations = 
+            for (let i = 0; i < numberOfQuery; i++) {
+                const phrase = "\"" + queries[i] + "\"";      
+                const searchLocations = 
                     await SearchLocationDocument.find({ $text: { $search: phrase } }, { score: { $meta: "textScore" } })
                                                 .sort( { score: { $meta: "textScore" } })
                                                 .limit(6);   
@@ -58,16 +56,16 @@ export class SearchLocationRepository implements ISearchLocationRepository {
     } 
     
     private allPossibleCases(arr: any[]) {
-        var result: string[] = [];
+        let result: string[] = [];
 
         if (arr.length == 1) {
           result = arr[0];
         } 
         else {
-          var allCasesOfRest: string[] = this.allPossibleCases(arr.slice(1));  // recur with the rest of array
+          const allCasesOfRest: string[] = this.allPossibleCases(arr.slice(1));  // recur with the rest of array
           
-          for (var i = 0; i < allCasesOfRest.length; i++) {
-            for (var j = 0; j < arr[0].length; j++) {
+          for (let i = 0; i < allCasesOfRest.length; i++) {
+            for (let j = 0; j < arr[0].length; j++) {
               result.push(arr[0][j] + " " + allCasesOfRest[i]);
             }
           }
@@ -77,7 +75,7 @@ export class SearchLocationRepository implements ISearchLocationRepository {
     }
 
     public async insertMany(locations: Array<ISearchLocation>) {        
-        var searchLocationDocuments = locations.map(f => {
+        const searchLocationDocuments = locations.map(f => {
             return new SearchLocationDocument({
                 title: f.title,
                 address: f.address,
@@ -89,4 +87,4 @@ export class SearchLocationRepository implements ISearchLocationRepository {
     }    
 }
 
-export default SearchLocationRepository
+export default SearchLocationRepository;

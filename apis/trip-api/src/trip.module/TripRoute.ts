@@ -1,110 +1,87 @@
-import { Server } from "hapi";
-const Joi = require("joi");
-import uuid from "uuid/v1";
-import { Err } from "../_shared/utils";
-import { IoC } from "./IoC"
+import { Server } from "@hapi/hapi";
+import Joi from "@hapi/joi";
 import { CUtils } from "../_shared/ControllerUtils";
 import moment = require("moment-timezone");
 
 console.log("checking current time in server", moment().format());
 
-
-const tripCommandHandler = IoC.tripCommandHandler;
-const tripQueryHandler = IoC.tripQueryHandler;
-const minimizedTripQueryHandler = IoC.minimizedTripsQueryHandler;
+import {
+  listTripsAction,
+  getTripByIdAction,
+  getMinimizedTripByIdAction,
+  createTripAction,
+  patchTripAction,
+  deleteTripAction
+} from "./actions/TripActions";
+import { joiTripSchema, joiMinimizedTripsSchema, IdSchema } from "./JoiSchemas";
 
 module.exports = {
-  init: function(server: Server) {
+  init: function(server: Server): void {
     server.route({
       method: "GET",
       path: "/trips",
-      handler: async function(request) {
-        const userId = CUtils.getUserId(request);
-        var trips = await minimizedTripQueryHandler.list(userId);
-
-        if (!trips) return Err("can't get data after create trip");
-                
-        console.log(trips.length)
-        return trips;
-      },
+      handler: async request =>
+        await listTripsAction(CUtils.getUserId(request)),
       options: {
         auth: "simple",
-        tags: ["api"]
+        tags: ["api"],
+        notes: ["get full list of trips"],
+        response: {
+          // todo setup date/moment validation correctly
+          // schema: joiMinimizedTripsSchema
+        }
       }
     });
 
     server.route({
       method: "GET",
       path: "/trips/minimized/{id}",
-      handler: async function(request) {
-        var tripId = request.params.id;
+      handler: async request => {
+        const tripId = request.params.id;
         const userId = CUtils.getUserId(request);
 
-        console.log("trip id :" + tripId);
-        var trip = await minimizedTripQueryHandler.getById(userId, tripId);
-        if (!trip) throw "trip not found";
-        return trip;
+        return await getMinimizedTripByIdAction(userId, tripId);
       },
       options: {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
-            id: Joi.required().description("the id for the todo item")
-          }
+          params: IdSchema
+        },
+        response: {
+          schema: joiTripSchema
         }
       }
-    });    
+    });
+
+    type postPayloadType = {
+      name: string;
+      fromDate: string;
+      toDate: string;
+    };
+    const postPayloadSchema = Joi.object({
+      name: Joi.string().required(),
+      fromDate: Joi.string().required(),
+      toDate: Joi.string().required()
+    });
 
     server.route({
       method: "POST",
       path: "/trips",
-      handler: async function(request) {
-        const { name, fromDate, toDate } = request.payload as any;
-        console.log("trip name :" + name);
-        console.log("trip from date:" + fromDate);
-        console.log("trip to date:" + toDate);
+      handler: async request => {
+        const { name, fromDate, toDate } = request.payload as postPayloadType;
+        const ownerId = CUtils.getUserId(request);
 
-        try {
-          var tripId = uuid();
-          const ownerId = CUtils.getUserId(request);
-
-          var commandResult = await tripCommandHandler.exec({
-            type: "createTrip",
-            ownerId,
-            tripId: tripId.toString(),
-            name,
-            fromDate,
-            toDate
-          });
-
-          if (commandResult.isSucceed) {
-            var queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
-
-            if (!queryResult) return Err("can't get data after create trip");
-            return queryResult.tripId;
-          }
-
-          return commandResult.errors;
-        } catch (error) {
-          console.log(error);
-        }
+        return await createTripAction(ownerId, name, fromDate, toDate);
       },
       options: {
         auth: "simple",
         tags: ["api"],
         validate: {
-          payload: {
-            name: Joi.string()
-              .required()
-              .description("the id for the todo item"),
-            fromDate: Joi.string()
-              .required()
-              .description("the fromDate"),
-            toDate: Joi.string()
-              .required()
-              .description("the toDate")
-          }
+          payload: postPayloadSchema
+        },
+        response: {
+          schema: Joi.string()
         }
       }
     });
@@ -113,50 +90,26 @@ module.exports = {
       method: "PATCH",
       path: "/trips/{id}",
       handler: async function(request) {
-        var tripId = request.params.id;
-        const { name, fromDate, toDate } = request.payload as any;
+        const tripId = request.params.id;
+        const { name, fromDate, toDate } = request.payload as postPayloadType;
         console.log("trip name", name);
         console.log("trip from date:", fromDate);
         console.log("trip to date:", toDate);
 
-        try {
-          const ownerId = CUtils.getUserId(request);
+        const ownerId = CUtils.getUserId(request);
 
-          var commandResult = await tripCommandHandler.exec({
-            type: "updatePatchTrip",
-            ownerId,
-            tripId,
-            name,
-            fromDate: moment(fromDate),
-            toDate: moment(toDate)
-          });
-
-          if (commandResult.isSucceed) {
-            var queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
-
-            if (!queryResult) return Err("can't get data after patch trip");
-            return queryResult;
-          }
-
-          return commandResult.errors;
-        } catch (error) {
-          console.log(error);
-        }
+        return await patchTripAction(ownerId, tripId, name, fromDate, toDate);
       },
       options: {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
-            id: Joi.required().description("the id for the todo item")
-          },
-          payload: {
-            name: Joi.string()
-              .description("the id for the todo item"),
-            fromDate: Joi.string()
-              .description("the fromDate"),
-            toDate: Joi.string()
-              .description("the toDate")
+          params: IdSchema,
+          payload: postPayloadSchema
+        },
+        response: {
+          status: {
+            200: joiTripSchema
           }
         }
       }
@@ -166,54 +119,40 @@ module.exports = {
       method: "GET",
       path: "/trips/{id}",
       handler: async function(request) {
-        var tripId = request.params.id;
+        const tripId = request.params.id;
         const userId = CUtils.getUserId(request);
 
-        console.log("trip id :" + tripId);
-        var trip = await tripQueryHandler.GetById(userId, tripId);
-        if (!trip) throw "trip not found";
-        return trip;
+        return await getTripByIdAction(userId, tripId);
       },
       options: {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
-            id: Joi.required().description("the id for the todo item")
+          params: IdSchema
+        },
+        response: {
+          status: {
+            200: Joi.array().items(joiTripSchema)
           }
         }
       }
-    });    
+    });
 
     server.route({
       method: "DELETE",
       path: "/trips/{id}",
       handler: async function(request) {
-        var tripId = request.params.id;
+        const tripId = request.params.id;
         const ownerId = CUtils.getUserId(request);
-
-        var commandResult = await tripCommandHandler.exec({
-          type: "deleteTrip",
-          ownerId,
-          tripId,
-          isDeleted: true
-        });
-
-        if (commandResult.isSucceed) {
-          return true;
-        }
-
-        return commandResult.errors;
+        return await deleteTripAction(ownerId, tripId);
       },
       options: {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
-            id: Joi.required().description("the id for the todo item")
-          }
+          params: IdSchema
         }
       }
-    });  
+    });
   }
 };

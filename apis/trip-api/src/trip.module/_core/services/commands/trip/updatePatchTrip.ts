@@ -22,7 +22,7 @@ export async function updatePatchTrip(command: UpdatePatchTripCommand, eventHand
 
   if (name) {
     //todo some validations on the data
-    var event: TripEvent = {
+    const event: TripEvent = {
       type: "TripNameUpdated",
       ownerId,
       tripId,
@@ -37,7 +37,7 @@ export async function updatePatchTrip(command: UpdatePatchTripCommand, eventHand
 
   if (fromDate || toDate) {
     //todo some validations on the data
-    var event: TripEvent = {
+    const event: TripEvent = {
       type: "TripDateRangeUpdated",
       ownerId,
       tripId,

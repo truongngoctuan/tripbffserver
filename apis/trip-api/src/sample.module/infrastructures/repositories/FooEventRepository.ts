@@ -4,8 +4,8 @@ import mongoose, { Model, Document } from "mongoose";
 const Schema = mongoose.Schema;
 
 interface IFooEvent {
-  fooId: String,
-  data: FooEvent,
+  fooId: string;
+  data: FooEvent;
 }
 interface IFooEventModel extends IFooEvent, Document {}
 
@@ -21,15 +21,15 @@ const FooEventModel: Model<IFooEventModel> = mongoose.model<IFooEventModel>(
 
 export class FooEventRepository implements IFooEventRepository {
   async save(event: FooEvent) {
-    var dbEvent = new FooEventModel({
+    const dbEvent = new FooEventModel({
       fooId: event.fooId,
       data: event,
     });
     dbEvent.save();
   }
 
-  async getAll(id: String): Promise<FooEvent[]> {
-    var foos = await FooEventModel.find({ fooId: id }).exec();
+  async getAll(id: string): Promise<FooEvent[]> {
+    const foos = await FooEventModel.find({ fooId: id }).exec();
     return foos.map(item => item.data);
   }
 }

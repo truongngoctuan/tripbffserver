@@ -3,8 +3,8 @@ import { IUserTripDocument, UserTripSchema } from "./UserTripModel";
 import { IUserTripsDocument, UserTripsSchema } from "./UserTripsModel";
 
 export interface IMongooseSchemas {
-  UserTripDocument: Model<IUserTripDocument>
-  UserTripsDocument: Model<IUserTripsDocument>
+  UserTripDocument: Model<IUserTripDocument>;
+  UserTripsDocument: Model<IUserTripsDocument>;
 }
 
 export function initSchemas(mongoose: any) {
@@ -20,7 +20,7 @@ export function initSchemas(mongoose: any) {
   const SchemaCollections: IMongooseSchemas = {
     UserTripDocument,
     UserTripsDocument
-  }
+  };
 
   return SchemaCollections;
 }

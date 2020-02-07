@@ -38,7 +38,7 @@ export async function uploadImage(
     "location not found"
   );
 
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "LocationImageUploaded",
     ownerId,
     tripId,

@@ -9,20 +9,20 @@ export function favorTripLocationImage(
 ): ITrip {
 
   //get location
-  var locationIdx = _.findIndex(
+  const locationIdx = _.findIndex(
     prevState.locations,
     loc => loc.locationId == command.locationId
   );
 
-  var location = prevState.locations[locationIdx];
+  const location = prevState.locations[locationIdx];
 
   if (location) {
     //get image
-    var imageIdx = _.findIndex(
+    const imageIdx = _.findIndex(
       location.images,
       img => img.imageId == command.imageId
     );
-    var image = location.images[imageIdx];
+    const image = location.images[imageIdx];
 
     if (image) {
       image.isFavorite = command.isFavorite;

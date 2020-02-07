@@ -24,7 +24,7 @@ export async function finishExportInfographic(
   const trip = await reducers.getCurrentState(tripId);
   if (!trip) throw "trip not found";
 
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "InfographicExported",
     ownerId,
     tripId,

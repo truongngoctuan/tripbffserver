@@ -9,11 +9,11 @@ import {
 export class FooReducers {
   constructor(private fooEventRepository?: IFooEventRepository) {}
 
-  async getCurrentState(id: String): Promise<IFoo> {
+  async getCurrentState(id: string): Promise<IFoo> {
     if (!this.fooEventRepository) throw "are you forgot to init fooEventRepository ?";
     
-    var events = await this.fooEventRepository.getAll(id);
-    var state: IFoo = {
+    const events = await this.fooEventRepository.getAll(id);
+    let state: IFoo = {
       id: "",
       name: "",
       description: ""

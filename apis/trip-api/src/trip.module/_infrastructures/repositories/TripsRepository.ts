@@ -27,16 +27,16 @@ export class TripsRepository implements ITripsRepository {
   }
 
   public async getById(ownerId: string, tripId: string) {
-    var userTrips = await this.getUserTrips(ownerId);
+    const userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) return undefined;
 
-    var trip = _.find(userTrips.trips, trip => trip.tripId === tripId);
+    const trip = _.find(userTrips.trips, trip => trip.tripId === tripId);
     if (!trip) return undefined;
     return this.toTripDto(trip);    
   }
 
   public async list(ownerId: string) {
-    var userTrips = await this.getUserTrips(ownerId);
+    const userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) return [];
 
     return userTrips.trips.map(item => this.toTripDto(item));
@@ -45,16 +45,16 @@ export class TripsRepository implements ITripsRepository {
   public async create(ownerId: string, payload: ITripMinimized) {
     const { tripId, name, fromDate, toDate, locationImages, isDeleted } = payload;
 
-    var trip: ITripsModel = {
+    const trip: ITripsModel = {
       tripId,
       name,
       fromDate: moment(fromDate).toDate(),
       toDate: moment(toDate).toDate(),
       locationImages,
       isDeleted: isDeleted
-    }
+    };
 
-    var userTrips = await this.getUserTrips(ownerId);
+    let userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) {
       userTrips = new this._mg.UserTripsDocument({
         userId: ownerId
@@ -64,16 +64,16 @@ export class TripsRepository implements ITripsRepository {
     userTrips.trips.push(trip);
     await userTrips.save();
 
-    var tripModel = userTrips.trips[userTrips.trips.length - 1];
+    const tripModel = userTrips.trips[userTrips.trips.length - 1];
 
     return this.toTripDto(tripModel);
   }
 
   public async update(ownerId: string, payload: ITripMinimized) {
-    var userTrips = await this.getUserTrips(ownerId);
+    const userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) throw "can't find Trip from user id = " + ownerId;
 
-    var trip = _.find(userTrips.trips, trip => trip.tripId === payload.tripId);
+    const trip = _.find(userTrips.trips, trip => trip.tripId === payload.tripId);
     if (!trip) throw "can't find Trip with id = " + payload.tripId;
 
     trip.name = payload.name;

@@ -1,7 +1,7 @@
 import mongoose, { Model, Document } from "mongoose";
 const Schema = mongoose.Schema;
 
-export interface IRegisterNotifyDocument extends Document {}
+export type IRegisterNotifyDocument = Document
 
 const RegisterNotifySchema = new Schema({
     email: String,

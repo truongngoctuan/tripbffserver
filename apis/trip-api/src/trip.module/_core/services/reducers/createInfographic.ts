@@ -5,7 +5,7 @@ export default function createInfographic(
   prevState: ITrip,
   command: InfographicCreatedEvent
 ): ITrip {
-  var newInfographic: IInfographic = {
+  const newInfographic: IInfographic = {
     infographicId: command.infographicId,
     status: "CREATED"
   };
