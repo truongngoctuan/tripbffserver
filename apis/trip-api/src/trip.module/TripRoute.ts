@@ -2,6 +2,7 @@ import { Server } from "@hapi/hapi";
 import Joi from "@hapi/joi";
 import { CUtils } from "../_shared/ControllerUtils";
 import moment = require("moment-timezone");
+import { failActionInResponse } from "../_shared/joi-utils";
 
 console.log("checking current time in server", moment().format());
 
@@ -14,7 +15,6 @@ import {
   deleteTripAction
 } from "./actions/TripActions";
 import { joiTripSchema, joiMinimizedTripsSchema, IdSchema } from "./JoiSchemas";
-import Boom from "boom";
 
 module.exports = {
   init: function(server: Server): void {
@@ -135,22 +135,7 @@ module.exports = {
           status: {
             200: joiTripSchema
           },
-          failAction: async (request, h, err): Promise<void> => {
-            if (err) {
-              if (process.env.NODE_ENV === "production") {
-                // In prod, log a limited error message and throw the default Bad Request error.
-                console.error("ValidationError:", err.message);
-                throw Boom.badRequest("Invalid request payload input");
-              } else {
-                // During development, log and respond with the full error.
-                console.error(err);
-                throw err;
-              }
-            }
-            else {
-              console.error("unknown error");
-            }
-          }
+          failAction: failActionInResponse
         }
       }
     });

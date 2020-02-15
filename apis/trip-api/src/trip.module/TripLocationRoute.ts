@@ -4,17 +4,18 @@ import { IoC } from "./IoC";
 import { CUtils } from "../_shared/ControllerUtils";
 import uuid4 from "uuid/v4";
 import { IHighlight, ITripLocation } from "./_core/models/ITrip";
-import moment = require("moment");
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
 import Joi from "@hapi/joi";
 import { joiLocationSchema, IdSchema } from "./JoiSchemas";
+import { failActionInResponse } from "../_shared/joi-utils";
 
 module.exports = {
   init(server: Server): void {
     
     //todo merge 2 addLocation into one endpoint
+    //todo this api `replace` old locations by a new one
     server.route({
       method: "POST",
       path: "/trips/{id}/locations",
@@ -54,6 +55,7 @@ module.exports = {
         tags: ["api"],
         validate: {
           payload: Joi.array().items(joiLocationSchema),
+          failAction: failActionInResponse
         },
       },
     });
@@ -91,6 +93,7 @@ module.exports = {
         tags: ["api"],
         validate: {
           payload: joiLocationSchema,
+          failAction: failActionInResponse
         },
       },
     });
