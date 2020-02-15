@@ -51,7 +51,6 @@ export class TripRepository implements ITripRepository {
         return {
           infographicId: infographic.infographicId,
           externalStorageId: infographic.externalStorageId,
-          externalUrl: "",
           status: infographic.status as InfographicStatus
         };
       }),

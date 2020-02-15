@@ -27,7 +27,6 @@ export const joiLocationSchema = Joi.object({
 
 export const joiInfographicSchema = Joi.object({
   infographicId: Joi.string().required(),
-  // externalUrl: Joi.string().optional(), //todo why empty ?
   status: Joi.string().required(),
   externalStorageId: Joi.string().optional()
 });
