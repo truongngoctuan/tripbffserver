@@ -1,10 +1,8 @@
-import { Moment } from "moment";
-
 export interface ITripMinimized {
   tripId: string;
   name: string;
-  fromDate: Moment;
-  toDate: Moment;
+  fromDate: Date;
+  toDate: Date;
   isDeleted: boolean;
   locationImages: {
     name: string;

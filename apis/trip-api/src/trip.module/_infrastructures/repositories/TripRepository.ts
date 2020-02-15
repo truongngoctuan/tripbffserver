@@ -14,20 +14,20 @@ export class TripRepository implements ITripRepository {
     return {
       tripId: o.tripId,
       name: o.name,
-      fromDate: moment(o.fromDate),
-      toDate: moment(o.toDate),
+      fromDate: o.fromDate,
+      toDate: o.toDate,
       locations: _.map(o.locations, loc => {
         return {
           locationId: loc.locationId,
           name: loc.name,
           location: loc.location,
-          fromTime: moment(loc.fromTime),
-          toTime: moment(loc.toTime),
+          fromTime: loc.fromTime,
+          toTime: loc.toTime,
           images: loc.images.map(img => {
             return {
               imageId: img.imageId,
               url: img.url,
-              time: moment(img.time),
+              time: img.time,
               externalStorageId: img.externalStorageId,
               externalUrl: "",
               thumbnailExternalUrl: "",
@@ -104,8 +104,8 @@ export class TripRepository implements ITripRepository {
     if (!trip) throw "can't find Trip with id = " + payload.tripId;
 
     trip.name = payload.name;
-    trip.fromDate = payload.fromDate.toDate();
-    trip.toDate = payload.toDate.toDate();
+    trip.fromDate = payload.fromDate;
+    trip.toDate = payload.toDate;
     trip.locations = _.map(payload.locations, loc => ({
       locationId: loc.locationId,
       name: loc.name,
@@ -114,7 +114,7 @@ export class TripRepository implements ITripRepository {
       toTime: moment(loc.toTime).toDate(),
       images: loc.images.map(img => ({
         ...img,
-        time: img.time.toDate(),
+        time: img.time,
       })),
       description: loc.description,
       feeling: loc.feeling,

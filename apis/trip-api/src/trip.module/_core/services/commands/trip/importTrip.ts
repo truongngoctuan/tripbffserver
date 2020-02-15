@@ -22,12 +22,12 @@ export async function importTrip(command: ImportTripCommand, eventHandler: Event
   //add ids internally
   _.each(locations, loc => {
     loc.locationId = uuid4();
-    loc.fromTime = moment(loc.fromTime);
-    loc.toTime = moment(loc.toTime);
+    loc.fromTime = loc.fromTime;
+    loc.toTime = loc.toTime;
 
     _.each(loc.images, img => {
       img.imageId = uuid4();
-      img.time = moment(img.time);
+      img.time = img.time;
     });
   });
 

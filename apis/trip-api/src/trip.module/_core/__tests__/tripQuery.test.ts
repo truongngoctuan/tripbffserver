@@ -36,8 +36,8 @@ beforeEach(async () => {
     ownerId: "ownerId",
     tripId: "tripId",
     name: "name",
-    fromDate: moment("2019-01-01"),
-    toDate: moment("2019-01-10")
+    fromDate: moment("2019-01-01").toDate(),
+    toDate: moment("2019-01-10").toDate()
   };
 
   await serviceBus.emit(event);
@@ -75,8 +75,8 @@ test("import trip location", async () => {
         lat: 1,
         address: "address", //todo: need address here ?
       },
-      fromTime: moment("2019-01-01"),
-      toTime: moment("2019-01-10"),
+      fromTime: moment("2019-01-01").toDate(),
+      toTime: moment("2019-01-10").toDate(),
       images: [],
     }]
   };
@@ -100,12 +100,12 @@ test("import trip location with images", async () => {
         lat: 1,
         address: "address",
       },
-      fromTime: moment("2019-01-01"),
-      toTime: moment("2019-01-10"),
+      fromTime: moment("2019-01-01").toDate(),
+      toTime: moment("2019-01-10").toDate(),
       images: [{
         imageId: "imageId01",
         url: "url",
-        time: moment("2019-01-01"),
+        time: moment("2019-01-01").toDate(),
       }],
     }]
   };
@@ -130,12 +130,12 @@ test("upload location image", async () => {
         lat: 1,
         address: "address",
       },
-      fromTime: moment("2019-01-01"),
-      toTime: moment("2019-01-10"),
+      fromTime: moment("2019-01-01").toDate(),
+      toTime: moment("2019-01-10").toDate(),
       images: [{
         imageId: "imageId01",
         url: "url",
-        time: moment("2019-01-01"),
+        time: moment("2019-01-01").toDate(),
       }],
     }]
   };
@@ -169,12 +169,12 @@ test("favorite location image", async () => {
         lat: 1,
         address: "address",
       },
-      fromTime: moment("2019-01-01"),
-      toTime: moment("2019-01-10"),
+      fromTime: moment("2019-01-01").toDate(),
+      toTime: moment("2019-01-10").toDate(),
       images: [{
         imageId: "imageId01",
         url: "url",
-        time: moment("2019-01-01"),
+        time: moment("2019-01-01").toDate(),
       }],
     }]
   };
@@ -209,12 +209,12 @@ test("add a location image", async () => {
         lat: 1,
         address: "address",
       },
-      fromTime: moment("2019-01-01"),
-      toTime: moment("2019-01-10"),
+      fromTime: moment("2019-01-01").toDate(),
+      toTime: moment("2019-01-10").toDate(),
       images: [{
         imageId: "imageId01",
         url: "url",
-        time: moment("2019-01-01"),
+        time: moment("2019-01-01").toDate(),
       }],
     }]
   };
@@ -227,7 +227,7 @@ test("add a location image", async () => {
     locationId: "locationId01",
     imageId: "imageId02",
     url: "url2",
-    time: moment("2019-01-02")
+    time: moment("2019-01-02").toDate()
   };
   await serviceBus.emit(uploadImageEvent);
   const trip = await tripRepository.get("ownerId", "tripId");

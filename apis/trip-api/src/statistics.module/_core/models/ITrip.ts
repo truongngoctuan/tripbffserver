@@ -1,11 +1,9 @@
-import { Moment } from "moment";
-
 export interface ITrip {  
   userId: string;
   tripId: string;
   name: string;
-  fromDate: Moment;
-  toDate: Moment;
+  fromDate: Date;
+  toDate: Date;
   infographics: Array<IInfographic>;
   isDeleted: boolean;
 }

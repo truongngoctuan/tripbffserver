@@ -1,9 +1,5 @@
 import Joi from "@hapi/joi";
 
-// Joi.extend(require("@hapi/joi-date"));
-
-// generic validation
-
 export const IdSchema = Joi.object({
   id: Joi.required().description("External Id")
 });
@@ -24,28 +20,29 @@ export const joiLocationSchema = Joi.object({
   }),
   images: Joi.array().items(
     Joi.object({
-      url: Joi.string(),
-    }),
-  ),
+      url: Joi.string()
+    })
+  )
 });
 
-export const joiInfographicSchema = {
-
-};
-
-// export interface IInfographic {
-//   infographicId: string;
-//   status: InfographicStatus;
-//   externalStorageId?: string; //this id will exist after image binary is uploaded to server
-// }
+export const joiInfographicSchema = Joi.object({
+  infographicId: Joi.string().required(),
+  // externalUrl: Joi.string().optional(), //todo why empty ?
+  status: Joi.string().required(),
+  externalStorageId: Joi.string().optional()
+});
 
 export const joiTripSchema = Joi.object({
   tripId: Joi.string(),
   name: Joi.string(),
   fromDate: Joi.date(),
   toDate: Joi.date(),
-  locations: Joi.array().optional().items(joiLocationSchema),
-  infographics: Joi.array().optional().items(joiInfographicSchema),
+  locations: Joi.array()
+    .optional()
+    .items(joiLocationSchema),
+  infographics: Joi.array()
+    .optional()
+    .items(joiInfographicSchema),
   isDeleted: Joi.boolean()
 });
 
@@ -56,8 +53,12 @@ export const joiMinimizedTripSchema = Joi.object({
   name: Joi.string(),
   fromDate: Joi.date(),
   toDate: Joi.date(),
-  locationImages: Joi.array().optional().items(Joi.string()),
+  locationImages: Joi.array()
+    .optional()
+    .items(Joi.string()),
   isDeleted: Joi.boolean()
 });
 
-export const joiMinimizedTripsSchema = Joi.array().items(joiMinimizedTripSchema);
+export const joiMinimizedTripsSchema = Joi.array().items(
+  joiMinimizedTripSchema
+);

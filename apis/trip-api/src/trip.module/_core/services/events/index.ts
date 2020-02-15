@@ -1,4 +1,3 @@
-import { Moment } from "moment";
 import { ITripLocation, IHighlight } from "../../models/ITrip";
 import { TripCreatedEvent, TripUpdatedEvent, TripDateRangeUpdatedEvent, TripNameUpdatedEvent, TripDeletedEvent } from "./TripEvents";
 
@@ -36,12 +35,12 @@ export type TripImportLocationsEvent = {
       lat: number;
       address: string;
     };
-    fromTime: Moment;
-    toTime: Moment;
+    fromTime: Date;
+    toTime: Date;
     images: {
       imageId: string;
       url: string; //url stored in local mobile
-      time: Moment;
+      time: Date;
     }[];
   }[];
 };
@@ -68,7 +67,7 @@ export type TripLocationImageAddedEvent = {
   locationId: string;
   imageId: string;
   url: string;
-  time: Moment;
+  time: Date;
 };
 
 export type TripLocationImageUploadedEvent = {

@@ -14,6 +14,7 @@ import {
   deleteTripAction
 } from "./actions/TripActions";
 import { joiTripSchema, joiMinimizedTripsSchema, IdSchema } from "./JoiSchemas";
+import Boom from "boom";
 
 module.exports = {
   init: function(server: Server): void {
@@ -128,11 +129,27 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: IdSchema
+          params: IdSchema,
         },
         response: {
           status: {
-            200: Joi.array().items(joiTripSchema)
+            200: joiTripSchema
+          },
+          failAction: async (request, h, err): Promise<void> => {
+            if (err) {
+              if (process.env.NODE_ENV === "production") {
+                // In prod, log a limited error message and throw the default Bad Request error.
+                console.error("ValidationError:", err.message);
+                throw Boom.badRequest("Invalid request payload input");
+              } else {
+                // During development, log and respond with the full error.
+                console.error(err);
+                throw err;
+              }
+            }
+            else {
+              console.error("unknown error");
+            }
           }
         }
       }

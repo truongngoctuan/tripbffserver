@@ -2,15 +2,14 @@ import { Succeed } from "../../../../../_shared/utils";
 import { TripEvent, EventHandler } from "../../events";
 import { TripReducers } from "../../reducers/_tripReducer";
 import { ServiceBus } from "../../TripServiceBus";
-import { Moment } from "moment";
 
 export type UpdateTripCommand = {
   type: "updateTrip";
   ownerId: string;
   tripId: string;
   name: string;
-  fromDate: Moment;
-  toDate: Moment;
+  fromDate: Date;
+  toDate: Date;
 };
 
 export async function updateTrip(command: UpdateTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus) {

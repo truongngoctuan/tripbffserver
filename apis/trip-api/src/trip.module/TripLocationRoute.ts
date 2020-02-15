@@ -525,7 +525,7 @@ module.exports = {
             ownerId,
             tripId,
             locationId,
-            imageId, url, time: moment(time),
+            imageId, url, time,
           });
 
           if (commandResult.isSucceed) {
