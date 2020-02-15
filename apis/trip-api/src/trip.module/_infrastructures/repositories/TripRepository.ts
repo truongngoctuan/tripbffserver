@@ -20,7 +20,11 @@ export class TripRepository implements ITripRepository {
         return {
           locationId: loc.locationId,
           name: loc.name,
-          location: loc.location,
+          location: {
+            long: loc.location.long,
+            lat: loc.location.lat,
+            address: loc.location.address
+          },
           fromTime: loc.fromTime,
           toTime: loc.toTime,
           images: loc.images.map(img => {
@@ -35,8 +39,18 @@ export class TripRepository implements ITripRepository {
             };
           }),
           description: loc.description,
-          feeling: loc.feeling,
-          activity: loc.activity,
+          feeling: loc.feeling ? {
+            feelingId: loc.feeling.feelingId,
+            label_en: loc.feeling.label_en,
+            label_vi: loc.feeling.label_vi,
+            icon: loc.feeling.icon,
+          } : undefined,
+          activity: loc.activity ? {
+            activityId: loc.activity.activityId,
+            label_en: loc.activity.label_en,
+            label_vi: loc.activity.label_vi,
+            icon: loc.activity.icon,
+          } : undefined,
           highlights: loc.highlights != undefined ? loc.highlights.map(item => {
             return {
               highlightId: item.highlightId,

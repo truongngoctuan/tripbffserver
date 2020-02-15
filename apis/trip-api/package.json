@@ -32,7 +32,7 @@
     "@hapi/hapi": "18.4.0",
     "hapi-auth-bearer-token": "^6.1.0",
     "hapi-swagger": "^11.1.0",
-    "@hapi/joi": "^16.1.8",
+    "@hapi/joi": "^17.1.0",
     "@hapi/joi-date": "^2.0.1",
     "@hapi/boom": "7.4.11",
     "jsonwebtoken": "^8.5.1",
@@ -52,7 +52,6 @@
   },
   "devDependencies": {
     "@types/hapi__hapi": "^19.0.1",
-    "@types/hapi__joi": "^16.0.5",
     "@types/inert": "^5.1.2",
     "@types/jest": "^24.0.11",
     "@types/lodash": "^4.14.118",
