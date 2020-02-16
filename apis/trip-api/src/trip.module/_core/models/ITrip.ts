@@ -29,8 +29,8 @@ export interface ITripLocationImage {
   imageId: string;
   time: Date;
   url: string; //url stored in local mobile, if it failed in upload, it can start to upload again
-  externalUrl: string;
-  thumbnailExternalUrl: string;
+  externalUrl?: string;
+  thumbnailExternalUrl?: string;
   externalStorageId?: string; //this id will exist after image binary is uploaded to server
   isFavorite: boolean;
 }

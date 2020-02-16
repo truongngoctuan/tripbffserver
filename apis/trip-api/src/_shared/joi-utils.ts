@@ -9,8 +9,8 @@ export const failActionInResponse: Lifecycle.Method = async (request, h, err): P
       throw Boom.badRequest("Invalid request payload input");
     } else {
       // During development, log and respond with the full error.
-      console.error(err.details[0]);
-      throw Boom.badRequest(`response data validation failed ${JSON.stringify(err.details[0])}`, err.details[0]);
+      console.error((err as any).details[0]);
+      throw Boom.badRequest(`response data validation failed ${JSON.stringify((err as any).details[0])}`, (err as any).details[0]);
       // throw err;
     }
   } else {

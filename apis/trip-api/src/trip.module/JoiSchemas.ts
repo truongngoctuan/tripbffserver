@@ -21,7 +21,12 @@ export const joiLocationSchema = Joi.object({
   location: joiLocationDetailsSchema,
   images: Joi.array().items(
     Joi.object({
-      url: Joi.string()
+      imageId: Joi.string(),
+      url: Joi.string(),
+      time: Joi.date(),
+      externalStorageId: Joi.string(),
+      externalUrl: Joi.string(),
+      isFavorite: Joi.bool()
     })
   ),
   description: Joi.string(),

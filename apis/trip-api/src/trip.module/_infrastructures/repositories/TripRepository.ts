@@ -33,8 +33,6 @@ export class TripRepository implements ITripRepository {
               url: img.url,
               time: img.time,
               externalStorageId: img.externalStorageId,
-              externalUrl: "",
-              thumbnailExternalUrl: "",
               isFavorite: img.isFavorite,
             };
           }),
