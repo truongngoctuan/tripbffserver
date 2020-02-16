@@ -10,8 +10,7 @@ const joiLocationDetailsSchema = Joi.object({
   long: Joi.number(),
   lat: Joi.number(),
 
-  address: Joi.string(),
-  // name: Joi.string()
+  address: Joi.string()
 });
 
 export const joiLocationSchema = Joi.object({
@@ -38,8 +37,14 @@ export const joiLocationSchema = Joi.object({
     label_vi: Joi.string(),
     icon: Joi.string()
   }),
-  highlights: Joi.array().items(Joi.object({}))
-
+  highlights: Joi.array().items(
+    Joi.object({
+      highlightId: Joi.string(),
+      label_en: Joi.string(),
+      label_vi: Joi.string(),
+      highlightType: Joi.string()
+    })
+  )
 });
 
 export const joiInfographicSchema = Joi.object({
@@ -62,8 +67,6 @@ export const joiTripSchema = Joi.object({
   isDeleted: Joi.boolean()
 });
 
-export const joiTripsSchema = Joi.array().items(joiTripSchema);
-
 export const joiMinimizedTripSchema = Joi.object({
   tripId: Joi.string(),
   name: Joi.string(),
@@ -71,10 +74,11 @@ export const joiMinimizedTripSchema = Joi.object({
   toDate: Joi.date(),
   locationImages: Joi.array()
     .optional()
-    .items(Joi.string()),
+    .items(Joi.object({
+      name: Joi.string(),
+      address: Joi.string(),
+      description: Joi.string(),
+      imageUrl: Joi.string().optional(),
+    })),
   isDeleted: Joi.boolean()
 });
-
-export const joiMinimizedTripsSchema = Joi.array().items(
-  joiMinimizedTripSchema
-);

@@ -14,7 +14,7 @@ import {
   patchTripAction,
   deleteTripAction
 } from "./actions/TripActions";
-import { joiTripSchema, joiMinimizedTripsSchema, IdSchema } from "./JoiSchemas";
+import { joiTripSchema, joiMinimizedTripSchema, IdSchema } from "./JoiSchemas";
 
 module.exports = {
   init: function(server: Server): void {
@@ -50,7 +50,8 @@ module.exports = {
           params: IdSchema
         },
         response: {
-          schema: joiTripSchema
+          schema: joiMinimizedTripSchema,
+          failAction: failActionInResponse
         }
       }
     });
@@ -123,7 +124,10 @@ module.exports = {
         const tripId = request.params.id;
         const userId = CUtils.getUserId(request);
 
-        return await getTripByIdAction(userId, tripId);
+        return await getTripByIdAction(userId, tripId)
+        .then(trip => {
+          return trip;
+        });
       },
       options: {
         auth: "simple",

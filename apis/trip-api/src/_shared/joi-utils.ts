@@ -10,7 +10,8 @@ export const failActionInResponse: Lifecycle.Method = async (request, h, err): P
     } else {
       // During development, log and respond with the full error.
       console.error(err.details[0]);
-      throw err;
+      throw Boom.badRequest(`response data validation failed ${JSON.stringify(err.details[0])}`, err.details[0]);
+      // throw err;
     }
   } else {
     console.error("unknown error");

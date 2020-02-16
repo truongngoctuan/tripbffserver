@@ -38,7 +38,7 @@ export class MinimizedTripQueryHandler {
         name: locationImage.name,
         address: locationImage.address,
         description: locationImage.description,
-        imageUrl: locationImage.imageUrl === "" ? "" : resolveThumbnailImageUrlFromExternalStorageId(locationImage.imageUrl),
+        imageUrl: locationImage.imageUrl === "" ? undefined : resolveThumbnailImageUrlFromExternalStorageId(locationImage.imageUrl),
       };
     });
     return trip;
