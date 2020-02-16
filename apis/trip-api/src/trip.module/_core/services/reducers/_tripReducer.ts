@@ -47,8 +47,8 @@ export class TripReducers {
     let state: ITrip = {
       tripId: "",
       name: "",
-      fromDate: moment(),
-      toDate: moment(),
+      fromDate: moment().toDate(),
+      toDate: moment().toDate(),
       locations: [],
       infographics: [],
       isDeleted: false

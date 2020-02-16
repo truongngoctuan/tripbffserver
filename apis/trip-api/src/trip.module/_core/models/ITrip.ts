@@ -1,10 +1,8 @@
-import { Moment } from "moment";
-
 export interface ITrip {
   tripId: string;
   name: string;
-  fromDate: Moment;
-  toDate: Moment;
+  fromDate: Date;
+  toDate: Date;
   locations: Array<ITripLocation>;
   infographics: Array<IInfographic>;
   isDeleted: boolean;
@@ -18,8 +16,8 @@ export interface ITripLocation {
     lat: number;
     address: string;
   };
-  fromTime: Moment;
-  toTime: Moment;
+  fromTime: Date;
+  toTime: Date;
   images: Array<ITripLocationImage>;
   description?: string;
   feeling?: IFeeling;
@@ -29,10 +27,10 @@ export interface ITripLocation {
 
 export interface ITripLocationImage {
   imageId: string;
-  time: Moment;
+  time: Date;
   url: string; //url stored in local mobile, if it failed in upload, it can start to upload again
-  externalUrl: string;
-  thumbnailExternalUrl: string;
+  externalUrl?: string;
+  thumbnailExternalUrl?: string;
   externalStorageId?: string; //this id will exist after image binary is uploaded to server
   isFavorite: boolean;
 }

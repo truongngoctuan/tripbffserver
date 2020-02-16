@@ -31,8 +31,8 @@ test("create trip", async () => {
     ownerId: "ownerId",
     tripId: "tripId",
     name: "name",
-    fromDate: moment("2019-01-01"),
-    toDate: moment("2019-01-10")
+    fromDate: moment("2019-01-01").toDate(),
+    toDate: moment("2019-01-10").toDate()
   }]);
 
   const tripReducer = new TripReducers(tripEventRepository);
@@ -50,8 +50,8 @@ test("update trip name", async () => {
       ownerId: "ownerId",
       tripId: "tripId",
       name: "name",
-      fromDate: moment("2019-01-01"),
-      toDate: moment("2019-01-10")
+      fromDate: moment("2019-01-01").toDate(),
+      toDate: moment("2019-01-10").toDate()
     },
     {
       type: "TripNameUpdated",
@@ -76,8 +76,8 @@ test("import trip location", async () => {
       ownerId: "ownerId",
       tripId: "tripId",
       name: "name",
-      fromDate: moment("2019-01-01"),
-      toDate: moment("2019-01-10")
+      fromDate: moment("2019-01-01").toDate(),
+      toDate: moment("2019-01-10").toDate()
     },
     {
       type: "TripImportLocations",
@@ -91,8 +91,8 @@ test("import trip location", async () => {
           lat: 1,
           address: "address",
         },
-        fromTime: moment("2019-01-01"),
-        toTime: moment("2019-01-10"),
+        fromTime: moment("2019-01-01").toDate(),
+        toTime: moment("2019-01-10").toDate(),
         images: [],
       }] as ITripLocation[]
     }
@@ -113,8 +113,8 @@ test("upload location image", async () => {
       ownerId: "ownerId",
       tripId: "tripId",
       name: "name",
-      fromDate: moment("2019-01-01"),
-      toDate: moment("2019-01-10")
+      fromDate: moment("2019-01-01").toDate(),
+      toDate: moment("2019-01-10").toDate()
     },
     {
       type: "TripImportLocations",
@@ -128,8 +128,8 @@ test("upload location image", async () => {
           lat: 1,
           address: "address",
         },
-        fromTime: moment("2019-01-01"),
-        toTime: moment("2019-01-10"),
+        fromTime: moment("2019-01-01").toDate(),
+        toTime: moment("2019-01-10").toDate(),
         images: [{
           imageId: "imageId01",
           url: "url",
@@ -160,8 +160,8 @@ test("remove location images", async () => {
       ownerId: "ownerId",
       tripId: "tripId",
       name: "name",
-      fromDate: moment("2019-01-01"),
-      toDate: moment("2019-01-10")
+      fromDate: moment("2019-01-01").toDate(),
+      toDate: moment("2019-01-10").toDate()
     },
     {
       type: "TripImportLocations",
@@ -175,8 +175,8 @@ test("remove location images", async () => {
           lat: 1,
           address: "address",
         },
-        fromTime: moment("2019-01-01"),
-        toTime: moment("2019-01-10"),
+        fromTime: moment("2019-01-01").toDate(),
+        toTime: moment("2019-01-10").toDate(),
         images: [{
           imageId: "imageId01",
           url: "url",
@@ -207,8 +207,8 @@ test("remove location multi mages", async () => {
       ownerId: "ownerId",
       tripId: "tripId",
       name: "name",
-      fromDate: moment("2019-01-01"),
-      toDate: moment("2019-01-10")
+      fromDate: moment("2019-01-01").toDate(),
+      toDate: moment("2019-01-10").toDate()
     },
     {
       type: "TripImportLocations",
@@ -222,8 +222,8 @@ test("remove location multi mages", async () => {
           lat: 1,
           address: "address",
         },
-        fromTime: moment("2019-01-01"),
-        toTime: moment("2019-01-10"),
+        fromTime: moment("2019-01-01").toDate(),
+        toTime: moment("2019-01-10").toDate(),
         images: [{
           imageId: "imageId01",
           url: "url",
@@ -271,8 +271,8 @@ test("favorite location image", async () => {
       ownerId: "ownerId",
       tripId: "tripId",
       name: "name",
-      fromDate: moment("2019-01-01"),
-      toDate: moment("2019-01-10")
+      fromDate: moment("2019-01-01").toDate(),
+      toDate: moment("2019-01-10").toDate()
     },
     {
       type: "TripImportLocations",
@@ -286,8 +286,8 @@ test("favorite location image", async () => {
           lat: 1,
           address: "address",
         },
-        fromTime: moment("2019-01-01"),
-        toTime: moment("2019-01-10"),
+        fromTime: moment("2019-01-01").toDate(),
+        toTime: moment("2019-01-10").toDate(),
         images: [{
           imageId: "imageId01",
           url: "url",
@@ -319,8 +319,8 @@ test("un-favorite location image", async () => {
       ownerId: "ownerId",
       tripId: "tripId",
       name: "name",
-      fromDate: moment("2019-01-01"),
-      toDate: moment("2019-01-10")
+      fromDate: moment("2019-01-01").toDate(),
+      toDate: moment("2019-01-10").toDate()
     },
     {
       type: "TripImportLocations",
@@ -334,8 +334,8 @@ test("un-favorite location image", async () => {
           lat: 1,
           address: "address",
         },
-        fromTime: moment("2019-01-01"),
-        toTime: moment("2019-01-10"),
+        fromTime: moment("2019-01-01").toDate(),
+        toTime: moment("2019-01-10").toDate(),
         images: [{
           imageId: "imageId01",
           url: "url",
@@ -376,8 +376,8 @@ test("add a location image", async () => {
       ownerId: "ownerId",
       tripId: "tripId",
       name: "name",
-      fromDate: moment("2019-01-01"),
-      toDate: moment("2019-01-10")
+      fromDate: moment("2019-01-01").toDate(),
+      toDate: moment("2019-01-10").toDate()
     },
     {
       type: "TripImportLocations",
@@ -391,12 +391,12 @@ test("add a location image", async () => {
           lat: 1,
           address: "address",
         },
-        fromTime: moment("2019-01-01"),
-        toTime: moment("2019-01-10"),
+        fromTime: moment("2019-01-01").toDate(),
+        toTime: moment("2019-01-10").toDate(),
         images: [{
           imageId: "imageId01",
           url: "url",
-          time: moment("2019-01-01"),
+          time: moment("2019-01-01").toDate(),
         }],
       }] as ITripLocation[]
     },
@@ -407,7 +407,7 @@ test("add a location image", async () => {
       locationId: "locationId01",
       imageId: "imageId02",
       url: "url2",
-      time: moment("2019-01-02"),
+      time: moment("2019-01-02").toDate(),
     }
   ]);
 

@@ -19,20 +19,22 @@
     "serve-debug": "nodemon --inspect=8001 dist/index.js",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\"",
     "test": "jest",
-    "watch-test": "jest --watch"
+    "watch-test": "jest --watch",
+    "migrate": "migrate-mongo up -f 'src/trip.module.migration/migrate-mongo-config.js'",
+    "migrate:status": "migrate-mongo status -f 'src/trip.module.migration/migrate-mongo-config.js'"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.463.0",
-    "boom": "^7.3.0",
     "dotenv": "^6.1.0",
     "inert": "^5.1.0",
     "@hapi/hapi": "18.4.0",
     "hapi-auth-bearer-token": "^6.1.0",
     "hapi-swagger": "^11.1.0",
-    "@hapi/joi": "^16.1.8",
+    "@hapi/joi": "^17.1.0",
     "@hapi/joi-date": "^2.0.1",
+    "@hapi/boom": "7.4.11",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
@@ -45,12 +47,11 @@
     "uuid": "^3.3.2",
     "vision": "^5.4.0",
     "prom-client": "11.5.3",
-    "@promster/hapi": "^3.2.0"
+    "@promster/hapi": "^3.2.0",
+    "migrate-mongo": "7.0.1"
   },
   "devDependencies": {
-    "@types/boom": "^7.2.1",
-    "@types/hapi__hapi": "^18.2.6",
-    "@types/hapi__joi": "^16.0.5",
+    "@types/hapi__hapi": "^19.0.1",
     "@types/inert": "^5.1.2",
     "@types/jest": "^24.0.11",
     "@types/lodash": "^4.14.118",
@@ -66,7 +67,8 @@
     "eslint": "6.8.0",
     "typescript": "^3.1.6",
     "@typescript-eslint/parser":"2.13.0",
-    "@typescript-eslint/eslint-plugin": "2.13.0"
+    "@typescript-eslint/eslint-plugin": "2.13.0",
+    "db-migrate": "^0.11.6"
   },
   "jest": {
     "testEnvironment": "node",

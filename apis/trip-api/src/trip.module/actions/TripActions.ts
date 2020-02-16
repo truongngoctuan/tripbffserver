@@ -58,8 +58,8 @@ export async function createTripAction(
     ownerId,
     tripId: tripId.toString(),
     name,
-    fromDate: moment(fromDate),
-    toDate: moment(toDate)
+    fromDate: moment(fromDate).toDate(),
+    toDate: moment(toDate).toDate()
   });
 
   if (commandResult.isSucceed) {
@@ -91,8 +91,8 @@ export async function patchTripAction(
     ownerId,
     tripId,
     name,
-    fromDate: moment(fromDate),
-    toDate: moment(toDate)
+    fromDate: moment(fromDate).toDate(),
+    toDate: moment(toDate).toDate()
   });
 
   if (commandResult.isSucceed) {

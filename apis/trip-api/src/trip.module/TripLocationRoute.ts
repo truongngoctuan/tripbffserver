@@ -4,17 +4,18 @@ import { IoC } from "./IoC";
 import { CUtils } from "../_shared/ControllerUtils";
 import uuid4 from "uuid/v4";
 import { IHighlight, ITripLocation } from "./_core/models/ITrip";
-import moment = require("moment");
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
 import Joi from "@hapi/joi";
 import { joiLocationSchema, IdSchema } from "./JoiSchemas";
+import { failActionInResponse } from "../_shared/joi-utils";
 
 module.exports = {
   init(server: Server): void {
     
     //todo merge 2 addLocation into one endpoint
+    //todo this api `replace` old locations by a new one
     server.route({
       method: "POST",
       path: "/trips/{id}/locations",
@@ -54,6 +55,7 @@ module.exports = {
         tags: ["api"],
         validate: {
           payload: Joi.array().items(joiLocationSchema),
+          failAction: failActionInResponse
         },
       },
     });
@@ -91,6 +93,7 @@ module.exports = {
         tags: ["api"],
         validate: {
           payload: joiLocationSchema,
+          failAction: failActionInResponse
         },
       },
     });
@@ -142,8 +145,8 @@ module.exports = {
         try {
           const tripId: string = request.params.tripId;
           const locationId: string = request.params.locationId;
+          // todo missing validation in here
           const feeling = request.payload as any;
-          console.log("feeling: " + JSON.stringify(feeling));
 
           if (feeling) {
             const ownerId = CUtils.getUserId(request);
@@ -187,8 +190,8 @@ module.exports = {
         try {
           const tripId: string = request.params.tripId;
           const locationId: string = request.params.locationId;
+          // todo missing validation in here
           const activity = request.payload as any;
-
           if (activity) {
             const ownerId = CUtils.getUserId(request);
 
@@ -200,6 +203,7 @@ module.exports = {
               activityId: activity.activityId,
               label_en: activity.label_en,
               label_vi: activity.label_vi,
+              //todo shouldn't store icon url in here since it will be out-dated at the time we used it
               activityIcon: activity.icon,
             });
 
@@ -525,7 +529,7 @@ module.exports = {
             ownerId,
             tripId,
             locationId,
-            imageId, url, time: moment(time),
+            imageId, url, time,
           });
 
           if (commandResult.isSucceed) {

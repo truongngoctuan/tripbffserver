@@ -14,29 +14,41 @@ export class TripRepository implements ITripRepository {
     return {
       tripId: o.tripId,
       name: o.name,
-      fromDate: moment(o.fromDate),
-      toDate: moment(o.toDate),
+      fromDate: o.fromDate,
+      toDate: o.toDate,
       locations: _.map(o.locations, loc => {
         return {
           locationId: loc.locationId,
           name: loc.name,
-          location: loc.location,
-          fromTime: moment(loc.fromTime),
-          toTime: moment(loc.toTime),
+          location: {
+            long: loc.location.long,
+            lat: loc.location.lat,
+            address: loc.location.address
+          },
+          fromTime: loc.fromTime,
+          toTime: loc.toTime,
           images: loc.images.map(img => {
             return {
               imageId: img.imageId,
               url: img.url,
-              time: moment(img.time),
+              time: img.time,
               externalStorageId: img.externalStorageId,
-              externalUrl: "",
-              thumbnailExternalUrl: "",
               isFavorite: img.isFavorite,
             };
           }),
           description: loc.description,
-          feeling: loc.feeling,
-          activity: loc.activity,
+          feeling: loc.feeling ? {
+            feelingId: loc.feeling.feelingId,
+            label_en: loc.feeling.label_en,
+            label_vi: loc.feeling.label_vi,
+            icon: loc.feeling.icon,
+          } : undefined,
+          activity: loc.activity ? {
+            activityId: loc.activity.activityId,
+            label_en: loc.activity.label_en,
+            label_vi: loc.activity.label_vi,
+            icon: loc.activity.icon,
+          } : undefined,
           highlights: loc.highlights != undefined ? loc.highlights.map(item => {
             return {
               highlightId: item.highlightId,
@@ -51,7 +63,6 @@ export class TripRepository implements ITripRepository {
         return {
           infographicId: infographic.infographicId,
           externalStorageId: infographic.externalStorageId,
-          externalUrl: "",
           status: infographic.status as InfographicStatus
         };
       }),
@@ -104,8 +115,8 @@ export class TripRepository implements ITripRepository {
     if (!trip) throw "can't find Trip with id = " + payload.tripId;
 
     trip.name = payload.name;
-    trip.fromDate = payload.fromDate.toDate();
-    trip.toDate = payload.toDate.toDate();
+    trip.fromDate = payload.fromDate;
+    trip.toDate = payload.toDate;
     trip.locations = _.map(payload.locations, loc => ({
       locationId: loc.locationId,
       name: loc.name,
@@ -114,7 +125,7 @@ export class TripRepository implements ITripRepository {
       toTime: moment(loc.toTime).toDate(),
       images: loc.images.map(img => ({
         ...img,
-        time: img.time.toDate(),
+        time: img.time,
       })),
       description: loc.description,
       feeling: loc.feeling,

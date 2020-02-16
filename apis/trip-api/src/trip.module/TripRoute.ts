@@ -2,6 +2,7 @@ import { Server } from "@hapi/hapi";
 import Joi from "@hapi/joi";
 import { CUtils } from "../_shared/ControllerUtils";
 import moment = require("moment-timezone");
+import { failActionInResponse } from "../_shared/joi-utils";
 
 console.log("checking current time in server", moment().format());
 
@@ -13,7 +14,7 @@ import {
   patchTripAction,
   deleteTripAction
 } from "./actions/TripActions";
-import { joiTripSchema, joiMinimizedTripsSchema, IdSchema } from "./JoiSchemas";
+import { joiTripSchema, joiMinimizedTripSchema, IdSchema } from "./JoiSchemas";
 
 module.exports = {
   init: function(server: Server): void {
@@ -49,7 +50,8 @@ module.exports = {
           params: IdSchema
         },
         response: {
-          schema: joiTripSchema
+          schema: joiMinimizedTripSchema,
+          failAction: failActionInResponse
         }
       }
     });
@@ -122,18 +124,22 @@ module.exports = {
         const tripId = request.params.id;
         const userId = CUtils.getUserId(request);
 
-        return await getTripByIdAction(userId, tripId);
+        return await getTripByIdAction(userId, tripId)
+        .then(trip => {
+          return trip;
+        });
       },
       options: {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: IdSchema
+          params: IdSchema,
         },
         response: {
           status: {
-            200: Joi.array().items(joiTripSchema)
-          }
+            200: joiTripSchema
+          },
+          failAction: failActionInResponse
         }
       }
     });

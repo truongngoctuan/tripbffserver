@@ -15,8 +15,8 @@ export class TripsRepository implements ITripsRepository {
     return {
       tripId: o.tripId,
       name: o.name,
-      fromDate: moment(o.fromDate),
-      toDate: moment(o.toDate),
+      fromDate: moment(o.fromDate).toDate(),
+      toDate: moment(o.toDate).toDate(),
       locationImages: o.locationImages,
       isDeleted: o.isDeleted
     };
@@ -77,8 +77,8 @@ export class TripsRepository implements ITripsRepository {
     if (!trip) throw "can't find Trip with id = " + payload.tripId;
 
     trip.name = payload.name;
-    trip.fromDate = payload.fromDate.toDate();
-    trip.toDate = payload.toDate.toDate();
+    trip.fromDate = payload.fromDate;
+    trip.toDate = payload.toDate;
     trip.locationImages = payload.locationImages;
     trip.isDeleted = payload.isDeleted;
 
