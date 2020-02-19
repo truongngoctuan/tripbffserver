@@ -50,11 +50,6 @@ resource "aws_ecs_task_definition" "tripbff-traefik" {
   DEFINITION
 }
 
-# resource "aws_cloudwatch_log_group" "log1" {
-#   name              = "tripbff-traefik"
-#   retention_in_days = 14
-# }
-
 resource "aws_ecs_service" "tripbff-traefik-service" {
   name            = "tripbff-traefik-service"
   cluster         = var.cluster_id

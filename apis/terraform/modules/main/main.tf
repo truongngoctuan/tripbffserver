@@ -36,12 +36,13 @@ module "ecs-traefik-services" {
 # }
 
 module "ecs-sso-services" {
-  source         = "../ecs-sso-service"
-  cluster_id     = aws_ecs_cluster.cluster.id
-  repository_url = var.sso_repository_url
-  domain         = var.domain
-  stage          = var.stage
-  mongodb        = var.mongodb
+  source             = "../ecs-sso-service"
+  cluster_id         = aws_ecs_cluster.cluster.id
+  repository_url     = var.sso_repository_url
+  repository_version = var.sso_repository_version
+  domain             = var.domain
+  stage              = var.stage
+  mongodb            = var.mongodb
 }
 
 module "ecs-redis-services" {

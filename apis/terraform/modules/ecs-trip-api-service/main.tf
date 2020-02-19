@@ -76,11 +76,6 @@ resource "aws_ecs_task_definition" "tripbff-trip-api" {
   DEFINITION
 }
 
-# resource "aws_cloudwatch_log_group" "log1" {
-#   name              = "tripbff-${var.stage}-trip-api"
-#   retention_in_days = 14
-# }
-
 resource "aws_ecs_service" "tripbff-trip-api-service" {
   name            = "tripbff-trip-api-service"
   cluster         = var.cluster_id

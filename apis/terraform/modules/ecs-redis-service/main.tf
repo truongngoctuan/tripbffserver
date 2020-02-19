@@ -23,16 +23,25 @@ resource "aws_ecs_task_definition" "tripbff-redis" {
           "awslogs-region": "ap-southeast-1",
           "awslogs-stream-prefix": "ecs"
         }
-      }
+      },
+      "volumes": [
+        {
+          "efsVolumeConfiguration": null,
+          "name": "redis-${var.stage}-volumn",
+          "host": null,
+          "dockerVolumeConfiguration": {
+            "autoprovision": null,
+            "labels": null,
+            "scope": "task",
+            "driver": "local",
+            "driverOpts": null
+          }
+        }
+      ]
     }
   ]
   DEFINITION
 }
-
-# resource "aws_cloudwatch_log_group" "log1" {
-#   name              = "tripbff-redis"
-#   retention_in_days = 14
-# }
 
 resource "aws_ecs_service" "tripbff-redis-service" {
   name            = "tripbff-redis-service"

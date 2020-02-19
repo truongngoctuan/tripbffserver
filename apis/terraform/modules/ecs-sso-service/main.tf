@@ -4,7 +4,7 @@ resource "aws_ecs_task_definition" "tripbff-sso" {
   [
     {
       "name": "tripbff-sso-container",
-      "image": "${var.repository_url}:latest",
+      "image": "${var.repository_url}:${var.repository_version}",
       "memoryReservation": 64,
       "essential": true,
       "portMappings": [
@@ -46,11 +46,6 @@ resource "aws_ecs_task_definition" "tripbff-sso" {
   ]
   DEFINITION
 }
-
-# resource "aws_cloudwatch_log_group" "log1" {
-#   name              = "tripbff-sso"
-#   retention_in_days = 14
-# }
 
 resource "aws_ecs_service" "tripbff-sso-service" {
   name            = "tripbff-sso-service"

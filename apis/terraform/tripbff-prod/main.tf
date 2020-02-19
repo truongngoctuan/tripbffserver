@@ -7,6 +7,7 @@ module "this" {
 
   stage                      = "prod"
   sso_repository_url         = var.sso_repository_url
+  sso_repository_version     = var.sso_repository_version
   redis_repository_url       = var.redis_repository_url
   trip_api_repository_url    = var.trip_api_repository_url
   infographic_repository_url = var.infographic_repository_url
