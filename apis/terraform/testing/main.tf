@@ -11,15 +11,6 @@ locals {
 # https://medium.com/@kcabading/getting-a-free-domain-for-your-ec2-instance-3ac2955b0a2f
 # how to link tk domain to aws
 
-#----- S3--------
-module "s3-bucket" {
-  source = "../modules/s3"
-
-  name             = local.name
-  stage            = local.stage
-  aws_account_code = "arn:aws:iam::883134154478:user/dev-access"
-}
-
 module "this" {
   source = "../modules/main"
 

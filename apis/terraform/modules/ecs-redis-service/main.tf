@@ -1,5 +1,12 @@
 resource "aws_ecs_task_definition" "tripbff-redis" {
-  family                = "tripbff-redis"
+  family = "tripbff-redis"
+  volume {
+    name = "redis-${var.stage}-volumn"
+    docker_volume_configuration {
+      scope         = "task"
+      driver        = "local"
+    }
+  }
   container_definitions = <<DEFINITION
   [
     {
@@ -14,6 +21,12 @@ resource "aws_ecs_task_definition" "tripbff-redis" {
           "containerPort": 6379
         }
       ],
+      "mountPoints": [
+        {
+          "sourceVolume": "redis-${var.stage}-volumn",
+          "containerPath": "/var/redis"
+        }
+      ],
       "environment": [],
       "logConfiguration": {
         "logDriver": "awslogs",
@@ -23,21 +36,7 @@ resource "aws_ecs_task_definition" "tripbff-redis" {
           "awslogs-region": "ap-southeast-1",
           "awslogs-stream-prefix": "ecs"
         }
-      },
-      "volumes": [
-        {
-          "efsVolumeConfiguration": null,
-          "name": "redis-${var.stage}-volumn",
-          "host": null,
-          "dockerVolumeConfiguration": {
-            "autoprovision": null,
-            "labels": null,
-            "scope": "task",
-            "driver": "local",
-            "driverOpts": null
-          }
-        }
-      ]
+      }
     }
   ]
   DEFINITION
