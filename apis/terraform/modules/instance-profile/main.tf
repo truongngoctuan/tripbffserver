@@ -56,10 +56,10 @@ data "aws_iam_policy_document" "traefik" {
 
 resource "aws_iam_policy" "traefik_ecs_exec_role_additions" {
   name   = "traefik-${var.stage}-policy"
-  policy = "${data.aws_iam_policy_document.traefik.json}"
+  policy = data.aws_iam_policy_document.traefik.json
 }
 
 resource "aws_iam_role_policy_attachment" "traefik_ecs_exec_role_additions" {
   role       = aws_iam_role.this.id
-  policy_arn = "${aws_iam_policy.traefik_ecs_exec_role_additions.arn}"
+  policy_arn = aws_iam_policy.traefik_ecs_exec_role_additions.arn
 }

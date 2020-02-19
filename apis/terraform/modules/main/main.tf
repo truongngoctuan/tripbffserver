@@ -101,7 +101,7 @@ data "aws_route53_zone" "selected" {
 }
 
 resource "aws_route53_record" "traefik-dashboard" {
-  zone_id = "${data.aws_route53_zone.selected.zone_id}"
+  zone_id = data.aws_route53_zone.selected.zone_id
   name    = "traefik-${local.stage}.${data.aws_route53_zone.selected.name}"
   type    = "A"
   ttl     = "30"
@@ -117,7 +117,7 @@ resource "aws_route53_record" "traefik-dashboard" {
 # }
 
 resource "aws_route53_record" "sso" {
-  zone_id = "${data.aws_route53_zone.selected.zone_id}"
+  zone_id = data.aws_route53_zone.selected.zone_id
   name    = "sso-${local.stage}.${data.aws_route53_zone.selected.name}"
   type    = "A"
   ttl     = "30"
@@ -125,7 +125,7 @@ resource "aws_route53_record" "sso" {
 }
 
 resource "aws_route53_record" "trip-api" {
-  zone_id = "${data.aws_route53_zone.selected.zone_id}"
+  zone_id = data.aws_route53_zone.selected.zone_id
   name    = "trip-api-${local.stage}.${data.aws_route53_zone.selected.name}"
   type    = "A"
   ttl     = "30"

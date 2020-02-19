@@ -51,7 +51,7 @@ resource "aws_instance" "one" {
   key_name             = var.key_name # "tripbff-ec2-key-pair" # todo abstract this to var
   # associate_public_ip_address = true
   vpc_security_group_ids = [aws_security_group.mesh-vpc-security-group.id]
-  subnet_id              = "${aws_subnet.mesh-vpc-subnet1.id}"
+  subnet_id              = aws_subnet.mesh-vpc-subnet1.id
 
   # network_interface {
   #   network_interface_id = "${aws_network_interface.foo.id}"

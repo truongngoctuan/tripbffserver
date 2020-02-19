@@ -3,6 +3,6 @@ resource "aws_eip" "example" {
 }
 
 resource "aws_eip_association" "eip_assoc" {
-  instance_id   = "${aws_instance.one.id}"
-  allocation_id = "${aws_eip.example.id}"
+  instance_id   = aws_instance.one.id
+  allocation_id = aws_eip.example.id
 }

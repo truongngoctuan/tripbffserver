@@ -8,7 +8,7 @@ resource "aws_vpc" "mesh-vpc" {
   }
 }
 resource "aws_subnet" "mesh-vpc-subnet1" {
-  vpc_id            = "${aws_vpc.mesh-vpc.id}"
+  vpc_id            = aws_vpc.mesh-vpc.id
   cidr_block        = "10.0.0.0/24"
   availability_zone = "ap-southeast-1a"
 
@@ -18,7 +18,7 @@ resource "aws_subnet" "mesh-vpc-subnet1" {
 }
 
 resource "aws_subnet" "mesh-vpc-subnet2" {
-  vpc_id            = "${aws_vpc.mesh-vpc.id}"
+  vpc_id            = aws_vpc.mesh-vpc.id
   cidr_block        = "10.0.1.0/24"
   availability_zone = "ap-southeast-1b"
 
@@ -30,7 +30,7 @@ resource "aws_subnet" "mesh-vpc-subnet2" {
 resource "aws_security_group" "mesh-vpc-security-group" {
   name        = "mesh-vpc-security-group"
   description = "Allow HTTP, HTTPS, and SSH"
-  vpc_id      = "${aws_vpc.mesh-vpc.id}"
+  vpc_id      = aws_vpc.mesh-vpc.id
 
   // HTTP
   ingress {
@@ -80,11 +80,11 @@ resource "aws_security_group" "mesh-vpc-security-group" {
 }
 
 resource "aws_route_table" "mesh-vpc-route-table" {
-  vpc_id = "${aws_vpc.mesh-vpc.id}"
+  vpc_id = aws_vpc.mesh-vpc.id
 
   route {
     cidr_block = "10.0.0.0/0"
-    gateway_id = "${aws_internet_gateway.mesh-vpc-internet-gateway.id}"
+    gateway_id = aws_internet_gateway.mesh-vpc-internet-gateway.id
   }
 
   tags = {
@@ -93,13 +93,13 @@ resource "aws_route_table" "mesh-vpc-route-table" {
 }
 
 resource "aws_route_table_association" "mesh-vpc-route-table-association1" {
-  subnet_id      = "${aws_subnet.mesh-vpc-subnet1.id}"
-  route_table_id = "${aws_route_table.mesh-vpc-route-table.id}"
+  subnet_id      = aws_subnet.mesh-vpc-subnet1.id
+  route_table_id = aws_route_table.mesh-vpc-route-table.id
 }
 
 resource "aws_route_table_association" "mesh-vpc-route-table-association2" {
-  subnet_id      = "${aws_subnet.mesh-vpc-subnet2.id}"
-  route_table_id = "${aws_route_table.mesh-vpc-route-table.id}"
+  subnet_id      = aws_subnet.mesh-vpc-subnet2.id
+  route_table_id = aws_route_table.mesh-vpc-route-table.id
 }
 
 # resource "aws_network_acl" "mesh-vpc-network-acl" {
@@ -169,7 +169,7 @@ resource "aws_route_table_association" "mesh-vpc-route-table-association2" {
 # }
 
 resource "aws_internet_gateway" "mesh-vpc-internet-gateway" {
-  vpc_id = "${aws_vpc.mesh-vpc.id}"
+  vpc_id = aws_vpc.mesh-vpc.id
 
   tags = {
     Name = "mesh-vpc-internet-gateway"
