@@ -58,7 +58,7 @@ const transformers: { [id: string]: Transformer } = {
   text: leafText
 };
 
-function processBlock(
+export function processBlock(
   blockConfig: InfographicConfig.Block,
   trip,
   cursor: CursorTransformer
