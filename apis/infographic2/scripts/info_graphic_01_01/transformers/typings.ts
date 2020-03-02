@@ -1,4 +1,3 @@
-
 import { InfographicConfig } from "../../../configs";
 
 export type Transformer = NodeTransformer | LeafTransformer;
@@ -8,16 +7,21 @@ export type NodeTransformer = {
   preHandler: (c: InfographicConfig.Block) => InfographicConfig.Block;
   postHandler: (
     c: InfographicConfig.Block,
-    children: InfographicConfig.Block[]
-  ) => InfographicConfig.Block;
+    children: InfographicConfig.Block[],
+    cursor: CursorTransformer
+  ) => { block: InfographicConfig.Block; cursor: CursorTransformer };
 };
 
 export type LeafTransformer = {
   type: "leaf";
-  handler: (c: InfographicConfig.Block, trip, cursor) => InfographicConfig.Block;
+  handler: (
+    c: InfographicConfig.Block,
+    trip,
+    cursor
+  ) => InfographicConfig.Block;
 };
 
 export type CursorTransformer = {
   level: number;
   location: number;
-}
+};

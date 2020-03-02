@@ -1,5 +1,5 @@
 import { InfographicConfig } from "../../../configs";
-import { NodeTransformer } from "./typings";
+import { NodeTransformer, CursorTransformer } from "./typings";
 import { overrideMissingHeight } from "./dynamic-property-override";
 
 export const nodeContainer: NodeTransformer = {
@@ -7,13 +7,17 @@ export const nodeContainer: NodeTransformer = {
   preHandler: (c: InfographicConfig.Block) => c,
   postHandler: (
     c: InfographicConfig.Block,
-    children: InfographicConfig.Block[]
+    children: InfographicConfig.Block[],
+    cursor: CursorTransformer
   ) => {
     const containerBlock = c as InfographicConfig.ContainerBlock;
 
-    return overrideMissingHeight({
-      ...containerBlock,
-      blocks: children
-    });
+    return {
+      block: overrideMissingHeight({
+        ...containerBlock,
+        blocks: children
+      }),
+      cursor
+    };
   }
-}
+};

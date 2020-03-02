@@ -14,7 +14,7 @@ export function preProcessInfographicConfig(
     location: 0
   };
 
-  return processBlock(config, trip, defaultCursor);
+  return processBlock(config, trip, defaultCursor).block;
 }
 
 const transformers: { [id: string]: Transformer } = {
@@ -24,13 +24,17 @@ const transformers: { [id: string]: Transformer } = {
     preHandler: (c: InfographicConfig.Block) => c,
     postHandler: (
       c: InfographicConfig.Block,
-      children: InfographicConfig.Block[]
+      children: InfographicConfig.Block[],
+      cursor
     ) => {
       const b = c as InfographicConfig.LocationsBlocks;
       return {
-        ...b,
-        blocks: children
-      } as InfographicConfig.Block;
+        block: {
+          ...b,
+          blocks: children
+        } as InfographicConfig.Block,
+        cursor
+      };
     }
   },
   location: {
@@ -38,13 +42,17 @@ const transformers: { [id: string]: Transformer } = {
     preHandler: (c: InfographicConfig.Block) => c,
     postHandler: (
       c: InfographicConfig.Block,
-      children: InfographicConfig.Block[]
+      children: InfographicConfig.Block[],
+      cursor
     ) => {
       const b = c as InfographicConfig.LocationBlock;
-      return overrideMissingHeight({
-        ...b,
-        blocks: children
-      } as InfographicConfig.Block);
+      return {
+        block: overrideMissingHeight({
+          ...b,
+          blocks: children
+        } as InfographicConfig.Block),
+        cursor: _.merge({}, cursor, { location: cursor.location + 1 })
+      };
     }
   },
   text: leafText
@@ -54,7 +62,7 @@ function processBlock(
   blockConfig: InfographicConfig.Block,
   trip,
   cursor: CursorTransformer
-): InfographicConfig.Block {
+): { block: InfographicConfig.Block; cursor: CursorTransformer } {
   const transformer = transformers[blockConfig.type];
   if (transformer) {
     if (transformer.type == "node") {
@@ -62,7 +70,7 @@ function processBlock(
     }
   }
 
-  const nextCursor = _.merge({}, cursor, { level: cursor.level + 1 });
+  let nextCursor = _.merge({}, cursor, { level: cursor.level + 1 });
   let processedBlockConfigs: InfographicConfig.Block[] = [];
   if (!_.isEmpty((blockConfig as InfographicConfig.ContainerBlock).blocks)) {
     const containerBlockConfig = blockConfig as InfographicConfig.ContainerBlock;
@@ -72,20 +80,37 @@ function processBlock(
     for (var i = 0; i < childrenBlocks.length; i++) {
       var childBlock = childrenBlocks[i];
 
-      var processedBlock = processBlock(childBlock, trip, nextCursor);
-      processedBlockConfigs.push(processedBlock);
+      var processResult = processBlock(childBlock, trip, nextCursor);
+      processedBlockConfigs.push(processResult.block);
+      nextCursor = processResult.cursor;
     }
   }
 
   if (transformer) {
     if (transformer.type == "node") {
-      return transformer.postHandler(blockConfig, processedBlockConfigs);
+      const postHandlerResult = transformer.postHandler(
+        blockConfig,
+        processedBlockConfigs,
+        nextCursor
+      );
+      nextCursor = postHandlerResult.cursor;
+
+      return {
+        block: postHandlerResult.block,
+        cursor: _.merge({}, cursor, { location: nextCursor.location })
+      };
     }
 
     if (transformer.type == "leaf") {
-      return transformer.handler(blockConfig, trip, cursor);
+      return {
+        block: transformer.handler(blockConfig, trip, cursor),
+        cursor: _.merge({}, cursor, { location: nextCursor.location })
+      };
     }
   }
 
-  return blockConfig;
+  return {
+    block: blockConfig,
+    cursor: _.merge({}, cursor, { location: nextCursor.location })
+  };
 }
