@@ -25,6 +25,7 @@ async function renderLocationImage(
   trip,
   cursor
 ) {
+  cursor.location = 0;
   log(cursor.level, "render block", blockConfig.type);
   // log(cursor.level, "cursor", cursor);
 
@@ -69,10 +70,10 @@ async function renderBlock(
 ) {
   if (blockConfig.type === "container" || blockConfig.type === "location") {
     log(cursor.level, "render block", blockConfig.type);
-    log(cursor.level, "render block cursor", JSON.stringify(cursor));
+    log(cursor.level, "render cursor", cursor);
   }
 
-  var nextCursor: Cursor = _.assign({}, cursor, { level: cursor.level + 1 });
+  var nextCursor: Cursor = cursor;
 
   if (_.find(["container", "location"], type => blockConfig.type === type)) {
     // preNodeContainer
@@ -174,11 +175,7 @@ export async function renderInfographic(
     y: 0,
     level: 0,
     width: infographicConfig.width ? infographicConfig.width : 0,
-    height: 0,
-    totalWidth: infographicConfig.width ? infographicConfig.width : 0,
-    totalHeight: processedInfoConfig["height"],
-
-    location: 0
+    height: 0
   };
 
   const finalCursor: Cursor = await renderBlock(
@@ -189,7 +186,7 @@ export async function renderInfographic(
   );
   console.log("final cursor", finalCursor);
 
-  canvasAdaptor.resize(finalCursor.totalWidth, finalCursor.totalHeight);
+  canvasAdaptor.resize(infographicConfig.width ? infographicConfig.width : 0, processedInfoConfig["height"]);
   // canvasAdaptor.resize(3000, 3000);
   canvasAdaptor.drawBackground(infographicConfig.backgroundColor);
 
