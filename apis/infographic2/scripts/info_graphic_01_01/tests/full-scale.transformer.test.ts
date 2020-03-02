@@ -1,100 +1,88 @@
 import { InfographicConfig } from "../../../configs";
-import { preProcessInfographicConfig } from "../transformer";
+import { preProcessInfographicConfig } from "../transformers";
+import {
+  config_01_01,
+  config_01_02
+} from "../../../configs/info_graphic_01_01/config";
 
 describe("complex transformer", () => {
-
-  test("complex configs", () => {
+  test("complex configs for 1 location", () => {
     //Arrange
-    const config: InfographicConfig.Infographic = {
-      width: 1280,
-      // height: 1280 + 300,
-      backgroundColor: "#e3d1a2",
-      
-      type: "container",
-      blocks: [
+    const config: InfographicConfig.Infographic = config_01_01;
+
+    const data = {
+      name: " Chuyến đi đầu tiên trên TripBFF",
+      fromDate: 1567962000000,
+      toDate: 1568221199999,
+      locations: [
         {
-          type: "location",
-          blocks: [
-            {
-              type: "container",
-              blocks: [
-                {
-                  type: "location-image",
-                  width: 1280,
-                  height: 1280
-                }
-              ]
-            },
-            {
-              type: "container",
-              height: 300,
-              blocks: [
-                {
-                  // location name
-                  type: "text",
-                  text: "{{location.name}}",
-                  fontSize: "64px",
-                  fontFamily: "Roboto",
-                  color: "#d0363b",
-                  fontWeight: "bold",
-                  textAnchor: "start",
-                  textTransform: "uppercase",
-                  positioning: {
-                    top: 20,
-                    left: 20
-                  }
-                },
-                {
-                  // location feeling
-                  type: "text",
-                  text: "{{location.feeling}}",
-                  fontSize: "48px",
-                  fontFamily: "Roboto",
-                  color: "#121113",
-                  textAnchor: "start",
-                  positioning: {
-                    top: 20,
-                    left: 20
-                  }
-                },
-                {
-                  // location highlights
-                  type: "text",
-                  text: "{{location.hight-lights}}",
-                  fontSize: "48px",
-                  fontFamily: "Roboto",
-                  color: "#121113",
-                  textAnchor: "start",
-                  positioning: {
-                    top: 20,
-                    left: 20
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        {
-          // render footer image
-          type: "image",
-          url: "./data/images/App_Signature.png",
-    
-          positioning: {
-            right: 200,
-            bottom: 80
-          }
+          locationId: "a10ca9f3-7b62-4899-abae-b13fd9839a5c",
+          name: "Phan Xi Păng",
+          fromTime: "September 9, 2019",
+          toTime: "2019-09-09T08:25:00.000Z",
+          feeling: "Tuyệt vời",
+          activity: "Đi bộ đường dài ngắn ngày",
+          highlights: "Đẹp, Nguy hiểm",
+          signedUrl: "http://placekitten.com/700/500"
         }
-      ]
+      ],
+      locale: "vi",
+      numberOfDays: 1
     };
 
-    const data = {};
-
     // Act
-    const result = preProcessInfographicConfig(config, data) as InfographicConfig.Infographic;
+    const result = preProcessInfographicConfig(
+      config,
+      data
+    ) as InfographicConfig.Infographic;
 
     // Assert
     expect(result).toBeDefined();
     expect(result).toMatchSnapshot();
   });
-  
+
+  test("complex configs for 2 locations", () => {
+    //Arrange
+    const config: InfographicConfig.Infographic = config_01_02;
+
+    const data = {
+      name: " Chuyến đi đầu tiên trên TripBFF",
+      fromDate: 1567962000000,
+      toDate: 1568221199999,
+      locations: [
+        {
+          locationId: "a10ca9f3-7b62-4899-abae-b13fd9839a5c",
+          name: "Phan Xi Păng",
+          fromTime: "September 9, 2019",
+          toTime: "2019-09-09T08:25:00.000Z",
+          feeling: "Tuyệt vời",
+          activity: "Đi bộ đường dài ngắn ngày",
+          highlights: "Đẹp, Nguy hiểm",
+          signedUrl: "http://placekitten.com/700/500"
+        },
+        {
+          locationId: "2b877a4c-5bf9-4315-a8b4-02f44971879d",
+          name: "Mù Cang Chải",
+          fromTime: "September 10, 2019",
+          toTime: "2019-09-10T03:16:00.000Z",
+          feeling: "Yên bình",
+          activity: "Ngắm ruộng lúa",
+          highlights: "Đẹp, Rẻ",
+          signedUrl: "http://placekitten.com/1200/1200"
+        }
+      ],
+      locale: "vi",
+      numberOfDays: 1
+    };
+
+    // Act
+    const result = preProcessInfographicConfig(
+      config,
+      data
+    ) as InfographicConfig.Infographic;
+
+    // Assert
+    expect(result).toBeDefined();
+    expect(result).toMatchSnapshot();
+  });
 });

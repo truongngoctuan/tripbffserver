@@ -32,8 +32,9 @@ const registeredPlugins = {
   circle: [PLUGINS.componentCircle]
 };
 
+type execFunc = (blockType, canvasAdaptor, blockConfig, cursor, trip) => Cursor;
 function executePlugins(blockType, canvasAdaptor, blockConfig, cursor, trip): Cursor {
-  let baseFuncs: Function[] = [];
+  let baseFuncs: execFunc[] = [];
   const blockPlugins = registeredPlugins[blockType];
   // console.log(blockPlugins);
   if (!_.isEmpty(blockPlugins)) {
@@ -56,6 +57,8 @@ function executePlugins(blockType, canvasAdaptor, blockConfig, cursor, trip): Cu
       trip
     );
   }
+
+  return cursor;
 }
 
 module.exports = {

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`complex transformer complex configs 1`] = `
+exports[`complex transformer complex configs for 1 location 1`] = `
 Object {
   "backgroundColor": "#e3d1a2",
   "blocks": Array [
@@ -28,7 +28,7 @@ Object {
                 "left": 20,
                 "top": 20,
               },
-              "text": "{{location.name}}",
+              "text": "PHAN XI PĂNG.",
               "textAnchor": "start",
               "textTransform": "uppercase",
               "type": "text",
@@ -41,7 +41,7 @@ Object {
                 "left": 20,
                 "top": 20,
               },
-              "text": "{{location.feeling}}",
+              "text": "Đi bộ đường dài ngắn ngày. Cảm thấy tuyệt vời.",
               "textAnchor": "start",
               "type": "text",
             },
@@ -53,28 +53,197 @@ Object {
                 "left": 20,
                 "top": 20,
               },
-              "text": "{{location.hight-lights}}",
+              "text": "Đẹp, nguy hiểm.",
               "textAnchor": "start",
               "type": "text",
             },
           ],
-          "height": 300,
+          "height": 250,
           "type": "container",
         },
       ],
-      "height": 1580,
+      "height": 1530,
       "type": "location",
     },
     Object {
-      "positioning": Object {
-        "bottom": 80,
-        "right": 200,
-      },
-      "type": "image",
-      "url": "./data/images/App_Signature.png",
+      "blocks": Array [
+        Object {
+          "positioning": Object {
+            "bottom": 80,
+            "right": 200,
+          },
+          "type": "image",
+          "url": "./data/images/App_Signature.png",
+        },
+      ],
+      "height": 50,
+      "type": "container",
     },
   ],
   "height": 1580,
+  "type": "container",
+  "width": 1280,
+}
+`;
+
+exports[`complex transformer complex configs for 2 locations 1`] = `
+Object {
+  "backgroundColor": "rgb(254, 255, 246)",
+  "blocks": Array [
+    Object {
+      "blocks": Array [
+        Object {
+          "color": "rgb(0, 0, 0)",
+          "fontFamily": "Roboto",
+          "fontSize": "64px",
+          "fontWeight": "bold",
+          "positioning": Object {},
+          "text": " CHUYẾN ĐI ĐẦU TIÊN TRÊN TRIPBFF",
+          "textAnchor": "middle",
+          "textTransform": "uppercase",
+          "type": "text",
+        },
+        Object {
+          "color": "rgb(0, 0, 0)",
+          "fontFamily": "Roboto",
+          "fontSize": "64px",
+          "fontWeight": "bold",
+          "positioning": Object {},
+          "text": "1 ngày, 2 địa điểm",
+          "textAnchor": "middle",
+          "textTransform": "uppercase",
+          "type": "text",
+        },
+      ],
+      "height": 170,
+      "type": "container",
+    },
+    Object {
+      "backgroundColor": "#fff",
+      "blocks": Array [
+        Object {
+          "blocks": Array [
+            Object {
+              "height": 840,
+              "type": "location-image",
+              "width": 640,
+            },
+            Object {
+              "color": "#d0363b",
+              "fontFamily": "Roboto",
+              "fontSize": "64px",
+              "fontWeight": "bold",
+              "positioning": Object {
+                "left": 20,
+                "top": 60,
+              },
+              "text": "PHAN XI PĂNG.",
+              "textAnchor": "start",
+              "textTransform": "uppercase",
+              "type": "text",
+            },
+            Object {
+              "color": "#121113",
+              "fontFamily": "Roboto",
+              "fontSize": "48px",
+              "positioning": Object {
+                "left": 20,
+                "top": 60,
+              },
+              "text": "Đi bộ đường dài ngắn ngày. Cảm thấy tuyệt vời.",
+              "textAnchor": "start",
+              "type": "text",
+              "width": 600,
+            },
+            Object {
+              "color": "#121113",
+              "fontFamily": "Roboto",
+              "fontSize": "48px",
+              "positioning": Object {
+                "left": 20,
+                "top": 60,
+              },
+              "text": "Đẹp, nguy hiểm.",
+              "textAnchor": "start",
+              "type": "text",
+            },
+          ],
+          "height": 840,
+          "type": "location",
+        },
+        Object {
+          "blocks": Array [
+            Object {
+              "height": 840,
+              "type": "location-image",
+              "width": 640,
+            },
+            Object {
+              "color": "#d0363b",
+              "fontFamily": "Roboto",
+              "fontSize": "64px",
+              "fontWeight": "bold",
+              "positioning": Object {
+                "left": 20,
+                "top": 60,
+              },
+              "text": "PHAN XI PĂNG.",
+              "textAnchor": "start",
+              "textTransform": "uppercase",
+              "type": "text",
+            },
+            Object {
+              "color": "#121113",
+              "fontFamily": "Roboto",
+              "fontSize": "48px",
+              "positioning": Object {
+                "left": 20,
+                "top": 60,
+              },
+              "text": "Đi bộ đường dài ngắn ngày. Cảm thấy tuyệt vời.",
+              "textAnchor": "start",
+              "type": "text",
+              "width": 600,
+            },
+            Object {
+              "color": "#121113",
+              "fontFamily": "Roboto",
+              "fontSize": "48px",
+              "positioning": Object {
+                "left": 20,
+                "top": 60,
+              },
+              "text": "Đẹp, nguy hiểm.",
+              "textAnchor": "start",
+              "type": "text",
+            },
+          ],
+          "height": 840,
+          "positioning": Object {
+            "left": 640,
+          },
+          "type": "location",
+        },
+      ],
+      "height": 1200,
+      "type": "container",
+    },
+    Object {
+      "blocks": Array [
+        Object {
+          "positioning": Object {
+            "bottom": 80,
+            "right": 200,
+          },
+          "type": "image",
+          "url": "./data/images/App_Signature.png",
+        },
+      ],
+      "height": 70,
+      "type": "container",
+    },
+  ],
+  "height": 1440,
   "type": "container",
   "width": 1280,
 }

@@ -24,7 +24,7 @@ var test01: InfographicConfig.Infographic = {
       ]
 };
 
-var config_01_01: InfographicConfig.Infographic = {
+export const config_01_01: InfographicConfig.Infographic = {
   width: 1280,
   // height: 1280 + 300,
   backgroundColor: "#e3d1a2",
@@ -112,7 +112,7 @@ var config_01_01: InfographicConfig.Infographic = {
   ]
 };
 
-var config_01_02: InfographicConfig.Infographic = {
+export const config_01_02: InfographicConfig.Infographic = {
   width: 1280,
   // height: 1500,
   backgroundColor: "rgb(254, 255, 246)",
@@ -299,7 +299,7 @@ var config_01_02: InfographicConfig.Infographic = {
   ]
 };
 
-var config_01_others: InfographicConfig.Infographic = {
+export const config_01_others: InfographicConfig.Infographic = {
   width: 2060,
   height: 2200,
   // height: 4200,
@@ -575,10 +575,4 @@ var config_01_others: InfographicConfig.Infographic = {
   //   imageWidth: 180,
   //   imageHeight: 60
   // }
-};
-
-module.exports = {
-  config_01_01: config_01_01,
-  config_01_02: config_01_02,
-  config_01_others: config_01_others
 };

@@ -4,7 +4,7 @@ import { Cursor } from "./typings";
 import { getRelativePosition } from "./plugins/utils";
 
 import _ from "lodash";
-import { preProcessInfographicConfig } from "./transformer";
+import { preProcessInfographicConfig } from "./transformers";
 const { executePlugins } = require("./plugins/index");
 
 function log(level: number, message: string, data: any = undefined) {
@@ -17,12 +17,6 @@ async function renderLessBlock(canvasAdaptor, blockConfig, trip, cursor) {
   // log(cursor.level, "cursor", cursor);
 
   return cursor;
-}
-
-async function renderLocation(canvasAdaptor, blockConfig, trip, cursor) {
-  // log(cursor.level, "render block", blockConfig.type);
-
-  return _.assign({}, cursor, { location: cursor.location + 1 });
 }
 
 async function renderLocationImage(
@@ -40,6 +34,7 @@ async function renderLocationImage(
     !_.isEmpty(trip.locations[cursor.location].signedUrl)
       ? trip.locations[cursor.location].signedUrl
       : "./data/images/EmptyImage01.jpg";
+
   var result = (await canvasAdaptor.drawImage(
     imgUri,
     getRelativePosition(cursor, blockConfig.positioning),

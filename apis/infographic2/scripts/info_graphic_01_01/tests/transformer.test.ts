@@ -1,5 +1,5 @@
 import { InfographicConfig } from "../../../configs";
-import { preProcessInfographicConfig } from "../transformer";
+import { preProcessInfographicConfig } from "../transformers";
 
 describe("node transformer", () => {
   test("simple container node", () => {
