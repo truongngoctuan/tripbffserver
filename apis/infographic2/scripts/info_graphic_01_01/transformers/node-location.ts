@@ -15,6 +15,7 @@ export const nodeLocation: NodeTransformer = {
     return {
       block: overrideMissingHeight({
         ...b,
+        type: "container",
         blocks: children
       } as InfographicConfig.Block),
       cursor: _.merge({}, cursor, { location: cursor.location + 1 })

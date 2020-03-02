@@ -69,6 +69,7 @@ async function renderBlock(
 ) {
   if (blockConfig.type === "container" || blockConfig.type === "location") {
     log(cursor.level, "render block", blockConfig.type);
+    log(cursor.level, "render block cursor", JSON.stringify(cursor));
   }
 
   var nextCursor: Cursor = _.assign({}, cursor, { level: cursor.level + 1 });
@@ -110,7 +111,7 @@ async function renderBlock(
         //override cursor
         if (childBlock["height"]) {
           nextCursor = _.merge({}, nextCursor, {
-            y: cursor.y + childBlock["height"]
+            y: nextCursor.y + childBlock["height"]
           });
         }
         else {
@@ -123,26 +124,10 @@ async function renderBlock(
         }
         
       }
-
-      // if (!_.isEmpty(next)) nextCursor = next;
     }
   }
 
-  // //reset nextCursor, keep only
-  // if (
-  //   _.find(["container", "location"], type => blockConfig.type === type) &&
-  //   blockConfig["flex"] &&
-  //   blockConfig["flex"] == "column"
-  // ) {
-  //   //override cursor
-  //   nextCursor = _.merge({}, nextCursor, {
-  //     y: cursor.y + blockConfig["height"]
-  //   });
-  // } else {
-  //   nextCursor = cursor;
-  // }
-
-  nextCursor = cursor;
+  if (blockConfig.type === "container") return nextCursor;
 
   if (
     _.findIndex(
@@ -157,7 +142,6 @@ async function renderBlock(
       nextCursor,
       trip
     );
-    // return await renderTextBlock(canvasAdaptor, blockConfig, trip, cursor);
   } else if (blockConfig.type === "location-image") {
     return await renderLocationImage(
       canvasAdaptor,
@@ -189,9 +173,9 @@ export async function renderInfographic(
     x: 0,
     y: 0,
     level: 0,
-    width: infographicConfig.width,
+    width: infographicConfig.width ? infographicConfig.width : 0,
     height: 0,
-    totalWidth: infographicConfig.width,
+    totalWidth: infographicConfig.width ? infographicConfig.width : 0,
     totalHeight: processedInfoConfig["height"],
 
     location: 0

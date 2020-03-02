@@ -19,7 +19,7 @@ Object {
         },
       ],
       "height": 100,
-      "type": "location",
+      "type": "container",
     },
     Object {
       "blocks": Array [],

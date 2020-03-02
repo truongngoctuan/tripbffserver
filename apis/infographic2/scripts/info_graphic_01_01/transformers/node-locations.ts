@@ -23,6 +23,7 @@ export const nodeLocations: NodeTransformer = {
 
     return {
       ...c,
+      type: "container",
       blocks: childBlockConfigs
     } as InfographicConfig.Block;
   },
