@@ -46,7 +46,7 @@ var config_01_01: InfographicConfig.Infographic = {
         },
         {
           type: "container",
-          height: 300,
+          height: 250,
           blocks: [
             {
               // location name
@@ -94,14 +94,20 @@ var config_01_01: InfographicConfig.Infographic = {
       ]
     },
     {
-      // render footer image
-      type: "image",
-      url: "./data/images/App_Signature.png",
-
-      positioning: {
-        right: 200,
-        bottom: 80
-      }
+      type: "container",
+      height: 50,
+      blocks: [
+        {
+          // render footer image
+          type: "image",
+          url: "./data/images/App_Signature.png",
+    
+          positioning: {
+            right: 200,
+            bottom: 80
+          }
+        }
+      ]
     }
   ]
 };

@@ -1,6 +1,7 @@
 import { InfographicConfig } from "../../configs";
 import { CanvasAdaptor } from "../utils";
 import { Cursor } from "./typings";
+import { getRelativePosition } from "./plugins/utils";
 
 import _ from "lodash";
 import { preProcessInfographicConfig } from "./transformer";
@@ -59,26 +60,13 @@ async function renderImage(canvasAdaptor, blockConfig, trip, cursor) {
   // log(cursor.level, "cursor", cursor);
 
   const relativePosition = getRelativePosition(cursor, blockConfig.positioning);
+  log(cursor.level, "cursor", cursor);
   log(cursor.level, "relative position", relativePosition);
 
   await canvasAdaptor.drawImage(
     blockConfig.url,
-    getRelativePosition(cursor, blockConfig.positioning)
+    relativePosition
   );
-}
-
-function getRelativePosition(cursor, positioning) {
-  var x = cursor.x;
-  var y = cursor.y;
-  if (!positioning) return { x, y };
-
-  if (positioning.left) x = x + positioning.left;
-  if (positioning.right) x = x + cursor.width - positioning.right;
-
-  if (positioning.top) y = y + positioning.top;
-  if (positioning.bottom) y = y + cursor.height - positioning.bottom;
-
-  return { x, y };
 }
 
 async function renderBlock(
@@ -159,7 +147,7 @@ async function renderBlock(
         height: cursor.height + blockConfig.height,
         totalHeight: cursor.totalHeight + blockConfig.height,
       });
-      console.log("override cursor", nextCursor);
+      // console.log("override cursor", nextCursor);
 
     }
     else {

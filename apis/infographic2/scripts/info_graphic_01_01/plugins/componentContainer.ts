@@ -39,7 +39,7 @@ export async function componentContainer(
     newBounds = getRelativeBounds(newBounds, blockConfig.positioning);
     // console.log("newXY", newXY)
   }
-  console.log("cursor container", cursor);
+  // console.log("cursor container", cursor);
   // console.log("newBounds", newBounds);
 
   const rect = new paper.Shape.Rectangle(
