@@ -22,11 +22,7 @@ async function info_v_01(trip, infographicType) {
     }
   }
 
-  canvasAdaptor.draw();
-  var resultBuf = canvasAdaptor.toBufferJpeg();
-  canvasAdaptor.remove();
-
-  return resultBuf;
+  return canvasAdaptor;
 }
 
 async function info_v_01_01(trip, infographicType) {
@@ -46,6 +42,6 @@ async function info_v_01_01(trip, infographicType) {
 }
 
 module.exports = {
-  draw: info_v_01
-  // draw: info_v_01_01
+  // draw: info_v_01
+  draw: info_v_01_01
 };

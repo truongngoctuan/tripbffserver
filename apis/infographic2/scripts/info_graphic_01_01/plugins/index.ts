@@ -1,10 +1,12 @@
-const { backgroundColor } = require("./backgroundColor");
-const { componentContainer } = require("./componentContainer");
-const { componentText } = require("./componentText");
-const { componentLine } = require("./componentLine");
-const { componentCircle } = require("./componentCircle");
+import { backgroundColor } from "./backgroundColor";
+import { componentContainer } from "./componentContainer";
+import { componentText } from "./componentText";
+import { componentLine } from "./componentLine";
+import { componentCircle } from "./componentCircle";
 
-const _ = require("lodash");
+import { Cursor } from "../typings";
+
+import _ from "lodash";
 
 const PLUGINS = {
   componentContainer: "componentContainer",
@@ -23,15 +25,16 @@ const plugins = {
 };
 
 const registeredPlugins = {
-  container: [PLUGINS.componentContainer, PLUGINS.backgroundColor],
+  container: [PLUGINS.backgroundColor, PLUGINS.componentContainer],
   location: [PLUGINS.componentContainer],
   text: [PLUGINS.componentText],
   line: [PLUGINS.componentLine],
   circle: [PLUGINS.componentCircle]
 };
 
-function executePlugins(blockType, canvasAdaptor, blockConfig, cursor, trip) {
-  let baseFuncs = [];
+type execFunc = (blockType, canvasAdaptor, blockConfig, cursor, trip) => Cursor;
+function executePlugins(blockType, canvasAdaptor, blockConfig, cursor, trip): Cursor {
+  let baseFuncs: execFunc[] = [];
   const blockPlugins = registeredPlugins[blockType];
   // console.log(blockPlugins);
   if (!_.isEmpty(blockPlugins)) {
@@ -54,6 +57,8 @@ function executePlugins(blockType, canvasAdaptor, blockConfig, cursor, trip) {
       trip
     );
   }
+
+  return cursor;
 }
 
 module.exports = {

@@ -5,8 +5,4 @@ export type Cursor = {
   y: number;
   width: number;
   height: number;
-  totalWidth: number;
-  totalHeight: number;
-
-  location: number;
 };

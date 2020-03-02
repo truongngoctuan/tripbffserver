@@ -1,8 +1,10 @@
 import { InfographicConfig } from "../../configs";
 import { CanvasAdaptor } from "../utils";
-import { Cursor } from ".";
+import { Cursor } from "./typings";
+import { getRelativePosition } from "./plugins/utils";
 
 import _ from "lodash";
+import { preProcessInfographicConfig } from "./transformers";
 const { executePlugins } = require("./plugins/index");
 
 function log(level: number, message: string, data: any = undefined) {
@@ -17,18 +19,13 @@ async function renderLessBlock(canvasAdaptor, blockConfig, trip, cursor) {
   return cursor;
 }
 
-async function renderLocation(canvasAdaptor, blockConfig, trip, cursor) {
-  // log(cursor.level, "render block", blockConfig.type);
-
-  return _.assign({}, cursor, { location: cursor.location + 1 });
-}
-
 async function renderLocationImage(
   canvasAdaptor: CanvasAdaptor,
   blockConfig: InfographicConfig.LocationImageBlock,
   trip,
   cursor
 ) {
+  cursor.location = 0;
   log(cursor.level, "render block", blockConfig.type);
   // log(cursor.level, "cursor", cursor);
 
@@ -38,6 +35,7 @@ async function renderLocationImage(
     !_.isEmpty(trip.locations[cursor.location].signedUrl)
       ? trip.locations[cursor.location].signedUrl
       : "./data/images/EmptyImage01.jpg";
+
   var result = (await canvasAdaptor.drawImage(
     imgUri,
     getRelativePosition(cursor, blockConfig.positioning),
@@ -58,26 +56,10 @@ async function renderImage(canvasAdaptor, blockConfig, trip, cursor) {
   // log(cursor.level, "cursor", cursor);
 
   const relativePosition = getRelativePosition(cursor, blockConfig.positioning);
+  log(cursor.level, "cursor", cursor);
   log(cursor.level, "relative position", relativePosition);
 
-  await canvasAdaptor.drawImage(
-    blockConfig.url,
-    getRelativePosition(cursor, blockConfig.positioning)
-  );
-}
-
-function getRelativePosition(cursor, positioning) {
-  var x = cursor.x;
-  var y = cursor.y;
-  if (!positioning) return { x, y };
-
-  if (positioning.left) x = x + positioning.left;
-  if (positioning.right) x = x + cursor.width - positioning.right;
-
-  if (positioning.top) y = y + positioning.top;
-  if (positioning.bottom) y = y + cursor.height - positioning.bottom;
-
-  return { x, y };
+  await canvasAdaptor.drawImage(blockConfig.url, relativePosition);
 }
 
 async function renderBlock(
@@ -88,28 +70,13 @@ async function renderBlock(
 ) {
   if (blockConfig.type === "container" || blockConfig.type === "location") {
     log(cursor.level, "render block", blockConfig.type);
+    log(cursor.level, "render cursor", cursor);
   }
 
-  var nextCursor: Cursor = _.assign({}, cursor, { level: cursor.level + 1 });
-  let isFixedHeight = false;
-  if (blockConfig.type === "container") {
-    isFixedHeight = blockConfig.height > 0;
-    const deltaHeight = blockConfig.height;
-    if (deltaHeight > 0) {
-      nextCursor.height = nextCursor.height + deltaHeight;
-    }
-    nextCursor = await executePlugins(
-      blockConfig.type,
-      canvasAdaptor,
-      blockConfig,
-      cursor,
-      trip
-    );
-    // console.log("nextCursor return container", nextCursor);
-  }
+  var nextCursor: Cursor = cursor;
 
-  if (blockConfig.type === "location") {
-    isFixedHeight = blockConfig.height > 0;
+  if (_.find(["container", "location"], type => blockConfig.type === type)) {
+    // preNodeContainer
     nextCursor = await executePlugins(
       blockConfig.type,
       canvasAdaptor,
@@ -120,104 +87,52 @@ async function renderBlock(
     // console.log("nextCursor return location", nextCursor);
   }
 
-  var totalHeight = 0;
   if (!_.isEmpty((blockConfig as InfographicConfig.ContainerBlock).blocks)) {
     const containerBlockConfig = blockConfig as InfographicConfig.ContainerBlock;
 
-    let childBlockConfigs: InfographicConfig.Block[] = [];
-    if (blockConfig.type === "locations") {
-      // nLoc > nLocConfig, clone locConfig until n == nLoc
-      // else keep just enough logConfig
-      const nLoc = trip.locations.length;
-      const nLocConfig = containerBlockConfig.blocks.length;
-      if (nLoc > nLocConfig) {
-        for (let iLoc = 0; iLoc < nLoc; iLoc++) {
-          const locConfig = containerBlockConfig.blocks[iLoc % nLocConfig];
-          childBlockConfigs.push(locConfig);
-        }
-      } else {
-        childBlockConfigs = containerBlockConfig.blocks.slice(0, nLoc);
-      }
-      // console.log("childBlockConfigs.length", childBlockConfigs.length);
-    } else {
-      childBlockConfigs = [...containerBlockConfig.blocks];
-    }
-
-    let isStackingHeight = false;
+    let childBlockConfigs: InfographicConfig.Block[] =
+      containerBlockConfig.blocks;
     for (var i = 0; i < childBlockConfigs.length; i++) {
-      var previousChildBlock = i != 0 ? childBlockConfigs[i - 1] : undefined;
       var childBlock = childBlockConfigs[i];
-      // log(
-      //   cursor.level + 1,
-      //   "cursor info",
-      //   `w=${cursor.width} h=${cursor.height}`
-      // );
-
-      if (
-        previousChildBlock &&
-        _.findIndex(
-          ["container", "locations", "location", "text"],
-          type => previousChildBlock.type === type
-        ) !== -1
-      ) {
-        isStackingHeight = true;
-        // console.log("debugging", cursor.y + " " + totalHeight);
-      }
 
       var next = await renderBlock(
         canvasAdaptor,
         childBlock,
         trip,
         _.assign({}, nextCursor, {
-          level: cursor.level + 1,
-          y: isStackingHeight ? nextCursor.y : cursor.y
+          level: cursor.level + 1
         })
       );
 
       if (
-        !isFixedHeight &&
-        next &&
-        (childBlock.type === "container" || childBlock.type === "location")
+        _.find(["container", "location"], type => blockConfig.type === type) &&
+        blockConfig["flex"] &&
+        blockConfig["flex"] == "column"
       ) {
-        totalHeight += next.height;
+        //override cursor
+        if (childBlock["height"]) {
+          nextCursor = _.merge({}, nextCursor, {
+            y: nextCursor.y + childBlock["height"]
+          });
+        }
+        else {
+          if (!_.isEmpty(next)) {
+            nextCursor = _.merge({}, nextCursor, {
+              y: next.y
+            });
+          }
+          
+        }
+        
       }
-
-      if (!_.isEmpty(next)) nextCursor = next;
     }
   }
 
-  if (blockConfig.type === "container" || blockConfig.type === "location") {
-    if (isFixedHeight) {
-      nextCursor.totalHeight = blockConfig.height;
-    } else {
-      nextCursor.totalHeight = totalHeight;
-    }
+  if (blockConfig.type === "container") return nextCursor;
 
-    // log(cursor.level, "cursor", nextCursor);
-    // log(cursor.level, "totalHeight", nextCursor.totalHeight);
-  }
-
-  if (blockConfig.type === "container" || blockConfig.type === "locations") {
-    //reset cursor
-    return _.assign({}, nextCursor, {
-      x: cursor.x,
-      y: cursor.y + nextCursor.height,
-      width: cursor.width
-    });
-  } else if (blockConfig.type === "location") {
-    return await renderLocation(
-      canvasAdaptor,
-      blockConfig,
-      trip,
-      _.assign({}, nextCursor, {
-        x: cursor.x,
-        y: cursor.y + nextCursor.height,
-        width: cursor.width
-      })
-    );
-  } else if (
+  if (
     _.findIndex(
-      ["text", "line", "circle"],
+      ["locations", "location", "text", "line", "circle"],
       type => blockConfig.type === type
     ) !== -1
   ) {
@@ -225,49 +140,55 @@ async function renderBlock(
       blockConfig.type,
       canvasAdaptor,
       blockConfig,
-      cursor,
+      nextCursor,
       trip
     );
-    // return await renderTextBlock(canvasAdaptor, blockConfig, trip, cursor);
   } else if (blockConfig.type === "location-image") {
-    return await renderLocationImage(canvasAdaptor, blockConfig, trip, cursor);
+    return await renderLocationImage(
+      canvasAdaptor,
+      blockConfig,
+      trip,
+      nextCursor
+    );
   } else if (blockConfig.type === "image") {
-    return await renderImage(canvasAdaptor, blockConfig, trip, cursor);
+    return await renderImage(canvasAdaptor, blockConfig, trip, nextCursor);
   }
-  return await renderLessBlock(canvasAdaptor, blockConfig, trip, cursor);
+  return await renderLessBlock(canvasAdaptor, blockConfig, trip, nextCursor);
 }
 
-async function renderInfographic(
+export async function renderInfographic(
   canvasAdaptor: CanvasAdaptor,
   infographicConfig: InfographicConfig.Infographic,
   trip
 ) {
+  const processedInfoConfig = preProcessInfographicConfig(
+    infographicConfig,
+    trip
+  );
+
+  if (!(processedInfoConfig["height"] && processedInfoConfig["height"] > 0)) {
+    throw new Error("total height should have value");
+  }
+
   const defaultCursor: Cursor = {
     x: 0,
     y: 0,
     level: 0,
-    width: infographicConfig.width,
-    height: 0,
-    totalWidth: infographicConfig.width,
-    totalHeight: 0,
-
-    location: 0
+    width: infographicConfig.width ? infographicConfig.width : 0,
+    height: 0
   };
+
   const finalCursor: Cursor = await renderBlock(
     canvasAdaptor,
-    infographicConfig,
+    processedInfoConfig,
     trip,
     defaultCursor
   );
   console.log("final cursor", finalCursor);
 
-  canvasAdaptor.resize(finalCursor.totalWidth, finalCursor.totalHeight);
+  canvasAdaptor.resize(infographicConfig.width ? infographicConfig.width : 0, processedInfoConfig["height"]);
   // canvasAdaptor.resize(3000, 3000);
   canvasAdaptor.drawBackground(infographicConfig.backgroundColor);
 
   return;
 }
-
-module.exports = {
-  renderInfographic
-};

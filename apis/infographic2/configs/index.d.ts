@@ -6,13 +6,11 @@ export namespace InfographicConfig {
     width?: number;
     height?: number;
   };
+  type ContainerFlex = {
+    flex?: "column" | "row";
+  }
 
-  type Infographic = {
-    width: number;
-    height?: number; //maybe just remove it
-    blocks: Block[];
-  } & Background &
-    ContainerBlock;
+  type Infographic = ContainerBlock | LocationBlock;
 
   type Block = LocationsBlocks | LocationBlock | BasicBlock;
   type BasicBlock =
@@ -42,7 +40,7 @@ export namespace InfographicConfig {
     type: "location";
     blocks: BasicBlock[];
     positioning?: Positioning;
-  } & WidthHeight;
+  } & Background & WidthHeight & ContainerFlex;
 
   type LocationNameTextBlock = {
     type: "text";
@@ -65,7 +63,7 @@ export namespace InfographicConfig {
     blocks: Block[];
     positioning?: Positioning;
   } & Background &
-    WidthHeight;
+    WidthHeight & ContainerFlex;
 
   type ImageBlock = {
     type: "image";
@@ -112,7 +110,7 @@ export namespace InfographicConfig {
   type LocationsBlocks = {
     type: "locations";
     blocks: LocationBlock[];
-  };
+  } & ContainerFlex;
 
   type LocationImageBlock = {
     type: "location-image";
@@ -127,8 +125,6 @@ export namespace InfographicConfig {
     // height?: number;
   } & RelativePosition;
 
-  // StackPosition | RelativePosition;
-
   type StackPosition = {
     width?: number;
     height: number;
@@ -140,13 +136,8 @@ export namespace InfographicConfig {
     right?: number;
     bottom?: number;
   };
+}
 
-  // type Bounds = {
-  //   top?: number;
-  //   bottom?: number;
-  //   left?: number;
-  //   right?: number;
-  //   width?: number;
-  //   height: number;
-  // }
+export namespace ProcessedInfographicConfig {
+
 }
