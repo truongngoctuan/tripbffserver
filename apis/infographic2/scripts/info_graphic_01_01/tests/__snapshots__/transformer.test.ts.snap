@@ -18,6 +18,7 @@ Object {
           "type": "container",
         },
       ],
+      "height": 100,
       "type": "location",
     },
     Object {
@@ -26,7 +27,7 @@ Object {
       "type": "container",
     },
   ],
-  "height": 0,
+  "height": 100,
   "type": "container",
   "width": 1280,
 }

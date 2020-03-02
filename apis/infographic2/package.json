@@ -16,7 +16,7 @@
     "test": "jest --forceExit --coverage --verbose",
     "watch-test": "npm run test -- --watchAll",
     "build": "tsc",
-    "build-watch": "tsc -w",
+    "watch-build": "tsc -w",
     "test-e2e": "node ./e2e/index.js"
   },
   "author": "",

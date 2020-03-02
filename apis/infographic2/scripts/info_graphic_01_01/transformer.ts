@@ -1,5 +1,6 @@
 import { InfographicConfig } from "../../configs";
 import _ from "lodash";
+import { overrideMissingHeight } from "./transformers";
 export function preProcessInfographicConfig(
   config: InfographicConfig.Infographic,
   trip
@@ -32,15 +33,11 @@ const transformers: { [id: string]: Transformer } = {
       children: InfographicConfig.Block[]
     ) => {
       const containerBlock = c as InfographicConfig.ContainerBlock;
-      if (!containerBlock.height) {
-        containerBlock.height = _.sum(
-          _.map(children, child => (child["height"] ? child["height"] : 0))
-        );
-      }
-      return {
+
+      return overrideMissingHeight({
         ...containerBlock,
         blocks: children
-      };
+      });
     }
   },
   locations: {
@@ -50,11 +47,25 @@ const transformers: { [id: string]: Transformer } = {
       c: InfographicConfig.Block,
       children: InfographicConfig.Block[]
     ) => {
-      const containerBlock = c as InfographicConfig.LocationsBlocks;
+      const b = c as InfographicConfig.LocationsBlocks;
       return {
-        ...containerBlock,
+        ...b,
         blocks: children
       } as InfographicConfig.Block;
+    }
+  },
+  location: {
+    type: "node",
+    preHandler: (c: InfographicConfig.Block) => c,
+    postHandler: (
+      c: InfographicConfig.Block,
+      children: InfographicConfig.Block[]
+    ) => {
+      const b = c as InfographicConfig.LocationBlock;
+      return overrideMissingHeight({
+        ...b,
+        blocks: children
+      } as InfographicConfig.Block);
     }
   }
 };
@@ -83,7 +94,7 @@ function processBlock(
       processedBlockConfigs.push(processedBlock);
     }
   }
-  
+
   if (transformer) {
     if (transformer.type == "node") {
       return transformer.postHandler(blockConfig, processedBlockConfigs);

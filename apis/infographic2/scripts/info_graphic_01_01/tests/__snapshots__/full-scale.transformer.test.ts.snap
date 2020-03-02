@@ -62,6 +62,7 @@ Object {
           "type": "container",
         },
       ],
+      "height": 1580,
       "type": "location",
     },
     Object {
@@ -73,7 +74,7 @@ Object {
       "url": "./data/images/App_Signature.png",
     },
   ],
-  "height": 0,
+  "height": 1580,
   "type": "container",
   "width": 1280,
 }
