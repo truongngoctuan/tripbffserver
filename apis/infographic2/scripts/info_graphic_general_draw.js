@@ -42,6 +42,6 @@ async function info_v_01_01(trip, infographicType) {
 }
 
 module.exports = {
-  draw: info_v_01
-  // draw: info_v_01_01
+  // draw: info_v_01
+  draw: info_v_01_01
 };
