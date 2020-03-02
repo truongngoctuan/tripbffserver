@@ -30,64 +30,67 @@ export const config_01_01: InfographicConfig.Infographic = {
   backgroundColor: "#e3d1a2",
 
   type: "container",
+  flex: "column",
   blocks: [
     {
       type: "location",
       blocks: [
         {
           type: "container",
+          flex: "column",
           blocks: [
             {
               type: "location-image",
               width: 1280,
               height: 1280
-            }
-          ]
-        },
-        {
-          type: "container",
-          height: 250,
-          blocks: [
-            {
-              // location name
-              type: "text",
-              text: "{{location.name}}",
-              fontSize: "64px",
-              fontFamily: "Roboto",
-              color: "#d0363b",
-              fontWeight: "bold",
-              textAnchor: "start",
-              textTransform: "uppercase",
-              positioning: {
-                top: 20,
-                left: 20
-              }
             },
             {
-              // location feeling
-              type: "text",
-              text: "{{location.feeling}}",
-              fontSize: "48px",
-              fontFamily: "Roboto",
-              color: "#121113",
-              textAnchor: "start",
-              positioning: {
-                top: 20,
-                left: 20
-              }
-            },
-            {
-              // location highlights
-              type: "text",
-              text: "{{location.hight-lights}}",
-              fontSize: "48px",
-              fontFamily: "Roboto",
-              color: "#121113",
-              textAnchor: "start",
-              positioning: {
-                top: 20,
-                left: 20
-              }
+              type: "container",
+              height: 250,
+              flex: "column", // add this to make text flex
+              blocks: [
+                {
+                  // location name
+                  type: "text",
+                  text: "{{location.name}}",
+                  fontSize: "64px",
+                  fontFamily: "Roboto",
+                  color: "#d0363b",
+                  fontWeight: "bold",
+                  textAnchor: "start",
+                  textTransform: "uppercase",
+                  positioning: {
+                    top: 20,
+                    left: 20
+                  }
+                },
+                {
+                  // location feeling
+                  type: "text",
+                  text: "{{location.feeling}}",
+                  fontSize: "48px",
+                  fontFamily: "Roboto",
+                  color: "#121113",
+                  textAnchor: "start",
+                  positioning: {
+                    top: 20,
+                    left: 20
+                  }
+                },
+                {
+                  // location highlights
+                  type: "text",
+                  text: "{{location.hight-lights}}",
+                  fontSize: "48px",
+                  fontFamily: "Roboto",
+                  color: "#121113",
+                  textAnchor: "start",
+                  positioning: {
+                    top: 20,
+                    left: 20
+                  }
+                }
+              ]
             }
           ]
         }

@@ -63,6 +63,7 @@ export namespace InfographicConfig {
   type ContainerBlock = {
     type: "container";
     blocks: Block[];
+    flex?: "column" | "row";
     positioning?: Positioning;
   } & Background &
     WidthHeight;
@@ -127,8 +128,6 @@ export namespace InfographicConfig {
     // height?: number;
   } & RelativePosition;
 
-  // StackPosition | RelativePosition;
-
   type StackPosition = {
     width?: number;
     height: number;
@@ -140,13 +139,8 @@ export namespace InfographicConfig {
     right?: number;
     bottom?: number;
   };
+}
 
-  // type Bounds = {
-  //   top?: number;
-  //   bottom?: number;
-  //   left?: number;
-  //   right?: number;
-  //   width?: number;
-  //   height: number;
-  // }
+export namespace ProcessedInfographicConfig {
+  
 }

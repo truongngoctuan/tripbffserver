@@ -92,11 +92,6 @@ async function renderBlock(
       containerBlockConfig.blocks;
     for (var i = 0; i < childBlockConfigs.length; i++) {
       var childBlock = childBlockConfigs[i];
-      // log(
-      //   cursor.level + 1,
-      //   "cursor info",
-      //   `w=${cursor.width} h=${cursor.height}`
-      // );
 
       var next = await renderBlock(
         canvasAdaptor,
@@ -107,26 +102,47 @@ async function renderBlock(
         })
       );
 
-      if (!_.isEmpty(next)) nextCursor = next;
+      if (
+        _.find(["container", "location"], type => blockConfig.type === type) &&
+        blockConfig["flex"] &&
+        blockConfig["flex"] == "column"
+      ) {
+        //override cursor
+        if (childBlock["height"]) {
+          nextCursor = _.merge({}, nextCursor, {
+            y: cursor.y + childBlock["height"]
+          });
+        }
+        else {
+          if (!_.isEmpty(next)) {
+            nextCursor = _.merge({}, nextCursor, {
+              y: next.y
+            });
+          }
+          
+        }
+        
+      }
+
+      // if (!_.isEmpty(next)) nextCursor = next;
     }
   }
 
-  //reset nextCursor, keep only 
-  if (_.find(["container", "location"], type => blockConfig.type === type)) {
-    //override cursor
-    if (blockConfig["height"]) {
-      nextCursor = _.merge({}, nextCursor, {
-        y: cursor.y + blockConfig["height"],
-        height: cursor.height + blockConfig["height"],
-        totalHeight: cursor.totalHeight + blockConfig["height"]
-      });
-    } else {
-      console.log("do something here");
-    }
-  }
-  else {
-    nextCursor = cursor;
-  }
+  // //reset nextCursor, keep only
+  // if (
+  //   _.find(["container", "location"], type => blockConfig.type === type) &&
+  //   blockConfig["flex"] &&
+  //   blockConfig["flex"] == "column"
+  // ) {
+  //   //override cursor
+  //   nextCursor = _.merge({}, nextCursor, {
+  //     y: cursor.y + blockConfig["height"]
+  //   });
+  // } else {
+  //   nextCursor = cursor;
+  // }
+
+  nextCursor = cursor;
 
   if (
     _.findIndex(
@@ -160,6 +176,15 @@ export async function renderInfographic(
   infographicConfig: InfographicConfig.Infographic,
   trip
 ) {
+  const processedInfoConfig = preProcessInfographicConfig(
+    infographicConfig,
+    trip
+  );
+
+  if (!(processedInfoConfig["height"] && processedInfoConfig["height"] > 0)) {
+    throw new Error("total height should have value");
+  }
+
   const defaultCursor: Cursor = {
     x: 0,
     y: 0,
@@ -167,14 +192,11 @@ export async function renderInfographic(
     width: infographicConfig.width,
     height: 0,
     totalWidth: infographicConfig.width,
-    totalHeight: 0,
+    totalHeight: processedInfoConfig["height"],
 
     location: 0
   };
-  const processedInfoConfig = preProcessInfographicConfig(
-    infographicConfig,
-    trip
-  );
+
   const finalCursor: Cursor = await renderBlock(
     canvasAdaptor,
     processedInfoConfig,
