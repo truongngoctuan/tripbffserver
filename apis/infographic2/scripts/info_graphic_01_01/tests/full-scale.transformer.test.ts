@@ -1,5 +1,5 @@
 import { InfographicConfig } from "../../../configs";
-import { preProcessInfographicConfig, processBlock } from "../transformers";
+import { processBlock } from "../transformers";
 import {
   config_01_01,
   config_01_02,
@@ -32,14 +32,12 @@ describe("complex transformer", () => {
     };
 
     // Act
-    const result = preProcessInfographicConfig(
-      config,
-      data
-    ) as InfographicConfig.Infographic;
+    const result = processBlock(config, data, { level: 0, location: 0 });
 
     // Assert
     expect(result).toBeDefined();
-    expect(result).toMatchSnapshot();
+    expect(result.cursor.location).toBe(1);
+    expect(result.block).toMatchSnapshot();
   });
 
   test("complex configs for 2 locations", () => {
@@ -77,14 +75,12 @@ describe("complex transformer", () => {
     };
 
     // Act
-    const result = preProcessInfographicConfig(
-      config,
-      data
-    ) as InfographicConfig.Infographic;
+    const result = processBlock(config, data, { level: 0, location: 0 });
 
     // Assert
     expect(result).toBeDefined();
-    expect(result).toMatchSnapshot();
+    expect(result.cursor.location).toBe(2);
+    expect(result.block).toMatchSnapshot();
   });
 
   test("complex configs for n locations", () => {

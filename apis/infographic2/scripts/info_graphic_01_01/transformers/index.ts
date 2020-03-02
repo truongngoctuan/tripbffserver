@@ -1,8 +1,9 @@
 import { InfographicConfig } from "../../../configs";
 import _ from "lodash";
-import { overrideMissingHeight } from "./dynamic-property-override";
 import { Transformer, CursorTransformer } from "./typings";
 import { nodeContainer } from "./node-container";
+import { nodeLocations } from "./node-locations";
+import { nodeLocation } from "./node-location";
 import { leafText } from "./leaf-text";
 
 export function preProcessInfographicConfig(
@@ -19,42 +20,8 @@ export function preProcessInfographicConfig(
 
 const transformers: { [id: string]: Transformer } = {
   container: nodeContainer,
-  locations: {
-    type: "node",
-    preHandler: (c: InfographicConfig.Block) => c,
-    postHandler: (
-      c: InfographicConfig.Block,
-      children: InfographicConfig.Block[],
-      cursor
-    ) => {
-      const b = c as InfographicConfig.LocationsBlocks;
-      return {
-        block: {
-          ...b,
-          blocks: children
-        } as InfographicConfig.Block,
-        cursor
-      };
-    }
-  },
-  location: {
-    type: "node",
-    preHandler: (c: InfographicConfig.Block) => c,
-    postHandler: (
-      c: InfographicConfig.Block,
-      children: InfographicConfig.Block[],
-      cursor
-    ) => {
-      const b = c as InfographicConfig.LocationBlock;
-      return {
-        block: overrideMissingHeight({
-          ...b,
-          blocks: children
-        } as InfographicConfig.Block),
-        cursor: _.merge({}, cursor, { location: cursor.location + 1 })
-      };
-    }
-  },
+  locations: nodeLocations,
+  location: nodeLocation,
   text: leafText
 };
 
@@ -66,7 +33,7 @@ export function processBlock(
   const transformer = transformers[blockConfig.type];
   if (transformer) {
     if (transformer.type == "node") {
-      transformer.preHandler(blockConfig);
+      blockConfig = transformer.preHandler(blockConfig, trip);
     }
   }
 
