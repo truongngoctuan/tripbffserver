@@ -42,7 +42,7 @@ export namespace InfographicConfig {
     type: "location";
     blocks: BasicBlock[];
     positioning?: Positioning;
-  } & WidthHeight;
+  };
 
   type LocationNameTextBlock = {
     type: "text";

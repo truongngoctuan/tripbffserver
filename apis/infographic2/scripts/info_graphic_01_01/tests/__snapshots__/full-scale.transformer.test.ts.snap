@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`complex transformer complex configs 1`] = `
+Object {
+  "backgroundColor": "#e3d1a2",
+  "blocks": Array [
+    Object {
+      "blocks": Array [
+        Object {
+          "blocks": Array [
+            Object {
+              "height": 1280,
+              "type": "location-image",
+              "width": 1280,
+            },
+          ],
+          "type": "container",
+        },
+        Object {
+          "blocks": Array [
+            Object {
+              "color": "#d0363b",
+              "fontFamily": "Roboto",
+              "fontSize": "64px",
+              "fontWeight": "bold",
+              "positioning": Object {
+                "left": 20,
+                "top": 20,
+              },
+              "text": "{{location.name}}",
+              "textAnchor": "start",
+              "textTransform": "uppercase",
+              "type": "text",
+            },
+            Object {
+              "color": "#121113",
+              "fontFamily": "Roboto",
+              "fontSize": "48px",
+              "positioning": Object {
+                "left": 20,
+                "top": 20,
+              },
+              "text": "{{location.feeling}}",
+              "textAnchor": "start",
+              "type": "text",
+            },
+            Object {
+              "color": "#121113",
+              "fontFamily": "Roboto",
+              "fontSize": "48px",
+              "positioning": Object {
+                "left": 20,
+                "top": 20,
+              },
+              "text": "{{location.hight-lights}}",
+              "textAnchor": "start",
+              "type": "text",
+            },
+          ],
+          "height": 300,
+          "type": "container",
+        },
+      ],
+      "type": "location",
+    },
+    Object {
+      "positioning": Object {
+        "bottom": 80,
+        "right": 200,
+      },
+      "type": "image",
+      "url": "./data/images/App_Signature.png",
+    },
+  ],
+  "height": 0,
+  "type": "container",
+  "width": 1280,
+}
+`;

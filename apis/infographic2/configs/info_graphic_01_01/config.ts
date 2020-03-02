@@ -1,8 +1,32 @@
 import { InfographicConfig } from "../index";
 
+var test01: InfographicConfig.Infographic = {
+  width: 1280,
+  // height: 1280 + 300,
+  backgroundColor: "black",
+
+  type: "container",
+  blocks: [
+        {
+          type: "container",
+          backgroundColor: "grey",
+          height: 100,
+          blocks: [
+          ]
+        },
+        {
+          type: "container",
+          backgroundColor: "green",
+          height: 1000,
+          blocks: [
+          ]
+        },
+      ]
+};
+
 var config_01_01: InfographicConfig.Infographic = {
   width: 1280,
-  height: 1280 + 300,
+  // height: 1280 + 300,
   backgroundColor: "#e3d1a2",
 
   type: "container",
@@ -12,7 +36,6 @@ var config_01_01: InfographicConfig.Infographic = {
       blocks: [
         {
           type: "container",
-          height: 1280,
           blocks: [
             {
               type: "location-image",
@@ -23,7 +46,6 @@ var config_01_01: InfographicConfig.Infographic = {
         },
         {
           type: "container",
-          // content_height: 300,
           height: 300,
           blocks: [
             {
@@ -127,7 +149,8 @@ var config_01_02: InfographicConfig.Infographic = {
         // first location
         {
           type: "location",
-          width: 1280 / 2,
+          // todo fix this
+          // width: 1280 / 2,
           blocks: [
             {
               type: "location-image",
@@ -188,7 +211,8 @@ var config_01_02: InfographicConfig.Infographic = {
         // second location
         {
           type: "location",
-          width: 1280 / 2,
+          // todo fix this
+          // width: 1280 / 2,
           positioning: {
             left: 1280 / 2
           },
@@ -289,7 +313,8 @@ var config_01_others: InfographicConfig.Infographic = {
         {
           // first location
           type: "location",
-          height: 500,
+          //todo fix this
+          // height: 500,
           blocks: [
             {
               type: "line",
@@ -376,7 +401,8 @@ var config_01_others: InfographicConfig.Infographic = {
         {
           // secondary location
           type: "location",
-          height: 500,
+          //todo fix this
+          // height: 500,
           blocks: [
             {
               type: "line",
