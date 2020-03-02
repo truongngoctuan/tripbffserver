@@ -26,7 +26,7 @@ export async function componentContainer(
     )
   );
   rectOuter.strokeColor = new paper.Color(strokeColorByLevel[cursor.level]);
-  rectOuter.strokeWidth = 5;
+  rectOuter.strokeWidth = 2 * (cursor.level + 1);
 
   let newBounds = {
     x: cursor.x,

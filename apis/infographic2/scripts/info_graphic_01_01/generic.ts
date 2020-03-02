@@ -58,10 +58,7 @@ async function renderImage(canvasAdaptor, blockConfig, trip, cursor) {
   log(cursor.level, "cursor", cursor);
   log(cursor.level, "relative position", relativePosition);
 
-  await canvasAdaptor.drawImage(
-    blockConfig.url,
-    relativePosition
-  );
+  await canvasAdaptor.drawImage(blockConfig.url, relativePosition);
 }
 
 async function renderBlock(
@@ -76,7 +73,7 @@ async function renderBlock(
 
   var nextCursor: Cursor = _.assign({}, cursor, { level: cursor.level + 1 });
 
-  if (blockConfig.type === "container") {
+  if (_.find(["container", "location"], type => blockConfig.type === type)) {
     // preNodeContainer
     nextCursor = await executePlugins(
       blockConfig.type,
@@ -91,26 +88,8 @@ async function renderBlock(
   if (!_.isEmpty((blockConfig as InfographicConfig.ContainerBlock).blocks)) {
     const containerBlockConfig = blockConfig as InfographicConfig.ContainerBlock;
 
-    let childBlockConfigs: InfographicConfig.Block[] = [];
-    //todo instead of modifying codes, how about updating configs to reflects No of locations, then just render as usual ??
-    if (blockConfig.type === "locations") {
-      // nLoc > nLocConfig, clone locConfig until n == nLoc
-      // else keep just enough logConfig
-      const nLoc = trip.locations.length;
-      const nLocConfig = containerBlockConfig.blocks.length;
-      if (nLoc > nLocConfig) {
-        for (let iLoc = 0; iLoc < nLoc; iLoc++) {
-          const locConfig = containerBlockConfig.blocks[iLoc % nLocConfig];
-          childBlockConfigs.push(locConfig);
-        }
-      } else {
-        childBlockConfigs = containerBlockConfig.blocks.slice(0, nLoc);
-      }
-      // console.log("childBlockConfigs.length", childBlockConfigs.length);
-    } else {
-      childBlockConfigs = [...containerBlockConfig.blocks];
-    }
-
+    let childBlockConfigs: InfographicConfig.Block[] =
+      containerBlockConfig.blocks;
     for (var i = 0; i < childBlockConfigs.length; i++) {
       var childBlock = childBlockConfigs[i];
       // log(
@@ -124,8 +103,7 @@ async function renderBlock(
         childBlock,
         trip,
         _.assign({}, nextCursor, {
-          level: cursor.level + 1,
-          // y: isStackingHeight ? nextCursor.y : cursor.y
+          level: cursor.level + 1
         })
       );
 
@@ -133,21 +111,21 @@ async function renderBlock(
     }
   }
 
-  if (blockConfig.type === "container") {
+  //reset nextCursor, keep only 
+  if (_.find(["container", "location"], type => blockConfig.type === type)) {
     //override cursor
-    if (blockConfig.height) {
-      
+    if (blockConfig["height"]) {
       nextCursor = _.merge({}, nextCursor, {
-        y: cursor.y + blockConfig.height,
-        height: cursor.height + blockConfig.height,
-        totalHeight: cursor.totalHeight + blockConfig.height,
+        y: cursor.y + blockConfig["height"],
+        height: cursor.height + blockConfig["height"],
+        totalHeight: cursor.totalHeight + blockConfig["height"]
       });
-      // console.log("override cursor", nextCursor);
-
+    } else {
+      console.log("do something here");
     }
-    else {
-      console.log("do something here")
-    }
+  }
+  else {
+    nextCursor = cursor;
   }
 
   if (
@@ -165,7 +143,12 @@ async function renderBlock(
     );
     // return await renderTextBlock(canvasAdaptor, blockConfig, trip, cursor);
   } else if (blockConfig.type === "location-image") {
-    return await renderLocationImage(canvasAdaptor, blockConfig, trip, nextCursor);
+    return await renderLocationImage(
+      canvasAdaptor,
+      blockConfig,
+      trip,
+      nextCursor
+    );
   } else if (blockConfig.type === "image") {
     return await renderImage(canvasAdaptor, blockConfig, trip, nextCursor);
   }
@@ -188,7 +171,10 @@ export async function renderInfographic(
 
     location: 0
   };
-  const processedInfoConfig = preProcessInfographicConfig(infographicConfig, trip);
+  const processedInfoConfig = preProcessInfographicConfig(
+    infographicConfig,
+    trip
+  );
   const finalCursor: Cursor = await renderBlock(
     canvasAdaptor,
     processedInfoConfig,
