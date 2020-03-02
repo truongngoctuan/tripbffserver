@@ -25,7 +25,7 @@ const plugins = {
 };
 
 const registeredPlugins = {
-  container: [PLUGINS.componentContainer, PLUGINS.backgroundColor],
+  container: [PLUGINS.backgroundColor, PLUGINS.componentContainer],
   location: [PLUGINS.componentContainer],
   text: [PLUGINS.componentText],
   line: [PLUGINS.componentLine],
