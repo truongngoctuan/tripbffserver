@@ -8,6 +8,7 @@ describe("node transformer", () => {
       width: 1280,
       backgroundColor: "black",
       type: "container",
+      flex: "column",
       blocks: [
         {
           type: "container",
@@ -34,7 +35,7 @@ describe("node transformer", () => {
 
     // Assert
     expect(result).toBeDefined();
-    expect(result.height).toBe(1100);
+    expect(result["height"]).toBe(1100);
     expect(result.blocks.length).toBe(2);
     expect(result).toMatchSnapshot();
   });

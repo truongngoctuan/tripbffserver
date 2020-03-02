@@ -37,11 +37,10 @@ export namespace InfographicConfig {
   } & BaseTextBlock;
 
   type LocationBlock = {
-    width?: number;
     type: "location";
     blocks: BasicBlock[];
     positioning?: Positioning;
-  } & Background & ContainerFlex;
+  } & Background & WidthHeight & ContainerFlex;
 
   type LocationNameTextBlock = {
     type: "text";

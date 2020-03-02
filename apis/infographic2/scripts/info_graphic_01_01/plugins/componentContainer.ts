@@ -18,15 +18,15 @@ export async function componentContainer(
 
   const paper = canvasAdaptor.getPaper();
 
-  const rectOuter = new paper.Shape.Rectangle(
-    new paper.Point(cursor.x, cursor.y),
-    new paper.Size(
-      width ? width : cursor.width,
-      height ? height : cursor.height
-    )
-  );
-  rectOuter.strokeColor = new paper.Color(strokeColorByLevel[cursor.level]);
-  rectOuter.strokeWidth = 2 * (cursor.level + 1);
+  // const rectOuter = new paper.Shape.Rectangle(
+  //   new paper.Point(cursor.x, cursor.y),
+  //   new paper.Size(
+  //     width ? width : cursor.width,
+  //     height ? height : cursor.height
+  //   )
+  // );
+  // rectOuter.strokeColor = new paper.Color(strokeColorByLevel[cursor.level]);
+  // rectOuter.strokeWidth = 2 * (cursor.level + 1);
 
   let newBounds = {
     x: cursor.x,
@@ -42,12 +42,12 @@ export async function componentContainer(
   // console.log("cursor container", cursor);
   // console.log("newBounds", newBounds);
 
-  const rect = new paper.Shape.Rectangle(
-    new paper.Point(newBounds.x, newBounds.y),
-    new paper.Size(newBounds.width, newBounds.height)
-  );
-  rect.strokeColor = new paper.Color(strokeColorByLevel[cursor.level]);
-  rect.strokeWidth = 1;
+  // const rect = new paper.Shape.Rectangle(
+  //   new paper.Point(newBounds.x, newBounds.y),
+  //   new paper.Size(newBounds.width, newBounds.height)
+  // );
+  // rect.strokeColor = new paper.Color(strokeColorByLevel[cursor.level]);
+  // rect.strokeWidth = 1;
 
   if (_.isEmpty(baseFuncs)) return _.assign({}, cursor, newBounds);
 
