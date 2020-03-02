@@ -1,28 +1,6 @@
 import { InfographicConfig } from "../index";
 
-var test01: InfographicConfig.Infographic = {
-  width: 1280,
-  // height: 1280 + 300,
-  backgroundColor: "black",
-
-  type: "container",
-  blocks: [
-    {
-      type: "container",
-      backgroundColor: "grey",
-      height: 100,
-      blocks: []
-    },
-    {
-      type: "container",
-      backgroundColor: "green",
-      height: 1000,
-      blocks: []
-    }
-  ]
-};
-
-export const config_01_01: InfographicConfig.Infographic = {
+export const config_01_01: InfographicConfig.TripInfographic = {
   width: 1280,
   // height: 1280 + 300,
   backgroundColor: "#e3d1a2",
@@ -102,7 +80,7 @@ export const config_01_01: InfographicConfig.Infographic = {
   ]
 };
 
-export const config_01_02: InfographicConfig.Infographic = {
+export const config_01_02: InfographicConfig.TripInfographic = {
   width: 1280,
   backgroundColor: "rgb(254, 255, 246)",
   type: "container",
@@ -291,7 +269,7 @@ export const config_01_02: InfographicConfig.Infographic = {
   ]
 };
 
-export const config_01_others: InfographicConfig.Infographic = {
+export const config_01_others: InfographicConfig.TripInfographic = {
   width: 2060,
   backgroundColor: "#e3d1a2",
   type: "container",

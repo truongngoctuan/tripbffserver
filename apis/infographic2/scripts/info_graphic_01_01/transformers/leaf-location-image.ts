@@ -4,7 +4,7 @@ import _ from "lodash";
 
 export const leafLocationImage: LeafTransformer = {
   type: "leaf",
-  handler: (c: InfographicConfig.Block, trip, cursor) => {
+  handler: (c, trip, cursor) => {
     const locationImageNode = c as InfographicConfig.LocationImageBlock;
 
     var imgUri =

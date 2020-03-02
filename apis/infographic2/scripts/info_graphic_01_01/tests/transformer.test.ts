@@ -64,7 +64,7 @@ describe("node transformer", () => {
 
   test("simple leaf node", () => {
     //Arrange
-    const config: InfographicConfig.Infographic = {
+    const config: InfographicConfig.TripInfographic = {
       width: 1280,
       backgroundColor: "black",
       type: "container",
@@ -94,7 +94,7 @@ describe("node transformer", () => {
 
   test("location node", () => {
     //Arrange
-    const config: InfographicConfig.Infographic = {
+    const config: InfographicConfig.TripInfographic = {
       width: 1280,
       backgroundColor: "black",
       type: "container",

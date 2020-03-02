@@ -1,76 +1,74 @@
 export namespace InfographicConfig {
-  type Background = {
-    backgroundColor?: string;
-  };
-  type WidthHeight = {
-    width?: number;
-    height?: number;
-  };
-  type ContainerFlex = {
-    flex?: "column" | "row";
-  }
+  //for transformer to transform trip specific to something generic
+  type TripInfographic = TripContainerBlock | LocationBlock;
 
-  type Infographic = ContainerBlock | LocationBlock;
-
-  type Block = LocationsBlocks | LocationBlock | BasicBlock;
-  type BasicBlock =
-    | ContainerBlock
-    | ImageBlock
-    | TextBlock
-    | LineBlock
-    | CircleBlock
+  type TripBlock = LocationsBlocks | LocationBlock | TripBasicBlock;
+  type TripBasicBlock =
+    | TripContainerBlock
+    | BasicBlock
     | TripNameTextBlock
-    | TripInfoTextBlock
-    | LocationImageBlock
-    | LocationNameTextBlock
-    | LocationFeelingTextBlock
-    | LocationHightLightsTextBlock;
+    | LocationImageBlock;
+
+  type TripContainerBlock = {
+    type: "container";
+    blocks: TripBlock[];
+    positioning?: RelativePositioning;
+  } & Background &
+    WidthHeight &
+    ContainerFlex;
 
   type TripNameTextBlock = {
     type: "text";
-    text: "{{trip.name}}";
+    text:
+      | "{{trip.name}}"
+      | "{{trip.info}}"
+      | "{{location.name}}"
+      | "{{location.feeling}}"
+      | "{{location.hight-lights}}";
   } & BaseTextBlock;
 
-  type TripInfoTextBlock = {
-    type: "text";
-    text: "{{trip.info}}";
-  } & BaseTextBlock;
+  type LocationsBlocks = {
+    type: "locations";
+    blocks: LocationBlock[];
+  } & ContainerFlex;
 
   type LocationBlock = {
     type: "location";
-    blocks: BasicBlock[];
-    positioning?: Positioning;
-  } & Background & WidthHeight & ContainerFlex;
+    blocks: TripBasicBlock[];
+    positioning?: RelativePositioning;
+  } & Background &
+    WidthHeight &
+    ContainerFlex;
 
-  type LocationNameTextBlock = {
-    type: "text";
-    text: "{{location.name}}";
-  } & BaseTextBlock;
+  type LocationImageBlock = {
+    type: "location-image";
+    width: number;
+    height: number;
+    clipPath?: string;
+    positioning?: RelativePositioning;
+  };
 
-  type LocationFeelingTextBlock = {
-    type: "text";
-    text: "{{location.feeling}}";
-  } & BaseTextBlock;
+  // for renderer definition
+  type Infographic = ContainerBlock;
 
-  type LocationHightLightsTextBlock = {
-    type: "text";
-    text: "{{location.hight-lights}}";
-  } & BaseTextBlock;
+  type Block = ContainerBlock | BasicBlock;
+  type BasicBlock = ImageBlock | TextBlock | LineBlock | CircleBlock;
 
-  // todo not sure if this is the correct choice
   type ContainerBlock = {
     type: "container";
     blocks: Block[];
-    positioning?: Positioning;
+    positioning?: RelativePositioning;
   } & Background &
-    WidthHeight & ContainerFlex;
+    WidthHeight &
+    ContainerFlex;
 
   type ImageBlock = {
     type: "image";
     url: string;
-    // width: number;
-    // height: number;
-    positioning: Positioning;
+    width?: number;
+    height?: number;
+    clipPath?: string;
+    positioning: RelativePositioning;
   };
 
   type BaseTextBlock = {
@@ -80,7 +78,7 @@ export namespace InfographicConfig {
     fontWeight?: string;
     textAnchor?: string;
     textTransform?: string;
-    positioning: Positioning;
+    positioning: RelativePositioning;
   };
 
   type TextBlock = {
@@ -107,38 +105,22 @@ export namespace InfographicConfig {
     fillColor: string;
   };
 
-  type LocationsBlocks = {
-    type: "locations";
-    blocks: LocationBlock[];
-  } & ContainerFlex;
-
-  type LocationImageBlock = {
-    type: "location-image";
-    width: number;
-    height: number;
-    url?: string;
-    clipPath?: string;
-    positioning?: Positioning;
-  };
-
-  type Positioning = {
-    // width?: number;
-    // height?: number;
-  } & RelativePosition;
-
-  type StackPosition = {
-    width?: number;
-    height: number;
-  };
-
-  type RelativePosition = {
+  //base types
+  type RelativePositioning = {
     top?: number;
     left?: number;
     right?: number;
     bottom?: number;
   };
-}
 
-export namespace ProcessedInfographicConfig {
-
+  type Background = {
+    backgroundColor?: string;
+  };
+  type WidthHeight = {
+    width?: number;
+    height?: number;
+  };
+  type ContainerFlex = {
+    flex?: "column" | "row";
+  };
 }

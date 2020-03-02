@@ -8,7 +8,7 @@ import { leafText } from "./leaf-text";
 import { leafLocationImage } from "./leaf-location-image";
 
 export function preProcessInfographicConfig(
-  config: InfographicConfig.Infographic,
+  config: InfographicConfig.TripInfographic,
   trip
 ) {
   const defaultCursor: CursorTransformer = {
@@ -28,7 +28,7 @@ const transformers: { [id: string]: Transformer } = {
 };
 
 export function processBlock(
-  blockConfig: InfographicConfig.Block,
+  blockConfig: InfographicConfig.TripBlock,
   trip,
   cursor: CursorTransformer
 ): { block: InfographicConfig.Block; cursor: CursorTransformer } {
@@ -79,7 +79,7 @@ export function processBlock(
   }
 
   return {
-    block: blockConfig,
+    block: blockConfig as InfographicConfig.Block,
     cursor: _.merge({}, cursor, { location: nextCursor.location })
   };
 }

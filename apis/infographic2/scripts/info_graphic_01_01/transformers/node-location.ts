@@ -5,12 +5,8 @@ import _ from "lodash";
 
 export const nodeLocation: NodeTransformer = {
   type: "node",
-  preHandler: (c: InfographicConfig.Block) => c,
-  postHandler: (
-    c: InfographicConfig.Block,
-    children: InfographicConfig.Block[],
-    cursor
-  ) => {
+  preHandler: c => c,
+  postHandler: (c, children, cursor) => {
     const b = c as InfographicConfig.LocationBlock;
     return {
       block: overrideMissingHeight({

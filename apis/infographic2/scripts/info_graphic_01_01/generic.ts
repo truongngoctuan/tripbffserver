@@ -37,17 +37,16 @@ async function renderImage(canvasAdaptor, blockConfig, cursor) {
 async function renderBlock(
   canvasAdaptor: CanvasAdaptor,
   blockConfig: InfographicConfig.Block,
-  trip,
   cursor: Cursor
 ) {
-  if (blockConfig.type === "container" || blockConfig.type === "location") {
+  if (blockConfig.type === "container") {
     log(cursor.level, "render block", blockConfig.type);
     log(cursor.level, "render cursor", cursor);
   }
 
   var nextCursor: Cursor = cursor;
 
-  if (_.find(["container", "location"], type => blockConfig.type === type)) {
+  if (blockConfig.type === "container") {
     // preNodeContainer
     nextCursor = await executePlugins(
       blockConfig.type,
@@ -69,14 +68,14 @@ async function renderBlock(
       var next = await renderBlock(
         canvasAdaptor,
         childBlock,
-        trip,
         _.assign({}, nextCursor, {
           level: cursor.level + 1
         })
       );
 
       if (
-        _.find(["container", "location"], type => blockConfig.type === type) &&
+        //no need since only container is a node
+        // blockConfig.type == "container" &&
         blockConfig["flex"] &&
         blockConfig["flex"] == "column"
       ) {
@@ -85,16 +84,13 @@ async function renderBlock(
           nextCursor = _.merge({}, nextCursor, {
             y: nextCursor.y + childBlock["height"]
           });
-        }
-        else {
+        } else {
           if (!_.isEmpty(next)) {
             nextCursor = _.merge({}, nextCursor, {
               y: next.y
             });
           }
-          
         }
-        
       }
     }
   }
@@ -144,12 +140,14 @@ export async function renderInfographic(
   const finalCursor: Cursor = await renderBlock(
     canvasAdaptor,
     processedInfoConfig,
-    trip,
     defaultCursor
   );
   console.log("final cursor", finalCursor);
 
-  canvasAdaptor.resize(infographicConfig.width ? infographicConfig.width : 0, processedInfoConfig["height"]);
+  canvasAdaptor.resize(
+    infographicConfig.width ? infographicConfig.width : 0,
+    processedInfoConfig["height"]
+  );
   // canvasAdaptor.resize(3000, 3000);
   canvasAdaptor.drawBackground(infographicConfig.backgroundColor);
 
