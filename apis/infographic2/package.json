@@ -13,7 +13,8 @@
     "serve-lottie-web": "nodemon --delay 100ms --watch . --exec node index-lottie-web.js",
     "serve-fabric": "nodemon --delay 100ms --watch . --exec node index-fabric2.js",
     "serve:production": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --forceExit --coverage --verbose",
+    "watch-test": "npm run test -- --watchAll",
     "build": "tsc",
     "build-watch": "tsc -w",
     "test-e2e": "node ./e2e/index.js"
@@ -28,7 +29,10 @@
     "lottie-web": "5.5.7",
     "lottie-node": "1.0.0",
     "typescript": "3.4.3",
-    "@types/lodash": "4.14.108"
+    "@types/lodash": "4.14.108",
+    "jest": "^25.1.0",
+    "ts-jest": "25.2.1",
+    "@types/jest": "22.2.3"
   },
   "dependencies": {
     "lodash": "^4.17.15",

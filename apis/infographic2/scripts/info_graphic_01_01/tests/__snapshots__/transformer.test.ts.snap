@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`node transformer simple container node 1`] = `
+Object {
+  "backgroundColor": "black",
+  "blocks": Array [
+    Object {
+      "backgroundColor": "grey",
+      "blocks": Array [],
+      "height": 100,
+      "type": "container",
+    },
+    Object {
+      "backgroundColor": "green",
+      "blocks": Array [],
+      "height": 1000,
+      "type": "container",
+    },
+  ],
+  "height": 1100,
+  "type": "container",
+  "width": 1280,
+}
+`;
+
+exports[`node transformer simple leaf node 1`] = `
+Object {
+  "backgroundColor": "black",
+  "blocks": Array [
+    Object {
+      "backgroundColor": "grey",
+      "blocks": Array [],
+      "height": 100,
+      "type": "container",
+    },
+    Object {
+      "backgroundColor": "green",
+      "blocks": Array [],
+      "height": 1000,
+      "type": "container",
+    },
+  ],
+  "height": 1100,
+  "type": "container",
+  "width": 1280,
+}
+`;

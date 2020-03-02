@@ -1,10 +1,12 @@
-const { backgroundColor } = require("./backgroundColor");
-const { componentContainer } = require("./componentContainer");
-const { componentText } = require("./componentText");
-const { componentLine } = require("./componentLine");
-const { componentCircle } = require("./componentCircle");
+import { backgroundColor } from "./backgroundColor";
+import { componentContainer } from "./componentContainer";
+import { componentText } from "./componentText";
+import { componentLine } from "./componentLine";
+import { componentCircle } from "./componentCircle";
 
-const _ = require("lodash");
+import { Cursor } from "../typings";
+
+import _ from "lodash";
 
 const PLUGINS = {
   componentContainer: "componentContainer",
@@ -30,8 +32,8 @@ const registeredPlugins = {
   circle: [PLUGINS.componentCircle]
 };
 
-function executePlugins(blockType, canvasAdaptor, blockConfig, cursor, trip) {
-  let baseFuncs = [];
+function executePlugins(blockType, canvasAdaptor, blockConfig, cursor, trip): Cursor {
+  let baseFuncs: Function[] = [];
   const blockPlugins = registeredPlugins[blockType];
   // console.log(blockPlugins);
   if (!_.isEmpty(blockPlugins)) {

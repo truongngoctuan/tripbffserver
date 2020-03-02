@@ -1,8 +1,9 @@
 import { InfographicConfig } from "../../configs";
 import { CanvasAdaptor } from "../utils";
-import { Cursor } from ".";
+import { Cursor } from "./typings";
 
 import _ from "lodash";
+import { preProcessInfographicConfig } from "./transformer";
 const { executePlugins } = require("./plugins/index");
 
 function log(level: number, message: string, data: any = undefined) {
@@ -91,25 +92,9 @@ async function renderBlock(
   }
 
   var nextCursor: Cursor = _.assign({}, cursor, { level: cursor.level + 1 });
-  let isFixedHeight = false;
-  if (blockConfig.type === "container") {
-    isFixedHeight = blockConfig.height > 0;
-    const deltaHeight = blockConfig.height;
-    if (deltaHeight > 0) {
-      nextCursor.height = nextCursor.height + deltaHeight;
-    }
-    nextCursor = await executePlugins(
-      blockConfig.type,
-      canvasAdaptor,
-      blockConfig,
-      cursor,
-      trip
-    );
-    // console.log("nextCursor return container", nextCursor);
-  }
 
-  if (blockConfig.type === "location") {
-    isFixedHeight = blockConfig.height > 0;
+  if (blockConfig.type === "container") {
+    // preNodeContainer
     nextCursor = await executePlugins(
       blockConfig.type,
       canvasAdaptor,
@@ -120,11 +105,11 @@ async function renderBlock(
     // console.log("nextCursor return location", nextCursor);
   }
 
-  var totalHeight = 0;
   if (!_.isEmpty((blockConfig as InfographicConfig.ContainerBlock).blocks)) {
     const containerBlockConfig = blockConfig as InfographicConfig.ContainerBlock;
 
     let childBlockConfigs: InfographicConfig.Block[] = [];
+    //todo instead of modifying codes, how about updating configs to reflects No of locations, then just render as usual ??
     if (blockConfig.type === "locations") {
       // nLoc > nLocConfig, clone locConfig until n == nLoc
       // else keep just enough logConfig
@@ -143,9 +128,7 @@ async function renderBlock(
       childBlockConfigs = [...containerBlockConfig.blocks];
     }
 
-    let isStackingHeight = false;
     for (var i = 0; i < childBlockConfigs.length; i++) {
-      var previousChildBlock = i != 0 ? childBlockConfigs[i - 1] : undefined;
       var childBlock = childBlockConfigs[i];
       // log(
       //   cursor.level + 1,
@@ -153,71 +136,40 @@ async function renderBlock(
       //   `w=${cursor.width} h=${cursor.height}`
       // );
 
-      if (
-        previousChildBlock &&
-        _.findIndex(
-          ["container", "locations", "location", "text"],
-          type => previousChildBlock.type === type
-        ) !== -1
-      ) {
-        isStackingHeight = true;
-        // console.log("debugging", cursor.y + " " + totalHeight);
-      }
-
       var next = await renderBlock(
         canvasAdaptor,
         childBlock,
         trip,
         _.assign({}, nextCursor, {
           level: cursor.level + 1,
-          y: isStackingHeight ? nextCursor.y : cursor.y
+          // y: isStackingHeight ? nextCursor.y : cursor.y
         })
       );
-
-      if (
-        !isFixedHeight &&
-        next &&
-        (childBlock.type === "container" || childBlock.type === "location")
-      ) {
-        totalHeight += next.height;
-      }
 
       if (!_.isEmpty(next)) nextCursor = next;
     }
   }
 
-  if (blockConfig.type === "container" || blockConfig.type === "location") {
-    if (isFixedHeight) {
-      nextCursor.totalHeight = blockConfig.height;
-    } else {
-      nextCursor.totalHeight = totalHeight;
-    }
+  if (blockConfig.type === "container") {
+    //override cursor
+    if (blockConfig.height) {
+      
+      nextCursor = _.merge({}, nextCursor, {
+        y: cursor.y + blockConfig.height,
+        height: cursor.height + blockConfig.height,
+        totalHeight: cursor.totalHeight + blockConfig.height,
+      });
+      console.log("override cursor", nextCursor);
 
-    // log(cursor.level, "cursor", nextCursor);
-    // log(cursor.level, "totalHeight", nextCursor.totalHeight);
+    }
+    else {
+      console.log("do something here")
+    }
   }
 
-  if (blockConfig.type === "container" || blockConfig.type === "locations") {
-    //reset cursor
-    return _.assign({}, nextCursor, {
-      x: cursor.x,
-      y: cursor.y + nextCursor.height,
-      width: cursor.width
-    });
-  } else if (blockConfig.type === "location") {
-    return await renderLocation(
-      canvasAdaptor,
-      blockConfig,
-      trip,
-      _.assign({}, nextCursor, {
-        x: cursor.x,
-        y: cursor.y + nextCursor.height,
-        width: cursor.width
-      })
-    );
-  } else if (
+  if (
     _.findIndex(
-      ["text", "line", "circle"],
+      ["locations", "location", "text", "line", "circle"],
       type => blockConfig.type === type
     ) !== -1
   ) {
@@ -225,19 +177,19 @@ async function renderBlock(
       blockConfig.type,
       canvasAdaptor,
       blockConfig,
-      cursor,
+      nextCursor,
       trip
     );
     // return await renderTextBlock(canvasAdaptor, blockConfig, trip, cursor);
   } else if (blockConfig.type === "location-image") {
-    return await renderLocationImage(canvasAdaptor, blockConfig, trip, cursor);
+    return await renderLocationImage(canvasAdaptor, blockConfig, trip, nextCursor);
   } else if (blockConfig.type === "image") {
-    return await renderImage(canvasAdaptor, blockConfig, trip, cursor);
+    return await renderImage(canvasAdaptor, blockConfig, trip, nextCursor);
   }
-  return await renderLessBlock(canvasAdaptor, blockConfig, trip, cursor);
+  return await renderLessBlock(canvasAdaptor, blockConfig, trip, nextCursor);
 }
 
-async function renderInfographic(
+export async function renderInfographic(
   canvasAdaptor: CanvasAdaptor,
   infographicConfig: InfographicConfig.Infographic,
   trip
@@ -253,9 +205,10 @@ async function renderInfographic(
 
     location: 0
   };
+  const processedInfoConfig = preProcessInfographicConfig(infographicConfig, trip);
   const finalCursor: Cursor = await renderBlock(
     canvasAdaptor,
-    infographicConfig,
+    processedInfoConfig,
     trip,
     defaultCursor
   );
@@ -267,7 +220,3 @@ async function renderInfographic(
 
   return;
 }
-
-module.exports = {
-  renderInfographic
-};

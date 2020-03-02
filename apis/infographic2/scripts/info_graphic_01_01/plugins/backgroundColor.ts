@@ -11,7 +11,7 @@ export async function backgroundColor(baseFuncs: Function[],
   if (backgroundColor) {
     // console.log("backgroundColor", backgroundColor);
     const { x, y, width, height } = cursor;
-    console.log(`cursor${x} ${y} ${width} ${height}`);
+    console.log(`cursor background ${x} ${y} ${width} ${height}`);
 
     //todo use fillColor in the current layer
     canvasAdaptor.drawRect({
