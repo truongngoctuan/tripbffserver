@@ -14,6 +14,7 @@ Object {
               "width": 1280,
             },
           ],
+          "height": 1280,
           "type": "container",
         },
         Object {

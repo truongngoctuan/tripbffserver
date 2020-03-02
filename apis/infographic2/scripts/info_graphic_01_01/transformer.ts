@@ -64,10 +64,10 @@ function processBlock(
   trip
 ): InfographicConfig.Block {
   const transformer = transformers[blockConfig.type];
-  if (!transformer) return blockConfig;
-  
-  if (transformer.type == "node") {
-    transformer.preHandler(blockConfig);
+  if (transformer) {
+    if (transformer.type == "node") {
+      transformer.preHandler(blockConfig);
+    }
   }
 
   let processedBlockConfigs: InfographicConfig.Block[] = [];
@@ -83,13 +83,15 @@ function processBlock(
       processedBlockConfigs.push(processedBlock);
     }
   }
+  
+  if (transformer) {
+    if (transformer.type == "node") {
+      return transformer.postHandler(blockConfig, processedBlockConfigs);
+    }
 
-  if (transformer.type == "node") {
-    return transformer.postHandler(blockConfig, processedBlockConfigs);
-  }
-
-  if (transformer.type == "leaf") {
-    return transformer.handler();
+    if (transformer.type == "leaf") {
+      return transformer.handler();
+    }
   }
 
   return blockConfig;
