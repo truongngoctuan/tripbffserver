@@ -117,14 +117,15 @@ export const config_01_01: InfographicConfig.Infographic = {
 
 export const config_01_02: InfographicConfig.Infographic = {
   width: 1280,
-  // height: 1500,
   backgroundColor: "rgb(254, 255, 246)",
   type: "container",
+  flex: "column",
   blocks: [
     // header
     {
       type: "container",
       height: 170,
+      flex: "column",
       blocks: [
         {
           type: "text",
@@ -152,7 +153,7 @@ export const config_01_02: InfographicConfig.Infographic = {
     },
     {
       type: "container",
-      height: 1200,
+      height: 1400,
       backgroundColor: "#fff",
       blocks: [
         // first location
@@ -162,59 +163,66 @@ export const config_01_02: InfographicConfig.Infographic = {
           // width: 1280 / 2,
           blocks: [
             {
-              type: "location-image",
-              width: 1280 / 2,
-              height: 840
-              // svgWidth: 630,
-              // svgHeight: 840,
-              // viewBoxWidth: 288.5,
-              // viewBoxHeight: 384.1,
-              // clipPath: "M2.5 2.5H286v379.1H2.5z",
-              // paddingTop: 20,
-              // paddingBetweenImage: 5
-            },
-            {
-              // location name
-              type: "text",
-              text: "{{location.name}}",
-              fontSize: "64px",
-              fontFamily: "Roboto",
-              color: "#d0363b",
-              fontWeight: "bold",
-              textAnchor: "start",
-              textTransform: "uppercase",
-              positioning: {
-                top: 60,
-                left: 20
-              }
-            },
-            {
-              // location feeling
-              type: "text",
-              text: "{{location.feeling}}",
-              fontSize: "48px",
-              fontFamily: "Roboto",
-              color: "#121113",
-              textAnchor: "start",
-              positioning: {
-                top: 60,
-                left: 20
-              },
-              width: 1280 / 2 - 40
-            },
-            {
-              // location highlights
-              type: "text",
-              text: "{{location.hight-lights}}",
-              fontSize: "48px",
-              fontFamily: "Roboto",
-              color: "#121113",
-              textAnchor: "start",
-              positioning: {
-                top: 60,
-                left: 20
-              }
+              type: "container",
+              flex: "column",
+              blocks: [
+                {
+                  type: "location-image",
+                  width: 1280 / 2,
+                  height: 840
+                  // svgWidth: 630,
+                  // svgHeight: 840,
+                  // viewBoxWidth: 288.5,
+                  // viewBoxHeight: 384.1,
+                  // clipPath: "M2.5 2.5H286v379.1H2.5z",
+                  // paddingTop: 20,
+                  // paddingBetweenImage: 5
+                },
+                {
+                  // location name
+                  type: "text",
+                  text: "{{location.name}}",
+                  fontSize: "64px",
+                  fontFamily: "Roboto",
+                  color: "#d0363b",
+                  fontWeight: "bold",
+                  textAnchor: "start",
+                  textTransform: "uppercase",
+                  positioning: {
+                    top: 60,
+                    left: 20
+                  }
+                },
+                {
+                  // location feeling
+                  type: "text",
+                  text: "{{location.feeling}}",
+                  fontSize: "48px",
+                  fontFamily: "Roboto",
+                  color: "#121113",
+                  textAnchor: "start",
+                  positioning: {
+                    top: 60,
+                    left: 20
+                  },
+                  width: 1280 / 2 - 40
+                },
+                {
+                  // location highlights
+                  type: "text",
+                  text: "{{location.hight-lights}}",
+                  fontSize: "48px",
+                  fontFamily: "Roboto",
+                  color: "#121113",
+                  textAnchor: "start",
+                  positioning: {
+                    top: 60,
+                    left: 20
+                  }
+                }
+              ]
             }
+            
           ]
         },
         // second location
@@ -227,59 +235,69 @@ export const config_01_02: InfographicConfig.Infographic = {
           },
           blocks: [
             {
-              type: "location-image",
-              width: 1280 / 2,
-              height: 840
-              // svgWidth: 630,
-              // svgHeight: 840,
-              // viewBoxWidth: 288.5,
-              // viewBoxHeight: 384.1,
-              // clipPath: "M2.5 2.5H286v379.1H2.5z",
-              // paddingTop: 20,
-              // paddingBetweenImage: 5
-            },
-            {
-              // location name
-              type: "text",
-              text: "{{location.name}}",
-              fontSize: "64px",
-              fontFamily: "Roboto",
-              color: "#d0363b",
-              fontWeight: "bold",
-              textAnchor: "start",
-              textTransform: "uppercase",
-              positioning: {
-                top: 60,
-                left: 20
-              }
-            },
-            {
-              // location feeling
-              type: "text",
-              text: "{{location.feeling}}",
-              fontSize: "48px",
-              fontFamily: "Roboto",
-              color: "#121113",
-              textAnchor: "start",
-              positioning: {
-                top: 60,
-                left: 20
-              },
-              width: 1280 / 2 - 40
-            },
-            {
-              // location highlights
-              type: "text",
-              text: "{{location.hight-lights}}",
-              fontSize: "48px",
-              fontFamily: "Roboto",
-              color: "#121113",
-              textAnchor: "start",
-              positioning: {
-                top: 60,
-                left: 20
-              }
+              type: "container",
+              flex: "column",
+              blocks: [
+                {
+                  type: "location-image",
+                  width: 1280 / 2,
+                  height: 840,
+                  // positioning: {
+                  //   left: 1280 / 2
+                  // }
+                  // svgWidth: 630,
+                  // svgHeight: 840,
+                  // viewBoxWidth: 288.5,
+                  // viewBoxHeight: 384.1,
+                  // clipPath: "M2.5 2.5H286v379.1H2.5z",
+                  // paddingTop: 20,
+                  // paddingBetweenImage: 5
+                },
+                {
+                  // location name
+                  type: "text",
+                  text: "{{location.name}}",
+                  fontSize: "64px",
+                  fontFamily: "Roboto",
+                  color: "#d0363b",
+                  fontWeight: "bold",
+                  textAnchor: "start",
+                  textTransform: "uppercase",
+                  positioning: {
+                    top: 60,
+                    left: 20
+                  }
+                },
+                {
+                  // location feeling
+                  type: "text",
+                  text: "{{location.feeling}}",
+                  fontSize: "48px",
+                  fontFamily: "Roboto",
+                  color: "#121113",
+                  textAnchor: "start",
+                  positioning: {
+                    top: 60,
+                    left: 20
+                  },
+                  width: 1280 / 2 - 40
+                },
+                {
+                  // location highlights
+                  type: "text",
+                  text: "{{location.hight-lights}}",
+                  fontSize: "48px",
+                  fontFamily: "Roboto",
+                  color: "#121113",
+                  textAnchor: "start",
+                  positioning: {
+                    top: 60,
+                    left: 20
+                  }
+                }
+              ]
             }
+            
           ]
         }
       ]
