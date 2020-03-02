@@ -5,6 +5,7 @@ import { nodeContainer } from "./node-container";
 import { nodeLocations } from "./node-locations";
 import { nodeLocation } from "./node-location";
 import { leafText } from "./leaf-text";
+import { leafLocationImage } from "./leaf-location-image";
 
 export function preProcessInfographicConfig(
   config: InfographicConfig.Infographic,
@@ -22,7 +23,8 @@ const transformers: { [id: string]: Transformer } = {
   container: nodeContainer,
   locations: nodeLocations,
   location: nodeLocation,
-  text: leafText
+  text: leafText,
+  "location-image": leafLocationImage
 };
 
 export function processBlock(

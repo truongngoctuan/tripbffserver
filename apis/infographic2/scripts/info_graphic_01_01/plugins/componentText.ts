@@ -1,15 +1,13 @@
 import { InfographicConfig } from "../../../configs/index";
 import { CanvasAdaptor } from "../../utils";
 import { getRelativePosition } from "./utils";
-const commonFunc = require("../../commonFunc");
 const _ = require("lodash");
 
 export async function componentText(
   baseFuncs: Function[],
   canvasAdaptor: CanvasAdaptor,
   blockConfig: InfographicConfig.TextBlock,
-  cursor,
-  trip
+  cursor
 ) {
   const paper = canvasAdaptor.getPaper();
 

@@ -12,46 +12,14 @@ function log(level: number, message: string, data: any = undefined) {
   else console.log(_.repeat("    ", level) + message);
 }
 
-async function renderLessBlock(canvasAdaptor, blockConfig, trip, cursor) {
+async function renderLessBlock(blockConfig, cursor) {
   log(cursor.level, "render-less block", blockConfig.type);
   // log(cursor.level, "cursor", cursor);
 
   return cursor;
 }
 
-async function renderLocationImage(
-  canvasAdaptor: CanvasAdaptor,
-  blockConfig: InfographicConfig.LocationImageBlock,
-  trip,
-  cursor
-) {
-  cursor.location = 0;
-  log(cursor.level, "render block", blockConfig.type);
-  // log(cursor.level, "cursor", cursor);
-
-  // load default image if location has no image
-  var imgUri =
-    trip.locations[cursor.location].signedUrl &&
-    !_.isEmpty(trip.locations[cursor.location].signedUrl)
-      ? trip.locations[cursor.location].signedUrl
-      : "./data/images/EmptyImage01.jpg";
-
-  var result = (await canvasAdaptor.drawImage(
-    imgUri,
-    getRelativePosition(cursor, blockConfig.positioning),
-    {
-      width: blockConfig.width,
-      height: blockConfig.height,
-      clipPath: blockConfig.clipPath
-    }
-  )) as any;
-
-  // log(cursor.level, "new w h", `${result.width} ${result.height}`);
-
-  return _.assign({}, cursor, { y: cursor.y + result.height });
-}
-
-async function renderImage(canvasAdaptor, blockConfig, trip, cursor) {
+async function renderImage(canvasAdaptor, blockConfig, cursor) {
   log(cursor.level, "render block", blockConfig.type);
   // log(cursor.level, "cursor", cursor);
 
@@ -59,7 +27,11 @@ async function renderImage(canvasAdaptor, blockConfig, trip, cursor) {
   log(cursor.level, "cursor", cursor);
   log(cursor.level, "relative position", relativePosition);
 
-  await canvasAdaptor.drawImage(blockConfig.url, relativePosition);
+  await canvasAdaptor.drawImage(blockConfig.url, relativePosition, {
+    width: blockConfig.width,
+    height: blockConfig.height,
+    clipPath: blockConfig.clipPath
+  });
 }
 
 async function renderBlock(
@@ -81,8 +53,7 @@ async function renderBlock(
       blockConfig.type,
       canvasAdaptor,
       blockConfig,
-      cursor,
-      trip
+      cursor
     );
     // console.log("nextCursor return location", nextCursor);
   }
@@ -140,20 +111,12 @@ async function renderBlock(
       blockConfig.type,
       canvasAdaptor,
       blockConfig,
-      nextCursor,
-      trip
-    );
-  } else if (blockConfig.type === "location-image") {
-    return await renderLocationImage(
-      canvasAdaptor,
-      blockConfig,
-      trip,
       nextCursor
     );
   } else if (blockConfig.type === "image") {
-    return await renderImage(canvasAdaptor, blockConfig, trip, nextCursor);
+    return await renderImage(canvasAdaptor, blockConfig, nextCursor);
   }
-  return await renderLessBlock(canvasAdaptor, blockConfig, trip, nextCursor);
+  return await renderLessBlock(blockConfig, nextCursor);
 }
 
 export async function renderInfographic(
