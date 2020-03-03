@@ -2,7 +2,7 @@
 
 const { registerFont } = require("canvas");
 import paperShim from "./paper-jsdom-canvas";
-import { Canvas } from "canvas";
+import { Canvas, createCanvas } from "canvas";
 // import paper from "paper";
 const fs = require("fs");
 // const path = require("path");
@@ -27,13 +27,13 @@ registerFont("./fonts/Roboto-Bold.ttf", {
 //   Canvas = a.Canvas;
 // } catch(error) {
 export class CanvasAdaptor {
-  canvas: any;
+  canvas: Canvas;
   paper: paper.PaperScope;
 
   constructor(w = 300, h = 300) {
     //use the canvas in paper so that we can magically register font
-    var canvas = (paperShim as any).Canvas(w, h);
-    // var canvas = createCanvas(w, h);
+    var canvas: Canvas = (paperShim as any).Canvas(w, h);
+    // var canvas: Canvas = createCanvas(w, h);
     // const ctx = canvas.getContext("2d");
     // ctx.fillStyle = "white";
     // ctx.fillRect(0, 0, w, h);
@@ -49,7 +49,7 @@ export class CanvasAdaptor {
     // fs.writeFileSync("output2.png", buf);
     // ------paper
     // Create an empty project and a view for the canvas:
-    paperShim.setup(canvas);
+    paperShim.setup(canvas as any);
 
     this.canvas = canvas;
     this.paper = paperShim;
@@ -60,26 +60,28 @@ export class CanvasAdaptor {
     return this.paper;
   }
 
+  getCanvasViewElement() {
+    return paperShim.view.element as any as Canvas;
+  }
+
   draw() {
-    this.paper.view.draw();
+    this.paper.view.update();
   }
   export(file) {
-    const buf = paperShim.view.element.toBuffer();
+    const buf = this.getCanvasViewElement().toBuffer();
     fs.writeFileSync(file, buf);
   }
 
   toBufferJpeg() {
-    return paperShim.view.element.toBuffer("image/jpeg", {
+    return this.getCanvasViewElement().toBuffer("image/jpeg", {
       quality: 0.9
     });
-
-    return buf;
   }
 
   toBufferPng() {
-    return paperShim.view.element.toBuffer("image/png", {
+    return this.getCanvasViewElement().toBuffer("image/png", {
       compressionLevel: 3,
-      filters: paperShim.Canvas.PNG_FILTER_NONE
+      filters: this.canvas.PNG_FILTER_NONE
     });
   }
 
