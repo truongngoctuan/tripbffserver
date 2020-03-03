@@ -1,11 +1,10 @@
 import { InfographicConfig } from "../../../configs/index";
-import { CanvasAdaptor } from "../../utils";
 import _ from "lodash";
 import { getRelativePosition } from "./utils";
+import { RendererFunction } from "./typings";
 
-export async function componentLine(
-  baseFuncs: Function[],
-  canvasAdaptor: CanvasAdaptor,
+export const componentLine: RendererFunction = function(
+  canvasAdaptor,
   blockConfig: InfographicConfig.LineBlock,
   cursor
 ) {
@@ -23,13 +22,5 @@ export async function componentLine(
     strokeWidth
   });
 
-  if (_.isEmpty(baseFuncs)) return cursor;
-
-  const lastBaseFunc = baseFuncs[baseFuncs.length - 1];
-  return lastBaseFunc(
-    baseFuncs.slice(0, baseFuncs.length - 1),
-    canvasAdaptor,
-    blockConfig,
-    cursor
-  );
-}
+  return cursor;
+};

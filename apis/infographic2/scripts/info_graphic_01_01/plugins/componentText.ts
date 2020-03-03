@@ -1,28 +1,25 @@
 import { InfographicConfig } from "../../../configs/index";
-import { CanvasAdaptor } from "../../utils";
 import { getRelativePosition } from "./utils";
-const _ = require("lodash");
+import { RendererFunction } from "./typings";
+import _ from "lodash";
 
-export async function componentText(
-  baseFuncs: Function[],
-  canvasAdaptor: CanvasAdaptor,
+export const componentText: RendererFunction = function(
+  canvasAdaptor,
   blockConfig: InfographicConfig.TextBlock,
   cursor
 ) {
   const paper = canvasAdaptor.getPaper();
 
-  const newCursor = renderTextBlock(canvasAdaptor, blockConfig, blockConfig.text, cursor);
-
-  if (_.isEmpty(baseFuncs)) return newCursor;
-
-  const lastBaseFunc = baseFuncs[baseFuncs.length - 1];
-  return lastBaseFunc(
-    baseFuncs.slice(0, baseFuncs.length - 1),
+  const newCursor = renderTextBlock(
     canvasAdaptor,
     blockConfig,
-    newCursor
+    blockConfig.text,
+    cursor
   );
-}
+
+  return newCursor;
+};
+
 function renderTextBlock(
   canvasAdaptor,
   blockConfig: InfographicConfig.TextBlock,

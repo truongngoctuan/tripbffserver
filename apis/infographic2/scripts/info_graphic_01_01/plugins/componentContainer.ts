@@ -1,6 +1,7 @@
 import { InfographicConfig } from "../../../configs/index";
-import { CanvasAdaptor } from "../../utils";
-const _ = require("lodash");
+import { RendererFunction } from "./typings";
+import { backgroundColor } from "./backgroundColor";
+import _ from "lodash";
 
 const strokeColorByLevel = {
   1: "green",
@@ -8,9 +9,8 @@ const strokeColorByLevel = {
   3: "blue",
   4: "green"
 };
-export async function componentContainer(
-  baseFuncs: Function[],
-  canvasAdaptor: CanvasAdaptor,
+export const componentContainer: RendererFunction = function(
+  canvasAdaptor,
   blockConfig: InfographicConfig.ContainerBlock,
   cursor
 ) {
@@ -49,11 +49,7 @@ export async function componentContainer(
   // rect.strokeColor = new paper.Color(strokeColorByLevel[cursor.level]);
   // rect.strokeWidth = 1;
 
-  if (_.isEmpty(baseFuncs)) return _.assign({}, cursor, newBounds);
-
-  const lastBaseFunc = baseFuncs[baseFuncs.length - 1];
-  return lastBaseFunc(
-    baseFuncs.slice(0, baseFuncs.length - 1),
+  return backgroundColor(
     canvasAdaptor,
     blockConfig,
     _.assign({}, cursor, newBounds)

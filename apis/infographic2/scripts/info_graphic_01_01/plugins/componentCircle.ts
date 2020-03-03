@@ -1,11 +1,9 @@
 import { InfographicConfig } from "../../../configs/index";
-import { CanvasAdaptor } from "../../utils";
-import _ from "lodash";
 import { getRelativePosition } from "./utils";
+import { RendererFunction } from "./typings";
 
-export async function componentCircle(
-  baseFuncs: Function[],
-  canvasAdaptor: CanvasAdaptor,
+export const componentCircle: RendererFunction = function(
+  canvasAdaptor,
   blockConfig: InfographicConfig.CircleBlock,
   cursor
 ) {
@@ -20,13 +18,5 @@ export async function componentCircle(
     fillColor
   });
 
-  if (_.isEmpty(baseFuncs)) return cursor;
-
-  const lastBaseFunc = baseFuncs[baseFuncs.length - 1];
-  return lastBaseFunc(
-    baseFuncs.slice(0, baseFuncs.length - 1),
-    canvasAdaptor,
-    blockConfig,
-    cursor
-  );
-}
+  return cursor;
+};
