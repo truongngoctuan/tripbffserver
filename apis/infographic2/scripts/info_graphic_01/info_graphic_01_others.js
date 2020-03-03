@@ -302,10 +302,6 @@ async function drawFooter(canvasAdaptor) {
       x: w - globalConfig.footer.marginRight,
       y: h - globalConfig.footer.marginBottom
     }
-    // {
-    //   width: globalConfig.footer.imageWidth,
-    //   height: globalConfig.footer.imageHeight
-    // }
   );
 }
 
