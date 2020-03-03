@@ -10,7 +10,8 @@ Object {
           "blocks": Array [
             Object {
               "height": 100,
-              "type": "location-image",
+              "type": "image",
+              "url": "./data/images/EmptyImage01.jpg",
               "width": 100,
             },
           ],
@@ -63,7 +64,8 @@ Object {
   "blocks": Array [
     Object {
       "height": 100,
-      "type": "location-image",
+      "type": "image",
+      "url": "./data/images/EmptyImage01.jpg",
       "width": 100,
     },
   ],

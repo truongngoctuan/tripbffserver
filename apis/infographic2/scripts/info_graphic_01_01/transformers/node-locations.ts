@@ -5,7 +5,7 @@ import { overrideMissingHeight } from "./dynamic-property-override";
 
 export const nodeLocations: NodeTransformer = {
   type: "node",
-  preHandler: (c: InfographicConfig.Block, trip) => {
+  preHandler: (c, trip) => {
     const containerBlockConfig = c as InfographicConfig.ContainerBlock;
     let childBlockConfigs: InfographicConfig.Block[] = [];
     // nLoc > nLocConfig, clone locConfig until n == nLoc
@@ -23,19 +23,19 @@ export const nodeLocations: NodeTransformer = {
 
     return {
       ...c,
-      type: "container",
       blocks: childBlockConfigs
     } as InfographicConfig.Block;
   },
   postHandler: (
-    c: InfographicConfig.Block,
-    children: InfographicConfig.Block[],
+    c,
+    children,
     cursor
   ) => {
     const b = c as InfographicConfig.LocationsBlocks;
     return {
       block: overrideMissingHeight({
         ...b,
+        type: "container",
         blocks: children
       } as InfographicConfig.Block),
       cursor

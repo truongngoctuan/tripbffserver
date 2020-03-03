@@ -9,7 +9,7 @@ import {
 describe("complex transformer", () => {
   test("complex configs for 1 location", () => {
     //Arrange
-    const config: InfographicConfig.Infographic = config_01_01;
+    const config: InfographicConfig.TripInfographic = config_01_01;
 
     const data = {
       name: " Chuyến đi đầu tiên trên TripBFF",
@@ -42,7 +42,7 @@ describe("complex transformer", () => {
 
   test("complex configs for 2 locations", () => {
     //Arrange
-    const config: InfographicConfig.Infographic = config_01_02;
+    const config: InfographicConfig.TripInfographic = config_01_02;
 
     const data = {
       name: " Chuyến đi đầu tiên trên TripBFF",
@@ -85,7 +85,7 @@ describe("complex transformer", () => {
 
   test("complex configs for n locations", () => {
     //Arrange
-    const config: InfographicConfig.Infographic = config_01_others;
+    const config: InfographicConfig.TripInfographic = config_01_others;
 
     const data = {
       name: " Chuyến đi đầu tiên trên TripBFF",

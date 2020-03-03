@@ -6,7 +6,8 @@ Object {
   "blocks": Array [
     Object {
       "height": 1280,
-      "type": "location-image",
+      "type": "image",
+      "url": "http://placekitten.com/700/500",
       "width": 1280,
     },
     Object {
@@ -116,7 +117,8 @@ Object {
           "blocks": Array [
             Object {
               "height": 840,
-              "type": "location-image",
+              "type": "image",
+              "url": "http://placekitten.com/700/500",
               "width": 640,
             },
             Object {
@@ -167,7 +169,8 @@ Object {
           "blocks": Array [
             Object {
               "height": 840,
-              "type": "location-image",
+              "type": "image",
+              "url": "http://placekitten.com/1200/1200",
               "width": 640,
             },
             Object {
@@ -308,7 +311,8 @@ Object {
                   "left": 550,
                   "top": 60,
                 },
-                "type": "location-image",
+                "type": "image",
+                "url": "http://placekitten.com/700/500",
                 "width": 380,
               },
               Object {
@@ -391,7 +395,8 @@ Object {
                   "left": 1150,
                   "top": 60,
                 },
-                "type": "location-image",
+                "type": "image",
+                "url": "http://placekitten.com/1200/1200",
                 "width": 380,
               },
               Object {
@@ -474,7 +479,8 @@ Object {
                   "left": 550,
                   "top": 60,
                 },
-                "type": "location-image",
+                "type": "image",
+                "url": "./data/images/EmptyImage01.jpg",
                 "width": 380,
               },
               Object {

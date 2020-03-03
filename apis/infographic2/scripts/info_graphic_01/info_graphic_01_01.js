@@ -130,16 +130,15 @@ async function draw(canvasAdaptor, trip) {
     {
       width: w,
       height: h
-    },
-    ({ width, height }) => {
+    })
+    .then(({ width, height }) => {
       // var ratio = width / height;
       // var h = w / ratio;
 
       h += content_height;
       console.log("new w h", `${w} ${h}`);
       canvasAdaptor.resize(w, h);
-    }
-  );
+    });
 
   canvasAdaptor.drawBackground(globalConfig.infographic.background);
 

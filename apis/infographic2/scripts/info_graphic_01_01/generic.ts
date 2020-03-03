@@ -5,6 +5,7 @@ import { getRelativePosition } from "./plugins/utils";
 
 import _ from "lodash";
 import { preProcessInfographicConfig } from "./transformers";
+import { Trip } from "../models/trip";
 const { executePlugins } = require("./plugins/index");
 
 function log(level: number, message: string, data: any = undefined) {
@@ -12,161 +13,111 @@ function log(level: number, message: string, data: any = undefined) {
   else console.log(_.repeat("    ", level) + message);
 }
 
-async function renderLessBlock(canvasAdaptor, blockConfig, trip, cursor) {
+async function renderLessBlock(
+  blockConfig: InfographicConfig.Block,
+  cursor: Cursor
+) {
   log(cursor.level, "render-less block", blockConfig.type);
   // log(cursor.level, "cursor", cursor);
 
   return cursor;
 }
 
-async function renderLocationImage(
+async function renderImage(
   canvasAdaptor: CanvasAdaptor,
-  blockConfig: InfographicConfig.LocationImageBlock,
-  trip,
-  cursor
+  blockConfig: InfographicConfig.Block,
+  cursor: Cursor
 ) {
-  cursor.location = 0;
   log(cursor.level, "render block", blockConfig.type);
   // log(cursor.level, "cursor", cursor);
+  const imageBlock = blockConfig as InfographicConfig.ImageBlock;
 
-  // load default image if location has no image
-  var imgUri =
-    trip.locations[cursor.location].signedUrl &&
-    !_.isEmpty(trip.locations[cursor.location].signedUrl)
-      ? trip.locations[cursor.location].signedUrl
-      : "./data/images/EmptyImage01.jpg";
-
-  var result = (await canvasAdaptor.drawImage(
-    imgUri,
-    getRelativePosition(cursor, blockConfig.positioning),
-    {
-      width: blockConfig.width,
-      height: blockConfig.height,
-      clipPath: blockConfig.clipPath
-    }
-  )) as any;
-
-  // log(cursor.level, "new w h", `${result.width} ${result.height}`);
-
-  return _.assign({}, cursor, { y: cursor.y + result.height });
-}
-
-async function renderImage(canvasAdaptor, blockConfig, trip, cursor) {
-  log(cursor.level, "render block", blockConfig.type);
-  // log(cursor.level, "cursor", cursor);
-
-  const relativePosition = getRelativePosition(cursor, blockConfig.positioning);
+  const relativePosition = getRelativePosition(cursor, imageBlock.positioning);
   log(cursor.level, "cursor", cursor);
   log(cursor.level, "relative position", relativePosition);
 
-  await canvasAdaptor.drawImage(blockConfig.url, relativePosition);
+  await canvasAdaptor.drawImage(imageBlock.url, relativePosition, {
+    width: imageBlock.width,
+    height: imageBlock.height,
+    clipPath: imageBlock.clipPath
+  });
 }
 
 async function renderBlock(
   canvasAdaptor: CanvasAdaptor,
-  blockConfig: InfographicConfig.Block,
-  trip,
+  b: InfographicConfig.Block,
   cursor: Cursor
 ) {
-  if (blockConfig.type === "container" || blockConfig.type === "location") {
-    log(cursor.level, "render block", blockConfig.type);
+  if (b.type === "container") {
+    log(cursor.level, "render block", b.type);
     log(cursor.level, "render cursor", cursor);
   }
 
   var nextCursor: Cursor = cursor;
 
-  if (_.find(["container", "location"], type => blockConfig.type === type)) {
+  if (b.type === "container") {
     // preNodeContainer
-    nextCursor = await executePlugins(
-      blockConfig.type,
-      canvasAdaptor,
-      blockConfig,
-      cursor,
-      trip
-    );
-    // console.log("nextCursor return location", nextCursor);
-  }
+    nextCursor = await executePlugins(b.type, canvasAdaptor, b, cursor);
 
-  if (!_.isEmpty((blockConfig as InfographicConfig.ContainerBlock).blocks)) {
-    const containerBlockConfig = blockConfig as InfographicConfig.ContainerBlock;
-
-    let childBlockConfigs: InfographicConfig.Block[] =
-      containerBlockConfig.blocks;
-    for (var i = 0; i < childBlockConfigs.length; i++) {
-      var childBlock = childBlockConfigs[i];
+    let childrenBlocks: InfographicConfig.Block[] = b.blocks;
+    for (var i = 0; i < childrenBlocks.length; i++) {
+      var childBlock = childrenBlocks[i];
 
       var next = await renderBlock(
         canvasAdaptor,
         childBlock,
-        trip,
         _.assign({}, nextCursor, {
           level: cursor.level + 1
         })
       );
 
       if (
-        _.find(["container", "location"], type => blockConfig.type === type) &&
-        blockConfig["flex"] &&
-        blockConfig["flex"] == "column"
+        //no need since only container is a node
+        b["flex"] &&
+        b["flex"] == "column"
       ) {
         //override cursor
         if (childBlock["height"]) {
           nextCursor = _.merge({}, nextCursor, {
             y: nextCursor.y + childBlock["height"]
           });
-        }
-        else {
+        } else {
           if (!_.isEmpty(next)) {
             nextCursor = _.merge({}, nextCursor, {
               y: next.y
             });
           }
-          
         }
-        
       }
     }
-  }
 
-  if (blockConfig.type === "container") return nextCursor;
+    return nextCursor;
+  }
 
   if (
     _.findIndex(
       ["locations", "location", "text", "line", "circle"],
-      type => blockConfig.type === type
+      type => b.type === type
     ) !== -1
   ) {
-    return await executePlugins(
-      blockConfig.type,
-      canvasAdaptor,
-      blockConfig,
-      nextCursor,
-      trip
-    );
-  } else if (blockConfig.type === "location-image") {
-    return await renderLocationImage(
-      canvasAdaptor,
-      blockConfig,
-      trip,
-      nextCursor
-    );
-  } else if (blockConfig.type === "image") {
-    return await renderImage(canvasAdaptor, blockConfig, trip, nextCursor);
+    return await executePlugins(b.type, canvasAdaptor, b, nextCursor);
+  } else if (b.type === "image") {
+    return await renderImage(canvasAdaptor, b, nextCursor);
   }
-  return await renderLessBlock(canvasAdaptor, blockConfig, trip, nextCursor);
+  return await renderLessBlock(b, nextCursor);
 }
 
 export async function renderInfographic(
   canvasAdaptor: CanvasAdaptor,
   infographicConfig: InfographicConfig.Infographic,
-  trip
+  trip: Trip
 ) {
   const processedInfoConfig = preProcessInfographicConfig(
     infographicConfig,
     trip
-  );
+  ) as InfographicConfig.Infographic;
 
-  if (!(processedInfoConfig["height"] && processedInfoConfig["height"] > 0)) {
+  if (!(processedInfoConfig.height && processedInfoConfig.height > 0)) {
     throw new Error("total height should have value");
   }
 
@@ -181,13 +132,14 @@ export async function renderInfographic(
   const finalCursor: Cursor = await renderBlock(
     canvasAdaptor,
     processedInfoConfig,
-    trip,
     defaultCursor
   );
   console.log("final cursor", finalCursor);
 
-  canvasAdaptor.resize(infographicConfig.width ? infographicConfig.width : 0, processedInfoConfig["height"]);
-  // canvasAdaptor.resize(3000, 3000);
+  canvasAdaptor.resize(
+    infographicConfig.width ? infographicConfig.width : 0,
+    processedInfoConfig.height
+  );
   canvasAdaptor.drawBackground(infographicConfig.backgroundColor);
 
   return;

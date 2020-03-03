@@ -1,7 +1,7 @@
 import { InfographicConfig } from "../../../configs/index";
-const _ = require("lodash");
+import { RendererFunction } from "./typings";
 
-export async function backgroundColor(baseFuncs: Function[],
+export const backgroundColor: RendererFunction = function(
   canvasAdaptor,
   blockConfig: InfographicConfig.Background,
   cursor
@@ -23,8 +23,5 @@ export async function backgroundColor(baseFuncs: Function[],
     });
   }
 
-  if (_.isEmpty(baseFuncs)) return cursor;
-
-  const lastBaseFunc = baseFuncs[baseFuncs.length - 1];
-  return lastBaseFunc(baseFuncs.slice(0, baseFuncs.length - 1), canvasAdaptor, blockConfig, cursor);
-}
+  return cursor;
+};

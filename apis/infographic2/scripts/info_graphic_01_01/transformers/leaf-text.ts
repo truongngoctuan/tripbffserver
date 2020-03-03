@@ -3,7 +3,7 @@ import { LeafTransformer } from "./typings";
 
 export const leafText: LeafTransformer = {
   type: "leaf",
-  handler: (c: InfographicConfig.Block, trip, cursor) => {
+  handler: (c, trip, cursor) => {
     const textNode = c as InfographicConfig.TextBlock;
 
     return {

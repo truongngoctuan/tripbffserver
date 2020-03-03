@@ -5,9 +5,10 @@ import { nodeContainer } from "./node-container";
 import { nodeLocations } from "./node-locations";
 import { nodeLocation } from "./node-location";
 import { leafText } from "./leaf-text";
+import { leafLocationImage } from "./leaf-location-image";
 
 export function preProcessInfographicConfig(
-  config: InfographicConfig.Infographic,
+  config: InfographicConfig.TripInfographic,
   trip
 ) {
   const defaultCursor: CursorTransformer = {
@@ -22,11 +23,12 @@ const transformers: { [id: string]: Transformer } = {
   container: nodeContainer,
   locations: nodeLocations,
   location: nodeLocation,
-  text: leafText
+  text: leafText,
+  "location-image": leafLocationImage
 };
 
 export function processBlock(
-  blockConfig: InfographicConfig.Block,
+  blockConfig: InfographicConfig.TripBlock,
   trip,
   cursor: CursorTransformer
 ): { block: InfographicConfig.Block; cursor: CursorTransformer } {
@@ -77,7 +79,7 @@ export function processBlock(
   }
 
   return {
-    block: blockConfig,
+    block: blockConfig as InfographicConfig.Block,
     cursor: _.merge({}, cursor, { location: nextCursor.location })
   };
 }

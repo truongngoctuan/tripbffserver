@@ -1,7 +1,8 @@
-'use strict';
+"use strict";
 
 const { registerFont } = require("canvas");
 import paperShim from "./paper-jsdom-canvas";
+import { Canvas, createCanvas } from "canvas";
 // import paper from "paper";
 const fs = require("fs");
 // const path = require("path");
@@ -26,13 +27,13 @@ registerFont("./fonts/Roboto-Bold.ttf", {
 //   Canvas = a.Canvas;
 // } catch(error) {
 export class CanvasAdaptor {
-  canvas: any;
+  canvas: Canvas;
   paper: paper.PaperScope;
 
   constructor(w = 300, h = 300) {
     //use the canvas in paper so that we can magically register font
-    var canvas = paperShim.Canvas(w, h);
-    // var canvas = createCanvas(w, h);
+    var canvas: Canvas = (paperShim as any).Canvas(w, h);
+    // var canvas: Canvas = createCanvas(w, h);
     // const ctx = canvas.getContext("2d");
     // ctx.fillStyle = "white";
     // ctx.fillRect(0, 0, w, h);
@@ -48,7 +49,7 @@ export class CanvasAdaptor {
     // fs.writeFileSync("output2.png", buf);
     // ------paper
     // Create an empty project and a view for the canvas:
-    paperShim.setup(canvas);
+    paperShim.setup(canvas as any);
 
     this.canvas = canvas;
     this.paper = paperShim;
@@ -59,26 +60,28 @@ export class CanvasAdaptor {
     return this.paper;
   }
 
+  getCanvasViewElement() {
+    return paperShim.view.element as any as Canvas;
+  }
+
   draw() {
-    this.paper.view.draw();
+    this.paper.view.update();
   }
   export(file) {
-    const buf = paperShim.view.element.toBuffer();
+    const buf = this.getCanvasViewElement().toBuffer();
     fs.writeFileSync(file, buf);
   }
 
   toBufferJpeg() {
-    return paperShim.view.element.toBuffer("image/jpeg", {
+    return this.getCanvasViewElement().toBuffer("image/jpeg", {
       quality: 0.9
     });
-
-    return buf;
   }
 
   toBufferPng() {
-    return paperShim.view.element.toBuffer("image/png", {
+    return this.getCanvasViewElement().toBuffer("image/png", {
       compressionLevel: 3,
-      filters: paperShim.Canvas.PNG_FILTER_NONE
+      filters: this.canvas.PNG_FILTER_NONE
     });
   }
 
@@ -91,13 +94,17 @@ export class CanvasAdaptor {
   // get name() {
   //   return this._name;
   // }
-  async drawImage(source, position, options: { width?: number, height?: number, clipPath?: string } = {}, cb = undefined) {
+  async drawImage(
+    source,
+    position,
+    options: { width?: number; height?: number; clipPath?: string } = {}
+  ) {
     return new Promise((resolve, reject) => {
       var raster = source.startsWith("http")
         ? new paperShim.Raster(source)
         : new paperShim.Raster(loadLocalImage(source));
 
-      var group = undefined;
+      var group: paper.Group;
 
       const startDownload = new Date().getTime();
       // console.log(`image ${source} loading`)
@@ -129,17 +136,14 @@ export class CanvasAdaptor {
           if (!options.clipPath) {
             // Use clipMask to create a custom polygon clip mask:
             var path = new paperShim.Path.Rectangle(
-              position.x,
-              position.y,
-              options.width,
-              options.height
+              new paperShim.Point(position.x, position.y),
+              new paperShim.Size(options.width, options.height)
             );
             path.clipMask = true;
 
             // It is better to add the path and the raster in a group (but not mandatory)
             group.addChild(raster);
             group.addChild(path);
-
           } else {
             var path2 = new paperShim.Path(options.clipPath);
             path2.position = new paperShim.Point(
@@ -156,7 +160,8 @@ export class CanvasAdaptor {
             );
 
             path2.style = {
-              strokeColor: "#f00",
+              ...path2.style,
+              strokeColor: new paperShim.Color("#f00"),
               strokeWidth: 2
             };
 
@@ -167,14 +172,7 @@ export class CanvasAdaptor {
             group.addChild(path2);
           }
         }
-
-        if (cb) {
-          cb({
-            // imageResult: raster,
-            width: group ? group.bounds.width : raster.bounds.width,
-            height: group ? group.bounds.height : raster.bounds.height
-          });
-        }
+        
         resolve({
           width: group ? group.bounds.width : raster.bounds.width,
           height: group ? group.bounds.height : raster.bounds.height
@@ -213,6 +211,7 @@ export class CanvasAdaptor {
 
     // textNode.content = text;
     textNode.style = {
+      ...textNode.style,
       fontSize,
       fillColor: options.color,
       fontFamily: options.font != "Roboto" ? "Pfennig" : "Roboto",
@@ -347,6 +346,7 @@ export class CanvasAdaptor {
       new paperShim.Point(options.x2, options.y2)
     );
     line.style = {
+      ...line.style,
       strokeColor: options.strokeColor,
       strokeWidth: options.strokeWidth
     };
@@ -357,6 +357,7 @@ export class CanvasAdaptor {
       options.r
     );
     circle.style = {
+      ...circle.style,
       fillColor: options.fillColor
     };
   }

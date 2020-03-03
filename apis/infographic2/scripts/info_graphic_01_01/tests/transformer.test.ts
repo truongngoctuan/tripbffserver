@@ -64,7 +64,7 @@ describe("node transformer", () => {
 
   test("simple leaf node", () => {
     //Arrange
-    const config: InfographicConfig.Infographic = {
+    const config: InfographicConfig.TripInfographic = {
       width: 1280,
       backgroundColor: "black",
       type: "container",
@@ -77,7 +77,9 @@ describe("node transformer", () => {
       ]
     };
 
-    const data = {};
+    const data = {
+      locations: [{}]
+    };
 
     // Act
     const result = preProcessInfographicConfig(
@@ -92,7 +94,7 @@ describe("node transformer", () => {
 
   test("location node", () => {
     //Arrange
-    const config: InfographicConfig.Infographic = {
+    const config: InfographicConfig.TripInfographic = {
       width: 1280,
       backgroundColor: "black",
       type: "container",
@@ -102,13 +104,14 @@ describe("node transformer", () => {
           blocks: [
             {
               type: "container",
-              blocks: [{
-                type: "location-image",
-                height: 100,
-                width: 100
-              }]
+              blocks: [
+                {
+                  type: "location-image",
+                  height: 100,
+                  width: 100
+                }
+              ]
             }
-            
           ]
         },
         {
@@ -118,7 +121,9 @@ describe("node transformer", () => {
       ]
     };
 
-    const data = {};
+    const data = {
+      locations: [{}]
+    };
 
     // Act
     const result = preProcessInfographicConfig(
@@ -130,5 +135,4 @@ describe("node transformer", () => {
     expect(result).toBeDefined();
     expect(result).toMatchSnapshot();
   });
-  
 });
