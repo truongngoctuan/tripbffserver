@@ -1,0 +1,2 @@
+$(aws ecr get-login-password --region ap-southeast-1 --profile tripbff-test)
+aws ecs update-service --cluster tripbff-testing --service tripbff-trip-api-service --force-new-deployment --profile tripbff-test
