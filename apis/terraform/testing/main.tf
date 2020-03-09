@@ -1,5 +1,7 @@
 locals {
   domain = "tntuan.tk"
+  name   = "tripbff"
+  stage  = "testing"
 }
 
 # module "repos" {
@@ -12,7 +14,7 @@ locals {
 module "this" {
   source = "../modules/main"
 
-  stage                      = "preinte"
+  stage                      = local.stage
   sso_repository_url         = var.sso_repository_url # module.repos.sso_repository_url
   redis_repository_url       = var.redis_repository_url
   trip_api_repository_url    = var.trip_api_repository_url
@@ -21,6 +23,6 @@ module "this" {
   domain                     = local.domain
   aws_id                     = var.aws_id
   aws_key                    = var.aws_key
-  aws_account_code           = "arn:aws:iam::883134154478:user/dev-access"
   key_name                   = "tripbff-ec2-key-pair"
+  s3_bucket                  = "${local.name}-${local.stage}"
 }

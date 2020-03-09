@@ -4,12 +4,12 @@ variable "region" {
 }
 
 variable "aws_id" {
-  type        = "string"
+  type        = string
   description = "AWS_ACCESS_KEY_ID"
 }
 
 variable "aws_key" {
-  type        = "string"
+  type        = string
   description = "AWS_SECRET_ACCESS_KEY"
 }
 

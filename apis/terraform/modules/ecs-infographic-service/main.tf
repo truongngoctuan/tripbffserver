@@ -47,11 +47,6 @@ resource "aws_ecs_task_definition" "tripbff-infographic" {
   DEFINITION
 }
 
-# resource "aws_cloudwatch_log_group" "log1" {
-#   name              = "tripbff-infographic"
-#   retention_in_days = 14
-# }
-
 resource "aws_ecs_service" "tripbff-infographic-service" {
   name            = "tripbff-infographic-service"
   cluster         = var.cluster_id

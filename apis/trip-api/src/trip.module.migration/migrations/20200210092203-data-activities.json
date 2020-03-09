@@ -1,0 +1,164 @@
+[
+  {
+    "activityId": "4a57c540-761c-405b-9d2c-ffedbcd2dc05",
+    "label_en": "Swimming",
+    "label_vi": "Bơi",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/swimming.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=Q9tHnyt3t3D%2BmDz2hZG8vktFUD0%3D"
+  },
+  {
+    "activityId": "6252855f-a20c-4726-baba-ca81a4027be0",
+    "label_en": "Stargazing",
+    "label_vi": "Ngắm sao",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/stargazing.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=c2su84AXKYOzRRrZ9s7UOwb7bhs%3D"
+  },
+  {
+    "activityId": "2118b467-65ac-435d-b4a9-6047374ad419",
+    "label_en": "Watch the sunset",
+    "label_vi": "Ngắm mặt trời lặn",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/sunset.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=JEpN8%2FuLhWojHvHLcPPVfqCSIU0%3D"
+  },
+  {
+    "activityId": "16585a29-199c-4d96-a07c-2b512699a4e2",
+    "label_en": "Roller coaster",
+    "label_vi": "Tàu lượn siêu tốc",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/roller_coster.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=pGjp5l8xm3sMuTUGQopRLB7TXPY%3D"
+  },
+  {
+    "activityId": "aa1a170b-b2ab-4fa8-adbb-a1a0a8efa407",
+    "label_en": "Hiking",
+    "label_vi": "Đi bộ đường dài ngắn ngày",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/hiking.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=pkEz5rs0vHABkWvJIY1bigqbiS8%3D"
+  },
+  {
+    "activityId": "31bdd36c-2876-460c-8d63-1062ef6c44a2",
+    "label_en": "Cloud hunting",
+    "label_vi": "Săn mây",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/cloud.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=aAVeoXtx958nM6BtQh6ELi1xIw8%3D"
+  },
+  {
+    "activityId": "a70a834c-0a4c-445a-86e8-4d81edaaca17",
+    "label_en": "Eat & Drink",
+    "label_vi": "Ăn uống",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/Eat.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=c1QSDpjXaJX8UNtHZAOOSnzewN0%3D"
+  },
+  {
+    "activityId": "818416aa-2402-4986-9917-6f6e8c7d5461",
+    "label_en": "Read book",
+    "label_vi": "Đọc sách",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/read-book.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=Aa2FCRJt7%2Bz%2FdhE2lVv9W3RdAJA%3D"
+  },
+  {
+    "activityId": "860b5d80-65e5-49a6-9b85-557db9e6b429",
+    "label_en": "Rock climbing",
+    "label_vi": "Leo núi",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/climbing.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=4lJ4kVXRwKjT9RRf1YHMrZ7Moo0%3D"
+  },
+  {
+    "activityId": "51de87b8-f1dc-43b3-8191-acaac97af21b",
+    "label_en": "Trekking",
+    "label_vi": "Đi bộ đường dài nhiều ngày",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/trekking.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=xudrV49qZ014hbE%2F7IZsmCPE%2FlM%3D"
+  },
+  {
+    "activityId": "852f0b4b-8b71-4e29-a294-4511dbf7af2a",
+    "label_en": "Go sightseeing",
+    "label_vi": "Tham quan",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/sightseeing.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=fznX3TrBjMSsVImLDK%2BkulRQslU%3D"
+  },
+  {
+    "activityId": "56ab106e-8c98-4921-b10b-2ab12290b1d7",
+    "label_en": "Paragliding",
+    "label_vi": "Dù lượn",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/Paragliding.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=dTrxay7LZntYKq%2Bab4LEij6V6kU%3D"
+  },
+  {
+    "activityId": "9540f9a6-6295-4cd6-9feb-7eee07a8cff4",
+    "label_en": "Walking with a Storm",
+    "label_vi": "Bước đi với một cơn bão",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/walking-with-a-storm.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=pZk2i%2FH4k26w%2FksrzVOXTBGZcOU%3D"
+  },
+  {
+    "activityId": "801795ee-2286-4e74-bad7-8420fe15a07b",
+    "label_en": "Cycling",
+    "label_vi": "Đi xe đạp",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/bicycle-rider.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=nQlJgrToKNrvV1AL3r61%2FgN8rWw%3D"
+  },
+  {
+    "activityId": "6ba67d92-9c42-4e64-a529-fdd68e8d1faf",
+    "label_en": "Watch movie",
+    "label_vi": "Xem phim",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/watching-a-movie.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=ZnwXttVztme1yXVHATvJolMalj4%3D"
+  },
+  {
+    "activityId": "18ed18ef-eedb-4db5-bfa0-a357b0cfe634",
+    "label_en": "Watch the sunrise",
+    "label_vi": "Ngắm mặt trời mọc",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/sunrise.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=ImdgQQlIGNxV63zNZle7768i6nE%3D"
+  },
+  {
+    "activityId": "076805e0-4c46-44df-8181-376a0db9f343",
+    "label_en": "See rice fields",
+    "label_vi": "Ngắm ruộng lúa",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/rice_fields.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=W2hc660pyPuNBXK9Vz38nLSNv44%3D"
+  },
+  {
+    "activityId": "fdbf23c8-12b1-4ffb-a4bb-c26ae680737c",
+    "label_en": "Horseback riding",
+    "label_vi": "Cưỡi ngựa",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/horse-riding.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=lDd2Uqh3CmSdOktl1rsnLelTsw0%3D"
+  },
+  {
+    "activityId": "ec635d93-b02f-442c-a961-2ed786e80575",
+    "label_en": "Fishing",
+    "label_vi": "Câu cá",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/fishing-man.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=24RHXcudV8ryQiWEQxpl5sFuYNI%3D"
+  },
+  {
+    "activityId": "39608e26-1cf3-416e-8a01-1d905e629439",
+    "label_en": "Surfing",
+    "label_vi": "Lướt sóng",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/surfer-surfing.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=mKy11JiytrG%2FH6%2F1sgUk92FP%2BZI%3D"
+  },
+  {
+    "activityId": "c907edc2-ce70-4596-a8db-f8f6737d011c",
+    "label_en": "Camping",
+    "label_vi": "Cắm trại",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/night-camping.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=3qSPh8Kv5uRrhTOQuibHOIE55%2BM%3D"
+  },
+  {
+    "activityId": "50ac3c9c-dd53-4072-a10a-faae6c735ee7",
+    "label_en": "Motor racing",
+    "label_vi": "Đua xe máy",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/quad-bike.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=dC17iAWHqdZDKpEYWxmIG%2FUVwfQ%3D"
+  },
+  {
+    "activityId": "2dbabda2-0c8a-437c-8311-95621f2410eb",
+    "label_en": "Picnic",
+    "label_vi": "Dã ngoại",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/picnic.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=xWaU%2BnjfWNDTcUeapL18mJltmvc%3D"
+  },
+  {
+    "activityId": "e4163355-772a-4e0f-98c7-bc2786776955",
+    "label_en": "Photography",
+    "label_vi": "Chụp hình",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/photographer.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=VcqGkoBVTXV31MdmoIVW6uWB8Cw%3D"
+  },
+  {
+    "activityId": "65b5d69c-e3e8-44e3-a6be-5d59873d7811",
+    "label_en": "Listen Music",
+    "label_vi": "Nghe nhạc",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/music.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=PH2YLorf%2Fa%2BtxSgwltMIkVqei14%3D"
+  },
+  {
+    "activityId": "473519c5-9768-46cf-aee8-75af7c948fbd",
+    "label_en": "Kayaking",
+    "label_vi": "Chèo thuyền Kayak",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/kayak.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=PZHQJNjxpaR863D%2BTCElRgkFHcU%3D"
+  },
+  {
+    "activityId": "270c2a6e-5035-4f4d-a0fd-848c72a91189",
+    "label_en": "Extreme sports",
+    "label_vi": "Thể thao mạo hiểm",
+    "icon": "https://tripbff-icons.s3.ap-southeast-1.amazonaws.com/activity/extremem_sports.png?AWSAccessKeyId=AKIA4TON7PMDXZCP4Z64&Expires=1586667747&Signature=DKtvSwaka6pLJdvZultG1lUjaRE%3D"
+  }
+]

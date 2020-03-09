@@ -36,12 +36,13 @@ module "ecs-traefik-services" {
 # }
 
 module "ecs-sso-services" {
-  source         = "../ecs-sso-service"
-  cluster_id     = aws_ecs_cluster.cluster.id
-  repository_url = var.sso_repository_url
-  domain         = var.domain
-  stage          = var.stage
-  mongodb        = var.mongodb
+  source             = "../ecs-sso-service"
+  cluster_id         = aws_ecs_cluster.cluster.id
+  repository_url     = var.sso_repository_url
+  repository_version = var.sso_repository_version
+  domain             = var.domain
+  stage              = var.stage
+  mongodb            = var.mongodb
 }
 
 module "ecs-redis-services" {
@@ -100,7 +101,7 @@ data "aws_route53_zone" "selected" {
 }
 
 resource "aws_route53_record" "traefik-dashboard" {
-  zone_id = "${data.aws_route53_zone.selected.zone_id}"
+  zone_id = data.aws_route53_zone.selected.zone_id
   name    = "traefik-${local.stage}.${data.aws_route53_zone.selected.name}"
   type    = "A"
   ttl     = "30"
@@ -116,7 +117,7 @@ resource "aws_route53_record" "traefik-dashboard" {
 # }
 
 resource "aws_route53_record" "sso" {
-  zone_id = "${data.aws_route53_zone.selected.zone_id}"
+  zone_id = data.aws_route53_zone.selected.zone_id
   name    = "sso-${local.stage}.${data.aws_route53_zone.selected.name}"
   type    = "A"
   ttl     = "30"
@@ -124,7 +125,7 @@ resource "aws_route53_record" "sso" {
 }
 
 resource "aws_route53_record" "trip-api" {
-  zone_id = "${data.aws_route53_zone.selected.zone_id}"
+  zone_id = data.aws_route53_zone.selected.zone_id
   name    = "trip-api-${local.stage}.${data.aws_route53_zone.selected.name}"
   type    = "A"
   ttl     = "30"
