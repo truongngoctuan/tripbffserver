@@ -4,7 +4,7 @@ resource "aws_ecs_task_definition" "tripbff-trip-api" {
   [
     {
       "name": "tripbff-trip-api-container",
-      "image": "${var.repository_url}:latest",
+      "image": "${var.repository_url}:${var.repository_version}",
       "memoryReservation": 96,
       "essential": true,
       "portMappings": [

@@ -6,7 +6,7 @@ resource "aws_ecs_task_definition" "tripbff-infographic" {
   [
     {
       "name": "tripbff-infographic-container",
-      "image": "${var.repository_url}:latest",
+      "image": "${var.repository_url}:${var.repository_version}",
       "memoryReservation": 160,
       "essential": true,
       "portMappings": [],

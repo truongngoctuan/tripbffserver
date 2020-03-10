@@ -51,3 +51,9 @@ variable "api_trip_api_gateway_port" {
   type        = number
   # default     = "8000"
 }
+
+variable "repository_version" {
+  description = "repository version"
+  type        = string
+  default     = "latest"
+}

@@ -60,6 +60,7 @@ module "ecs-trip_api-services" {
   stage                     = var.stage
   cluster_id                = aws_ecs_cluster.cluster.id
   repository_url            = var.trip_api_repository_url
+  repository_version        = var.trip_api_repository_version
   mongodb                   = var.mongodb
   domain                    = var.domain
   api_redis_gateway         = module.instances.private_ip             # module.instances.eip_public_ip
@@ -75,6 +76,7 @@ module "ecs-infographic-services" {
   source                    = "../ecs-infographic-service"
   cluster_id                = aws_ecs_cluster.cluster.id
   repository_url            = var.infographic_repository_url
+  repository_version        = var.infographic_repository_version
   mongodb                   = var.mongodb
   domain                    = var.domain
   stage                     = var.stage

@@ -72,3 +72,9 @@ variable "api_trip_api_gateway_port" {
 variable "s3_bucket" {
   type        = string
 }
+
+variable "repository_version" {
+  description = "repository version"
+  type        = string
+  default     = "latest"
+}

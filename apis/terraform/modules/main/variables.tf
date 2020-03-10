@@ -52,9 +52,18 @@ variable "trip_api_repository_url" {
   description = "trip-api repository"
   type        = string
 }
+variable "trip_api_repository_version" {
+  type    = string
+  default = "latest"
+}
+
 variable "infographic_repository_url" {
   description = "infographic repository"
   type        = string
+}
+variable "infographic_repository_version" {
+  type    = string
+  default = "latest"
 }
 
 variable "mongodb" {
