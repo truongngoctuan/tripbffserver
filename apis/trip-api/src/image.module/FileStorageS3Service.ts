@@ -161,7 +161,7 @@ async function signGetIconUrl(fullPath: string, expires = 5184000) {
     region: S3_REGION
   });
   const s3Params = {
-    Bucket: "tripbff-icons",
+    Bucket: S3_BUCKET,
     Key: fullPath,
     Expires: expires
   };
@@ -176,7 +176,7 @@ async function signGetIconUrl(fullPath: string, expires = 5184000) {
       }
       const returnData = {
         signedRequest: data,
-        url: `https://tripbff-icons.s3.amazonaws.com/${fullPath}`
+        url: `https://${S3_BUCKET}.s3.amazonaws.com/${fullPath}`
       };
       // console.log("signed request");
       // console.log(returnData);
