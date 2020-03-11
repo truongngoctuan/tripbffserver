@@ -33,13 +33,14 @@ export class MinimizedTripQueryHandler {
 
   private updateTripImageExternalUrl(trip: ITripMinimized) {
     if (!trip) return trip;
+
     trip.locationImages = trip.locationImages.map(locationImage => {
       return {
         name: locationImage.name,
         address: locationImage.address,
         description: locationImage.description,
         imageUrl:
-          _.isEmpty(locationImage.imageUrl === "") || !locationImage.imageUrl
+          locationImage.imageUrl === "" || !locationImage.imageUrl
             ? undefined
             : resolveThumbnailImageUrlFromExternalStorageId(
                 locationImage.imageUrl
