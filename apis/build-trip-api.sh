@@ -1,1 +1,0 @@
-docker build -t tripbff/trip-api ./trip-api

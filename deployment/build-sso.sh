@@ -1,0 +1,1 @@
+docker build -t tripbff/sso ../apis/sso
