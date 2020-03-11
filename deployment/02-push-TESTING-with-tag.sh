@@ -1,5 +1,5 @@
 AWS_PROFILE=tripbff-test
-VERSION=latest
+VERSION=1.1.0
 
 docker tag tripbff/redis:latest 883134154478.dkr.ecr.ap-southeast-1.amazonaws.com/tripbff/redis:latest
 docker tag tripbff/sso:latest 883134154478.dkr.ecr.ap-southeast-1.amazonaws.com/tripbff/sso:$VERSION
