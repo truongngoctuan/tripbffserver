@@ -146,11 +146,11 @@ module.exports = {
 
     server.route({
       method: "GET",
-      path: "/trips/{tripId}/infographics/{infoId}",
+      path: "/trips/{tripId}/infographics/{infographicId}",
       async handler(request, h) {
         const tripId = request.params.tripId;
-        const infographicId = request.params.infoId;
-
+        const infographicId = request.params.infographicId;
+        console.log("infographicId", infographicId);
         return new Promise((resolve, reject) => {
           let counter = 0;
           const getEventInterval = setInterval(async () => {

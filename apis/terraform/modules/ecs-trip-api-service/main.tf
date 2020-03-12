@@ -4,7 +4,7 @@ resource "aws_ecs_task_definition" "tripbff-trip-api" {
   [
     {
       "name": "tripbff-trip-api-container",
-      "image": "${var.repository_url}:latest",
+      "image": "${var.repository_url}:${var.repository_version}",
       "memoryReservation": 96,
       "essential": true,
       "portMappings": [
@@ -75,11 +75,6 @@ resource "aws_ecs_task_definition" "tripbff-trip-api" {
   ]
   DEFINITION
 }
-
-# resource "aws_cloudwatch_log_group" "log1" {
-#   name              = "tripbff-${var.stage}-trip-api"
-#   retention_in_days = 14
-# }
 
 resource "aws_ecs_service" "tripbff-trip-api-service" {
   name            = "tripbff-trip-api-service"

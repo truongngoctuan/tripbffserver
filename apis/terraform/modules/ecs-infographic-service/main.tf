@@ -6,7 +6,7 @@ resource "aws_ecs_task_definition" "tripbff-infographic" {
   [
     {
       "name": "tripbff-infographic-container",
-      "image": "${var.repository_url}:latest",
+      "image": "${var.repository_url}:${var.repository_version}",
       "memoryReservation": 160,
       "essential": true,
       "portMappings": [],
@@ -46,11 +46,6 @@ resource "aws_ecs_task_definition" "tripbff-infographic" {
   ]
   DEFINITION
 }
-
-# resource "aws_cloudwatch_log_group" "log1" {
-#   name              = "tripbff-infographic"
-#   retention_in_days = 14
-# }
 
 resource "aws_ecs_service" "tripbff-infographic-service" {
   name            = "tripbff-infographic-service"
