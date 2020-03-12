@@ -4,15 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "migration:init": "migrate-mongo init",
-    "migration:create": "migrate-mongo create",
-    "migration:up": "migrate-mongo up",
+    "migration:init": "db-migrate init",
+    "migration:create": "db-migrate create",
+    "migration:up": "db-migrate up",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "migrate-mongo": "7.1.0"
+    "db-migrate": "0.11.6"
   }
 }
