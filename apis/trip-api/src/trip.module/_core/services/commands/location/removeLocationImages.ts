@@ -22,13 +22,13 @@ export async function RemoveLocationImages(
 
   const state = await reducers.getCurrentState(tripId);
   const location = _.find(state.locations, loc => loc.locationId == locationId);
-  if (!location) return BadRequest("LocationNotFound")
+  if (!location) return BadRequest("LocationNotFound");
 
   imageIds.forEach(imageId => {
     if (!_.find(location.images, img => img.imageId == imageId)) return BadRequest("LocationImageNotFound");
-  })
+  });
 
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "LocationImagesRemoved",
     ownerId,
     tripId,

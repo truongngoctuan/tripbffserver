@@ -13,7 +13,7 @@ export type DeleteTripCommand = {
 export async function deleteTrip(command: DeleteTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus) {
   const { ownerId, tripId, isDeleted } = command;
   
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "TripDeleted",
     ownerId,
     tripId,

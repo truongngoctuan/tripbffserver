@@ -36,7 +36,9 @@ async function exportInfo(trip) {
     // const fetchedUrl = response.request.res.responseURL;
     console.log("trip", JSON.stringify(trip));
 
-    const resultBuf = await genericDraw.draw(trip, info_graphic_type);
+    const canvasAdaptor = await genericDraw.draw(trip, info_graphic_type);
+    canvasAdaptor.draw();
+    var resultBuf = await canvasAdaptor.toBufferJpeg();
     console.log(`TIME ${new Date().getTime() - startTimer} ms: completed`);
     return resultBuf;
   } catch (err) {

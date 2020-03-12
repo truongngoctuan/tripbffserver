@@ -1,3 +1,23 @@
+# ###############################################################################
+# # Step 1 : Builder image
+# #
+# FROM node:8.12-alpine AS builder
+# # FROM mhart/alpine-node:10.16 AS builder
+
+# # Define working directory and copy source
+# WORKDIR /home/node/app
+
+# COPY package.json yarn.lock ./
+# RUN yarn install --frozen-lockfile; \
+#   yarn cache clean;
+
+# # Define working directory and copy source
+# WORKDIR /home/node/app
+# COPY . .
+# # Install dependencies and build whatever you have to build 
+# # (babel, grunt, webpack, etc.)
+# RUN yarn build && yarn --production
+
 ###############################################################################
 # Step 2 : Run image
 #
@@ -34,6 +54,8 @@ COPY ./package* yarn.lock ./
 RUN yarn install  --frozen-lockfile --production; \
   yarn cache clean;
 
+# Copy builded source from the upper builder stage
+# COPY --from=builder /home/node/app/dist ./dist
 COPY . .
 
 # Expose ports (for orchestrators and dynamic reverse proxies)

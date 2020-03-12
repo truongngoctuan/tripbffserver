@@ -1,11 +1,12 @@
-import { Server, ResponseToolkit } from "hapi";
+import { Server, ResponseToolkit } from "@hapi/hapi";
 import { IoC } from "./IoC";
-const Joi = require("joi");
+import Joi from "@hapi/joi";
+import { IdSchema } from "./JoiSchemas";
 
 const tripQueryHandler = IoC.tripQueryHandler;
 
 module.exports = {
-  init(server: Server) {
+  init(server: Server): void {
     server.route({
       method: "GET",
       path: "/images/preUploadImage",
@@ -68,7 +69,7 @@ module.exports = {
     //     --> trigger event
     //     --> pickup event --> query thumbnail images, wait until data available
 
-    async function returnFileFromWH(imageId: string, wi: number, he: number, h: ResponseToolkit) {
+    async function returnFileFromWH(imageId: string, wi: number, he: number, h: ResponseToolkit): Promise<string> {
       const { fileInfo } = await IoC.fileService.getInfoById(imageId);
 
       await IoC.imageService.saveThumbnail(fileInfo.path, wi, he);
@@ -115,12 +116,10 @@ module.exports = {
         // auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
-            id: Joi.required().description("the external id")
-          },
-          query: {
+          params: IdSchema,
+          query: Joi.object({
             s: Joi.number().description("size"),
-          },
+          }),
         },
         response: {
         },
@@ -128,7 +127,7 @@ module.exports = {
     });
 
 
-    async function returnSignOnlyFromWH(imageId: string, wi: number, he: number, h: ResponseToolkit) {
+    async function returnSignOnlyFromWH(imageId: string, wi: number, he: number, h: ResponseToolkit): Promise<string> {
       const { fileInfo } = await IoC.fileService.getInfoById(imageId);
       const imageThumbnail = IoC.imageService.generateThumbnailUri(fileInfo.fileName, wi, he);
       const start = (new Date()).getTime();
@@ -171,12 +170,10 @@ module.exports = {
         // auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
-            id: Joi.required().description("the external id")
-          },
-          query: {
+          params: IdSchema,
+          query: Joi.object({
             s: Joi.number().description("size"),
-          },
+          }),
         },
         response: {
         },
@@ -204,9 +201,7 @@ module.exports = {
         // auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
-            id: Joi.required().description("the id for the todo item")
-          },
+          params: IdSchema,
         },
       },
     });

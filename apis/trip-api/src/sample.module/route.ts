@@ -1,10 +1,10 @@
-import { Server } from "hapi";
+import { Server } from "@hapi/hapi";
 import { FooRepository } from "./infrastructures/repositories/FooRepository";
 import { FooCommandHandler } from "./services/commands/_commandHandler";
 import { ServiceBus } from "./services/ServiceBus";
 import { FooQueryHandler } from "./services/FooQuery";
 import { FooEventRepository } from "./infrastructures/repositories/FooEventRepository";
-const Joi = require("joi");
+import Joi from "@hapi/joi";
 
 const fooEventRepository = new FooEventRepository();
 const fooRepository = new FooRepository();
@@ -15,13 +15,13 @@ const fooCommandHandler = new FooCommandHandler(
 const fooQueryHandler = new FooQueryHandler(new FooRepository());
 
 module.exports = {
-  init: function(server: Server) {
+  init: function(server: Server): void {
     server.route({
       method: "GET",
       path: "/hello",
       handler: async function(request, h) {
         try {
-          var result = await fooQueryHandler.list();
+          const result = await fooQueryHandler.list();
           return result;
         } catch (error) {
           console.log(error);
@@ -31,12 +31,7 @@ module.exports = {
       },
       options: {
         auth: "simple",
-        tags: ["api"],
-        validate: {
-          //   params: {
-          //     id: Joi.required().description("the id for the todo item")
-          //   }
-        }
+        tags: ["api"]
       }
     });
 
@@ -46,9 +41,9 @@ module.exports = {
       handler: async function(request, h) {
         try {
           const { name, description } = request.payload as any;
-          var fooId = Math.floor(Math.random() * 100);
+          const fooId = Math.floor(Math.random() * 100);
 
-          var commandResult = await fooCommandHandler.exec({
+          const commandResult = await fooCommandHandler.exec({
             type: "createFoo",
             fooId: fooId.toString(),
             name,
@@ -56,7 +51,7 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            var queryResult = await fooQueryHandler.GetById(fooId.toString());
+            const queryResult = await fooQueryHandler.GetById(fooId.toString());
             return queryResult;
           }
 
@@ -69,10 +64,10 @@ module.exports = {
         // auth: "simple",
         tags: ["api"],
         validate: {
-          payload: {
+          payload: Joi.object({
             name: Joi.required().description("name"),
             description: Joi.required().description("description")
-          }
+          })
         }
       }
     });
@@ -83,9 +78,9 @@ module.exports = {
       handler: async function(request, h) {
         try {
           const { name, description } = request.payload as any;
-          var fooId = request.params.id;
+          const fooId = request.params.id;
 
-          var commandResult = await fooCommandHandler.exec({
+          const commandResult = await fooCommandHandler.exec({
             type: "updateFoo",
             fooId: fooId.toString(),
             name,
@@ -93,7 +88,7 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            var queryResult = await fooQueryHandler.GetById(fooId.toString());
+            const queryResult = await fooQueryHandler.GetById(fooId.toString());
             return queryResult;
           }
 
@@ -106,13 +101,13 @@ module.exports = {
         // auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
+          params: Joi.object({
             id: Joi.required().description("the id for the todo item")
-          },
-          payload: {
+          }),
+          payload: Joi.object({
             name: Joi.required().description("name"),
             description: Joi.required().description("description")
-          }
+          })
         }
       }
     });

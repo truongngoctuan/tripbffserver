@@ -1,7 +1,7 @@
 async function init() {
   const mongoose = require("mongoose");
 
-  var mongoDbConnectionString = process.env.MONGODB_CONNECTION_STRING;
+  const mongoDbConnectionString = process.env.MONGODB_CONNECTION_STRING;
   mongoose.connect(mongoDbConnectionString, {
       useNewUrlParser: true
     })

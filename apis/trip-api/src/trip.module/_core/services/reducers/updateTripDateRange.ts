@@ -10,17 +10,12 @@ export function updateTripDateRange(
 
   const { fromDate, toDate } = command;
 
-  var filteredLocations: ITripLocation[] = [];
+  let filteredLocations: ITripLocation[] = [];
 
-
-  if (fromDate) {
-    filteredLocations = prevState.locations.filter(loc => moment(fromDate) <= moment(loc.fromTime));
-  }
-
-  if (toDate) {
-    filteredLocations = prevState.locations.filter(loc => moment(loc.toTime) <= moment(toDate));
-  }
-
+  filteredLocations = prevState.locations.filter(loc => 
+    (!fromDate || moment(fromDate) <= moment(loc.fromTime)) &&
+    (!toDate || moment(loc.toTime) <= moment(toDate)));  
+ 
   return {
     ...prevState,
     fromDate: fromDate ? fromDate : prevState.fromDate,

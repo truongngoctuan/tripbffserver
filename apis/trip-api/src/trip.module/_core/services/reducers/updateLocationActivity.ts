@@ -18,7 +18,7 @@ export function updateLocationActivity(
                 label_vi: event.label_vi,
                 icon: event.activityIcon
             }
-        }
+        };
     })
   };
 }

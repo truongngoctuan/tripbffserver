@@ -46,14 +46,14 @@ beforeEach(async () => {
 
 });
 
-it('should aggregate docs from collection', async () => {
+it("should aggregate docs from collection", async () => {
   // expect(db.getInstanceInfo()).toMatchSnapshot();
 });
 
-it('should aggregate docs from collection 2', async () => {
+it("should aggregate docs from collection 2", async () => {
   // expect(db.getInstanceInfo()).toMatchSnapshot();
 });
 
-it('should aggregate docs from collection 3', async () => {
+it("should aggregate docs from collection 3", async () => {
   // expect(db.getInstanceInfo()).toMatchSnapshot();
 });

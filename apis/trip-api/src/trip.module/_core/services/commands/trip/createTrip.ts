@@ -2,15 +2,14 @@ import { EventHandler, TripEvent } from "../../events";
 import { TripReducers } from "../../reducers/_tripReducer";
 import { ServiceBus } from "../../TripServiceBus";
 import { CommandResult, Succeed } from "../../../../../_shared/utils";
-import { Moment } from "moment";
 
 export type CreateTripCommand = {
   type: "createTrip";
   ownerId: string;
   tripId: string;
   name: string;
-  fromDate: Moment;
-  toDate: Moment;
+  fromDate: Date;
+  toDate: Date;
 };
 
 export async function createTrip(command: CreateTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus): Promise<CommandResult> {
@@ -18,7 +17,7 @@ export async function createTrip(command: CreateTripCommand, eventHandler: Event
   //todo validation on fromDate, toDate
   //todo add error code as 
   const { ownerId, tripId, name, fromDate, toDate } = command;
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "TripCreated",
     ownerId,
     tripId,

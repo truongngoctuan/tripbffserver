@@ -12,7 +12,7 @@ export function updateLocationDescription(
         return item.locationId !== event.locationId ? item : {
             ...item,
             description: event.description
-        }
+        };
     })
   };
 }

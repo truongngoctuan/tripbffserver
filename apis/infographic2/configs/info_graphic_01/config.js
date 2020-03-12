@@ -4,8 +4,7 @@ const config_01_01 = {
     height: 1280,
     content_height: 300,
     paddingLeftRight: 20,
-    c_paddingTop: 60,
-    footer_height: 0,
+    c_paddingTop: 30,
     background: "#e3d1a2"
   },
   location: {
@@ -23,14 +22,11 @@ const config_01_01 = {
       color: "#121113",
       textAnchor: "start"
     },
-    paddingTop: 30,
-    lineNumber: 1
+    paddingTop: 8
   },
   footer: {
     marginBottom: 80,
     marginRight: 200,
-    imageWidth: 180,
-    imageHeight: 60
   }
 };
 
@@ -84,7 +80,7 @@ const config_01_02 = {
       fontSize: "48px",
       textAnchor: "start"
     },
-    paddingTop: 30,
+    paddingTop: 15,
     lineNumber: 1
   },
   footer: {

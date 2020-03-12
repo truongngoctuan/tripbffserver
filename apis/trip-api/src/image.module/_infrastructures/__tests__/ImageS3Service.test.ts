@@ -10,5 +10,5 @@ describe("create thumbnail", () => {
     await imageService.saveThumbnail(img, 20, 20);
 
     // Assert
-  })
-})
+  });
+});

@@ -1,12 +1,10 @@
-import { Moment } from "moment";
-
 export type TripCreatedEvent = {
   type: "TripCreated";
   ownerId: string;
   tripId: string;
   name: string;
-  fromDate: Moment;
-  toDate: Moment;
+  fromDate: Date;
+  toDate: Date;
 };
 
 export type TripUpdatedEvent = {
@@ -14,16 +12,16 @@ export type TripUpdatedEvent = {
   ownerId: string;
   tripId: string;
   name: string;
-  fromDate: Moment;
-  toDate: Moment;
+  fromDate: Date;
+  toDate: Date;
 };
 
 export type TripDateRangeUpdatedEvent = {
   type: "TripDateRangeUpdated";
   ownerId: string;
   tripId: string;
-  fromDate: Moment;
-  toDate: Moment;
+  fromDate: Date;
+  toDate: Date;
 };
 
 export type TripNameUpdatedEvent = {

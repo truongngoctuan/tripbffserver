@@ -18,7 +18,7 @@ export class DataSourceQueryHandler {
   }
 
   async getFeelings(): Promise<IFeeling[]> {
-    var results = this.FeelingRepository.list();
+    const results = this.FeelingRepository.list();
     return results;
   }
 
@@ -27,7 +27,7 @@ export class DataSourceQueryHandler {
   }
 
   async getActivities(): Promise<IActivity[]> {
-    var results = this.ActivityRepository.list();
+    const results = this.ActivityRepository.list();
     return results;
   }
 
@@ -36,21 +36,21 @@ export class DataSourceQueryHandler {
   }
 
   async getHighlights(): Promise<IHighlight[]> {
-    var results = this.HighlightRepository.list();
+    const results = this.HighlightRepository.list();
     return results;
   }
 
   async getSearchLocations(query: string): Promise<ISearchLocation[]> {
-    var results = this.SearchLocationRepository.list(query);
+    const results = this.SearchLocationRepository.list(query);
     return results;
   }
 
   async getTopNearerLocationsByCoordinate(lat: number, long: number): Promise<ISearchLocation[]> {
-    let locations = await this.SearchLocationRepository.list("");    
-    let sortLocations: any[] = [];
+    const locations = await this.SearchLocationRepository.list("");    
+    const sortLocations: any[] = [];
 
     locations.forEach(location => {
-      let distance = calculateDistance(lat, long, location.lat, location.long);         
+      const distance = calculateDistance(lat, long, location.lat, location.long);         
       sortLocations.push({
         distance: distance,
         location: location
@@ -59,7 +59,7 @@ export class DataSourceQueryHandler {
     
     sortLocations.sort(compareLocation);
 
-    let topNearerLocations = sortLocations.slice(0, 4).map(lo => 
+    const topNearerLocations = sortLocations.slice(0, 4).map(lo => 
       {
         return lo.location;
       }

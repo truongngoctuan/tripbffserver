@@ -4,7 +4,6 @@
 // draw basic shape
 // https://www.dashingd3js.com/svg-basic-shapes-and-d3js
 
-const utils = require("../utils");
 const config_infographic_01 = require("../../configs/info_graphic_01/config");
 const commonFunc = require("../commonFunc");
 const _ = require("lodash");
@@ -119,7 +118,6 @@ function drawContent(canvasAdaptor, trip, numberOfLocations) {
       activity = location.activity,
       highlights = location.highlights.toLowerCase(),
       nodeFeelingActivity = "";
-    let url = location.signedUrl;
 
     if (activity)
       nodeFeelingActivity = capitalizeFirstLetter(activity.toLowerCase());
@@ -304,89 +302,11 @@ async function drawFooter(canvasAdaptor) {
       x: w - globalConfig.footer.marginRight,
       y: h - globalConfig.footer.marginBottom
     }
-    // {
-    //   width: globalConfig.footer.imageWidth,
-    //   height: globalConfig.footer.imageHeight
-    // }
   );
-}
-
-// function drawSvg(canvasAdaptor, uri, coordinate, config) {
-//     d3.xml(uri).then(data => {
-//         var svgNode = data.documentElement;
-//         svgNode.setAttribute("id", config.elementId);
-//         canvasAdaptor.node().append(svgNode);
-
-//         if (config.type == 'location') styleLocationItem(canvasAdaptor, coordinate, config);
-//         else if (config.type == 'date') styleDateItem(canvasAdaptor, coordinate, config);
-//     });
-// }
-
-function drawImage(canvasAdaptor, coordinate, uri, config) {
-  var svgCanvas = canvasAdaptor.append("svg:image");
-  svgCanvas
-    .attr("xlink:href", uri)
-    .attr("x", coordinate.x)
-    .attr("y", coordinate.y)
-    .attr("width", config.width)
-    .attr("height", config.height)
-    .attr("clip-path", config.imageClipPath);
 }
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function onLoadImage(imageResult, url, coordinate, index) {
-  let ratio = imageResult.width / imageResult.height,
-    svgWidth = globalConfig.location.image.svgWidth,
-    svgHeight = globalConfig.location.image.svgHeight,
-    viewBoxWidth = globalConfig.location.image.viewBoxWidth,
-    viewBoxHeight = globalConfig.location.image.viewBoxHeight,
-    width = viewBoxWidth,
-    height = viewBoxHeight;
-
-  if (ratio >= 1) {
-    width = height * ratio;
-  } else {
-    height = width / ratio;
-  }
-
-  //   let svgImage = canvasAdaptor
-  //     .append("g")
-  //     .append("svg")
-  //     .attr("x", coordinate.x)
-  //     .attr("y", coordinate.y)
-  //     .attr("width", svgWidth)
-  //     .attr("height", svgHeight)
-  //     .attr("viewBox", "0 0 " + viewBoxWidth + " " + viewBoxHeight);
-
-  //   let clipPathId = "_id" + index;
-
-  //   svgImage
-  //     .append("defs")
-  //     .append("clipPath")
-  //     .attr("id", clipPathId)
-  //     .append("path")
-  //     .attr("x", 0)
-  //     .attr("y", 0)
-  //     .attr("d", globalConfig.location.image.clipPath);
-
-  //   drawImage(
-  //     svgImage,
-  //     {
-  //       y: 0,
-  //       x: 0
-  //     },
-  //     url,
-  //     {
-  //       width: width,
-  //       height: height,
-  //       imageClipPath: "url(#" + clipPathId + ")"
-  //     }
-  //   );
-
-  //   canvasAdaptor.append("span").attr("name", "imgLoaded");
 }
 
 function calculateInfographicHeight(numberOfLocations) {
@@ -450,14 +370,6 @@ async function draw(canvasAdaptor, trip) {
           height: globalConfig.location.image.svgHeight,
           clipPath: globalConfig.location.image.clipPath
         })
-        .then(imageResult =>
-          onLoadImage(
-            imageResult,
-            location.signedUrl,
-            coordinate,
-            index
-          )
-        )
     );
   });
 

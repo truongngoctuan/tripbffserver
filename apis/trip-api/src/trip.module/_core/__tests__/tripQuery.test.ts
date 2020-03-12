@@ -21,9 +21,9 @@ afterAll(async () => {
 });
 
 
-var tripRepository: ITripRepository;
-var tripsRepository: ITripsRepository;
-var serviceBus: ServiceBus;
+let tripRepository: ITripRepository;
+let tripsRepository: ITripsRepository;
+let serviceBus: ServiceBus;
 
 beforeEach(async () => {
   await mongoUtil.beforeEach();
@@ -31,26 +31,26 @@ beforeEach(async () => {
   tripsRepository = new TripsRepository(schemas);
   serviceBus = new ServiceBus(tripRepository, tripsRepository);
 
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "TripCreated",
     ownerId: "ownerId",
     tripId: "tripId",
     name: "name",
-    fromDate: moment('2019-01-01'),
-    toDate: moment('2019-01-10')
+    fromDate: moment("2019-01-01").toDate(),
+    toDate: moment("2019-01-10").toDate()
   };
 
   await serviceBus.emit(event);
 
 });
 
-it('create trip', async () => {
+it("create trip", async () => {
   expect(await tripRepository.get("ownerId", "tripId"))
     .toMatchSnapshot();
 });
 
-it('update trip name', async () => {
-  var updateEvent: TripEvent = {
+it("update trip name", async () => {
+  const updateEvent: TripEvent = {
     type: "TripNameUpdated",
     ownerId: "ownerId",
     tripId: "tripId",
@@ -62,8 +62,8 @@ it('update trip name', async () => {
     .toMatchSnapshot();
 });
 
-test('import trip location', async () => {
-  var importEvent: TripEvent = {
+test("import trip location", async () => {
+  const importEvent: TripEvent = {
     type: "TripImportLocations",
     ownerId: "ownerId",
     tripId: "tripId",
@@ -75,8 +75,8 @@ test('import trip location', async () => {
         lat: 1,
         address: "address", //todo: need address here ?
       },
-      fromTime: moment('2019-01-01'),
-      toTime: moment('2019-01-10'),
+      fromTime: moment("2019-01-01").toDate(),
+      toTime: moment("2019-01-10").toDate(),
       images: [],
     }]
   };
@@ -87,8 +87,8 @@ test('import trip location', async () => {
 });
 
 
-test('import trip location with images', async () => {
-  var importEvent: TripEvent = {
+test("import trip location with images", async () => {
+  const importEvent: TripEvent = {
     type: "TripImportLocations",
     ownerId: "ownerId",
     tripId: "tripId",
@@ -100,25 +100,25 @@ test('import trip location with images', async () => {
         lat: 1,
         address: "address",
       },
-      fromTime: moment('2019-01-01'),
-      toTime: moment('2019-01-10'),
+      fromTime: moment("2019-01-01").toDate(),
+      toTime: moment("2019-01-10").toDate(),
       images: [{
         imageId: "imageId01",
         url: "url",
-        time: moment('2019-01-01'),
+        time: moment("2019-01-01").toDate(),
       }],
     }]
   };
   await serviceBus.emit(importEvent);
 
-  var trip = await tripRepository.get("ownerId", "tripId");
+  const trip = await tripRepository.get("ownerId", "tripId");
   expect(trip).toBeDefined();
-  var img = (trip as ITrip).locations[0].images[0];
+  const img = (trip as ITrip).locations[0].images[0];
   expect(img).toMatchSnapshot();
 });
 
-test('upload location image', async () => {
-  var importEvent: TripEvent = {
+test("upload location image", async () => {
+  const importEvent: TripEvent = {
     type: "TripImportLocations",
     ownerId: "ownerId",
     tripId: "tripId",
@@ -130,18 +130,18 @@ test('upload location image', async () => {
         lat: 1,
         address: "address",
       },
-      fromTime: moment('2019-01-01'),
-      toTime: moment('2019-01-10'),
+      fromTime: moment("2019-01-01").toDate(),
+      toTime: moment("2019-01-10").toDate(),
       images: [{
         imageId: "imageId01",
         url: "url",
-        time: moment('2019-01-01'),
+        time: moment("2019-01-01").toDate(),
       }],
     }]
   };
   await serviceBus.emit(importEvent);
 
-  var uploadImageEvent: TripEvent = {
+  const uploadImageEvent: TripEvent = {
     type: "LocationImageUploaded",
     ownerId: "ownerId",
     tripId: "tripId",
@@ -150,14 +150,14 @@ test('upload location image', async () => {
     externalStorageId: "guid01",
   };
   await serviceBus.emit(uploadImageEvent);
-  var trip = await tripRepository.get("ownerId", "tripId");
+  const trip = await tripRepository.get("ownerId", "tripId");
   expect(trip).toBeDefined();
-  var img = (trip as ITrip).locations[0].images[0];
+  const img = (trip as ITrip).locations[0].images[0];
   expect(img).toMatchSnapshot();
 });
 
-test('favorite location image', async () => {
-  var importEvent: TripEvent = {
+test("favorite location image", async () => {
+  const importEvent: TripEvent = {
     type: "TripImportLocations",
     ownerId: "ownerId",
     tripId: "tripId",
@@ -169,18 +169,18 @@ test('favorite location image', async () => {
         lat: 1,
         address: "address",
       },
-      fromTime: moment('2019-01-01'),
-      toTime: moment('2019-01-10'),
+      fromTime: moment("2019-01-01").toDate(),
+      toTime: moment("2019-01-10").toDate(),
       images: [{
         imageId: "imageId01",
         url: "url",
-        time: moment('2019-01-01'),
+        time: moment("2019-01-01").toDate(),
       }],
     }]
   };
   await serviceBus.emit(importEvent);
 
-  var uploadImageEvent: TripEvent = {
+  const uploadImageEvent: TripEvent = {
     type: "LocationImagesFavored",
     ownerId: "ownerId",
     tripId: "tripId",
@@ -189,15 +189,15 @@ test('favorite location image', async () => {
     isFavorite: true
   };
   await serviceBus.emit(uploadImageEvent);
-  var trip = await tripRepository.get("ownerId", "tripId");
+  const trip = await tripRepository.get("ownerId", "tripId");
   expect(trip).toBeDefined();
-  var img = (trip as ITrip).locations[0].images[0];
+  const img = (trip as ITrip).locations[0].images[0];
   expect(img.isFavorite).toBe(true);
 });
 
 
-test('add a location image', async () => {
-  var importEvent: TripEvent = {
+test("add a location image", async () => {
+  const importEvent: TripEvent = {
     type: "TripImportLocations",
     ownerId: "ownerId",
     tripId: "tripId",
@@ -209,29 +209,29 @@ test('add a location image', async () => {
         lat: 1,
         address: "address",
       },
-      fromTime: moment('2019-01-01'),
-      toTime: moment('2019-01-10'),
+      fromTime: moment("2019-01-01").toDate(),
+      toTime: moment("2019-01-10").toDate(),
       images: [{
         imageId: "imageId01",
         url: "url",
-        time: moment('2019-01-01'),
+        time: moment("2019-01-01").toDate(),
       }],
     }]
   };
   await serviceBus.emit(importEvent);
 
-  var uploadImageEvent: TripEvent = {
+  const uploadImageEvent: TripEvent = {
     type: "LocationImageAdded",
     ownerId: "ownerId",
     tripId: "tripId",
     locationId: "locationId01",
     imageId: "imageId02",
     url: "url2",
-    time: moment("2019-01-02")
+    time: moment("2019-01-02").toDate()
   };
   await serviceBus.emit(uploadImageEvent);
-  var trip = await tripRepository.get("ownerId", "tripId");
+  const trip = await tripRepository.get("ownerId", "tripId");
   expect(trip).toBeDefined();
-  var location = (trip as ITrip).locations[0];
+  const location = (trip as ITrip).locations[0];
   expect(location.images).toMatchSnapshot();
 });

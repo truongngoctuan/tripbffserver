@@ -5,11 +5,11 @@ import { Succeed } from "../../../../../_shared/utils";
 import { IHighlight } from "../../../models/ITrip";
 
 export type UpdateLocationHighlightCommand = {
-  type: "UpdateLocationHighlight",
-  ownerId: string,
-  tripId: string,
-  locationId: string,
-  highlights: Array<IHighlight>
+  type: "UpdateLocationHighlight";
+  ownerId: string;
+  tripId: string;
+  locationId: string;
+  highlights: Array<IHighlight>;
 };
 
 export async function UpdateLocationHighlight(
@@ -20,7 +20,7 @@ export async function UpdateLocationHighlight(
 ) {
   const { ownerId, tripId, locationId, highlights } = command;
 
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "LocationHighlightUpdated",
     ownerId,
     tripId,

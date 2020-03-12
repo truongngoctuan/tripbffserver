@@ -1,8 +1,8 @@
-const { createPlugin, getSummary, getContentType } = require('@promster/hapi');
+const { createPlugin, getSummary, getContentType } = require("@promster/hapi");
 
 function addMonitoringService(server) {
-  let plugin = createPlugin();
-  let options = {};
+  const plugin = createPlugin();
+  const options = {};
   let done;
   
   plugin.register(server, options, done);
@@ -13,7 +13,7 @@ function addMonitoringService(server) {
     handler: function(req, h) {
       // req.statusCode = 200;
       return h.response(getSummary())
-      .header('Content-Type', getContentType());
+      .header("Content-Type", getContentType());
     },
     options: {
       tags: ["api"]

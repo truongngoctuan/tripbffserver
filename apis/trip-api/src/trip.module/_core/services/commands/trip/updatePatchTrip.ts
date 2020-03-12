@@ -2,15 +2,14 @@ import { EventHandler, TripEvent } from "../../events";
 import { TripReducers } from "../../reducers/_tripReducer";
 import { ServiceBus } from "../../TripServiceBus";
 import { CommandResult, Succeed } from "../../../../../_shared/utils";
-import { Moment } from "moment";
 
 export type UpdatePatchTripCommand = {
   type: "updatePatchTrip";
   ownerId: string;
   tripId: string;
   name: string;
-  fromDate: Moment;
-  toDate: Moment;
+  fromDate: Date;
+  toDate: Date;
 };
 
 export async function updatePatchTrip(command: UpdatePatchTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus): Promise<CommandResult> {
@@ -22,7 +21,7 @@ export async function updatePatchTrip(command: UpdatePatchTripCommand, eventHand
 
   if (name) {
     //todo some validations on the data
-    var event: TripEvent = {
+    const event: TripEvent = {
       type: "TripNameUpdated",
       ownerId,
       tripId,
@@ -37,7 +36,7 @@ export async function updatePatchTrip(command: UpdatePatchTripCommand, eventHand
 
   if (fromDate || toDate) {
     //todo some validations on the data
-    var event: TripEvent = {
+    const event: TripEvent = {
       type: "TripDateRangeUpdated",
       ownerId,
       tripId,

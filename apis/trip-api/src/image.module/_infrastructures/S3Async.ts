@@ -34,7 +34,7 @@ export async function fileExists(filePath: string) {
 
 export function read(file1: string): Promise<Buffer> {
   return new Promise(function(resolve, reject) {
-    var getParams = {
+    const getParams = {
       Bucket: S3_BUCKET,
       Key: file1
     };
@@ -46,7 +46,7 @@ export function read(file1: string): Promise<Buffer> {
       // No error happened
       // Convert Body from a Buffer to a String
 
-      let buffer = Buffer.from(data.Body as any);
+      const buffer = Buffer.from(data.Body as any);
       resolve(buffer);
     });
   });

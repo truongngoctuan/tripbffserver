@@ -1,64 +1,27 @@
-import { Server } from "hapi";
+import { Server } from "@hapi/hapi";
 import { Err } from "../_shared/utils";
 import { IoC } from "./IoC";
 import { CUtils } from "../_shared/ControllerUtils";
-import uuid4 from 'uuid/v4';
-import { IHighlight } from "./_core/models/ITrip";
-import moment = require("moment");
+import uuid4 from "uuid/v4";
+import { IHighlight, ITripLocation } from "./_core/models/ITrip";
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
-const dataSourceQueryHandler = IoC.dataSourceQueryHandler;
-const Joi = require("joi");
+import Joi from "@hapi/joi";
+import { joiLocationSchema, IdSchema } from "./JoiSchemas";
+import { failActionInResponse } from "../_shared/joi-utils";
 
 module.exports = {
-  init(server: Server) {
-    const locationsSchema = Joi.array().items(
-      Joi.object({
-        name: Joi.string(),
-        fromTime: Joi.string(),
-        toTime: Joi.string(),
-        location: Joi.object({
-          name: Joi.string(),
-          long: Joi.number().required(),
-          lat: Joi.number().required(),
-          address: Joi.string(),
-        }),
-        images: Joi.array().items(
-          Joi.object({
-            url: Joi.string().required(),
-            time: Joi.date().required(),
-          }),
-        ),
-      }),
-    );
-
-    const locationSchema = Joi.object({
-      name: Joi.string(),
-      fromTime: Joi.string(),
-      toTime: Joi.string(),
-      location: Joi.object({
-        long: Joi.number(),
-        lat: Joi.number(),
-
-        address: Joi.string(),
-        name: Joi.string()
-      }),
-      images: Joi.array().items(
-        Joi.object({
-          url: Joi.string(),
-        }),
-      ),
-    });
-
+  init(server: Server): void {
+    
     //todo merge 2 addLocation into one endpoint
+    //todo this api `replace` old locations by a new one
     server.route({
       method: "POST",
       path: "/trips/{id}/locations",
       async handler(request) {
         try {
-          console.log("POST", request.url.path);
-          const selectedLocations = request.payload as any;
+          const selectedLocations = request.payload as ITripLocation[];
           // console.log("selectedLocations", selectedLocations);
           const tripId = request.params.id;
           const ownerId = CUtils.getUserId(request);
@@ -91,7 +54,8 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          payload: locationsSchema,
+          payload: Joi.array().items(joiLocationSchema),
+          failAction: failActionInResponse
         },
       },
     });
@@ -102,7 +66,7 @@ module.exports = {
       async handler(request) {
         try {
           console.log("POST", request.url);
-          const selectedLocation = request.payload as any;
+          const selectedLocation = request.payload as ITripLocation;
           const tripId = request.params.id;
           const ownerId = CUtils.getUserId(request);
 
@@ -128,7 +92,8 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          payload: locationSchema,
+          payload: joiLocationSchema,
+          failAction: failActionInResponse
         },
       },
     });
@@ -138,7 +103,6 @@ module.exports = {
       path: "/trips/{tripId}/locations/{locationId}",
       async handler(request) {
         try {
-          console.log("DELETE", request.url.path);
           const tripId: string = request.params.tripId;
           const locationId: string = request.params.locationId;
 
@@ -181,8 +145,8 @@ module.exports = {
         try {
           const tripId: string = request.params.tripId;
           const locationId: string = request.params.locationId;
+          // todo missing validation in here
           const feeling = request.payload as any;
-          console.log('feeling: ' + JSON.stringify(feeling));
 
           if (feeling) {
             const ownerId = CUtils.getUserId(request);
@@ -226,8 +190,8 @@ module.exports = {
         try {
           const tripId: string = request.params.tripId;
           const locationId: string = request.params.locationId;
+          // todo missing validation in here
           const activity = request.payload as any;
-
           if (activity) {
             const ownerId = CUtils.getUserId(request);
 
@@ -239,6 +203,7 @@ module.exports = {
               activityId: activity.activityId,
               label_en: activity.label_en,
               label_vi: activity.label_vi,
+              //todo shouldn't store icon url in here since it will be out-dated at the time we used it
               activityIcon: activity.icon,
             });
 
@@ -271,7 +236,7 @@ module.exports = {
           const tripId: string = request.params.tripId;
           const locationId: string = request.params.locationId;
           const highlights = request.payload as Array<IHighlight>;
-          console.log('selected highlights: ' + JSON.stringify(highlights));
+          console.log("selected highlights: " + JSON.stringify(highlights));
 
           if (highlights) {
             const ownerId = CUtils.getUserId(request);
@@ -360,9 +325,7 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: {
-            id: Joi.required().description("the id for the todo item"),
-          },
+          params: IdSchema,
         },
       },
     });
@@ -541,9 +504,9 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          payload: {
+          payload: Joi.object({
             isFavorite: Joi.boolean().description("mark the image favorite/highlighted or not"),
-          },
+          }),
         },
       },
     });
@@ -566,7 +529,7 @@ module.exports = {
             ownerId,
             tripId,
             locationId,
-            imageId, url, time: moment(time),
+            imageId, url, time,
           });
 
           if (commandResult.isSucceed) {
@@ -586,10 +549,10 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          payload: {
+          payload: Joi.object({
             url: Joi.string().description("storage url in mobile device"),
             time: Joi.string().description("time taken"),
-          },
+          }),
         },
       },
     });
@@ -635,9 +598,9 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          payload: {
+          payload: Joi.object({
             deletingIds: Joi.array().description("delete image with list of ids"),
-          },
+          }),
         },
       },
     });

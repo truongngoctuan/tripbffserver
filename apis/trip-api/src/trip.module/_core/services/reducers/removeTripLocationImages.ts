@@ -9,12 +9,12 @@ export function removeTripLocationImages(
 ): ITrip {
 
   //get location
-  var locationIdx = _.findIndex(
+  const locationIdx = _.findIndex(
     prevState.locations,
     loc => loc.locationId == command.locationId
   );
 
-  var location = prevState.locations[locationIdx];
+  const location = prevState.locations[locationIdx];
 
   if (location) {
     location.images = _.remove(location.images, 

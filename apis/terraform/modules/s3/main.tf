@@ -15,14 +15,14 @@ resource "aws_s3_bucket" "bucket1" {
 }
 
 resource "aws_s3_bucket_public_access_block" "permissions" {
-  bucket = "${aws_s3_bucket.bucket1.id}"
+  bucket = aws_s3_bucket.bucket1.id
 
   # block_public_acls   = true
   ignore_public_acls = true
 }
 
 resource "aws_s3_bucket_policy" "b" {
-  bucket = "${aws_s3_bucket.bucket1.id}"
+  bucket = aws_s3_bucket.bucket1.id
 
   policy = <<POLICY
 {
@@ -42,5 +42,5 @@ resource "aws_s3_bucket_policy" "b" {
 }
 POLICY
 
-  depends_on = ["aws_s3_bucket_public_access_block.permissions"]
+  depends_on = [aws_s3_bucket_public_access_block.permissions]
 }

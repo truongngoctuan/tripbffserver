@@ -14,36 +14,48 @@ export class TripRepository implements ITripRepository {
     return {
       tripId: o.tripId,
       name: o.name,
-      fromDate: moment(o.fromDate),
-      toDate: moment(o.toDate),
+      fromDate: o.fromDate,
+      toDate: o.toDate,
       locations: _.map(o.locations, loc => {
         return {
           locationId: loc.locationId,
           name: loc.name,
-          location: loc.location,
-          fromTime: moment(loc.fromTime),
-          toTime: moment(loc.toTime),
+          location: {
+            long: loc.location.long,
+            lat: loc.location.lat,
+            address: loc.location.address
+          },
+          fromTime: loc.fromTime,
+          toTime: loc.toTime,
           images: loc.images.map(img => {
             return {
               imageId: img.imageId,
               url: img.url,
-              time: moment(img.time),
+              time: img.time,
               externalStorageId: img.externalStorageId,
-              externalUrl: "",
-              thumbnailExternalUrl: "",
               isFavorite: img.isFavorite,
             };
           }),
           description: loc.description,
-          feeling: loc.feeling,
-          activity: loc.activity,
+          feeling: loc.feeling ? {
+            feelingId: loc.feeling.feelingId,
+            label_en: loc.feeling.label_en,
+            label_vi: loc.feeling.label_vi,
+            icon: loc.feeling.icon,
+          } : undefined,
+          activity: loc.activity ? {
+            activityId: loc.activity.activityId,
+            label_en: loc.activity.label_en,
+            label_vi: loc.activity.label_vi,
+            icon: loc.activity.icon,
+          } : undefined,
           highlights: loc.highlights != undefined ? loc.highlights.map(item => {
             return {
               highlightId: item.highlightId,
               label_en: item.label_en,
               label_vi: item.label_vi,
               highlightType: item.highlightType
-            }
+            };
           }) : undefined
         };
       }),
@@ -51,7 +63,6 @@ export class TripRepository implements ITripRepository {
         return {
           infographicId: infographic.infographicId,
           externalStorageId: infographic.externalStorageId,
-          externalUrl: "",
           status: infographic.status as InfographicStatus
         };
       }),
@@ -64,7 +75,7 @@ export class TripRepository implements ITripRepository {
   }
 
   public async list(ownerId: string) {
-    var userTrips = await this.getUserTrips(ownerId);
+    const userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) return [];
 
     return userTrips.trips.map(item => this.toTripDto(item));
@@ -73,15 +84,15 @@ export class TripRepository implements ITripRepository {
   public async create(ownerId: string, payload: ITrip) {
     const { tripId: id, name, fromDate, toDate, isDeleted } = payload;
 
-    var trip: ITripModel = {
+    const trip: ITripModel = {
       tripId: id,
       name,
       fromDate: moment(fromDate).toDate(),
       toDate: moment(toDate).toDate(),
       isDeleted: isDeleted,
       createdDate: new Date()
-    }
-    var userTrips = await this.getUserTrips(ownerId);
+    };
+    let userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) {
       userTrips = new this._mg.UserTripDocument({
         userId: ownerId
@@ -91,21 +102,21 @@ export class TripRepository implements ITripRepository {
     userTrips.trips.push(trip);
     await userTrips.save();
 
-    var tripModel = userTrips.trips[userTrips.trips.length - 1];
+    const tripModel = userTrips.trips[userTrips.trips.length - 1];
 
     return this.toTripDto(tripModel);
   }
 
   public async update(ownerId: string, payload: ITrip) {
-    var userTrips = await this.getUserTrips(ownerId);
+    const userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) throw "can't find Trip from user id = " + ownerId;
 
-    var trip = _.find(userTrips.trips, trip => trip.tripId === payload.tripId);
+    const trip = _.find(userTrips.trips, trip => trip.tripId === payload.tripId);
     if (!trip) throw "can't find Trip with id = " + payload.tripId;
 
     trip.name = payload.name;
-    trip.fromDate = payload.fromDate.toDate();
-    trip.toDate = payload.toDate.toDate();
+    trip.fromDate = payload.fromDate;
+    trip.toDate = payload.toDate;
     trip.locations = _.map(payload.locations, loc => ({
       locationId: loc.locationId,
       name: loc.name,
@@ -114,7 +125,7 @@ export class TripRepository implements ITripRepository {
       toTime: moment(loc.toTime).toDate(),
       images: loc.images.map(img => ({
         ...img,
-        time: img.time.toDate(),
+        time: img.time,
       })),
       description: loc.description,
       feeling: loc.feeling,
@@ -127,19 +138,19 @@ export class TripRepository implements ITripRepository {
     await userTrips.save();
   }
 
-  public async get(ownerId: string, id: String) {
-    var trip = await this.getTripModel(ownerId, id);
+  public async get(ownerId: string, id: string) {
+    const trip = await this.getTripModel(ownerId, id);
     if (!trip) return undefined;
     
     return this.toTripDto(trip);
   }
 
-  async getTripModel(ownerId: string, id: String) {
-    var userTrips = await this.getUserTrips(ownerId);
+  async getTripModel(ownerId: string, id: string) {
+    const userTrips = await this.getUserTrips(ownerId);
     
     if (!userTrips) return undefined;
 
-    var trip = _.find(userTrips.trips, trip => trip.tripId === id);
+    const trip = _.find(userTrips.trips, trip => trip.tripId === id);
     if (!trip) return undefined;
     return trip;
   }

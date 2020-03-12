@@ -5,8 +5,8 @@ import UserSettingDocument from "../models/UserSettingModel";
 export class UserSettingRepository implements IUserSettingRepository {
 
     public async update(userSetting: IUserSetting) {
-        var { userId, locale } = userSetting;
-        var settingDocument = await UserSettingDocument.findOne({ userId: userId});
+        const { userId, locale } = userSetting;
+        const settingDocument = await UserSettingDocument.findOne({ userId: userId});
 
         if (settingDocument) {
             settingDocument.locale = locale;

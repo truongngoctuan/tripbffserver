@@ -1,60 +1,55 @@
-import { Server } from "hapi";
-const uuid = require("uuid/v1");
+import { Server } from "@hapi/hapi";
+import uuid from "uuid/v1";
 import { IoC } from "./IoC";
 import { CUtils } from "../_shared/ControllerUtils";
-const Joi = require("joi");
+import Joi from "@hapi/joi";
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripEventQueryHandler = IoC.tripEventQueryHandler;
 
 module.exports = {
-  init(server: Server) {
+  init(server: Server): void {
     server.route({
       method: "POST",
-      path: "/trips/{id}/infographics",
+      path: "/trips/{tripId}/infographics",
       async handler(request) {
-        try {
-          const tripId: string = request.params.id;
-          const { locale } = request.payload as any;
+        const tripId: string = request.params.tripId;
+        const { locale } = request.payload as any;
 
-          const ownerId = CUtils.getUserId(request);
+        const ownerId = CUtils.getUserId(request);
 
-          const infographicId = uuid();
+        const infographicId = uuid();
 
-          const commandResult = await tripCommandHandler.exec({
-            type: "exportInfographic",
-            ownerId,
-            tripId,
-            infographicId,
-            locale,
-          });
+        const commandResult = await tripCommandHandler.exec({
+          type: "exportInfographic",
+          ownerId,
+          tripId,
+          infographicId,
+          locale,
+        });
 
-          if (commandResult.isSucceed) {
-            return infographicId;
-          }
-
-          console.log("err: " + commandResult.errors);
-          return commandResult.errors;
-        } catch (error) {
-          console.log("ERROR: POST /trips/{id}/infographics");
-          console.log(error);
-          throw error;
+        if (commandResult.isSucceed) {
+          return infographicId;
         }
+
+        console.log("err: " + commandResult.errors);
+        return commandResult.errors;
       },
       options: {
         auth: "simple",
         tags: ["api"],
+        description: "SERVER - 01 - Trigger a new event for flow's creating infographic"
       },
     });
 
     server.route({
       method: "GET",
-      path: "/trips/{id}/infographics/{infoId}/preUploadImage",
+      path: "/trips/{tripId}/infographics/{infoId}/preUploadImage",
       async handler(request) {
         try {
           const { mimeType } = request.query as any;
           console.log(mimeType);
-          const tripId: string = request.params.id;
+          const tripId: string = request.params.tripId;
 
           const category = `trips/${tripId}/infographics`;
           const result = await IoC.fileService.signUpload(category ? category : "images", mimeType);
@@ -69,15 +64,16 @@ module.exports = {
         // todo add auth for internal communication
         // auth: "simple",
         tags: ["api"],
+        description: "SERVER - 02 - sign to upload infographic into s3 (for infographic service)"
       },
     });
 
     server.route({
       method: "PUT",
-      path: "/trips/{id}/infographics/{infoId}",
+      path: "/trips/{tripId}/infographics/{infoId}",
       async handler(request) {
         try {
-          const tripId: string = request.params.id;
+          const tripId: string = request.params.tripId;
           const infographicId: string = request.params.infoId;
 
           const {
@@ -110,6 +106,41 @@ module.exports = {
         // todo add auth for internal communication
         // auth: "simple",
         tags: ["api"],
+        description: "SERVER - 03 - associate uploaded s3 with current infographic id"
+      },
+    });
+
+
+    server.route({
+      method: "PATCH",
+      path: "/trips/{tripId}/infographics/{infographicId}/share",
+      async handler(request) {
+        try {
+          const tripId: string = request.params.tripId;
+          const infographicId: string = request.params.infographicId;
+
+          const ownerId = CUtils.getUserId(request);
+          const commandResult = await tripCommandHandler.exec({
+            type: "finishShareInfographic",
+            ownerId,
+            tripId,
+            infographicId
+          });
+
+          if (commandResult.isSucceed) {
+            return true;
+          }
+
+          console.log("err: " + commandResult.errors);
+          return commandResult.errors;
+        } catch (error) {
+          console.log("ERROR: PATCH /trips/{id}/infographics/{infoId}/share", error);
+          throw false;
+        }
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
       },
     });
 
@@ -118,14 +149,14 @@ module.exports = {
       path: "/trips/{tripId}/infographics/{infographicId}",
       async handler(request, h) {
         const tripId = request.params.tripId;
-        const inforgraphicId = request.params.infographicId;
-
+        const infographicId = request.params.infographicId;
+        console.log("infographicId", infographicId);
         return new Promise((resolve, reject) => {
           let counter = 0;
           const getEventInterval = setInterval(async () => {
             counter += 1;
             if (counter > 60) {
-              console.log(`setInterval ${counter} running for ${inforgraphicId}. Stop interval, return timeout`);
+              console.log(`setInterval ${counter} running for ${infographicId}. Stop interval, return timeout`);
               clearInterval(getEventInterval);
               const error2 = new Error("request timeout");
               reject(error2);
@@ -135,7 +166,7 @@ module.exports = {
 
             if (tripEvents) {
               const exportedInfoEvent = tripEvents.find(event =>
-                event.type == 'InfographicExported' && event.infographicId == inforgraphicId) as any;
+                event.type == "InfographicExported" && event.infographicId == infographicId) as any;
 
               if (exportedInfoEvent) {
                 clearInterval(getEventInterval);
@@ -159,11 +190,12 @@ module.exports = {
       options: {
         auth: "simple",
         tags: ["api"],
+        description: "CLIENT - polling infographic data",
         validate: {
-          params: {
+          params: Joi.object({
             tripId: Joi.required().description("the tripId for the todo item"),
             infographicId: Joi.required().description("the id for the todo item"),
-          },
+          }),
         },
       },
     });

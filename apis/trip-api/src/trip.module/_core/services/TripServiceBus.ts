@@ -27,14 +27,12 @@ export class ServiceBus {
   }
 
   public async emit(event: TripEvent) {
-    console.log(
-      `hi there, I am emitting a event, cheers ${JSON.stringify(event).slice(0, 20)}`
-    );
-    var tripId = event.tripId;
-    var ownerId = event.ownerId;
+    console.log("emitting a event: ", event.type);
+    const tripId = event.tripId;
+    const ownerId = event.ownerId;
 
     //the first subscriber consume our event
-    var state = await this.TripRepository.get(ownerId, tripId);
+    let state = await this.TripRepository.get(ownerId, tripId);
     state = await this.reducer.updateState(state as ITrip, event);
 
     if (event.type == "TripCreated") {
@@ -45,7 +43,7 @@ export class ServiceBus {
 
     //TODO: should we do it every update ? Or we will do it when user load profile page ?
     //todo the second subscriber consume our event
-    var minimizedState = await this._tripMinimizedReducer.transform(state);
+    const minimizedState = await this._tripMinimizedReducer.transform(state);
 
     if (event.type == "TripCreated") {
       await this.TripsRepository.create(ownerId, minimizedState);

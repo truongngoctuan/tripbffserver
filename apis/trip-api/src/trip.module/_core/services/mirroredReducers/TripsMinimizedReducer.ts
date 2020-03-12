@@ -11,7 +11,7 @@ export class TripsMinimizedReducer {
     //each location will have an represent image
     //if image = "" mean to be filled with default image
     const locationImages = state.locations.map(loc => {
-      var favoredImages = loc.images.filter(img => img.isFavorite);
+      const favoredImages = loc.images.filter(img => img.isFavorite);
       let returnId;
       if (favoredImages.length > 0)
         returnId = favoredImages[0].externalStorageId;
@@ -23,18 +23,18 @@ export class TripsMinimizedReducer {
         address: loc.location.address,
         description: loc.description as string,
         imageUrl: returnId ? returnId : "",
-      }
+      };
     });
 
 
-    let newState: ITripMinimized = {
+    const newState: ITripMinimized = {
       tripId: state.tripId,
       name: state.name,
       fromDate: state.fromDate,
       toDate: state.toDate,
       locationImages,
       isDeleted: state.isDeleted
-    }
+    };
 
     return newState;
   }

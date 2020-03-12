@@ -2,8 +2,6 @@ import { EventHandler, TripEvent } from "../../events";
 import { TripReducers } from "../../reducers/_tripReducer";
 import { ServiceBus } from "../../TripServiceBus";
 import { Succeed } from "../../../../../_shared/utils";
-import _ from "lodash";
-import { Moment } from "moment";
 
 export type AddLocationImageCommand = {
   type: "AddLocationImage";
@@ -12,7 +10,7 @@ export type AddLocationImageCommand = {
   locationId: string;
   imageId: string;
   url: string;
-  time: Moment;
+  time: Date;
 };
 
 export async function AddLocationImage(
@@ -23,7 +21,7 @@ export async function AddLocationImage(
 ) {
   const { ownerId, tripId, locationId, imageId, url, time } = command;
 
-  var event: TripEvent = {
+  const event: TripEvent = {
     type: "LocationImageAdded",
     ownerId,
     tripId,
