@@ -16,7 +16,7 @@ module "this" {
   trip_api_repository_version    = local.trip_api_repository_version
   infographic_repository_url     = var.infographic_repository_url
   infographic_repository_version = local.infographic_repository_version
-  mongodb                        = "mongodb+srv://MongoDbUser:nEohpAvoyimKiZAH@clusterdevelopment-ckix9.mongodb.net/UnicornBFF?retryWrites=true&w=majority"
+  mongodb                        = "mongodb+srv://MongoDbUser:bOiF9RMl3TsFGOCh@clusterdevelopment-ckix9.mongodb.net/UnicornBFF?retryWrites=true&w=majority"
   domain                         = local.domain
   aws_id                         = var.aws_id
   aws_key                        = var.aws_key
