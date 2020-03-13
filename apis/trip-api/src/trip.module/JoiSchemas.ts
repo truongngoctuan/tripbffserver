@@ -26,7 +26,8 @@ export const joiLocationSchema = Joi.object({
       time: Joi.date(),
       externalStorageId: Joi.string(),
       externalUrl: Joi.string(),
-      isFavorite: Joi.bool()
+      isFavorite: Joi.bool(),
+      thumbnailExternalUrl: Joi.string().optional()
     })
   ),
   description: Joi.string(),
