@@ -94,9 +94,10 @@ async function renderBlock(
     return nextCursor;
   }
 
+  // todo, improve this filter, remove ??
   if (
     _.findIndex(
-      ["locations", "location", "text", "line", "circle"],
+      ["locations", "location", "text", "line", "circle", "path"],
       type => b.type === type
     ) !== -1
   ) {

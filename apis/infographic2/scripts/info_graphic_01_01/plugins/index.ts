@@ -2,6 +2,7 @@ import { componentContainer } from "./componentContainer";
 import { componentText } from "./componentText";
 import { componentLine } from "./componentLine";
 import { componentCircle } from "./componentCircle";
+import { componentPath } from "./componentPath";
 
 import { Cursor } from "../typings";
 import { Renderer } from "./typings";
@@ -29,7 +30,11 @@ const registeredPlugins: { [id: string]: Renderer } = {
   circle: {
     type: "leaf",
     handler: componentCircle
-  }
+  },
+  path: {
+    type: "leaf",
+    handler: componentPath
+  },
 };
 
 export function executePlugins(

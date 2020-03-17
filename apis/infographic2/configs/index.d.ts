@@ -52,7 +52,7 @@ export namespace InfographicConfig {
   type Infographic = ContainerBlock;
 
   type Block = ContainerBlock | BasicBlock;
-  type BasicBlock = ImageBlock | TextBlock | LineBlock | CircleBlock;
+  type BasicBlock = ImageBlock | TextBlock | LineBlock | CircleBlock | PathBlock;
 
   type ContainerBlock = {
     type: "container";
@@ -102,6 +102,12 @@ export namespace InfographicConfig {
     x: number;
     y: number;
     r: number;
+    fillColor: string;
+  };
+
+  type PathBlock = {
+    type: "path";
+    path: string;
     fillColor: string;
   };
 
