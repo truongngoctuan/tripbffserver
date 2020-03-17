@@ -97,7 +97,7 @@ async function renderBlock(
   // todo, improve this filter, remove ??
   if (
     _.findIndex(
-      ["locations", "location", "text", "line", "circle", "path"],
+      ["locations", "location", "text", "line", "circle", "path", "svg"],
       type => b.type === type
     ) !== -1
   ) {

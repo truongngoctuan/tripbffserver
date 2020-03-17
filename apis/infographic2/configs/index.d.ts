@@ -52,7 +52,7 @@ export namespace InfographicConfig {
   type Infographic = ContainerBlock;
 
   type Block = ContainerBlock | BasicBlock;
-  type BasicBlock = ImageBlock | TextBlock | LineBlock | CircleBlock | PathBlock;
+  type BasicBlock = ImageBlock | SvgBlock | TextBlock | LineBlock | CircleBlock | PathBlock;
 
   type ContainerBlock = {
     type: "container";
@@ -69,6 +69,11 @@ export namespace InfographicConfig {
     height?: number;
     clipPath?: string;
     positioning: RelativePositioning;
+  };
+
+  type SvgBlock = {
+    type: "svg";
+    url: string;
   };
 
   type BaseTextBlock = {

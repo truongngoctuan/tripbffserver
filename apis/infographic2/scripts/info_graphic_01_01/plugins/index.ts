@@ -9,6 +9,7 @@ import { Renderer } from "./typings";
 
 import _ from "lodash";
 import { CanvasAdaptor } from "../../utils";
+import { componentSVG } from "./componentSVG";
 
 const registeredPlugins: { [id: string]: Renderer } = {
   container: {
@@ -35,14 +36,18 @@ const registeredPlugins: { [id: string]: Renderer } = {
     type: "leaf",
     handler: componentPath
   },
+  svg: {
+    type: "leaf",
+    handler: componentSVG
+  },
 };
 
-export function executePlugins(
+export async function executePlugins(
   blockType,
   canvasAdaptor: CanvasAdaptor,
   blockConfig,
   cursor: Cursor
-): Cursor {
+): Promise<Cursor> {
   const blockPlugins = registeredPlugins[blockType];
   // console.log(blockPlugins);
   if (!_.isEmpty(blockPlugins)) {

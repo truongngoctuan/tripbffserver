@@ -2,52 +2,6 @@ import { InfographicConfig } from "../index";
 
 export const config_01_01: InfographicConfig.TripInfographic = {
   width: 1280,
-  height: 1280,
-  backgroundColor: "green",
-
-  type: "location",
-  flex: "column",
-  blocks: [
-    // {
-    //   type: "location-image",
-    //   width: 1280,
-    //   height: 1280
-    // },
-    {
-      type: "container",
-      positioning: {
-        top: 969,
-        left: 56
-      },
-      blocks: [
-        {
-          type: "path",
-          path:
-            "M26.6299 1.1097L665.144 55.2586L695.59 179.459L6.00008 225.5L26.6299 1.1097Z",
-          fillColor: "#C0E2E6"
-        },
-        {
-          // location name
-          type: "text",
-          text: "{{location.name}}",
-          fontSize: "64px",
-          fontFamily: "Roboto",
-          color: "#d0363b",
-          fontWeight: "bold",
-          textAnchor: "start",
-          textTransform: "uppercase",
-          positioning: {
-            top: 20,
-            left: 20
-          }
-        },
-      ]
-    }
-  ]
-};
-
-export const aaa: InfographicConfig.TripInfographic = {
-  width: 1280,
   // height: 1280 + 300,
   backgroundColor: "#e3d1a2",
 
