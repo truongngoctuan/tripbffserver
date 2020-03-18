@@ -36,7 +36,13 @@ export const config_01_01: InfographicConfig.TripInfographic = {
         {
           type: "svg",
           url:
-            "./configs/info_graphic_01_01/images/location-name-background.svg"
+            "./configs/info_graphic_01_01/images/location-name-background.svg",
+          shadowOffset: {
+            x: 0,
+            y: 4
+          },
+          shadowColor: "rgba(0, 0, 0, 0.25)",
+          shadowBlur: 4,
         },
         {
           // location name

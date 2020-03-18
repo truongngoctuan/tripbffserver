@@ -10,7 +10,7 @@ export const componentSVG: RendererAsyncFunction = async function(
   b: InfographicConfig.SvgBlock,
   cursor
 ) {
-  const { url } = b;
+  const { url, shadowOffset, shadowColor, shadowBlur } = b;
   const paper = canvasAdaptor.getPaper();
   const item = new paper.Item();
 
@@ -30,7 +30,18 @@ export const componentSVG: RendererAsyncFunction = async function(
     cursor.x + item2.position.x,
     cursor.y + item2.position.y
   );
-  console.log("svg wh", item2.bounds.width + " " + item2.bounds.height)
+  console.log("svg wh", item2.bounds.width + " " + item2.bounds.height);
+
+  if (shadowColor) {
+    item2.shadowColor = new paper.Color(shadowColor);
+  }
+  if (shadowOffset) {
+    item2.shadowOffset = new paper.Point(shadowOffset.x, shadowOffset.y);
+  }
+  if (shadowBlur) {
+    item2.shadowBlur = shadowBlur;
+  }
+  
   return cursor;
 };
 

@@ -74,6 +74,9 @@ export namespace InfographicConfig {
   type SvgBlock = {
     type: "svg";
     url: string;
+    shadowOffset?: {x: number; y: number };
+    shadowBlur?: number;
+    shadowColor?: string;
   };
 
   type BaseTextBlock = {
@@ -81,7 +84,7 @@ export namespace InfographicConfig {
     fontFamily?: string;
     color?: string;
     fontWeight?: string;
-    textAnchor?: string;
+    textAnchor?: "start" | "middle" | "end";
     textTransform?: string;
     positioning: RelativePositioning;
   };
