@@ -15,7 +15,7 @@ export const componentPath: RendererFunction = function(
   // const newX2Y2 = getRelativePosition(cursor, { left: x2, top: y2 });
   const pathObject = new paper.Path(path);
   pathObject.style.fillColor = new paper.Color(fillColor);
-  console.log("aaa", cursor);
+  console.log("path wh", pathObject.bounds.width + " " + pathObject.bounds.height);
   pathObject.position = new paper.Point(
     pathObject.position.x + cursor.x,
     pathObject.position.y + cursor.y

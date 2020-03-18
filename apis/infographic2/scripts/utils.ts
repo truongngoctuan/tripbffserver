@@ -8,13 +8,21 @@ const fs = require("fs");
 // const path = require("path");
 const _ = require("lodash");
 
-registerFont("./fonts/Pfennig.ttf", { family: "Pfennig" });
+registerFont("./fonts/Pfennig.ttf", { family: "a" });
 registerFont("./fonts/Roboto-Regular.ttf", {
   family: "Roboto"
 });
 registerFont("./fonts/Roboto-Bold.ttf", {
   family: "Roboto",
   style: "normal",
+  weight: "bold"
+});
+
+registerFont("./fonts/Nunito-Regular.ttf", {
+  family: "Nunito"
+});
+registerFont("./fonts/Nunito-Bold.ttf", {
+  family: "Nunito",
   weight: "bold"
 });
 
@@ -214,7 +222,7 @@ export class CanvasAdaptor {
       ...textNode.style,
       fontSize,
       fillColor: options.color,
-      fontFamily: options.font != "Roboto" ? "Pfennig" : "Roboto",
+      fontFamily: options.font,
       fontWeight: options.fontWeight
     };
 

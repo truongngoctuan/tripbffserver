@@ -27,9 +27,10 @@ export const componentSVG: RendererAsyncFunction = async function(
 
   const g = new paper.Group([item2]);
   g.position = new paper.Point(
-    cursor.x + item2.bounds.width / 2,
-    cursor.y + item2.bounds.height / 2
+    cursor.x + item2.position.x,
+    cursor.y + item2.position.y
   );
+  console.log("svg wh", item2.bounds.width + " " + item2.bounds.height)
   return cursor;
 };
 
