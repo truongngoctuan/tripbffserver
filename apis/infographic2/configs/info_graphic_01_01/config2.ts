@@ -22,7 +22,7 @@ export const config_01_01: InfographicConfig.TripInfographic = {
     {
       type: "container",
       positioning: {
-        top: 1017
+        top: 1017 - 45 // todo check why ?
       },
       blocks: [
         {
@@ -32,7 +32,6 @@ export const config_01_01: InfographicConfig.TripInfographic = {
         }
       ]
     },
-
     {
       type: "container",
       positioning: {
@@ -63,9 +62,9 @@ export const config_01_01: InfographicConfig.TripInfographic = {
           }
         },
         {
-          // location feeling
+          // location activity
           type: "text",
-          text: "{{location.feeling}}",
+          text: "{{location.activity}}",
           fontSize: "34px",
           fontFamily: "Roboto",
           color: "#2E97A1",
@@ -90,6 +89,60 @@ export const config_01_01: InfographicConfig.TripInfographic = {
           url: "./configs/info_graphic_01_01/images/location.svg"
         }
       ]
-    }
+    },
+    {
+      type: "container",
+      positioning: {
+        top: 1118,
+        left: 846 - 50 // todo
+      },
+      blocks: [
+        {
+          type: "svg",
+          url: "./configs/info_graphic_01_01/images/star.svg"
+        },
+        {
+          // location activity
+          type: "text",
+          text: "{{location.activity}}",
+          fontSize: "30px",
+          fontFamily: "Roboto",
+          color: "white",
+          textAnchor: "start",
+          width: 500,
+          positioning: {
+            top: 0,
+            left: 46
+          }
+        }
+      ]
+    },
+    {
+      type: "container",
+      positioning: {
+        top: 1180,
+        left: 846 - 50
+      },
+      blocks: [
+        {
+          type: "svg",
+          url: "./configs/info_graphic_01_01/images/smile.svg"
+        },
+        {
+          // location activity
+          type: "text",
+          text: "{{location.feeling}}",
+          fontSize: "30px",
+          fontFamily: "Roboto",
+          color: "white",
+          textAnchor: "start",
+          width: 500,
+          positioning: {
+            top: 0,
+            left: 46
+          }
+        }
+      ]
+    },
   ]
 };
