@@ -50,7 +50,7 @@ export const config_01_01: InfographicConfig.TripInfographic = {
           text: "{{location.name}}",
           fontSize: "64px",
           fontFamily: "Nunito",
-          fontWeight: "bold",
+          fontWeight: "900",
           color: "#2E97A1",
           textAnchor: "start",
           positioning: {
@@ -64,7 +64,7 @@ export const config_01_01: InfographicConfig.TripInfographic = {
           text: "{{location.activity}}",
           fontSize: "34px",
           fontFamily: "Nunito",
-          fontWeight: "Italic",
+          fontWeight: "600 italic",
           color: "#2E97A1",
           textAnchor: "start",
           width: 500,

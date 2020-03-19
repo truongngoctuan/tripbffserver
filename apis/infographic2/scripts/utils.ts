@@ -21,9 +21,20 @@ registerFont("./fonts/Roboto-Bold.ttf", {
 registerFont("./fonts/Nunito-Regular.ttf", {
   family: "Nunito"
 });
+
+registerFont("./fonts/Nunito-SemiBoldItalic.ttf", {
+  family: "Nunito",
+  weight: "600",
+  style: "italic"
+});
+
 registerFont("./fonts/Nunito-Bold.ttf", {
   family: "Nunito",
   weight: "bold"
+});
+registerFont("./fonts/Nunito-Black.ttf", {
+  family: "Nunito",
+  weight: "900"
 });
 
 // todo: add this into node_modules/paper/dist/node/canvas.js
