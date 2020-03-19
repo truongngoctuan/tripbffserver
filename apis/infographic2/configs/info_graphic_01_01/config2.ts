@@ -14,16 +14,11 @@ export const config_01_01: InfographicConfig.TripInfographic = {
     },
     // background whole location
     {
-      type: "container",
+      type: "svg",
+      url: "./configs/info_graphic_01_01/images/location-background.svg",
       positioning: {
         top: 1017 - 48
-      },
-      blocks: [
-        {
-          type: "svg",
-          url: "./configs/info_graphic_01_01/images/location-background.svg"
-        }
-      ]
+      }
     },
     {
       type: "container",
@@ -42,7 +37,7 @@ export const config_01_01: InfographicConfig.TripInfographic = {
             y: 4
           },
           shadowColor: "rgba(0, 0, 0, 0.25)",
-          shadowBlur: 4,
+          shadowBlur: 4
         },
         {
           // location name
@@ -76,17 +71,12 @@ export const config_01_01: InfographicConfig.TripInfographic = {
       ]
     },
     {
-      type: "container",
+      type: "svg",
+      url: "./configs/info_graphic_01_01/images/location.svg",
       positioning: {
         top: 836,
         left: 48
-      },
-      blocks: [
-        {
-          type: "svg",
-          url: "./configs/info_graphic_01_01/images/location.svg"
-        }
-      ]
+      }
     },
     {
       type: "container",

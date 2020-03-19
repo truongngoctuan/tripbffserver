@@ -77,6 +77,7 @@ export namespace InfographicConfig {
     shadowOffset?: {x: number; y: number };
     shadowBlur?: number;
     shadowColor?: string;
+    positioning?: RelativePositioning;
   };
 
   type BaseTextBlock = {

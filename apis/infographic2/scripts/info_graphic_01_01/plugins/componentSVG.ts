@@ -1,6 +1,6 @@
 import { InfographicConfig } from "../../../configs/index";
 import _ from "lodash";
-import { getRelativePosition } from "./utils";
+import { getRelativePosition, getRelativePositionPoint } from "./utils";
 import { RendererAsyncFunction } from "./typings";
 import { CanvasAdaptor } from "../../utils";
 import fs from "fs";
@@ -26,9 +26,10 @@ export const componentSVG: RendererAsyncFunction = async function(
   });
 
   const g = new paper.Group([item2]);
-  g.position = new paper.Point(
-    cursor.x + item2.position.x,
-    cursor.y + item2.position.y
+  var relativePosition = getRelativePosition(cursor, b.positioning);
+  item2.position = new paper.Point(
+    item2.position.x + relativePosition.x,
+    item2.position.y + relativePosition.y
   );
   console.log("svg wh", item2.bounds.width + " " + item2.bounds.height);
 
