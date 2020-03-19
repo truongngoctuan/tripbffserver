@@ -135,6 +135,89 @@ export const config_01_01: InfographicConfig.TripInfographic = {
   ]
 };
 
+const locationDetailsChildren02: InfographicConfig.Block[] = [
+  {
+    // location name
+    type: "text",
+    text: "{{location.name}}",
+    fontSize: "64px",
+    fontFamily: "Nunito",
+    fontWeight: "900",
+    color: "#2E97A1",
+    textAnchor: "start",
+    positioning: {}
+  },
+  {
+    // location activity
+    type: "text",
+    text: "{{location.activity}}",
+    fontSize: "32px",
+    fontFamily: "Nunito",
+    fontWeight: "600 italic",
+    color: "#383838",
+    textAnchor: "start",
+    width: 500,
+    positioning: {
+      top: 20,
+      left: 0
+    }
+  },
+  {
+    type: "container",
+    positioning: {
+      top: 75,
+      left: 0
+    },
+    blocks: [
+      {
+        type: "svg",
+        url: "./configs/info_graphic_01_01/images/02-location-n-smile-icon.svg"
+      },
+      {
+        // location activity
+        type: "text",
+        text: "{{location.feeling}}",
+        fontSize: "32px",
+        fontFamily: "Nunito",
+        fontWeight: "600 italic",
+        color: "#383838",
+        textAnchor: "start",
+        width: 500,
+        positioning: {
+          left: 50
+        }
+      }
+    ]
+  },
+  {
+    type: "container",
+    positioning: {
+      top: 80,
+      left: 0
+    },
+    blocks: [
+      {
+        type: "svg",
+        url: "./configs/info_graphic_01_01/images/02-location-n-like-icon.svg"
+      },
+      {
+        // location activity
+        type: "text",
+        text: "{{location.hight-lights}}",
+        fontSize: "32px",
+        fontFamily: "Nunito",
+        fontWeight: "600 italic",
+        color: "#383838",
+        textAnchor: "start",
+        width: 500,
+        positioning: {
+          left: 50
+        }
+      }
+    ]
+  }
+];
+
 export const config_01_02: InfographicConfig.TripInfographic = {
   width: 1280,
   height: 1500,
@@ -145,6 +228,7 @@ export const config_01_02: InfographicConfig.TripInfographic = {
     {
       type: "container",
       blocks: [
+        //infographic header
         {
           type: "container",
           positioning: {
@@ -210,41 +294,6 @@ export const config_01_02: InfographicConfig.TripInfographic = {
               }
             }
           ]
-        },
-        {
-          type: "container",
-          positioning: {
-            top: 374,
-            left: 715
-          },
-          blocks: [
-            {
-              // location name
-              type: "text",
-              text: "{{location.name}}",
-              fontSize: "64px",
-              fontFamily: "Nunito",
-              fontWeight: "900",
-              color: "#2E97A1",
-              textAnchor: "start",
-              positioning: {}
-            },
-            {
-              // location activity
-              type: "text",
-              text: "{{location.activity}}",
-              fontSize: "32px",
-              fontFamily: "Nunito",
-              fontWeight: "600 italic",
-              color: "#383838",
-              textAnchor: "start",
-              width: 500,
-              positioning: {
-                top: 90,
-                left: 0
-              }
-            }
-          ]
         }
       ]
     },
@@ -268,6 +317,16 @@ export const config_01_02: InfographicConfig.TripInfographic = {
         {
           type: "svg",
           url: "./configs/info_graphic_01_01/images/02-location-01-border.svg"
+        },
+        // location 1 details
+        {
+          type: "container",
+          positioning: {
+            top: -30,
+            left: 625
+          },
+          flex: "column",
+          blocks: locationDetailsChildren02
         }
       ]
     },
@@ -291,6 +350,16 @@ export const config_01_02: InfographicConfig.TripInfographic = {
         {
           type: "svg",
           url: "./configs/info_graphic_01_01/images/02-location-02-border.svg"
+        },
+        // location 1 details
+        {
+          type: "container",
+          positioning: {
+            top: 420,
+            left: -450
+          },
+          flex: "column",
+          blocks: locationDetailsChildren02
         }
       ]
     }
