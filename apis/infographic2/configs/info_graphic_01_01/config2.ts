@@ -140,10 +140,40 @@ export const config_01_02: InfographicConfig.TripInfographic = {
   height: 1500,
   backgroundColor: "#C0E2E5",
 
-  type: "location",
+  type: "container",
   blocks: [
     {
       type: "container",
+      blocks: [
+        {
+          type: "svg",
+          url:
+            "./configs/info_graphic_01_01/images/02-location-name-background.svg",
+          positioning: {
+            left: 133,
+            top: 24
+          }
+        },
+        // together making location icon with white background
+        {
+          type: "circle",
+          fillColor: "white",
+          r: 30,
+          x: 226,
+          y: 106
+        },
+        {
+          type: "svg",
+          url: "./configs/info_graphic_01_01/images/02-location-name-icon.svg",
+          positioning: {
+            left: 159,
+            top: 36
+          }
+        }
+      ]
+    },
+    {
+      type: "location",
       positioning: {
         top: 412,
         left: 97
@@ -151,8 +181,8 @@ export const config_01_02: InfographicConfig.TripInfographic = {
       blocks: [
         {
           type: "location-image",
-          width: 550,
-          height: 680,
+          width: 550 - 4,
+          height: 680 - 4,
           positioning: {
             top: 26,
             left: 32
@@ -166,7 +196,7 @@ export const config_01_02: InfographicConfig.TripInfographic = {
       ]
     },
     {
-      type: "container",
+      type: "location",
       positioning: {
         top: 724,
         left: 630
@@ -174,10 +204,10 @@ export const config_01_02: InfographicConfig.TripInfographic = {
       blocks: [
         {
           type: "location-image",
-          width: 550,
-          height: 680,
+          width: 550 - 4,
+          height: 680 - 4,
           positioning: {
-            top: 26,
+            top: 23,
             left: 29
           },
           rotate: 5.11
