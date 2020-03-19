@@ -11,7 +11,7 @@ export const leafText: LeafTransformer = {
       text: getText(textNode, trip, cursor)
     } as InfographicConfig.Block;
   }
-}
+};
 
 const commonFunc = require("../../commonFunc");
 
@@ -27,32 +27,36 @@ function getText(blockConfig: InfographicConfig.TextBlock, trip, cursor) {
     feeling = location.feeling ? feelingLabel + " " + location.feeling : "",
     activity = location.activity,
     highlights = location.highlights.toLowerCase(),
-    nodeFeelingActivity = "";
+    textActivity = "",
+    textFeeling = "";
 
-  if (activity)
-    nodeFeelingActivity = capitalizeFirstLetter(activity.toLowerCase());
+  if (activity) {
+    textActivity = capitalizeFirstLetter(activity.toLowerCase());
+  }
+
   if (feeling) {
     feeling = capitalizeFirstLetter(feeling.toLowerCase());
-    nodeFeelingActivity = nodeFeelingActivity
-      ? nodeFeelingActivity + ". " + feeling
-      : feeling;
+    textFeeling = textFeeling ? textFeeling + ". " + feeling : feeling;
   }
-  if (nodeFeelingActivity) nodeFeelingActivity += ".";
+  if (textFeeling) textFeeling += ".";
 
   if (highlights) highlights = capitalizeFirstLetter(highlights) + ".";
 
   let text = blockConfig.text;
   if (text === "{{location.name}}") {
-    text = locationName.toUpperCase();
+    text = locationName;
+  }
+  if (text === "{{location.activity}}") {
+    text = textActivity;
   }
   if (text === "{{location.feeling}}") {
-    text = nodeFeelingActivity;
+    text = textFeeling;
   }
   if (text === "{{location.hight-lights}}") {
     text = highlights;
   }
   if (text === "{{trip.name}}") {
-    text = trip.name.toUpperCase();
+    text = trip.name;
   }
   if (text === "{{trip.info}}") {
     let numberOfDays = trip.numberOfDays,

@@ -36,11 +36,7 @@ async function renderImage(
   log(cursor.level, "cursor", cursor);
   log(cursor.level, "relative position", relativePosition);
 
-  await canvasAdaptor.drawImage(imageBlock.url, relativePosition, {
-    width: imageBlock.width,
-    height: imageBlock.height,
-    clipPath: imageBlock.clipPath
-  });
+  await canvasAdaptor.drawImage(imageBlock.url, relativePosition, imageBlock);
 }
 
 async function renderBlock(
@@ -94,9 +90,10 @@ async function renderBlock(
     return nextCursor;
   }
 
+  // todo, improve this filter, remove ??
   if (
     _.findIndex(
-      ["locations", "location", "text", "line", "circle"],
+      ["locations", "location", "text", "line", "circle", "path", "svg"],
       type => b.type === type
     ) !== -1
   ) {

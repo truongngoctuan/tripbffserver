@@ -2,9 +2,10 @@ import { InfographicConfig } from "../../../configs/index";
 import { getRelativePosition } from "./utils";
 import { RendererFunction } from "./typings";
 import _ from "lodash";
+import { CanvasAdaptor } from "../../utils";
 
 export const componentText: RendererFunction = function(
-  canvasAdaptor,
+  canvasAdaptor: CanvasAdaptor,
   blockConfig: InfographicConfig.TextBlock,
   cursor
 ) {
@@ -21,7 +22,7 @@ export const componentText: RendererFunction = function(
 };
 
 function renderTextBlock(
-  canvasAdaptor,
+  canvasAdaptor: CanvasAdaptor,
   blockConfig: InfographicConfig.TextBlock,
   text: string,
   cursor

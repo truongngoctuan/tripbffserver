@@ -46,13 +46,14 @@ export namespace InfographicConfig {
     height: number;
     clipPath?: string;
     positioning?: RelativePositioning;
+    rotate?: number;
   };
 
   // for renderer definition
   type Infographic = ContainerBlock;
 
   type Block = ContainerBlock | BasicBlock;
-  type BasicBlock = ImageBlock | TextBlock | LineBlock | CircleBlock;
+  type BasicBlock = ImageBlock | SvgBlock | TextBlock | LineBlock | CircleBlock | PathBlock;
 
   type ContainerBlock = {
     type: "container";
@@ -69,6 +70,16 @@ export namespace InfographicConfig {
     height?: number;
     clipPath?: string;
     positioning: RelativePositioning;
+    rotate?: number;
+  };
+
+  type SvgBlock = {
+    type: "svg";
+    url: string;
+    shadowOffset?: {x: number; y: number };
+    shadowBlur?: number;
+    shadowColor?: string;
+    positioning?: RelativePositioning;
   };
 
   type BaseTextBlock = {
@@ -76,7 +87,7 @@ export namespace InfographicConfig {
     fontFamily?: string;
     color?: string;
     fontWeight?: string;
-    textAnchor?: string;
+    textAnchor?: "start" | "middle" | "end";
     textTransform?: string;
     positioning: RelativePositioning;
   };
@@ -102,6 +113,12 @@ export namespace InfographicConfig {
     x: number;
     y: number;
     r: number;
+    fillColor: string;
+  };
+
+  type PathBlock = {
+    type: "path";
+    path: string;
     fillColor: string;
   };
 

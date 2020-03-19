@@ -8,7 +8,7 @@ const fs = require("fs");
 // const path = require("path");
 const _ = require("lodash");
 
-registerFont("./fonts/Pfennig.ttf", { family: "Pfennig" });
+registerFont("./fonts/Pfennig.ttf", { family: "a" });
 registerFont("./fonts/Roboto-Regular.ttf", {
   family: "Roboto"
 });
@@ -16,6 +16,25 @@ registerFont("./fonts/Roboto-Bold.ttf", {
   family: "Roboto",
   style: "normal",
   weight: "bold"
+});
+
+registerFont("./fonts/Nunito-Regular.ttf", {
+  family: "Nunito"
+});
+
+registerFont("./fonts/Nunito-SemiBoldItalic.ttf", {
+  family: "Nunito",
+  weight: "600",
+  style: "italic"
+});
+
+registerFont("./fonts/Nunito-Bold.ttf", {
+  family: "Nunito",
+  weight: "bold"
+});
+registerFont("./fonts/Nunito-Black.ttf", {
+  family: "Nunito",
+  weight: "900"
 });
 
 // todo: add this into node_modules/paper/dist/node/canvas.js
@@ -97,7 +116,7 @@ export class CanvasAdaptor {
   async drawImage(
     source,
     position,
-    options: { width?: number; height?: number; clipPath?: string } = {}
+    options: { width?: number; height?: number; clipPath?: string, rotate?: number } = {}
   ) {
     return new Promise((resolve, reject) => {
       var raster = source.startsWith("http")
@@ -172,6 +191,10 @@ export class CanvasAdaptor {
             group.addChild(path2);
           }
         }
+
+        if (options.rotate) {
+          group.rotate(options.rotate);
+        }
         
         resolve({
           width: group ? group.bounds.width : raster.bounds.width,
@@ -214,7 +237,7 @@ export class CanvasAdaptor {
       ...textNode.style,
       fontSize,
       fillColor: options.color,
-      fontFamily: options.font != "Roboto" ? "Pfennig" : "Roboto",
+      fontFamily: options.font,
       fontWeight: options.fontWeight
     };
 
