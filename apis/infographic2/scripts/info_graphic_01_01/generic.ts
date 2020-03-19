@@ -36,11 +36,7 @@ async function renderImage(
   log(cursor.level, "cursor", cursor);
   log(cursor.level, "relative position", relativePosition);
 
-  await canvasAdaptor.drawImage(imageBlock.url, relativePosition, {
-    width: imageBlock.width,
-    height: imageBlock.height,
-    clipPath: imageBlock.clipPath
-  });
+  await canvasAdaptor.drawImage(imageBlock.url, relativePosition, imageBlock);
 }
 
 async function renderBlock(

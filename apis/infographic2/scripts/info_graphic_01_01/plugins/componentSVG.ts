@@ -1,6 +1,6 @@
 import { InfographicConfig } from "../../../configs/index";
 import _ from "lodash";
-import { getRelativePosition, getRelativePositionPoint } from "./utils";
+import { getRelativePosition } from "./utils";
 import { RendererAsyncFunction } from "./typings";
 import { CanvasAdaptor } from "../../utils";
 import fs from "fs";

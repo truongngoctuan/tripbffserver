@@ -46,6 +46,7 @@ export namespace InfographicConfig {
     height: number;
     clipPath?: string;
     positioning?: RelativePositioning;
+    rotate?: number;
   };
 
   // for renderer definition
@@ -69,6 +70,7 @@ export namespace InfographicConfig {
     height?: number;
     clipPath?: string;
     positioning: RelativePositioning;
+    rotate?: number;
   };
 
   type SvgBlock = {

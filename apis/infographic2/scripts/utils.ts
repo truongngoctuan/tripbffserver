@@ -116,7 +116,7 @@ export class CanvasAdaptor {
   async drawImage(
     source,
     position,
-    options: { width?: number; height?: number; clipPath?: string } = {}
+    options: { width?: number; height?: number; clipPath?: string, rotate?: number } = {}
   ) {
     return new Promise((resolve, reject) => {
       var raster = source.startsWith("http")
@@ -190,6 +190,10 @@ export class CanvasAdaptor {
             group.addChild(raster);
             group.addChild(path2);
           }
+        }
+
+        if (options.rotate) {
+          group.rotate(options.rotate);
         }
         
         resolve({
