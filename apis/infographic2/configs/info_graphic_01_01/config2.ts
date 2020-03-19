@@ -146,29 +146,105 @@ export const config_01_02: InfographicConfig.TripInfographic = {
       type: "container",
       blocks: [
         {
-          type: "svg",
-          url:
-            "./configs/info_graphic_01_01/images/02-location-name-background.svg",
+          type: "container",
           positioning: {
             left: 133,
             top: 24
-          }
+          },
+          blocks: [
+            {
+              type: "svg",
+              url:
+                "./configs/info_graphic_01_01/images/02-location-name-background.svg",
+              positioning: {
+                // left: 133,
+                // top: 24
+              }
+            },
+            // together making location icon with white background
+            {
+              type: "circle",
+              fillColor: "white",
+              r: 30,
+              x: 93,
+              y: 82
+            },
+            {
+              type: "svg",
+              url:
+                "./configs/info_graphic_01_01/images/02-location-name-icon.svg",
+              positioning: {
+                left: 26,
+                top: 12
+              }
+            },
+
+            // infographic name
+            {
+              // location name
+              type: "text",
+              text: "{{trip.name}}",
+              fontSize: "64px",
+              fontFamily: "Nunito",
+              fontWeight: "900",
+              color: "white",
+              textAnchor: "middle",
+              positioning: {
+                top: 104,
+                left: -40
+              }
+            },
+            {
+              // location activity
+              type: "text",
+              text: "{{trip.info}}",
+              fontSize: "40px",
+              fontFamily: "Nunito",
+              fontWeight: "normal",
+              color: "white",
+              textAnchor: "middle",
+              width: 500,
+              positioning: {
+                top: 190,
+                left: -40
+              }
+            }
+          ]
         },
-        // together making location icon with white background
         {
-          type: "circle",
-          fillColor: "white",
-          r: 30,
-          x: 226,
-          y: 106
-        },
-        {
-          type: "svg",
-          url: "./configs/info_graphic_01_01/images/02-location-name-icon.svg",
+          type: "container",
           positioning: {
-            left: 159,
-            top: 36
-          }
+            top: 374,
+            left: 715
+          },
+          blocks: [
+            {
+              // location name
+              type: "text",
+              text: "{{location.name}}",
+              fontSize: "64px",
+              fontFamily: "Nunito",
+              fontWeight: "900",
+              color: "#2E97A1",
+              textAnchor: "start",
+              positioning: {}
+            },
+            {
+              // location activity
+              type: "text",
+              text: "{{location.activity}}",
+              fontSize: "32px",
+              fontFamily: "Nunito",
+              fontWeight: "600 italic",
+              color: "#383838",
+              textAnchor: "start",
+              width: 500,
+              positioning: {
+                top: 90,
+                left: 0
+              }
+            }
+          ]
         }
       ]
     },

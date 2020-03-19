@@ -56,7 +56,7 @@ function getText(blockConfig: InfographicConfig.TextBlock, trip, cursor) {
     text = highlights;
   }
   if (text === "{{trip.name}}") {
-    text = trip.name.toUpperCase();
+    text = trip.name;
   }
   if (text === "{{trip.info}}") {
     let numberOfDays = trip.numberOfDays,
