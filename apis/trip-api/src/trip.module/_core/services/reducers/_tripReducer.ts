@@ -52,7 +52,8 @@ export class TripReducers {
       locations: [],
       infographics: [],
       isDeleted: false,
-      createdById: ""
+      createdById: "",
+      canContribute: false
     };
 
     events.forEach((event) => {
@@ -119,7 +120,8 @@ export class TripReducers {
       locations: [],
       infographics: [],
       isDeleted: false,
-      createdById: command.ownerId
+      createdById: command.ownerId,
+      canContribute: false
     };
   }
 

@@ -19,7 +19,8 @@ export class TripsRepository implements ITripsRepository {
       toDate: moment(o.toDate).toDate(),
       locationImages: o.locationImages,
       isDeleted: o.isDeleted,
-      createdById: userId
+      createdById: userId,
+      canContribute: true
     };
   }
 

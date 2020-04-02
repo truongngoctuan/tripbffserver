@@ -67,7 +67,8 @@ export class TripRepository implements ITripRepository {
         };
       }),
       isDeleted: o.isDeleted,
-      createdById: ownerId
+      createdById: ownerId,
+      canContribute: true
     };
   }
 

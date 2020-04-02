@@ -11,6 +11,7 @@ export interface ITripMinimized {
     imageUrl?: string;
   }[];
   createdById: string;
+  canContribute: boolean;
 }
 
 export interface ITripsRepository {
