@@ -70,7 +70,8 @@ export const joiTripSchema = Joi.object({
   infographics: Joi.array()
     .optional()
     .items(joiInfographicSchema),
-  isDeleted: Joi.boolean()
+  isDeleted: Joi.boolean(),
+  createdById: Joi.string()
 });
 
 export const joiMinimizedTripSchema = Joi.object({
@@ -86,5 +87,6 @@ export const joiMinimizedTripSchema = Joi.object({
       description: Joi.string(),
       imageUrl: Joi.string().optional(),
     })),
-  isDeleted: Joi.boolean()
+  isDeleted: Joi.boolean(),
+  createdById: Joi.string()
 });

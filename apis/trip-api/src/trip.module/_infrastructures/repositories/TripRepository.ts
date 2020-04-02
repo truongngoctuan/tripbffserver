@@ -10,7 +10,7 @@ export class TripRepository implements ITripRepository {
 
   }
 
-  toTripDto(o: ITripModel): ITrip {
+  toTripDto(o: ITripModel, ownerId: string): ITrip {
     return {
       tripId: o.tripId,
       name: o.name,
@@ -66,7 +66,8 @@ export class TripRepository implements ITripRepository {
           status: infographic.status as InfographicStatus
         };
       }),
-      isDeleted: o.isDeleted
+      isDeleted: o.isDeleted,
+      createdById: ownerId
     };
   }
 
@@ -78,7 +79,7 @@ export class TripRepository implements ITripRepository {
     const userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) return [];
 
-    return userTrips.trips.map(item => this.toTripDto(item));
+    return userTrips.trips.map(item => this.toTripDto(item, ownerId));
   }
 
   public async create(ownerId: string, payload: ITrip) {
@@ -104,7 +105,7 @@ export class TripRepository implements ITripRepository {
 
     const tripModel = userTrips.trips[userTrips.trips.length - 1];
 
-    return this.toTripDto(tripModel);
+    return this.toTripDto(tripModel, ownerId);
   }
 
   public async update(ownerId: string, payload: ITrip) {
@@ -142,7 +143,7 @@ export class TripRepository implements ITripRepository {
     const trip = await this.getTripModel(ownerId, id);
     if (!trip) return undefined;
     
-    return this.toTripDto(trip);
+    return this.toTripDto(trip, ownerId);
   }
 
   async getTripModel(ownerId: string, id: string) {

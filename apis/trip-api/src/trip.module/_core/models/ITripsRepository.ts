@@ -10,6 +10,7 @@ export interface ITripMinimized {
     description: string;
     imageUrl?: string;
   }[];
+  createdById: string;
 }
 
 export interface ITripsRepository {

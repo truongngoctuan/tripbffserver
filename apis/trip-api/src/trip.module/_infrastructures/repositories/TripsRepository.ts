@@ -11,14 +11,15 @@ export class TripsRepository implements ITripsRepository {
 
   }
 
-  private toTripDto(o: ITripsModel): ITripMinimized {
+  private toTripDto(o: ITripsModel, userId: string): ITripMinimized {
     return {
       tripId: o.tripId,
       name: o.name,
       fromDate: moment(o.fromDate).toDate(),
       toDate: moment(o.toDate).toDate(),
       locationImages: o.locationImages,
-      isDeleted: o.isDeleted
+      isDeleted: o.isDeleted,
+      createdById: userId
     };
   }
 
@@ -32,14 +33,14 @@ export class TripsRepository implements ITripsRepository {
 
     const trip = _.find(userTrips.trips, trip => trip.tripId === tripId);
     if (!trip) return undefined;
-    return this.toTripDto(trip);    
+    return this.toTripDto(trip, ownerId);    
   }
 
   public async list(ownerId: string) {
     const userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) return [];
 
-    return userTrips.trips.map(item => this.toTripDto(item));
+    return userTrips.trips.map(item => this.toTripDto(item, ownerId));
   }
 
   public async create(ownerId: string, payload: ITripMinimized) {
@@ -66,7 +67,7 @@ export class TripsRepository implements ITripsRepository {
 
     const tripModel = userTrips.trips[userTrips.trips.length - 1];
 
-    return this.toTripDto(tripModel);
+    return this.toTripDto(tripModel, ownerId);
   }
 
   public async update(ownerId: string, payload: ITripMinimized) {

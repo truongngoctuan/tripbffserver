@@ -51,7 +51,8 @@ export class TripReducers {
       toDate: moment().toDate(),
       locations: [],
       infographics: [],
-      isDeleted: false
+      isDeleted: false,
+      createdById: ""
     };
 
     events.forEach((event) => {
@@ -117,7 +118,8 @@ export class TripReducers {
       toDate: command.toDate,
       locations: [],
       infographics: [],
-      isDeleted: false
+      isDeleted: false,
+      createdById: command.ownerId
     };
   }
 

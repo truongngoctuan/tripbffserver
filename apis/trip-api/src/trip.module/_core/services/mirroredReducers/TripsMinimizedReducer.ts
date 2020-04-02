@@ -33,7 +33,8 @@ export class TripsMinimizedReducer {
       fromDate: state.fromDate,
       toDate: state.toDate,
       locationImages,
-      isDeleted: state.isDeleted
+      isDeleted: state.isDeleted,
+      createdById: state.createdById
     };
 
     return newState;
