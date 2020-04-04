@@ -8,17 +8,17 @@ const globalInfographic01Config = require("../../configs/info_graphic_01/config"
 const commonFunc = require("../commonFunc");
 const _ = require("lodash");
 
-var globalConfig = globalInfographic01Config.config_01_02;
+const globalConfig = globalInfographic01Config.config_01_02;
 
-let w = globalConfig.infographic.width;
+const w = globalConfig.infographic.width;
 let h = globalConfig.infographic.height;
 
 function drawHeader(canvasAdaptor, trip) {
-  let tripNameNode = canvasAdaptor.drawText(
+  const tripNameNode = canvasAdaptor.drawText(
     trip.name.toUpperCase(),
     {
       y: 20,
-      x: w / 2
+      x: w / 2,
     },
     {
       color: globalConfig.header.tripName.color,
@@ -27,16 +27,16 @@ function drawHeader(canvasAdaptor, trip) {
       textAnchor: globalConfig.header.tripName.textAnchor,
       fontWeight: globalConfig.header.tripName.fontWeight,
       textTransform: globalConfig.header.tripName.textTransform,
-      wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2
+      wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2,
     }
   );
-  let tripNameNodeBbox = tripNameNode.bounds;
-  let numberOfDays = trip.numberOfDays,
+  const tripNameNodeBbox = tripNameNode.bounds;
+  const numberOfDays = trip.numberOfDays,
     numberOfLocations = trip.locations.length,
     dayLabel = commonFunc.getDayLabel(trip.locale, numberOfDays),
     locationLabel = commonFunc.getLocationLabel(trip.locale, numberOfLocations);
 
-  let dayText = " " + dayLabel + ", ",
+  const dayText = " " + dayLabel + ", ",
     locationText = " " + locationLabel,
     basicTripInfo = numberOfDays + dayText + numberOfLocations + locationText;
 
@@ -44,14 +44,14 @@ function drawHeader(canvasAdaptor, trip) {
     basicTripInfo,
     {
       y: tripNameNodeBbox.y + tripNameNodeBbox.height + 5,
-      x: w / 2
+      x: w / 2,
     },
     {
       color: globalConfig.header.tripDescription.color,
       font: globalConfig.header.tripDescription.font,
       fontSize: globalConfig.header.tripDescription.fontSize,
       textAnchor: globalConfig.header.tripDescription.textAnchor,
-      wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2
+      wrapNumber: w - globalConfig.infographic.paddingLeftRight * 2,
     }
   );
 }
@@ -62,10 +62,10 @@ async function drawContent(
   startPointCoordinate,
   locale
 ) {
-  let startPoint_px = startPointCoordinate.x,
+  const startPoint_px = startPointCoordinate.x,
     startPoint_py = startPointCoordinate.y;
 
-  let feelingLabel = commonFunc.getFeelingLabel(locale);
+  const feelingLabel = commonFunc.getFeelingLabel(locale);
 
   let locationName = capitalizeFirstLetter(location.name) + ".",
     feeling = location.feeling ? feelingLabel + " " + location.feeling : "",
@@ -85,14 +85,14 @@ async function drawContent(
 
   if (highlights) highlights = capitalizeFirstLetter(highlights) + ".";
 
-  let locationName_px = startPoint_px,
+  const locationName_px = startPoint_px,
     locationName_py = startPoint_py;
 
-  let locationNameNode = canvasAdaptor.drawText(
+  const locationNameNode = canvasAdaptor.drawText(
     locationName.toUpperCase(),
     {
       y: locationName_py,
-      x: locationName_px
+      x: locationName_px,
     },
     {
       color: globalConfig.location.name.color,
@@ -101,49 +101,49 @@ async function drawContent(
       fontWeight: globalConfig.location.name.fontWeight,
       textAnchor: globalConfig.location.name.textAnchor,
       textTransform: globalConfig.location.name.textTransform,
-      wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 4
+      wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 4,
     }
   );
-  let locationNameNodeBbox = locationNameNode.bounds;
+  const locationNameNodeBbox = locationNameNode.bounds;
   let nextElementYCoordinate =
     locationNameNodeBbox.y + locationNameNodeBbox.height;
 
   if (nodeFeelingActivity) {
-    let feelingActivityNode = canvasAdaptor.drawText(
+    const feelingActivityNode = canvasAdaptor.drawText(
       nodeFeelingActivity,
       {
         y: nextElementYCoordinate + globalConfig.location.paddingTop,
-        x: locationName_px
+        x: locationName_px,
       },
       {
         color: globalConfig.location.description.color,
         font: globalConfig.location.description.font,
         fontSize: globalConfig.location.description.fontSize,
         textAnchor: globalConfig.location.description.textAnchor,
-        wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 4
+        wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 4,
       }
     );
-    let feelingActivityNodeBbox = feelingActivityNode.bounds;
+    const feelingActivityNodeBbox = feelingActivityNode.bounds;
     nextElementYCoordinate =
       feelingActivityNodeBbox.y + feelingActivityNodeBbox.height;
   }
 
   if (highlights) {
-    let hightlightNode = canvasAdaptor.drawText(
+    const hightlightNode = canvasAdaptor.drawText(
       highlights,
       {
         y: nextElementYCoordinate + globalConfig.location.paddingTop,
-        x: locationName_px
+        x: locationName_px,
       },
       {
         color: globalConfig.location.description.color,
         font: globalConfig.location.description.font,
         fontSize: globalConfig.location.description.fontSize,
         textAnchor: globalConfig.location.description.textAnchor,
-        wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 4
+        wrapNumber: w / 2 - globalConfig.imageContainer.paddingBetweenImage * 4,
       }
     );
-    let highlightNodeBbox = hightlightNode.bounds;
+    const highlightNodeBbox = hightlightNode.bounds;
     nextElementYCoordinate = highlightNodeBbox.y + highlightNodeBbox.height;
   }
 
@@ -151,12 +151,10 @@ async function drawContent(
 }
 
 async function drawFooter(canvasAdaptor) {
-  await canvasAdaptor.drawImage(
-    "data/images/App_Signature.png",
-    {
-      x: w - globalConfig.footer.marginRight,
-      y: h - globalConfig.footer.marginBottom
-    });
+  await canvasAdaptor.drawImage("data/images/App_Signature.png", {
+    x: w - globalConfig.footer.marginRight,
+    y: h - globalConfig.footer.marginBottom,
+  });
 }
 
 function capitalizeFirstLetter(string) {
@@ -180,64 +178,64 @@ function onLoadImage(canvasAdaptor, imageResult, url, coordinate, index) {
 async function draw(canvasAdaptor, trip) {
   drawHeader(canvasAdaptor, trip);
 
-  let locationNoImage = trip.locations.find(
-    item => item.signedUrl == "" || _.isEmpty(item.signedUrl)
+  const locationNoImage = trip.locations.find(
+    (item) => item.signedUrl == "" || _.isEmpty(item.signedUrl)
   );
 
   if (locationNoImage) {
     // load default image if location has no image
-    trip.locations = trip.locations.map(item => {
+    trip.locations = trip.locations.map((item) => {
       return {
         ...item,
         signedUrl: item.signedUrl
           ? item.signedUrl
-          : "./data/images/EmptyImage02.jpg"
+          : "./data/images/EmptyImage02.jpg",
       };
     });
   }
 
-  let promise01 = canvasAdaptor
+  const promise01 = canvasAdaptor
     .drawImage(
       trip.locations[0].signedUrl,
       {
         x: globalConfig.infographic.paddingLeftRight,
-        y: 170 + globalConfig.imageContainer.paddingTop
+        y: 170 + globalConfig.imageContainer.paddingTop,
       },
       {
         width: globalConfig.imageContainer.svgWidth,
         height: globalConfig.imageContainer.svgHeight,
-        clipPath: globalConfig.imageContainer.clipPath
+        clipPath: globalConfig.imageContainer.clipPath,
       }
     )
-    .then(imageResult =>
+    .then((imageResult) =>
       onLoadImage(canvasAdaptor, imageResult, trip.locations[0].signedUrl, {
         x: globalConfig.infographic.paddingLeftRight,
-        y: 170 + globalConfig.imageContainer.paddingTop
+        y: 170 + globalConfig.imageContainer.paddingTop,
       })
     );
 
-  let promise02 = canvasAdaptor
+  const promise02 = canvasAdaptor
     .drawImage(
       trip.locations[1].signedUrl,
       {
         x: w / 2 + globalConfig.imageContainer.paddingBetweenImage,
-        y: 170 + globalConfig.imageContainer.paddingTop
+        y: 170 + globalConfig.imageContainer.paddingTop,
       },
       {
         width: globalConfig.imageContainer.svgWidth,
         height: globalConfig.imageContainer.svgHeight,
-        clipPath: globalConfig.imageContainer.clipPath
+        clipPath: globalConfig.imageContainer.clipPath,
       }
       // 1
     )
-    .then(imageResult =>
+    .then((imageResult) =>
       onLoadImage(
         canvasAdaptor,
         imageResult,
         trip.locations[1].signedUrl,
         {
           x: w / 2 + globalConfig.imageContainer.paddingBetweenImage,
-          y: 170 + globalConfig.imageContainer.paddingTop
+          y: 170 + globalConfig.imageContainer.paddingTop,
         },
         1
       )
@@ -245,22 +243,22 @@ async function draw(canvasAdaptor, trip) {
 
   await Promise.all([promise01, promise02]);
 
-  let firstLatestHeight = await drawContent(
+  const firstLatestHeight = await drawContent(
     canvasAdaptor,
     trip.locations[0],
     {
       x: globalConfig.infographic.paddingLeftRight,
-      y: 1100
+      y: 1100,
     },
     trip.locale
   );
 
-  let secondLatestHeight = await drawContent(
+  const secondLatestHeight = await drawContent(
     canvasAdaptor,
     trip.locations[1],
     {
       x: w / 2 + globalConfig.imageContainer.paddingBetweenImage * 4,
-      y: 1100
+      y: 1100,
     },
     trip.locale
   );
@@ -281,5 +279,5 @@ async function draw(canvasAdaptor, trip) {
 }
 
 module.exports = {
-  draw: draw
+  draw: draw,
 };

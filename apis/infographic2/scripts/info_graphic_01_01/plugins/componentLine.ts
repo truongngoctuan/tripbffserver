@@ -3,7 +3,7 @@ import _ from "lodash";
 import { getRelativePosition } from "./utils";
 import { RendererFunction } from "./typings";
 
-export const componentLine: RendererFunction = function(
+export const componentLine: RendererFunction = function (
   canvasAdaptor,
   blockConfig: InfographicConfig.LineBlock,
   cursor
@@ -19,7 +19,7 @@ export const componentLine: RendererFunction = function(
     x2: newX2Y2.x,
     y2: newX2Y2.y,
     strokeColor,
-    strokeWidth
+    strokeWidth,
   });
 
   return cursor;

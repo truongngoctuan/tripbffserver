@@ -10,21 +10,21 @@ export const config_01_01: InfographicConfig.TripInfographic = {
     {
       type: "location-image",
       width: 1280,
-      height: 1280
+      height: 1280,
     },
     // background whole location
     {
       type: "svg",
       url: "./configs/info_graphic_01_01/images/location-background.svg",
       positioning: {
-        top: 1017 - 48
-      }
+        top: 1017 - 48,
+      },
     },
     {
       type: "container",
       positioning: {
         top: 929,
-        left: 56
+        left: 56,
       },
       blocks: [
         // background location name
@@ -34,10 +34,10 @@ export const config_01_01: InfographicConfig.TripInfographic = {
             "./configs/info_graphic_01_01/images/location-name-background.svg",
           shadowOffset: {
             x: 0,
-            y: 4
+            y: 4,
           },
           shadowColor: "rgba(0, 0, 0, 0.25)",
-          shadowBlur: 4
+          shadowBlur: 4,
         },
         {
           // location name
@@ -50,8 +50,8 @@ export const config_01_01: InfographicConfig.TripInfographic = {
           textAnchor: "start",
           positioning: {
             top: 80,
-            left: 140
-          }
+            left: 140,
+          },
         },
         {
           // location activity
@@ -65,29 +65,29 @@ export const config_01_01: InfographicConfig.TripInfographic = {
           width: 500,
           positioning: {
             top: 160,
-            left: 140
-          }
-        }
-      ]
+            left: 140,
+          },
+        },
+      ],
     },
     {
       type: "svg",
       url: "./configs/info_graphic_01_01/images/location.svg",
       positioning: {
         top: 836,
-        left: 48
-      }
+        left: 48,
+      },
     },
     {
       type: "container",
       positioning: {
         top: 1118,
-        left: 846 - 50 // todo
+        left: 846 - 50, // todo
       },
       blocks: [
         {
           type: "svg",
-          url: "./configs/info_graphic_01_01/images/star.svg"
+          url: "./configs/info_graphic_01_01/images/star.svg",
         },
         {
           // location activity
@@ -100,21 +100,21 @@ export const config_01_01: InfographicConfig.TripInfographic = {
           width: 500,
           positioning: {
             top: 0 - 4,
-            left: 46
-          }
-        }
-      ]
+            left: 46,
+          },
+        },
+      ],
     },
     {
       type: "container",
       positioning: {
         top: 1180,
-        left: 846 - 50
+        left: 846 - 50,
       },
       blocks: [
         {
           type: "svg",
-          url: "./configs/info_graphic_01_01/images/smile.svg"
+          url: "./configs/info_graphic_01_01/images/smile.svg",
         },
         {
           // location activity
@@ -127,12 +127,12 @@ export const config_01_01: InfographicConfig.TripInfographic = {
           width: 500,
           positioning: {
             top: 0 - 4,
-            left: 46
-          }
-        }
-      ]
-    }
-  ]
+            left: 46,
+          },
+        },
+      ],
+    },
+  ],
 };
 
 const locationDetailsChildren02: InfographicConfig.Block[] = [
@@ -145,7 +145,7 @@ const locationDetailsChildren02: InfographicConfig.Block[] = [
     fontWeight: "900",
     color: "#2E97A1",
     textAnchor: "start",
-    positioning: {}
+    positioning: {},
   },
   {
     // location activity
@@ -159,19 +159,19 @@ const locationDetailsChildren02: InfographicConfig.Block[] = [
     width: 500,
     positioning: {
       top: 20,
-      left: 0
-    }
+      left: 0,
+    },
   },
   {
     type: "container",
     positioning: {
       top: 75,
-      left: 0
+      left: 0,
     },
     blocks: [
       {
         type: "svg",
-        url: "./configs/info_graphic_01_01/images/02-location-n-smile-icon.svg"
+        url: "./configs/info_graphic_01_01/images/02-location-n-smile-icon.svg",
       },
       {
         // location activity
@@ -184,21 +184,21 @@ const locationDetailsChildren02: InfographicConfig.Block[] = [
         textAnchor: "start",
         width: 500,
         positioning: {
-          left: 50
-        }
-      }
-    ]
+          left: 50,
+        },
+      },
+    ],
   },
   {
     type: "container",
     positioning: {
       top: 80,
-      left: 0
+      left: 0,
     },
     blocks: [
       {
         type: "svg",
-        url: "./configs/info_graphic_01_01/images/02-location-n-like-icon.svg"
+        url: "./configs/info_graphic_01_01/images/02-location-n-like-icon.svg",
       },
       {
         // location activity
@@ -211,11 +211,11 @@ const locationDetailsChildren02: InfographicConfig.Block[] = [
         textAnchor: "start",
         width: 500,
         positioning: {
-          left: 50
-        }
-      }
-    ]
-  }
+          left: 50,
+        },
+      },
+    ],
+  },
 ];
 
 export const config_01_02: InfographicConfig.TripInfographic = {
@@ -233,7 +233,7 @@ export const config_01_02: InfographicConfig.TripInfographic = {
           type: "container",
           positioning: {
             left: 133,
-            top: 24
+            top: 24,
           },
           blocks: [
             {
@@ -243,7 +243,7 @@ export const config_01_02: InfographicConfig.TripInfographic = {
               positioning: {
                 // left: 133,
                 // top: 24
-              }
+              },
             },
             // together making location icon with white background
             {
@@ -251,7 +251,7 @@ export const config_01_02: InfographicConfig.TripInfographic = {
               fillColor: "white",
               r: 30,
               x: 93,
-              y: 82
+              y: 82,
             },
             {
               type: "svg",
@@ -259,8 +259,8 @@ export const config_01_02: InfographicConfig.TripInfographic = {
                 "./configs/info_graphic_01_01/images/02-location-name-icon.svg",
               positioning: {
                 left: 26,
-                top: 12
-              }
+                top: 12,
+              },
             },
 
             // infographic name
@@ -275,8 +275,8 @@ export const config_01_02: InfographicConfig.TripInfographic = {
               textAnchor: "middle",
               positioning: {
                 top: 104,
-                left: -40
-              }
+                left: -40,
+              },
             },
             {
               // location activity
@@ -290,18 +290,18 @@ export const config_01_02: InfographicConfig.TripInfographic = {
               width: 500,
               positioning: {
                 top: 190,
-                left: -40
-              }
-            }
-          ]
-        }
-      ]
+                left: -40,
+              },
+            },
+          ],
+        },
+      ],
     },
     {
       type: "location",
       positioning: {
         top: 412,
-        left: 97
+        left: 97,
       },
       blocks: [
         {
@@ -310,31 +310,31 @@ export const config_01_02: InfographicConfig.TripInfographic = {
           height: 680 - 4,
           positioning: {
             top: 26,
-            left: 32
+            left: 32,
           },
-          rotate: -5.57
+          rotate: -5.57,
         },
         {
           type: "svg",
-          url: "./configs/info_graphic_01_01/images/02-location-01-border.svg"
+          url: "./configs/info_graphic_01_01/images/02-location-01-border.svg",
         },
         // location 1 details
         {
           type: "container",
           positioning: {
             top: -30,
-            left: 625
+            left: 625,
           },
           flex: "column",
-          blocks: locationDetailsChildren02
-        }
-      ]
+          blocks: locationDetailsChildren02,
+        },
+      ],
     },
     {
       type: "location",
       positioning: {
         top: 724,
-        left: 630
+        left: 630,
       },
       blocks: [
         {
@@ -343,25 +343,25 @@ export const config_01_02: InfographicConfig.TripInfographic = {
           height: 680 - 4,
           positioning: {
             top: 23,
-            left: 29
+            left: 29,
           },
-          rotate: 5.11
+          rotate: 5.11,
         },
         {
           type: "svg",
-          url: "./configs/info_graphic_01_01/images/02-location-02-border.svg"
+          url: "./configs/info_graphic_01_01/images/02-location-02-border.svg",
         },
         // location 1 details
         {
           type: "container",
           positioning: {
             top: 420,
-            left: -450
+            left: -450,
           },
           flex: "column",
-          blocks: locationDetailsChildren02
-        }
-      ]
-    }
-  ]
+          blocks: locationDetailsChildren02,
+        },
+      ],
+    },
+  ],
 };

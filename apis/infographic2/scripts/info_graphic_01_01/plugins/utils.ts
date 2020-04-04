@@ -1,4 +1,3 @@
-
 export function getRelativePosition(bounds, positioning) {
   let x = bounds.x;
   let y = bounds.y;

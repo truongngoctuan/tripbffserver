@@ -12,7 +12,7 @@ const data = {
       feeling: "Tuyệt vời",
       activity: "Đi bộ đường dài ngắn ngày",
       highlights: "Đẹp, Nguy hiểm",
-      signedUrl: "http://placekitten.com/700/500"
+      signedUrl: "http://placekitten.com/700/500",
     },
     {
       locationId: "2b877a4c-5bf9-4315-a8b4-02f44971879d",
@@ -22,7 +22,7 @@ const data = {
       feeling: "Yên bình",
       activity: "Ngắm ruộng lúa",
       highlights: "Đẹp, Rẻ",
-      signedUrl: "http://placekitten.com/1200/1200"
+      signedUrl: "http://placekitten.com/1200/1200",
     },
     {
       locationId: "1f611a70-abde-4e5d-95d3-ae5e7959a9cb",
@@ -43,10 +43,10 @@ const data = {
       activity: "Săn mây",
       highlights: "Đẹp, Nguy hiểm",
       // signedUrl: "http://placekitten.com/900/1200"
-    }
+    },
   ],
   locale: "vi",
-  numberOfDays: 1
+  numberOfDays: 1,
 };
 
 const infographicTypes = require("./info_graphic_type");
@@ -63,7 +63,7 @@ const startTimer = new Date().getTime();
   canvasAdaptor.draw();
   // let buf = await canvasAdaptor.toBufferPng();
   // fs.writeFileSync("output.png", buf);
-  let buf = await canvasAdaptor.toBufferJpeg();
+  const buf = await canvasAdaptor.toBufferJpeg();
   fs.writeFileSync("output.jpeg", buf);
   console.log(`TIMER ${new Date().getTime() - startTimer} ms: completed`);
 })();

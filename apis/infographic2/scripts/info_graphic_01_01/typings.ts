@@ -1,4 +1,3 @@
-
 export type Cursor = {
   level: number;
   x: number;

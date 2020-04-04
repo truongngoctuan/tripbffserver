@@ -10,7 +10,7 @@ const {
 
   LOCATION_LABEL_EN,
   LOCATION_LABEL_VI,
-  LOCATIONS_LABEL_EN
+  LOCATIONS_LABEL_EN,
 } = require("../configs/constants");
 
 function getFeelingLabel(locale) {
@@ -45,5 +45,5 @@ function getLocationLabel(locale, numberOfLocations) {
 module.exports = {
   getFeelingLabel: getFeelingLabel,
   getDayLabel: getDayLabel,
-  getLocationLabel: getLocationLabel
+  getLocationLabel: getLocationLabel,
 };

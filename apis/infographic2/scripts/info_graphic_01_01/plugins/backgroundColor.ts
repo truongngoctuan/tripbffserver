@@ -1,7 +1,7 @@
 import { InfographicConfig } from "../../../configs/index";
 import { RendererFunction } from "./typings";
 
-export const backgroundColor: RendererFunction = function(
+export const backgroundColor: RendererFunction = function (
   canvasAdaptor,
   blockConfig: InfographicConfig.Background,
   cursor
@@ -19,7 +19,7 @@ export const backgroundColor: RendererFunction = function(
       y,
       width,
       height,
-      backgroundColor
+      backgroundColor,
     });
   }
 

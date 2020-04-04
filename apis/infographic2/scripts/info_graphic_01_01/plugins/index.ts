@@ -14,31 +14,31 @@ import { componentSVG } from "./componentSVG";
 const registeredPlugins: { [id: string]: Renderer } = {
   container: {
     type: "node",
-    handler: componentContainer
+    handler: componentContainer,
   },
   location: {
     type: "leaf",
-    handler: componentContainer
+    handler: componentContainer,
   },
   text: {
     type: "leaf",
-    handler: componentText
+    handler: componentText,
   },
   line: {
     type: "leaf",
-    handler: componentLine
+    handler: componentLine,
   },
   circle: {
     type: "leaf",
-    handler: componentCircle
+    handler: componentCircle,
   },
   path: {
     type: "leaf",
-    handler: componentPath
+    handler: componentPath,
   },
   svg: {
     type: "leaf",
-    handler: componentSVG
+    handler: componentSVG,
   },
 };
 
@@ -51,11 +51,7 @@ export async function executePlugins(
   const blockPlugins = registeredPlugins[blockType];
   // console.log(blockPlugins);
   if (!_.isEmpty(blockPlugins)) {
-    return blockPlugins.handler(
-      canvasAdaptor,
-      blockConfig,
-      cursor
-    );
+    return blockPlugins.handler(canvasAdaptor, blockConfig, cursor);
   }
 
   return cursor;

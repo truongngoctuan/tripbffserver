@@ -10,8 +10,8 @@ const { INFOGRAPHIC_TYPE } = require("./info_graphic_type");
 const { CanvasAdaptor } = require("./utils");
 
 async function info_v_01(trip, infographicType) {
-  let numberOfLocations = trip.locations.length;
-  let canvasAdaptor = new CanvasAdaptor();
+  const numberOfLocations = trip.locations.length;
+  const canvasAdaptor = new CanvasAdaptor();
   if (infographicType == INFOGRAPHIC_TYPE.FIRST_RELEASED) {
     if (numberOfLocations == 1) {
       await draw_01_01.draw(canvasAdaptor, trip);
@@ -26,8 +26,8 @@ async function info_v_01(trip, infographicType) {
 }
 
 async function info_v_01_01(trip, infographicType) {
-  let numberOfLocations = trip.locations.length;
-  let canvasAdaptor = new CanvasAdaptor();
+  const numberOfLocations = trip.locations.length;
+  const canvasAdaptor = new CanvasAdaptor();
   if (infographicType == INFOGRAPHIC_TYPE.FIRST_RELEASED) {
     if (numberOfLocations == 1) {
       await draw_01_01_01.draw(canvasAdaptor, trip);
@@ -43,5 +43,5 @@ async function info_v_01_01(trip, infographicType) {
 
 module.exports = {
   // draw: info_v_01
-  draw: info_v_01_01
+  draw: info_v_01_01,
 };

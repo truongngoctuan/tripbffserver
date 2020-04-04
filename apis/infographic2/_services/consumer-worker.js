@@ -1,10 +1,10 @@
 module.exports = {
-  receiveMessage
+  receiveMessage,
 };
 
 const redisStore = {
   host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT
+  port: process.env.REDIS_PORT,
 };
 
 console.log("redisStore", redisStore);
@@ -15,7 +15,7 @@ const RedisSMQ = require("rsmq");
 const rsmq = new RedisSMQ({
   host: redisStore.host,
   port: redisStore.post,
-  ns: "rsmq"
+  ns: "rsmq",
 });
 
 function createQueue() {
@@ -30,11 +30,11 @@ function createQueue() {
   });
 }
 
-var counter = 0;
-var _callBack;
+let counter = 0;
+let _callBack;
 function receiveMessage(callBack) {
   _callBack = callBack;
-  rsmq.receiveMessage({ qname: qName }, async function(err, resp) {
+  rsmq.receiveMessage({ qname: qName }, async function (err, resp) {
     if (err) {
       errorHandler(err);
       SetTimeoutReceiveMessage();
@@ -60,7 +60,7 @@ function receiveMessage(callBack) {
 }
 
 function deleteMessage(messageId) {
-  rsmq.deleteMessage({ qname: qName, id: messageId }, function(err, resp) {
+  rsmq.deleteMessage({ qname: qName, id: messageId }, function (err, resp) {
     if (resp === 1) {
       console.log("Message deleted.");
       SetTimeoutReceiveMessage();

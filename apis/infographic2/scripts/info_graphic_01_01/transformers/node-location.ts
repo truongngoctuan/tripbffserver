@@ -5,16 +5,16 @@ import _ from "lodash";
 
 export const nodeLocation: NodeTransformer = {
   type: "node",
-  preHandler: c => c,
+  preHandler: (c) => c,
   postHandler: (c, children, cursor) => {
     const b = c as InfographicConfig.LocationBlock;
     return {
       block: overrideMissingHeight({
         ...b,
         type: "container",
-        blocks: children
+        blocks: children,
       } as InfographicConfig.Block),
-      cursor: _.merge({}, cursor, { location: cursor.location + 1 })
+      cursor: _.merge({}, cursor, { location: cursor.location + 1 }),
     };
-  }
+  },
 };
