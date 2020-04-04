@@ -54,13 +54,13 @@ export const componentContainer: RendererFunction = function(
     blockConfig,
     _.assign({}, cursor, newBounds)
   );
-}
+};
 
 function getRelativeBounds(bounds, positioning) {
-  var x = bounds.x;
-  var y = bounds.y;
-  var width = bounds.width;
-  var height = bounds.height;
+  let x = bounds.x;
+  let y = bounds.y;
+  let width = bounds.width;
+  let height = bounds.height;
 
   if (!positioning) return { x, y, width, height };
 

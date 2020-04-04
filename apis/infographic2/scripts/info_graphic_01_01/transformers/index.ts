@@ -46,10 +46,10 @@ export function processBlock(
 
     let childrenBlocks: InfographicConfig.Block[] = containerBlockConfig.blocks;
 
-    for (var i = 0; i < childrenBlocks.length; i++) {
-      var childBlock = childrenBlocks[i];
+    for (let i = 0; i < childrenBlocks.length; i++) {
+      let childBlock = childrenBlocks[i];
 
-      var processResult = processBlock(childBlock, trip, nextCursor);
+      let processResult = processBlock(childBlock, trip, nextCursor);
       processedBlockConfigs.push(processResult.block);
       nextCursor = processResult.cursor;
     }

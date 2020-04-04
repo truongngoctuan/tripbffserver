@@ -26,7 +26,7 @@ export const componentSVG: RendererAsyncFunction = async function(
   });
 
   const g = new paper.Group([item2]);
-  var relativePosition = getRelativePosition(cursor, b.positioning);
+  let relativePosition = getRelativePosition(cursor, b.positioning);
   item2.position = new paper.Point(
     item2.position.x + relativePosition.x,
     item2.position.y + relativePosition.y
@@ -48,6 +48,6 @@ export const componentSVG: RendererAsyncFunction = async function(
 
 function loadLocalFile(file) {
   // read binary data
-  var bitmap = fs.readFileSync(file);
+  let bitmap = fs.readFileSync(file);
   return bitmap.toString();
 }

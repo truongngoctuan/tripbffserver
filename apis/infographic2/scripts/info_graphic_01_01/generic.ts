@@ -49,17 +49,17 @@ async function renderBlock(
     log(cursor.level, "render cursor", cursor);
   }
 
-  var nextCursor: Cursor = cursor;
+  let nextCursor: Cursor = cursor;
 
   if (b.type === "container") {
     // preNodeContainer
     nextCursor = await executePlugins(b.type, canvasAdaptor, b, cursor);
 
     let childrenBlocks: InfographicConfig.Block[] = b.blocks;
-    for (var i = 0; i < childrenBlocks.length; i++) {
-      var childBlock = childrenBlocks[i];
+    for (let i = 0; i < childrenBlocks.length; i++) {
+      let childBlock = childrenBlocks[i];
 
-      var next = await renderBlock(
+      let next = await renderBlock(
         canvasAdaptor,
         childBlock,
         _.assign({}, nextCursor, {

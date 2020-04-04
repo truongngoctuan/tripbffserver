@@ -1,5 +1,5 @@
 import { InfographicConfig } from "../../../configs";
-import _ from "lodash"
+import _ from "lodash";
 
 export function overrideMissingHeight(
   c: InfographicConfig.Block
@@ -13,7 +13,7 @@ export function overrideMissingHeight(
     return {
       ...containerBlock,
       height
-    }
+    };
   }
 
   return c;

@@ -27,7 +27,7 @@ function renderTextBlock(
   text: string,
   cursor
 ) {
-  var relativePosition = getRelativePosition(cursor, blockConfig.positioning);
+  let relativePosition = getRelativePosition(cursor, blockConfig.positioning);
   if (blockConfig.textAnchor === "middle") {
     relativePosition.x = relativePosition.x + cursor.width / 2;
   }

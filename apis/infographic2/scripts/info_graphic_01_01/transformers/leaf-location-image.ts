@@ -7,7 +7,7 @@ export const leafLocationImage: LeafTransformer = {
   handler: (c, trip, cursor) => {
     const locationImageNode = c as InfographicConfig.LocationImageBlock;
 
-    var imgUri =
+    let imgUri =
     trip.locations[cursor.location].signedUrl &&
     !_.isEmpty(trip.locations[cursor.location].signedUrl)
       ? trip.locations[cursor.location].signedUrl
@@ -19,4 +19,4 @@ export const leafLocationImage: LeafTransformer = {
       url: imgUri
     } as InfographicConfig.Block;
   }
-}
+};

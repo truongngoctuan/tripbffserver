@@ -51,7 +51,7 @@ export class CanvasAdaptor {
 
   constructor(w = 300, h = 300) {
     //use the canvas in paper so that we can magically register font
-    var canvas: Canvas = (paperShim as any).Canvas(w, h);
+    let canvas: Canvas = (paperShim as any).Canvas(w, h);
     // var canvas: Canvas = createCanvas(w, h);
     // const ctx = canvas.getContext("2d");
     // ctx.fillStyle = "white";
@@ -116,14 +116,14 @@ export class CanvasAdaptor {
   async drawImage(
     source,
     position,
-    options: { width?: number; height?: number; clipPath?: string, rotate?: number } = {}
+    options: { width?: number; height?: number; clipPath?: string; rotate?: number } = {}
   ) {
     return new Promise((resolve, reject) => {
-      var raster = source.startsWith("http")
+      let raster = source.startsWith("http")
         ? new paperShim.Raster(source)
         : new paperShim.Raster(loadLocalImage(source));
 
-      var group: paper.Group;
+      let group: paper.Group;
 
       const startDownload = new Date().getTime();
       // console.log(`image ${source} loading`)
@@ -154,7 +154,7 @@ export class CanvasAdaptor {
           group = new paperShim.Group();
           if (!options.clipPath) {
             // Use clipMask to create a custom polygon clip mask:
-            var path = new paperShim.Path.Rectangle(
+            let path = new paperShim.Path.Rectangle(
               new paperShim.Point(position.x, position.y),
               new paperShim.Size(options.width, options.height)
             );
@@ -164,7 +164,7 @@ export class CanvasAdaptor {
             group.addChild(raster);
             group.addChild(path);
           } else {
-            var path2 = new paperShim.Path(options.clipPath);
+            let path2 = new paperShim.Path(options.clipPath);
             path2.position = new paperShim.Point(
               raster.position.x,
               raster.position.y
@@ -210,7 +210,7 @@ export class CanvasAdaptor {
   }
 
   drawBackground(backgroundColor) {
-    var rect = new paperShim.Path.Rectangle({
+    let rect = new paperShim.Path.Rectangle({
       point: [0, 0],
       size: paperShim.view.size
     });
@@ -219,7 +219,7 @@ export class CanvasAdaptor {
   }
 
   drawRect(options) {
-    var rect = new paperShim.Path.Rectangle(
+    let rect = new paperShim.Path.Rectangle(
       new paperShim.Point(options.x, options.y),
       new paperShim.Size(options.width, options.height)
     );
@@ -227,8 +227,8 @@ export class CanvasAdaptor {
   }
 
   _drawText(text, position, options) {
-    var fontSize = parseInt((options.fontSize || "30px").replace("px", ""));
-    var textNode = new paperShim.PointText(
+    let fontSize = parseInt((options.fontSize || "30px").replace("px", ""));
+    let textNode = new paperShim.PointText(
       new paperShim.Point(position.x, position.y + fontSize)
     );
 
@@ -388,9 +388,9 @@ export class CanvasAdaptor {
 
 function loadLocalImage(file) {
   // read binary data
-  var bitmap = fs.readFileSync(file);
+  let bitmap = fs.readFileSync(file);
   // convert binary data to base64 encoded string
-  var stringBase64 = Buffer.from(bitmap).toString("base64");
+  let stringBase64 = Buffer.from(bitmap).toString("base64");
   return "data:image/png;base64," + stringBase64;
 }
 
