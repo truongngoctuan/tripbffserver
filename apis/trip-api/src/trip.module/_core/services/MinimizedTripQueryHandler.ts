@@ -22,6 +22,15 @@ export class MinimizedTripQueryHandler {
     });
   }
 
+  async listNewsFeed(userId: string): Promise<ITripMinimized[]> {
+    return this.TripsRepository.listNewsFeed(userId).then(trips => {
+      let allTrips = trips.map(trip => this.updateTripImageExternalUrl(trip));
+      allTrips = allTrips.filter(item => item.isDeleted != true);
+      allTrips.sort(this.compareTrip);
+      return allTrips;
+    });
+  }
+
   async getById(
     ownerId: string,
     tripId: string

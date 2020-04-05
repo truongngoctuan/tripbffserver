@@ -32,7 +32,7 @@ export class ServiceBus {
     const ownerId = event.ownerId;
 
     //the first subscriber consume our event
-    let state = await this.TripRepository.get(ownerId, tripId);
+    let state = await this.TripRepository.get(ownerId, tripId, ownerId);
     state = await this.reducer.updateState(state as ITrip, event);
 
     if (event.type == "TripCreated") {

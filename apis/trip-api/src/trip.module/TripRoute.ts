@@ -12,7 +12,8 @@ import {
   getMinimizedTripByIdAction,
   createTripAction,
   patchTripAction,
-  deleteTripAction
+  deleteTripAction,
+  listNewsFeedTripsAction
 } from "./actions/TripActions";
 import { joiTripSchema, joiMinimizedTripSchema, IdSchema } from "./JoiSchemas";
 
@@ -124,9 +125,10 @@ module.exports = {
       path: "/trips/{id}",
       handler: async function(request) {
         const tripId = request.params.id;
-        const userId = CUtils.getUserId(request);
-
-        return await getTripByIdAction(userId, tripId)
+        const createdById = request.query.createdById as string;
+        const loggedUserId = CUtils.getUserId(request);
+        
+        return await getTripByIdAction(loggedUserId, tripId, createdById)
         .then(trip => {
           return trip;
         });
@@ -162,5 +164,22 @@ module.exports = {
         }
       }
     });
+
+    server.route({
+      method: "GET",
+      path: "/newsFeed/trips",
+      handler: async request =>
+        await listNewsFeedTripsAction(CUtils.getUserId(request)),
+      options: {
+        auth: "simple",
+        tags: ["api"],
+        notes: ["get full list of trips"],
+        response: {
+          // todo setup date/moment validation correctly
+          // schema: joiMinimizedTripsSchema
+        }
+      }
+    });
+
   }
 };

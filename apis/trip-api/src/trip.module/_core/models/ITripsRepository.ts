@@ -20,4 +20,5 @@ export interface ITripsRepository {
   create: (ownerId: string, payload: ITripMinimized) => Promise<ITripMinimized>;
   update: (ownerId: string, payload: ITripMinimized) => Promise<void>;
   getById: (ownerId: string, tripId: string) => Promise<ITripMinimized | undefined>;
+  listNewsFeed: (userId: string) => Promise<Array<ITripMinimized>>;
 }

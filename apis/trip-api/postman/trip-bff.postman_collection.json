@@ -135,7 +135,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"aaa\",\n\t\"fromDate\": \"2020-01-01\",\n\t\"toDate\": \"2020-01-03\"\n}",
+							"raw": "{\n\t\"name\": \"aaa\",\n\t\"fromDate\": \"2020-01-01\",\n\t\"toDate\": \"2020-01-03\", \n\t\"isPublic\": \"true\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

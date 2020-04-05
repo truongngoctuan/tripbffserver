@@ -5,13 +5,13 @@ import { resolveImageUrlFromExternalStorageId, resolveThumbnailImageUrlFromExter
 export class TripQueryHandler {
   constructor(private TripRepository: ITripRepository) { }
 
-  async GetById(ownerId: string, id: string): Promise<ITrip | undefined> {
-    return this.TripRepository.get(ownerId, id)
+  async GetById(ownerId: string, id: string, createdById: string): Promise<ITrip | undefined> {
+    return this.TripRepository.get(ownerId, id, createdById)
       .then(trip => {
         if (!trip) return trip;
         return this.updateTripImageExternalUrl(trip);
       });
-  }
+  }  
 
   async list(ownerId: string): Promise<ITrip[]> {
     return this.TripRepository.list(ownerId)
