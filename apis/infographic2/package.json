@@ -17,7 +17,7 @@
     "watch-test": "npm run test -- --watchAll",
     "build": "tsc",
     "watch-build": "tsc -w",
-    "test-e2e": "node ./e2e/index.js",
+    "test-e2e": "node ./dist/e2e/index.js",
     "gen:all": "node ./dist/scripts/gen_all.js",
     "lint-full": "tsc --noEmit && eslint '*/**/*.{js,ts}' --quiet --fix",
     "lint": "tsc --noEmit && eslint {_services,scripts,configs}/**/*.{ts,js} --fix",

@@ -144,7 +144,7 @@ export class CanvasAdaptor {
         if (options.width && options.height) {
           const scaleWidth = options.width / width;
           const scaleHeight = options.height / height;
-          const scale = _.max([scaleWidth, scaleHeight]);
+          const scale = _.max([scaleWidth, scaleHeight]) as number;
           // console.log("scale", scale);
           raster.scale(scale);
 
