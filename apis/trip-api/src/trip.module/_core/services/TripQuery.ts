@@ -9,6 +9,14 @@ export class TripQueryHandler {
     return this.TripRepository.get(ownerId, id, createdById)
       .then(trip => {
         if (!trip) return trip;
+      
+        if (trip.infographics && trip.infographics.length > 0) {
+          let latestExportedInfographics = trip.infographics.filter(item => item.status === "EXPORTED");
+          
+          if (latestExportedInfographics.length > 1)
+              trip.latestExportedExternalStorageId = latestExportedInfographics[latestExportedInfographics.length - 1].externalStorageId;
+        }
+
         return this.updateTripImageExternalUrl(trip);
       });
   }  

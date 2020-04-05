@@ -70,6 +70,7 @@ export const joiTripSchema = Joi.object({
   infographics: Joi.array()
     .optional()
     .items(joiInfographicSchema),
+  latestExportedExternalStorageId: Joi.string().optional(),
   isDeleted: Joi.boolean(),
   createdById: Joi.string(),
   canContribute: Joi.boolean(),
