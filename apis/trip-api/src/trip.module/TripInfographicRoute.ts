@@ -221,7 +221,7 @@ module.exports = {
         validate: {
           params: Joi.object({
             tripId: Joi.required().description("the tripId for the todo item"),
-            infographicId: Joi.required().description("the id for the todo item"),
+            externalStorageId: Joi.required().description("the id for the todo item"),
           }),
         },
       },
