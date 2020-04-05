@@ -2,11 +2,11 @@
 
 const { registerFont } = require("canvas");
 import paperShim from "./paper-jsdom-canvas";
-import { Canvas, createCanvas } from "canvas";
+import { Canvas } from "canvas";
 // import paper from "paper";
-const fs = require("fs");
+import fs from "fs";
 // const path = require("path");
-const _ = require("lodash");
+import _ from "lodash";
 
 registerFont("./fonts/Pfennig.ttf", { family: "a" });
 registerFont("./fonts/Roboto-Regular.ttf", {
