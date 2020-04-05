@@ -35,7 +35,7 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            const queryResult = await tripQueryHandler.GetById(ownerId, tripId);
+            const queryResult = await tripQueryHandler.GetById(ownerId, tripId, ownerId);
             if (!queryResult) return Err("can't get data after import trip");
 
             // console.log(queryResult);
@@ -117,7 +117,7 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            const queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
+            const queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString(), ownerId);
             if (!queryResult) return Err("can't get data after import trip");
 
             // console.log(queryResult);
@@ -312,7 +312,7 @@ module.exports = {
         try {
           const tripId = request.params.id;
           const userId = CUtils.getUserId(request);
-          const queryResult = await tripQueryHandler.GetById(userId, tripId.toString());
+          const queryResult = await tripQueryHandler.GetById(userId, tripId.toString(), userId);
           if (!queryResult) return Err("can't get data after import trip");
           return queryResult;
 
@@ -486,7 +486,7 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            const queryResult = await tripQueryHandler.GetById(ownerId, tripId);
+            const queryResult = await tripQueryHandler.GetById(ownerId, tripId, ownerId);
             if (!queryResult) return Err("can't get data after update trip location image");
             return queryResult;
           }
@@ -578,7 +578,7 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            const queryResult = await tripQueryHandler.GetById(ownerId, tripId);
+            const queryResult = await tripQueryHandler.GetById(ownerId, tripId, ownerId);
             if (!queryResult) return Err("can't get data after import trip");
             const newLoc = queryResult.locations.find(loc => loc.locationId == locationId);
             console.log(newLoc && newLoc.images.length);

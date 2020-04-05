@@ -37,7 +37,8 @@ beforeEach(async () => {
     tripId: "tripId",
     name: "name",
     fromDate: moment("2019-01-01").toDate(),
-    toDate: moment("2019-01-10").toDate()
+    toDate: moment("2019-01-10").toDate(),
+    isPublic: true
   };
 
   await serviceBus.emit(event);
@@ -45,7 +46,7 @@ beforeEach(async () => {
 });
 
 it("create trip", async () => {
-  expect(await tripRepository.get("ownerId", "tripId"))
+  expect(await tripRepository.get("ownerId", "tripId", "ownerId"))
     .toMatchSnapshot();
 });
 
@@ -55,10 +56,11 @@ it("update trip name", async () => {
     ownerId: "ownerId",
     tripId: "tripId",
     name: "name 2",
+    isPublic: true
   };
   await serviceBus.emit(updateEvent);
 
-  expect(await tripRepository.get("ownerId", "tripId"))
+  expect(await tripRepository.get("ownerId", "tripId", "ownerId"))
     .toMatchSnapshot();
 });
 
@@ -82,7 +84,7 @@ test("import trip location", async () => {
   };
   await serviceBus.emit(importEvent);
 
-  expect(await tripRepository.get("ownerId", "tripId"))
+  expect(await tripRepository.get("ownerId", "tripId", "ownerId"))
     .toMatchSnapshot();
 });
 
@@ -111,7 +113,7 @@ test("import trip location with images", async () => {
   };
   await serviceBus.emit(importEvent);
 
-  const trip = await tripRepository.get("ownerId", "tripId");
+  const trip = await tripRepository.get("ownerId", "tripId", "ownerId");
   expect(trip).toBeDefined();
   const img = (trip as ITrip).locations[0].images[0];
   expect(img).toMatchSnapshot();
@@ -150,7 +152,7 @@ test("upload location image", async () => {
     externalStorageId: "guid01",
   };
   await serviceBus.emit(uploadImageEvent);
-  const trip = await tripRepository.get("ownerId", "tripId");
+  const trip = await tripRepository.get("ownerId", "tripId", "ownerId");
   expect(trip).toBeDefined();
   const img = (trip as ITrip).locations[0].images[0];
   expect(img).toMatchSnapshot();
@@ -189,7 +191,7 @@ test("favorite location image", async () => {
     isFavorite: true
   };
   await serviceBus.emit(uploadImageEvent);
-  const trip = await tripRepository.get("ownerId", "tripId");
+  const trip = await tripRepository.get("ownerId", "tripId", "ownerId");
   expect(trip).toBeDefined();
   const img = (trip as ITrip).locations[0].images[0];
   expect(img.isFavorite).toBe(true);
@@ -230,7 +232,7 @@ test("add a location image", async () => {
     time: moment("2019-01-02").toDate()
   };
   await serviceBus.emit(uploadImageEvent);
-  const trip = await tripRepository.get("ownerId", "tripId");
+  const trip = await tripRepository.get("ownerId", "tripId", "ownerId");
   expect(trip).toBeDefined();
   const location = (trip as ITrip).locations[0];
   expect(location.images).toMatchSnapshot();

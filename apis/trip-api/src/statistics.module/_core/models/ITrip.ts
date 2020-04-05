@@ -6,6 +6,7 @@ export interface ITrip {
   toDate: Date;
   infographics: Array<IInfographic>;
   isDeleted: boolean;
+  isPublic: boolean;
 }
 
 export interface IInfographic {

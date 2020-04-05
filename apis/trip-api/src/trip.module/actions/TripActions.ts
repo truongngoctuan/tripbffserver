@@ -21,12 +21,24 @@ export async function listTripsAction(
   return trips;
 }
 
+export async function listNewsFeedTripsAction(
+  userId: string
+): Promise<ITripMinimized[] | CommandResult> {
+  const trips = await minimizedTripQueryHandler.listNewsFeed(userId);
+
+  if (!trips) return Err("can't get data after create trip");
+
+  console.log("trips len ", trips.length);
+  return trips;
+}
+
 export async function getTripByIdAction(
   userId: string,
-  tripId: string
+  tripId: string,
+  createdById: string
 ): Promise<ITrip> {
   console.log("trip id :" + tripId);
-  const trip = await tripQueryHandler.GetById(userId, tripId);
+  const trip = await tripQueryHandler.GetById(userId, tripId, createdById);
   if (!trip) throw "trip not found";
   return trip;
 }
@@ -45,7 +57,8 @@ export async function createTripAction(
   ownerId: string,
   name: string,
   fromDate: string,
-  toDate: string
+  toDate: string,
+  isPublic: boolean
 ): Promise<string | CommandResult | string[] | undefined> { // todo refactor return commandResult.errors
   console.log("trip name :" + name);
   console.log("trip from date:" + fromDate);
@@ -59,13 +72,15 @@ export async function createTripAction(
     tripId: tripId.toString(),
     name,
     fromDate: moment(fromDate).toDate(),
-    toDate: moment(toDate).toDate()
+    toDate: moment(toDate).toDate(),
+    isPublic
   });
 
   if (commandResult.isSucceed) {
     const queryResult = await tripQueryHandler.GetById(
       ownerId,
-      tripId.toString()
+      tripId.toString(),
+      ownerId
     );
 
     if (!queryResult) return Err("can't get data after create trip");
@@ -80,7 +95,8 @@ export async function patchTripAction(
   tripId: string,
   name: string,
   fromDate: string,
-  toDate: string
+  toDate: string,
+  isPublic: boolean
 ): Promise<ITrip | CommandResult | string[] | undefined> { // todo refactor return commandResult.errors
   console.log("trip name", name);
   console.log("trip from date:", fromDate);
@@ -92,13 +108,15 @@ export async function patchTripAction(
     tripId,
     name,
     fromDate: moment(fromDate).toDate(),
-    toDate: moment(toDate).toDate()
+    toDate: moment(toDate).toDate(),
+    isPublic
   });
 
   if (commandResult.isSucceed) {
     const queryResult = await tripQueryHandler.GetById(
       ownerId,
-      tripId.toString()
+      tripId.toString(),
+      ownerId
     );
 
     if (!queryResult) return Err("can't get data after patch trip");

@@ -13,6 +13,7 @@ export interface ITripModel {
   infographics?: Array<IInfographicModel>;
   isDeleted: boolean;
   createdDate: Date;
+  isPublic: boolean;
 }
 
 export interface ITripLocationModel {

@@ -51,7 +51,10 @@ export class TripReducers {
       toDate: moment().toDate(),
       locations: [],
       infographics: [],
-      isDeleted: false
+      isDeleted: false,
+      createdById: "",
+      canContribute: false,
+      isPublic: true
     };
 
     events.forEach((event) => {
@@ -117,7 +120,10 @@ export class TripReducers {
       toDate: command.toDate,
       locations: [],
       infographics: [],
-      isDeleted: false
+      isDeleted: false,
+      createdById: command.ownerId,
+      canContribute: false,
+      isPublic: command.isPublic
     };
   }
 
@@ -129,7 +135,8 @@ export class TripReducers {
       ...prevState,
       name: command.name,
       fromDate: command.fromDate,
-      toDate: command.toDate
+      toDate: command.toDate,
+      isPublic: command.isPublic
     };
   }
 

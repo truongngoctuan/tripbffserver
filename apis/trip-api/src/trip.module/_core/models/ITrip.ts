@@ -6,6 +6,9 @@ export interface ITrip {
   locations: Array<ITripLocation>;
   infographics: Array<IInfographic>;
   isDeleted: boolean;
+  createdById: string;
+  canContribute: boolean;
+  isPublic: boolean;
 }
 
 export interface ITripLocation {

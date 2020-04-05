@@ -10,7 +10,7 @@ export class TripRepository implements ITripRepository {
 
   }
 
-  toTripDto(o: ITripModel): ITrip {
+  toTripDto(o: ITripModel, ownerId: string, createdById: string): ITrip {
     return {
       tripId: o.tripId,
       name: o.name,
@@ -66,7 +66,10 @@ export class TripRepository implements ITripRepository {
           status: infographic.status as InfographicStatus
         };
       }),
-      isDeleted: o.isDeleted
+      isDeleted: o.isDeleted,
+      createdById: createdById,
+      canContribute: ownerId == createdById,
+      isPublic: o.isPublic
     };
   }
 
@@ -78,11 +81,11 @@ export class TripRepository implements ITripRepository {
     const userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) return [];
 
-    return userTrips.trips.map(item => this.toTripDto(item));
+    return userTrips.trips.map(item => this.toTripDto(item, ownerId, ownerId));
   }
 
   public async create(ownerId: string, payload: ITrip) {
-    const { tripId: id, name, fromDate, toDate, isDeleted } = payload;
+    const { tripId: id, name, fromDate, toDate, isDeleted , isPublic} = payload;
 
     const trip: ITripModel = {
       tripId: id,
@@ -90,7 +93,8 @@ export class TripRepository implements ITripRepository {
       fromDate: moment(fromDate).toDate(),
       toDate: moment(toDate).toDate(),
       isDeleted: isDeleted,
-      createdDate: new Date()
+      createdDate: new Date(),
+      isPublic: isPublic
     };
     let userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) {
@@ -104,7 +108,7 @@ export class TripRepository implements ITripRepository {
 
     const tripModel = userTrips.trips[userTrips.trips.length - 1];
 
-    return this.toTripDto(tripModel);
+    return this.toTripDto(tripModel, ownerId, ownerId);
   }
 
   public async update(ownerId: string, payload: ITrip) {
@@ -117,6 +121,7 @@ export class TripRepository implements ITripRepository {
     trip.name = payload.name;
     trip.fromDate = payload.fromDate;
     trip.toDate = payload.toDate;
+    trip.isPublic = payload.isPublic;
     trip.locations = _.map(payload.locations, loc => ({
       locationId: loc.locationId,
       name: loc.name,
@@ -138,15 +143,15 @@ export class TripRepository implements ITripRepository {
     await userTrips.save();
   }
 
-  public async get(ownerId: string, id: string) {
-    const trip = await this.getTripModel(ownerId, id);
+  public async get(ownerId: string, id: string, createdById: string) {
+    const trip = await this.getTripModel(createdById, id);
     if (!trip) return undefined;
     
-    return this.toTripDto(trip);
+    return this.toTripDto(trip, ownerId, createdById);
   }
 
-  async getTripModel(ownerId: string, id: string) {
-    const userTrips = await this.getUserTrips(ownerId);
+  async getTripModel(createdById: string, id: string) {
+    const userTrips = await this.getUserTrips(createdById);
     
     if (!userTrips) return undefined;
 

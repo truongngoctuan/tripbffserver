@@ -62,7 +62,8 @@ const TripSchema = new Schema({
     }
   ],
   isDeleted: Boolean,
-  createdDate: Date
+  createdDate: Date,
+  isPublic: Boolean
 });
 
 export const UserTripSchema = new Schema({

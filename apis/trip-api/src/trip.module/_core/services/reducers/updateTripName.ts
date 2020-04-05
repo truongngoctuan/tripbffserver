@@ -7,10 +7,11 @@ export function updateTripName(
   command: TripNameUpdatedEvent
 ): ITrip {
 
-  const { name } = command;
+  const { name, isPublic } = command;
 
   return {
     ...prevState,
     name: name,
+    isPublic: isPublic
   };
 }
