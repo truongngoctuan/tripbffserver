@@ -7,9 +7,9 @@ const strokeColorByLevel = {
   1: "green",
   2: "red",
   3: "blue",
-  4: "green"
+  4: "green",
 };
-export const componentContainer: RendererFunction = function(
+export const componentContainer: RendererFunction = function (
   canvasAdaptor,
   blockConfig: InfographicConfig.ContainerBlock,
   cursor
@@ -32,7 +32,7 @@ export const componentContainer: RendererFunction = function(
     x: cursor.x,
     y: cursor.y,
     width: width ? width : cursor.width,
-    height: height ? height : cursor.height
+    height: height ? height : cursor.height,
   };
 
   if (blockConfig.positioning) {
@@ -60,7 +60,7 @@ function getRelativeBounds(bounds, positioning) {
   let x = bounds.x;
   let y = bounds.y;
   let width = bounds.width;
-  let height = bounds.height;
+  const height = bounds.height;
 
   if (!positioning) return { x, y, width, height };
 

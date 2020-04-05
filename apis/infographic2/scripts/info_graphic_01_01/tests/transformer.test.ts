@@ -14,15 +14,15 @@ describe("node transformer", () => {
           type: "container",
           backgroundColor: "grey",
           height: 100,
-          blocks: []
+          blocks: [],
         },
         {
           type: "container",
           backgroundColor: "green",
           height: 1000,
-          blocks: []
-        }
-      ]
+          blocks: [],
+        },
+      ],
     };
 
     const data = {};
@@ -46,7 +46,7 @@ describe("node transformer", () => {
       width: 1280,
       backgroundColor: "black",
       type: "container2",
-      blocks: []
+      blocks: [],
     };
 
     const data = {};
@@ -72,13 +72,13 @@ describe("node transformer", () => {
         {
           type: "location-image",
           height: 100,
-          width: 100
-        }
-      ]
+          width: 100,
+        },
+      ],
     };
 
     const data = {
-      locations: [{}]
+      locations: [{}],
     };
 
     // Act
@@ -108,21 +108,21 @@ describe("node transformer", () => {
                 {
                   type: "location-image",
                   height: 100,
-                  width: 100
-                }
-              ]
-            }
-          ]
+                  width: 100,
+                },
+              ],
+            },
+          ],
         },
         {
           type: "container",
-          blocks: []
-        }
-      ]
+          blocks: [],
+        },
+      ],
     };
 
     const data = {
-      locations: [{}]
+      locations: [{}],
     };
 
     // Act

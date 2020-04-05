@@ -2,39 +2,39 @@
 
 const { registerFont } = require("canvas");
 import paperShim from "./paper-jsdom-canvas";
-import { Canvas, createCanvas } from "canvas";
+import { Canvas } from "canvas";
 // import paper from "paper";
-const fs = require("fs");
+import fs from "fs";
 // const path = require("path");
-const _ = require("lodash");
+import _ from "lodash";
 
 registerFont("./fonts/Pfennig.ttf", { family: "a" });
 registerFont("./fonts/Roboto-Regular.ttf", {
-  family: "Roboto"
+  family: "Roboto",
 });
 registerFont("./fonts/Roboto-Bold.ttf", {
   family: "Roboto",
   style: "normal",
-  weight: "bold"
+  weight: "bold",
 });
 
 registerFont("./fonts/Nunito-Regular.ttf", {
-  family: "Nunito"
+  family: "Nunito",
 });
 
 registerFont("./fonts/Nunito-SemiBoldItalic.ttf", {
   family: "Nunito",
   weight: "600",
-  style: "italic"
+  style: "italic",
 });
 
 registerFont("./fonts/Nunito-Bold.ttf", {
   family: "Nunito",
-  weight: "bold"
+  weight: "bold",
 });
 registerFont("./fonts/Nunito-Black.ttf", {
   family: "Nunito",
-  weight: "900"
+  weight: "900",
 });
 
 // todo: add this into node_modules/paper/dist/node/canvas.js
@@ -51,7 +51,7 @@ export class CanvasAdaptor {
 
   constructor(w = 300, h = 300) {
     //use the canvas in paper so that we can magically register font
-    let canvas: Canvas = (paperShim as any).Canvas(w, h);
+    const canvas: Canvas = (paperShim as any).Canvas(w, h);
     // var canvas: Canvas = createCanvas(w, h);
     // const ctx = canvas.getContext("2d");
     // ctx.fillStyle = "white";
@@ -80,7 +80,7 @@ export class CanvasAdaptor {
   }
 
   getCanvasViewElement() {
-    return paperShim.view.element as any as Canvas;
+    return (paperShim.view.element as any) as Canvas;
   }
 
   draw() {
@@ -93,14 +93,14 @@ export class CanvasAdaptor {
 
   toBufferJpeg() {
     return this.getCanvasViewElement().toBuffer("image/jpeg", {
-      quality: 0.9
+      quality: 0.9,
     });
   }
 
   toBufferPng() {
     return this.getCanvasViewElement().toBuffer("image/png", {
       compressionLevel: 3,
-      filters: this.canvas.PNG_FILTER_NONE
+      filters: this.canvas.PNG_FILTER_NONE,
     });
   }
 
@@ -116,10 +116,15 @@ export class CanvasAdaptor {
   async drawImage(
     source,
     position,
-    options: { width?: number; height?: number; clipPath?: string; rotate?: number } = {}
+    options: {
+      width?: number;
+      height?: number;
+      clipPath?: string;
+      rotate?: number;
+    } = {}
   ) {
     return new Promise((resolve, reject) => {
-      let raster = source.startsWith("http")
+      const raster = source.startsWith("http")
         ? new paperShim.Raster(source)
         : new paperShim.Raster(loadLocalImage(source));
 
@@ -128,7 +133,7 @@ export class CanvasAdaptor {
       const startDownload = new Date().getTime();
       // console.log(`image ${source} loading`)
 
-      raster.onLoad = function(e) {
+      raster.onLoad = function (e) {
         // console.log("image loaded");
         const { width, height } = raster;
         raster.position = new paperShim.Point(
@@ -154,7 +159,7 @@ export class CanvasAdaptor {
           group = new paperShim.Group();
           if (!options.clipPath) {
             // Use clipMask to create a custom polygon clip mask:
-            let path = new paperShim.Path.Rectangle(
+            const path = new paperShim.Path.Rectangle(
               new paperShim.Point(position.x, position.y),
               new paperShim.Size(options.width, options.height)
             );
@@ -164,7 +169,7 @@ export class CanvasAdaptor {
             group.addChild(raster);
             group.addChild(path);
           } else {
-            let path2 = new paperShim.Path(options.clipPath);
+            const path2 = new paperShim.Path(options.clipPath);
             path2.position = new paperShim.Point(
               raster.position.x,
               raster.position.y
@@ -181,7 +186,7 @@ export class CanvasAdaptor {
             path2.style = {
               ...path2.style,
               strokeColor: new paperShim.Color("#f00"),
-              strokeWidth: 2
+              strokeWidth: 2,
             };
 
             path2.clipMask = true;
@@ -195,14 +200,14 @@ export class CanvasAdaptor {
         if (options.rotate) {
           group.rotate(options.rotate);
         }
-        
+
         resolve({
           width: group ? group.bounds.width : raster.bounds.width,
-          height: group ? group.bounds.height : raster.bounds.height
+          height: group ? group.bounds.height : raster.bounds.height,
         });
       };
 
-      raster.onError = err => {
+      raster.onError = (err) => {
         console.log("error on load image", err);
         reject(err);
       };
@@ -210,16 +215,16 @@ export class CanvasAdaptor {
   }
 
   drawBackground(backgroundColor) {
-    let rect = new paperShim.Path.Rectangle({
+    const rect = new paperShim.Path.Rectangle({
       point: [0, 0],
-      size: paperShim.view.size
+      size: paperShim.view.size,
     });
     rect.sendToBack();
     rect.fillColor = backgroundColor;
   }
 
   drawRect(options) {
-    let rect = new paperShim.Path.Rectangle(
+    const rect = new paperShim.Path.Rectangle(
       new paperShim.Point(options.x, options.y),
       new paperShim.Size(options.width, options.height)
     );
@@ -227,8 +232,8 @@ export class CanvasAdaptor {
   }
 
   _drawText(text, position, options) {
-    let fontSize = parseInt((options.fontSize || "30px").replace("px", ""));
-    let textNode = new paperShim.PointText(
+    const fontSize = parseInt((options.fontSize || "30px").replace("px", ""));
+    const textNode = new paperShim.PointText(
       new paperShim.Point(position.x, position.y + fontSize)
     );
 
@@ -238,7 +243,7 @@ export class CanvasAdaptor {
       fontSize,
       fillColor: options.color,
       fontFamily: options.font,
-      fontWeight: options.fontWeight
+      fontWeight: options.fontWeight,
     };
 
     return textNode;
@@ -249,7 +254,7 @@ export class CanvasAdaptor {
       return this._drawTextWrap(text, position, options);
     }
 
-    let textNode = this._drawText(text, position, options);
+    const textNode = this._drawText(text, position, options);
     textNode.content = text;
 
     // handle textAnchor manually
@@ -260,19 +265,16 @@ export class CanvasAdaptor {
         x: textNode.bounds.x,
         y: textNode.bounds.y,
         width: textNode.bounds.width,
-        height: textNode.bounds.height
-      }
+        height: textNode.bounds.height,
+      },
     };
   }
 
   _drawTextWrap(text, position, options) {
-    let textNode = this._drawText(text, position, options);
+    const textNode = this._drawText(text, position, options);
     // textNode.content = text;
     const width = options.wrapNumber;
-    let words = text
-      .trim()
-      .split(/\s+/)
-      .reverse();
+    const words = text.trim().split(/\s+/).reverse();
     let previousLine = "";
     let word = "";
 
@@ -297,8 +299,8 @@ export class CanvasAdaptor {
         x: textNode.bounds.x,
         y: textNode.bounds.y,
         width: textNode.bounds.width,
-        height: textNode.bounds.height
-      }
+        height: textNode.bounds.height,
+      },
     };
   }
 
@@ -364,36 +366,36 @@ export class CanvasAdaptor {
   //   });
   // }
   drawLine(options) {
-    let line = new paperShim.Path.Line(
+    const line = new paperShim.Path.Line(
       new paperShim.Point(options.x1, options.y1),
       new paperShim.Point(options.x2, options.y2)
     );
     line.style = {
       ...line.style,
       strokeColor: options.strokeColor,
-      strokeWidth: options.strokeWidth
+      strokeWidth: options.strokeWidth,
     };
   }
   drawCircle(options) {
-    let circle = new paperShim.Path.Circle(
+    const circle = new paperShim.Path.Circle(
       new paperShim.Point(options.x, options.y),
       options.r
     );
     circle.style = {
       ...circle.style,
-      fillColor: options.fillColor
+      fillColor: options.fillColor,
     };
   }
 }
 
 function loadLocalImage(file) {
   // read binary data
-  let bitmap = fs.readFileSync(file);
+  const bitmap = fs.readFileSync(file);
   // convert binary data to base64 encoded string
-  let stringBase64 = Buffer.from(bitmap).toString("base64");
+  const stringBase64 = Buffer.from(bitmap).toString("base64");
   return "data:image/png;base64," + stringBase64;
 }
 
 module.exports = {
-  CanvasAdaptor
+  CanvasAdaptor,
 };

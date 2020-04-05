@@ -18,15 +18,15 @@ async function actionExecAsync(data) {
     toDate,
     fromDate,
     locations,
-    locale
+    locale,
   } = JSON.parse(data.message);
 
-  var trip = {
+  const trip = {
     name,
     fromDate,
     toDate,
     locations,
-    locale
+    locale,
   };
 
   const buf = await exporter.exportInfo(trip);
@@ -44,7 +44,7 @@ async function uploadResult(ownerId, tripId, infographicId, buf) {
     const preUploadUrl = `${BASE_URL}/trips/${tripId}/infographics/${infographicId}/preUploadImage?mimeType=${mimeType}`;
     const { signedRequest, fullPath } = await axios
       .get(preUploadUrl)
-      .then(res => res.data);
+      .then((res) => res.data);
     console.log(
       `pre uploaded file in ${new Date().getTime() - startPreUpload} ms`
     );
@@ -59,7 +59,7 @@ async function uploadResult(ownerId, tripId, infographicId, buf) {
     const url = `${BASE_URL}/trips/${tripId}/infographics/${infographicId}`;
     await axios.put(url, {
       ownerId,
-      fullPath
+      fullPath,
     });
   } catch (err) {
     console.log("ERR on upload file", err);

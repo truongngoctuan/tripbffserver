@@ -5,7 +5,10 @@ export type Transformer = NodeTransformer | LeafTransformer;
 export type NodeTransformer = {
   type: "node";
   // focus on transform original tree/node to a more detailed tree/node
-  preHandler: (c: InfographicConfig.TripBlock, trip) => InfographicConfig.TripBlock;
+  preHandler: (
+    c: InfographicConfig.TripBlock,
+    trip
+  ) => InfographicConfig.TripBlock;
   // transform current node, update cursor (currently only location idx)
   postHandler: (
     c: InfographicConfig.TripBlock,

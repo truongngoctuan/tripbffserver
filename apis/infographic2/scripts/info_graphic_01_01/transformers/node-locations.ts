@@ -18,27 +18,25 @@ export const nodeLocations: NodeTransformer = {
         childBlockConfigs.push(_.cloneDeep(locConfig));
       }
     } else {
-      childBlockConfigs = _.cloneDeep(containerBlockConfig.blocks.slice(0, nLoc));
+      childBlockConfigs = _.cloneDeep(
+        containerBlockConfig.blocks.slice(0, nLoc)
+      );
     }
 
     return {
       ...c,
-      blocks: childBlockConfigs
+      blocks: childBlockConfigs,
     } as InfographicConfig.Block;
   },
-  postHandler: (
-    c,
-    children,
-    cursor
-  ) => {
+  postHandler: (c, children, cursor) => {
     const b = c as InfographicConfig.LocationsBlocks;
     return {
       block: overrideMissingHeight({
         ...b,
         type: "container",
-        blocks: children
+        blocks: children,
       } as InfographicConfig.Block),
-      cursor
+      cursor,
     };
-  }
+  },
 };

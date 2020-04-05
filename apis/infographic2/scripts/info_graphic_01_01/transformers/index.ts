@@ -13,7 +13,7 @@ export function preProcessInfographicConfig(
 ) {
   const defaultCursor: CursorTransformer = {
     level: 0,
-    location: 0
+    location: 0,
   };
 
   return processBlock(config, trip, defaultCursor).block;
@@ -24,7 +24,7 @@ const transformers: { [id: string]: Transformer } = {
   locations: nodeLocations,
   location: nodeLocation,
   text: leafText,
-  "location-image": leafLocationImage
+  "location-image": leafLocationImage,
 };
 
 export function processBlock(
@@ -40,16 +40,17 @@ export function processBlock(
   }
 
   let nextCursor = _.merge({}, cursor, { level: cursor.level + 1 });
-  let processedBlockConfigs: InfographicConfig.Block[] = [];
+  const processedBlockConfigs: InfographicConfig.Block[] = [];
   if (!_.isEmpty((blockConfig as InfographicConfig.ContainerBlock).blocks)) {
     const containerBlockConfig = blockConfig as InfographicConfig.ContainerBlock;
 
-    let childrenBlocks: InfographicConfig.Block[] = containerBlockConfig.blocks;
+    const childrenBlocks: InfographicConfig.Block[] =
+      containerBlockConfig.blocks;
 
     for (let i = 0; i < childrenBlocks.length; i++) {
-      let childBlock = childrenBlocks[i];
+      const childBlock = childrenBlocks[i];
 
-      let processResult = processBlock(childBlock, trip, nextCursor);
+      const processResult = processBlock(childBlock, trip, nextCursor);
       processedBlockConfigs.push(processResult.block);
       nextCursor = processResult.cursor;
     }
@@ -66,20 +67,20 @@ export function processBlock(
 
       return {
         block: postHandlerResult.block,
-        cursor: _.merge({}, cursor, { location: nextCursor.location })
+        cursor: _.merge({}, cursor, { location: nextCursor.location }),
       };
     }
 
     if (transformer.type == "leaf") {
       return {
         block: transformer.handler(blockConfig, trip, cursor),
-        cursor: _.merge({}, cursor, { location: nextCursor.location })
+        cursor: _.merge({}, cursor, { location: nextCursor.location }),
       };
     }
   }
 
   return {
     block: blockConfig as InfographicConfig.Block,
-    cursor: _.merge({}, cursor, { location: nextCursor.location })
+    cursor: _.merge({}, cursor, { location: nextCursor.location }),
   };
 }

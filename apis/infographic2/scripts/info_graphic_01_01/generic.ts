@@ -55,15 +55,15 @@ async function renderBlock(
     // preNodeContainer
     nextCursor = await executePlugins(b.type, canvasAdaptor, b, cursor);
 
-    let childrenBlocks: InfographicConfig.Block[] = b.blocks;
+    const childrenBlocks: InfographicConfig.Block[] = b.blocks;
     for (let i = 0; i < childrenBlocks.length; i++) {
-      let childBlock = childrenBlocks[i];
+      const childBlock = childrenBlocks[i];
 
-      let next = await renderBlock(
+      const next = await renderBlock(
         canvasAdaptor,
         childBlock,
         _.assign({}, nextCursor, {
-          level: cursor.level + 1
+          level: cursor.level + 1,
         })
       );
 
@@ -75,12 +75,12 @@ async function renderBlock(
         //override cursor
         if (childBlock["height"]) {
           nextCursor = _.merge({}, nextCursor, {
-            y: nextCursor.y + childBlock["height"]
+            y: nextCursor.y + childBlock["height"],
           });
         } else {
           if (!_.isEmpty(next)) {
             nextCursor = _.merge({}, nextCursor, {
-              y: next.y
+              y: next.y,
             });
           }
         }
@@ -94,7 +94,7 @@ async function renderBlock(
   if (
     _.findIndex(
       ["locations", "location", "text", "line", "circle", "path", "svg"],
-      type => b.type === type
+      (type) => b.type === type
     ) !== -1
   ) {
     return await executePlugins(b.type, canvasAdaptor, b, nextCursor);
@@ -123,7 +123,7 @@ export async function renderInfographic(
     y: 0,
     level: 0,
     width: infographicConfig.width ? infographicConfig.width : 0,
-    height: 0
+    height: 0,
   };
 
   const finalCursor: Cursor = await renderBlock(

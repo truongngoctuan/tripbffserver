@@ -7,16 +7,16 @@ export const leafLocationImage: LeafTransformer = {
   handler: (c, trip, cursor) => {
     const locationImageNode = c as InfographicConfig.LocationImageBlock;
 
-    let imgUri =
-    trip.locations[cursor.location].signedUrl &&
-    !_.isEmpty(trip.locations[cursor.location].signedUrl)
-      ? trip.locations[cursor.location].signedUrl
-      : "./data/images/EmptyImage01.jpg";
+    const imgUri =
+      trip.locations[cursor.location].signedUrl &&
+      !_.isEmpty(trip.locations[cursor.location].signedUrl)
+        ? trip.locations[cursor.location].signedUrl
+        : "./data/images/EmptyImage01.jpg";
 
     return {
       ...c,
       type: "image",
-      url: imgUri
+      url: imgUri,
     } as InfographicConfig.Block;
-  }
+  },
 };

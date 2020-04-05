@@ -8,9 +8,9 @@ export const leafText: LeafTransformer = {
 
     return {
       ...c,
-      text: getText(textNode, trip, cursor)
+      text: getText(textNode, trip, cursor),
     } as InfographicConfig.Block;
-  }
+  },
 };
 
 const commonFunc = require("../../commonFunc");
@@ -20,7 +20,7 @@ function capitalizeFirstLetter(str: string) {
 }
 
 function getText(blockConfig: InfographicConfig.TextBlock, trip, cursor) {
-  let feelingLabel = commonFunc.getFeelingLabel(trip.locale);
+  const feelingLabel = commonFunc.getFeelingLabel(trip.locale);
 
   let location = trip.locations[cursor.location],
     locationName = capitalizeFirstLetter(location.name) + ".",
@@ -59,7 +59,7 @@ function getText(blockConfig: InfographicConfig.TextBlock, trip, cursor) {
     text = trip.name;
   }
   if (text === "{{trip.info}}") {
-    let numberOfDays = trip.numberOfDays,
+    const numberOfDays = trip.numberOfDays,
       numberOfLocations = trip.locations.length,
       dayLabel = commonFunc.getDayLabel(trip.locale, numberOfDays),
       locationLabel = commonFunc.getLocationLabel(
@@ -67,7 +67,7 @@ function getText(blockConfig: InfographicConfig.TextBlock, trip, cursor) {
         numberOfLocations
       );
 
-    let dayText = " " + dayLabel + ", ",
+    const dayText = " " + dayLabel + ", ",
       locationText = " " + locationLabel,
       basicTripInfo = numberOfDays + dayText + numberOfLocations + locationText;
 

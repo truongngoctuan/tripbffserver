@@ -1,23 +1,20 @@
-const {
+import {
   LOCALE_EN,
-
   FEELING_LABEL_EN,
   FEELING_LABEL_VI,
-
   DAYS_LABEL_EN,
   DAY_LABEL_EN,
   DAY_LABEL_VI,
-
   LOCATION_LABEL_EN,
   LOCATION_LABEL_VI,
-  LOCATIONS_LABEL_EN
-} = require("../configs/constants");
+  LOCATIONS_LABEL_EN,
+} from "../configs/constants";
 
-function getFeelingLabel(locale) {
+export function getFeelingLabel(locale: string): string {
   return locale == LOCALE_EN ? FEELING_LABEL_EN : FEELING_LABEL_VI;
 }
 
-function getDayLabel(locale, numberOfDays) {
+export function getDayLabel(locale: string, numberOfDays: number): string {
   let dayLabel = "";
 
   if (numberOfDays > 1) {
@@ -29,7 +26,10 @@ function getDayLabel(locale, numberOfDays) {
   return dayLabel;
 }
 
-function getLocationLabel(locale, numberOfLocations) {
+export function getLocationLabel(
+  locale: string,
+  numberOfLocations: number
+): string {
   let locationLabel = "";
 
   if (numberOfLocations > 1) {
@@ -41,9 +41,3 @@ function getLocationLabel(locale, numberOfLocations) {
 
   return locationLabel;
 }
-
-module.exports = {
-  getFeelingLabel: getFeelingLabel,
-  getDayLabel: getDayLabel,
-  getLocationLabel: getLocationLabel
-};

@@ -2,7 +2,7 @@ import { InfographicConfig } from "../../../configs/index";
 import { getRelativePosition } from "./utils";
 import { RendererFunction } from "./typings";
 
-export const componentCircle: RendererFunction = function(
+export const componentCircle: RendererFunction = function (
   canvasAdaptor,
   blockConfig: InfographicConfig.CircleBlock,
   cursor
@@ -15,7 +15,7 @@ export const componentCircle: RendererFunction = function(
     x: newXY.x,
     y: newXY.y,
     r,
-    fillColor
+    fillColor,
   });
 
   return cursor;
