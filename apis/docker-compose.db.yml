@@ -10,7 +10,7 @@ services:
       # networks:
       #   - api_network
       volumes:
-        - ../../data/db-mongo:/data/db
+        # - ../../data/db-mongo:/data/db
         - ./dockers/mongo/mongod.conf:/etc/mongod.conf
       # command: mongod --dbpath /data/db
   redis:

@@ -1,9 +1,9 @@
 require("dotenv").config(); // red config from .env file
 
-const exporter = require("./chrome-generator");
-const consumer = require("./_services/consumer-worker");
-const fileUploader = require("./_services/upload-file");
-const axios = require("axios");
+import { exportInfo } from "./chrome-generator";
+import consumer from "./_services/consumer-worker";
+import fileUploader from "./_services/upload-file";
+import axios from "axios";
 
 //todo put it into env file
 const BASE_URL = `http://${process.env.TRIP_API_HOST}:${process.env.TRIP_API_PORT}`;
@@ -29,7 +29,7 @@ async function actionExecAsync(data) {
     locale,
   };
 
-  const buf = await exporter.exportInfo(trip);
+  const buf = await exportInfo(trip);
 
   await uploadResult(ownerId, tripId, infographicId, buf);
 }
@@ -70,5 +70,3 @@ async function uploadResult(ownerId, tripId, infographicId, buf) {
 (async () => {
   consumer.receiveMessage(actionExecAsync);
 })();
-
-return;
