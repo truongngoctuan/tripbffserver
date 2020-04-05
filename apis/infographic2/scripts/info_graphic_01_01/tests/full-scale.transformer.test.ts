@@ -1,15 +1,15 @@
 import { InfographicConfig } from "../../../configs";
 import { processBlock } from "../transformers";
 import {
-  config_01_01,
-  config_01_02,
-  config_01_others,
-} from "../../../configs/info_graphic_01_01/config";
+  config01Location,
+  config02Locations,
+  configNLocations,
+} from "../../../configs/01-old-design/config";
 
 describe("complex transformer", () => {
   test("complex configs for 1 location", () => {
     //Arrange
-    const config: InfographicConfig.TripInfographic = config_01_01;
+    const config: InfographicConfig.TripInfographic = config01Location;
 
     const data = {
       name: " Chuyến đi đầu tiên trên TripBFF",
@@ -42,7 +42,7 @@ describe("complex transformer", () => {
 
   test("complex configs for 2 locations", () => {
     //Arrange
-    const config: InfographicConfig.TripInfographic = config_01_02;
+    const config: InfographicConfig.TripInfographic = config02Locations;
 
     const data = {
       name: " Chuyến đi đầu tiên trên TripBFF",
@@ -85,7 +85,7 @@ describe("complex transformer", () => {
 
   test("complex configs for n locations", () => {
     //Arrange
-    const config: InfographicConfig.TripInfographic = config_01_others;
+    const config: InfographicConfig.TripInfographic = configNLocations;
 
     const data = {
       name: " Chuyến đi đầu tiên trên TripBFF",

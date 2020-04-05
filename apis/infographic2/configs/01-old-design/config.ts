@@ -1,6 +1,6 @@
 import { InfographicConfig } from "../index";
 
-export const config_01_01: InfographicConfig.TripInfographic = {
+export const config01Location: InfographicConfig.TripInfographic = {
   width: 1280,
   // height: 1280 + 300,
   backgroundColor: "#e3d1a2",
@@ -80,7 +80,7 @@ export const config_01_01: InfographicConfig.TripInfographic = {
   ],
 };
 
-export const config_01_02: InfographicConfig.TripInfographic = {
+export const config02Locations: InfographicConfig.TripInfographic = {
   width: 1280,
   backgroundColor: "rgb(254, 255, 246)",
   type: "container",
@@ -269,7 +269,7 @@ export const config_01_02: InfographicConfig.TripInfographic = {
   ],
 };
 
-export const config_01_others: InfographicConfig.TripInfographic = {
+export const configNLocations: InfographicConfig.TripInfographic = {
   width: 2060,
   backgroundColor: "#e3d1a2",
   type: "container",

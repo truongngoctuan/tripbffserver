@@ -1,6 +1,6 @@
 import { InfographicConfig } from "../index";
 
-export const config_01_01: InfographicConfig.TripInfographic = {
+export const config01Location: InfographicConfig.TripInfographic = {
   width: 1280,
   height: 1280,
   backgroundColor: "green",
@@ -15,7 +15,7 @@ export const config_01_01: InfographicConfig.TripInfographic = {
     // background whole location
     {
       type: "svg",
-      url: "./configs/info_graphic_01_01/images/location-background.svg",
+      url: "./configs/02-new-design/images/location-background.svg",
       positioning: {
         top: 1017 - 48,
       },
@@ -30,8 +30,7 @@ export const config_01_01: InfographicConfig.TripInfographic = {
         // background location name
         {
           type: "svg",
-          url:
-            "./configs/info_graphic_01_01/images/location-name-background.svg",
+          url: "./configs/02-new-design/images/location-name-background.svg",
           shadowOffset: {
             x: 0,
             y: 4,
@@ -72,7 +71,7 @@ export const config_01_01: InfographicConfig.TripInfographic = {
     },
     {
       type: "svg",
-      url: "./configs/info_graphic_01_01/images/location.svg",
+      url: "./configs/02-new-design/images/location.svg",
       positioning: {
         top: 836,
         left: 48,
@@ -87,7 +86,7 @@ export const config_01_01: InfographicConfig.TripInfographic = {
       blocks: [
         {
           type: "svg",
-          url: "./configs/info_graphic_01_01/images/star.svg",
+          url: "./configs/02-new-design/images/star.svg",
         },
         {
           // location activity
@@ -114,7 +113,7 @@ export const config_01_01: InfographicConfig.TripInfographic = {
       blocks: [
         {
           type: "svg",
-          url: "./configs/info_graphic_01_01/images/smile.svg",
+          url: "./configs/02-new-design/images/smile.svg",
         },
         {
           // location activity
@@ -171,7 +170,7 @@ const locationDetailsChildren02: InfographicConfig.Block[] = [
     blocks: [
       {
         type: "svg",
-        url: "./configs/info_graphic_01_01/images/02-location-n-smile-icon.svg",
+        url: "./configs/02-new-design/images/02-location-n-smile-icon.svg",
       },
       {
         // location activity
@@ -198,7 +197,7 @@ const locationDetailsChildren02: InfographicConfig.Block[] = [
     blocks: [
       {
         type: "svg",
-        url: "./configs/info_graphic_01_01/images/02-location-n-like-icon.svg",
+        url: "./configs/02-new-design/images/02-location-n-like-icon.svg",
       },
       {
         // location activity
@@ -218,7 +217,7 @@ const locationDetailsChildren02: InfographicConfig.Block[] = [
   },
 ];
 
-export const config_01_02: InfographicConfig.TripInfographic = {
+export const config02Locations: InfographicConfig.TripInfographic = {
   width: 1280,
   height: 1500,
   backgroundColor: "#C0E2E5",
@@ -239,7 +238,7 @@ export const config_01_02: InfographicConfig.TripInfographic = {
             {
               type: "svg",
               url:
-                "./configs/info_graphic_01_01/images/02-location-name-background.svg",
+                "./configs/02-new-design/images/02-location-name-background.svg",
               positioning: {
                 // left: 133,
                 // top: 24
@@ -255,8 +254,7 @@ export const config_01_02: InfographicConfig.TripInfographic = {
             },
             {
               type: "svg",
-              url:
-                "./configs/info_graphic_01_01/images/02-location-name-icon.svg",
+              url: "./configs/02-new-design/images/02-location-name-icon.svg",
               positioning: {
                 left: 26,
                 top: 12,
@@ -316,7 +314,7 @@ export const config_01_02: InfographicConfig.TripInfographic = {
         },
         {
           type: "svg",
-          url: "./configs/info_graphic_01_01/images/02-location-01-border.svg",
+          url: "./configs/02-new-design/images/02-location-01-border.svg",
         },
         // location 1 details
         {
@@ -349,7 +347,7 @@ export const config_01_02: InfographicConfig.TripInfographic = {
         },
         {
           type: "svg",
-          url: "./configs/info_graphic_01_01/images/02-location-02-border.svg",
+          url: "./configs/02-new-design/images/02-location-02-border.svg",
         },
         // location 1 details
         {
@@ -362,6 +360,170 @@ export const config_01_02: InfographicConfig.TripInfographic = {
           blocks: locationDetailsChildren02,
         },
       ],
+    },
+  ],
+};
+
+export const configNLocations: InfographicConfig.TripInfographic = {
+  width: 1280,
+  // height: 3000,
+  backgroundColor: "#C0E2E5",
+
+  type: "container",
+  flex: "column",
+  blocks: [
+    {
+      type: "container",
+      height: 400,
+      blocks: [
+        //infographic header
+        {
+          type: "container",
+          positioning: {
+            left: 133,
+            top: 24,
+          },
+          blocks: [
+            {
+              type: "svg",
+              url:
+                "./configs/02-new-design/images/02-location-name-background.svg",
+              positioning: {
+                // left: 133,
+                // top: 24
+              },
+            },
+            // together making location icon with white background
+            {
+              type: "circle",
+              fillColor: "white",
+              r: 30,
+              x: 93,
+              y: 82,
+            },
+            {
+              type: "svg",
+              url: "./configs/02-new-design/images/02-location-name-icon.svg",
+              positioning: {
+                left: 26,
+                top: 12,
+              },
+            },
+
+            // infographic name
+            {
+              // location name
+              type: "text",
+              text: "{{trip.name}}",
+              fontSize: "64px",
+              fontFamily: "Nunito",
+              fontWeight: "900",
+              color: "white",
+              textAnchor: "middle",
+              positioning: {
+                top: 104,
+                left: -40,
+              },
+            },
+            {
+              // location activity
+              type: "text",
+              text: "{{trip.info}}",
+              fontSize: "40px",
+              fontFamily: "Nunito",
+              fontWeight: "normal",
+              color: "white",
+              textAnchor: "middle",
+              width: 500,
+              positioning: {
+                top: 190,
+                left: -40,
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: "locations",
+      flex: "column",
+      blocks: [
+        // 1st location
+        {
+          type: "location",
+          height: 550,
+          positioning: {
+            // top: 412,
+            left: 97,
+          },
+          blocks: [
+            {
+              type: "location-image",
+              width: 550 - 4,
+              height: 680 - 4,
+              positioning: {
+                top: 26,
+                left: 32,
+              },
+              rotate: -5.57,
+            },
+            {
+              type: "svg",
+              url: "./configs/02-new-design/images/02-location-01-border.svg",
+            },
+            // location 1 details
+            {
+              type: "container",
+              positioning: {
+                top: 100,
+                left: 625,
+              },
+              flex: "column",
+              blocks: locationDetailsChildren02,
+            },
+          ],
+        },
+        //2nd location
+        {
+          type: "location",
+          height: 625,
+          positioning: {
+            // top: 724,
+            left: 630,
+          },
+          blocks: [
+            {
+              type: "location-image",
+              width: 550 - 4,
+              height: 680 - 4,
+              positioning: {
+                top: 23,
+                left: 29,
+              },
+              rotate: 5.11,
+            },
+            {
+              type: "svg",
+              url: "./configs/02-new-design/images/02-location-02-border.svg",
+            },
+            // location 1 details
+            {
+              type: "container",
+              positioning: {
+                top: 270,
+                left: -450,
+              },
+              flex: "column",
+              blocks: locationDetailsChildren02,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: "container",
+      height: 300,
+      blocks: [],
     },
   ],
 };

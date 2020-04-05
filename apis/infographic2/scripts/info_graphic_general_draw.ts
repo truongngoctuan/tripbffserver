@@ -1,5 +1,5 @@
-import * as config01 from "../configs/info_graphic_01_01/config";
-import * as config0101 from "../configs/info_graphic_01_01/config2";
+import * as config01 from "../configs/01-old-design/config";
+import * as config0101 from "../configs/02-new-design/config";
 
 import { INFOGRAPHIC_TYPE } from "./info_graphic_type";
 import { CanvasAdaptor } from "./utils";
@@ -10,26 +10,27 @@ import { InfographicConfig } from "../configs";
 export function drawFirstRelease(
   numberOfLocations: number
 ): InfographicConfig.TripInfographic {
-  if (numberOfLocations == 1) {
-    return config01.config_01_01;
-  } else if (numberOfLocations == 2) {
-    return config01.config_01_02;
+  switch (numberOfLocations) {
+    case 1:
+      return config01.config01Location;
+    case 2:
+      return config01.config02Locations;
+    default:
+      return config01.configNLocations;
   }
-  return config01.config_01_others;
 }
 
 export function draw(
   numberOfLocations: number
 ): InfographicConfig.TripInfographic {
-  if (numberOfLocations == 1) {
-    return config0101.config_01_01;
+  switch (numberOfLocations) {
+    case 1:
+      return config0101.config01Location;
+    case 2:
+      return config0101.config02Locations;
+    default:
+      return config0101.configNLocations;
   }
-
-  if (numberOfLocations == 2) {
-    return config0101.config_01_02;
-  }
-
-  return config0101.config_01_02;
 }
 
 export async function genericDraw(
