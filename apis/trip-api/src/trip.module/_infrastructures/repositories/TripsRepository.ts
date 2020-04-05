@@ -20,7 +20,8 @@ export class TripsRepository implements ITripsRepository {
       locationImages: o.locationImages,
       isDeleted: o.isDeleted,
       createdById: userId,
-      canContribute: true
+      canContribute: true,
+      isPublic: o.isPublic
     };
   }
 
@@ -45,7 +46,7 @@ export class TripsRepository implements ITripsRepository {
   }
 
   public async create(ownerId: string, payload: ITripMinimized) {
-    const { tripId, name, fromDate, toDate, locationImages, isDeleted } = payload;
+    const { tripId, name, fromDate, toDate, locationImages, isDeleted, isPublic } = payload;
 
     const trip: ITripsModel = {
       tripId,
@@ -53,7 +54,8 @@ export class TripsRepository implements ITripsRepository {
       fromDate: moment(fromDate).toDate(),
       toDate: moment(toDate).toDate(),
       locationImages,
-      isDeleted: isDeleted
+      isDeleted: isDeleted,
+      isPublic: isPublic
     };
 
     let userTrips = await this.getUserTrips(ownerId);
@@ -83,6 +85,7 @@ export class TripsRepository implements ITripsRepository {
     trip.toDate = payload.toDate;
     trip.locationImages = payload.locationImages;
     trip.isDeleted = payload.isDeleted;
+    trip.isPublic = payload.isPublic;
 
     await userTrips.save();
   }

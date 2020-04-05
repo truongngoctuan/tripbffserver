@@ -10,11 +10,12 @@ export type UpdatePatchTripCommand = {
   name: string;
   fromDate: Date;
   toDate: Date;
+  isPublic: boolean;
 };
 
 export async function updatePatchTrip(command: UpdatePatchTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus): Promise<CommandResult> {
   
-  const { ownerId, tripId, name, fromDate, toDate } = command;
+  const { ownerId, tripId, name, fromDate, toDate, isPublic } = command;
   
   //validate
   const state = await reducers.getCurrentState(tripId);
@@ -25,7 +26,8 @@ export async function updatePatchTrip(command: UpdatePatchTripCommand, eventHand
       type: "TripNameUpdated",
       ownerId,
       tripId,
-      name
+      name,
+      isPublic
     };
 
     eventHandler.save(event);

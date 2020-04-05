@@ -32,7 +32,8 @@ test("create trip", async () => {
     tripId: "tripId",
     name: "name",
     fromDate: moment("2019-01-01").toDate(),
-    toDate: moment("2019-01-10").toDate()
+    toDate: moment("2019-01-10").toDate(),
+    isPublic: true
   }]);
 
   const tripReducer = new TripReducers(tripEventRepository);
@@ -51,13 +52,15 @@ test("update trip name", async () => {
       tripId: "tripId",
       name: "name",
       fromDate: moment("2019-01-01").toDate(),
-      toDate: moment("2019-01-10").toDate()
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true
     },
     {
       type: "TripNameUpdated",
       ownerId: "ownerId",
       tripId: "tripId",
       name: "name 2",
+      isPublic: true
     }
   ]);
 
@@ -77,7 +80,8 @@ test("import trip location", async () => {
       tripId: "tripId",
       name: "name",
       fromDate: moment("2019-01-01").toDate(),
-      toDate: moment("2019-01-10").toDate()
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true
     },
     {
       type: "TripImportLocations",
@@ -114,7 +118,8 @@ test("upload location image", async () => {
       tripId: "tripId",
       name: "name",
       fromDate: moment("2019-01-01").toDate(),
-      toDate: moment("2019-01-10").toDate()
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true
     },
     {
       type: "TripImportLocations",
@@ -161,7 +166,8 @@ test("remove location images", async () => {
       tripId: "tripId",
       name: "name",
       fromDate: moment("2019-01-01").toDate(),
-      toDate: moment("2019-01-10").toDate()
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true
     },
     {
       type: "TripImportLocations",
@@ -208,7 +214,8 @@ test("remove location multi mages", async () => {
       tripId: "tripId",
       name: "name",
       fromDate: moment("2019-01-01").toDate(),
-      toDate: moment("2019-01-10").toDate()
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true
     },
     {
       type: "TripImportLocations",
@@ -272,7 +279,8 @@ test("favorite location image", async () => {
       tripId: "tripId",
       name: "name",
       fromDate: moment("2019-01-01").toDate(),
-      toDate: moment("2019-01-10").toDate()
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true
     },
     {
       type: "TripImportLocations",
@@ -320,7 +328,8 @@ test("un-favorite location image", async () => {
       tripId: "tripId",
       name: "name",
       fromDate: moment("2019-01-01").toDate(),
-      toDate: moment("2019-01-10").toDate()
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true
     },
     {
       type: "TripImportLocations",
@@ -377,7 +386,8 @@ test("add a location image", async () => {
       tripId: "tripId",
       name: "name",
       fromDate: moment("2019-01-01").toDate(),
-      toDate: moment("2019-01-10").toDate()
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true
     },
     {
       type: "TripImportLocations",

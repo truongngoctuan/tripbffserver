@@ -45,7 +45,8 @@ export async function createTripAction(
   ownerId: string,
   name: string,
   fromDate: string,
-  toDate: string
+  toDate: string,
+  isPublic: boolean
 ): Promise<string | CommandResult | string[] | undefined> { // todo refactor return commandResult.errors
   console.log("trip name :" + name);
   console.log("trip from date:" + fromDate);
@@ -59,7 +60,8 @@ export async function createTripAction(
     tripId: tripId.toString(),
     name,
     fromDate: moment(fromDate).toDate(),
-    toDate: moment(toDate).toDate()
+    toDate: moment(toDate).toDate(),
+    isPublic
   });
 
   if (commandResult.isSucceed) {
@@ -80,7 +82,8 @@ export async function patchTripAction(
   tripId: string,
   name: string,
   fromDate: string,
-  toDate: string
+  toDate: string,
+  isPublic: boolean
 ): Promise<ITrip | CommandResult | string[] | undefined> { // todo refactor return commandResult.errors
   console.log("trip name", name);
   console.log("trip from date:", fromDate);
@@ -92,7 +95,8 @@ export async function patchTripAction(
     tripId,
     name,
     fromDate: moment(fromDate).toDate(),
-    toDate: moment(toDate).toDate()
+    toDate: moment(toDate).toDate(),
+    isPublic
   });
 
   if (commandResult.isSucceed) {

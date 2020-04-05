@@ -53,7 +53,8 @@ export class TripReducers {
       infographics: [],
       isDeleted: false,
       createdById: "",
-      canContribute: false
+      canContribute: false,
+      isPublic: true
     };
 
     events.forEach((event) => {
@@ -121,7 +122,8 @@ export class TripReducers {
       infographics: [],
       isDeleted: false,
       createdById: command.ownerId,
-      canContribute: false
+      canContribute: false,
+      isPublic: command.isPublic
     };
   }
 
@@ -133,7 +135,8 @@ export class TripReducers {
       ...prevState,
       name: command.name,
       fromDate: command.fromDate,
-      toDate: command.toDate
+      toDate: command.toDate,
+      isPublic: command.isPublic
     };
   }
 

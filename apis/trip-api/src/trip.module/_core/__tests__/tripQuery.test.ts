@@ -37,7 +37,8 @@ beforeEach(async () => {
     tripId: "tripId",
     name: "name",
     fromDate: moment("2019-01-01").toDate(),
-    toDate: moment("2019-01-10").toDate()
+    toDate: moment("2019-01-10").toDate(),
+    isPublic: true
   };
 
   await serviceBus.emit(event);
@@ -55,6 +56,7 @@ it("update trip name", async () => {
     ownerId: "ownerId",
     tripId: "tripId",
     name: "name 2",
+    isPublic: true
   };
   await serviceBus.emit(updateEvent);
 

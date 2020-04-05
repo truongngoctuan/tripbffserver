@@ -17,7 +17,8 @@ const TripsSchema = new Schema({
     imageUrl: String,
     description: String,
   }],
-  isDeleted: Boolean
+  isDeleted: Boolean,
+  isPublic: Boolean
 });
 
 export const UserTripsSchema = new Schema({

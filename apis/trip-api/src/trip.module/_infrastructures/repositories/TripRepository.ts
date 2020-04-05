@@ -68,7 +68,8 @@ export class TripRepository implements ITripRepository {
       }),
       isDeleted: o.isDeleted,
       createdById: ownerId,
-      canContribute: true
+      canContribute: true,
+      isPublic: o.isPublic
     };
   }
 
@@ -84,7 +85,7 @@ export class TripRepository implements ITripRepository {
   }
 
   public async create(ownerId: string, payload: ITrip) {
-    const { tripId: id, name, fromDate, toDate, isDeleted } = payload;
+    const { tripId: id, name, fromDate, toDate, isDeleted , isPublic} = payload;
 
     const trip: ITripModel = {
       tripId: id,
@@ -92,7 +93,8 @@ export class TripRepository implements ITripRepository {
       fromDate: moment(fromDate).toDate(),
       toDate: moment(toDate).toDate(),
       isDeleted: isDeleted,
-      createdDate: new Date()
+      createdDate: new Date(),
+      isPublic: isPublic
     };
     let userTrips = await this.getUserTrips(ownerId);
     if (!userTrips) {
@@ -119,6 +121,7 @@ export class TripRepository implements ITripRepository {
     trip.name = payload.name;
     trip.fromDate = payload.fromDate;
     trip.toDate = payload.toDate;
+    trip.isPublic = payload.isPublic;
     trip.locations = _.map(payload.locations, loc => ({
       locationId: loc.locationId,
       name: loc.name,

@@ -12,6 +12,7 @@ export interface ITripMinimized {
   }[];
   createdById: string;
   canContribute: boolean;
+  isPublic: boolean;
 }
 
 export interface ITripsRepository {
