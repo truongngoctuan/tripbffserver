@@ -22,9 +22,9 @@ export async function listTripsAction(
 }
 
 export async function listNewsFeedTripsAction(
-  userId: string
+  userId: string, page: number
 ): Promise<ITripMinimized[] | CommandResult> {
-  const trips = await minimizedTripQueryHandler.listNewsFeed(userId);
+  const trips = await minimizedTripQueryHandler.listNewsFeed(userId, page);
 
   if (!trips) return Err("can't get data after create trip");
 

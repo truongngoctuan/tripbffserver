@@ -45,12 +45,14 @@ export class TripsRepository implements ITripsRepository {
     return userTrips.trips.map(item => this.toTripDto(item, ownerId, ownerId));
   }
 
-  private async getPublicTrips(userId: string) {
-    return await this._mg.UserTripsDocument.find({ "trips.isPublic": true, "userId": { "$ne": userId }  }).exec();
+  private async getPublicTrips(userId: string, page: number, numberOfTrip: number) {
+    const skip = page * numberOfTrip;
+    return await this._mg.UserTripsDocument.find({ "trips.isPublic": true, "userId": { "$ne": userId }  },
+                                                 { "trips": {$slice: [skip, numberOfTrip] }}).exec();
   }
 
-  public async listNewsFeed(userId: string) {
-    const userTrips = await this.getPublicTrips(userId);
+  public async listNewsFeed(userId: string, page: number, numberOfTrip: number) {
+    const userTrips = await this.getPublicTrips(userId, page, numberOfTrip);
 
     if (!userTrips) return [];
 
