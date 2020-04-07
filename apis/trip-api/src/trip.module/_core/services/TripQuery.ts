@@ -13,7 +13,7 @@ export class TripQueryHandler {
         if (trip.infographics && trip.infographics.length > 0) {
           let latestExportedInfographics = trip.infographics.filter(item => item.status === "EXPORTED");
           
-          if (latestExportedInfographics.length > 1)
+          if (latestExportedInfographics.length > 0)
               trip.latestExportedExternalStorageId = latestExportedInfographics[latestExportedInfographics.length - 1].externalStorageId;
         }
 
