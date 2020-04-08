@@ -28,7 +28,7 @@ export async function listNewsFeedTripsAction(
 
   if (!trips) return Err("can't get data after create trip");
 
-  console.log("trips len ", trips.length);
+  console.log("public trips len ", trips.length);
   return trips;
 }
 

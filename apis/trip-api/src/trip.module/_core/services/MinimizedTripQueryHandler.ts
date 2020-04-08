@@ -26,7 +26,6 @@ export class MinimizedTripQueryHandler {
   async listNewsFeed(userId: string, page: number): Promise<ITripMinimized[]> {
     return this.TripsRepository.listNewsFeed(userId, page, NumberOfTrips).then(trips => {
       let allTrips = trips.map(trip => this.updateTripImageExternalUrl(trip));
-      allTrips = allTrips.filter(item => item.isDeleted != true);
       allTrips.sort(this.compareTrip);
       return allTrips;
     });

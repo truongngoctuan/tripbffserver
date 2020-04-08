@@ -47,21 +47,46 @@ export class TripsRepository implements ITripsRepository {
 
   private async getPublicTrips(userId: string, page: number, numberOfTrip: number) {
     const skip = page * numberOfTrip;
-    return await this._mg.UserTripsDocument.find({ "trips.isPublic": true, "userId": { "$ne": userId }  },
-                                                 { "trips": {$slice: [skip, numberOfTrip] }}).exec();
+    console.log('page: ' + page);
+    console.log('skip: ' + skip);
+
+    return await this._mg.UserTripsDocument
+        .aggregate(
+          [{
+            $match:
+            {              
+              "userId": { "$ne": userId }
+            }
+          },
+          {
+            $unwind: {
+              path: "$trips"
+            }
+          },
+          {
+            $match:
+              {
+                "trips.isPublic": true,
+                "trips.isDeleted": false
+              }
+          },
+          { 
+            $skip : skip
+          },
+          {
+            $limit : numberOfTrip
+          }])
+        .exec();
   }
 
   public async listNewsFeed(userId: string, page: number, numberOfTrip: number) {
     const userTrips = await this.getPublicTrips(userId, page, numberOfTrip);
-
+    
     if (!userTrips) return [];
 
-    var publicTrips: ITripMinimized[] = [];
-
-    userTrips.forEach(user => {
-      var trips = user.trips.filter(item => item.isPublic).map(item => this.toTripDto(item, userId, user.userId));
-      publicTrips = [...publicTrips, ...trips];
-    });
+    var publicTrips : ITripMinimized[]  = userTrips.map((user: any) => {
+      return user.trips
+    })
 
     return publicTrips;
   }
