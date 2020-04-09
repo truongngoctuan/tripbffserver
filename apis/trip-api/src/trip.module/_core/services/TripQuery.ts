@@ -5,8 +5,8 @@ import { resolveImageUrlFromExternalStorageId, resolveThumbnailImageUrlFromExter
 export class TripQueryHandler {
   constructor(private TripRepository: ITripRepository) { }
 
-  async GetById(ownerId: string, id: string, createdById: string): Promise<ITrip | undefined> {
-    return this.TripRepository.get(ownerId, id, createdById)
+  async GetById(loggedUserId: string, id: string, createdById: string): Promise<ITrip | undefined> {
+    return this.TripRepository.get(loggedUserId, id, createdById)
       .then(trip => {
         if (!trip) return trip;
       

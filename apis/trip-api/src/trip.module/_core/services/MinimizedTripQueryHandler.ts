@@ -23,8 +23,8 @@ export class MinimizedTripQueryHandler {
     });
   }
 
-  async listNewsFeed(userId: string, page: number): Promise<ITripMinimized[]> {
-    return this.TripsRepository.listNewsFeed(userId, page, NumberOfTrips).then(trips => {
+  async listNewsFeed(loggedUserId: string, page: number): Promise<ITripMinimized[]> {
+    return this.TripsRepository.listNewsFeed(loggedUserId, page, NumberOfTrips).then(trips => {
       let allTrips = trips.map(trip => this.updateTripImageExternalUrl(trip));
       allTrips.sort(this.compareTrip);
       return allTrips;

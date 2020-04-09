@@ -23,7 +23,6 @@ module.exports = {
       method: "GET",
       path: "/trips",
       handler: async request => {
-        // const { page } = request.payload as any;
         const userId = CUtils.getUserId(request);
         return await listTripsAction(userId);
       },        
@@ -130,7 +129,6 @@ module.exports = {
         const tripId = request.params.id;
         const createdById = request.query.createdById as string;
         const loggedUserId = CUtils.getUserId(request);
-        
         return await getTripByIdAction(loggedUserId, tripId, createdById)
         .then(trip => {
           return trip;
@@ -173,8 +171,8 @@ module.exports = {
       path: "/newsFeed/trips",
       handler: async request => {
         const page = parseInt(request.query.page as string);        
-        const userId = CUtils.getUserId(request);
-        return await listNewsFeedTripsAction(userId, page);
+        const loggedUserId = CUtils.getUserId(request);
+        return await listNewsFeedTripsAction(loggedUserId, page);
       },        
       options: {
         auth: "simple",

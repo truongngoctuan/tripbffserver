@@ -10,7 +10,7 @@ export class TripRepository implements ITripRepository {
 
   }
 
-  toTripDto(o: ITripModel, ownerId: string, createdById: string): ITrip {
+  toTripDto(o: ITripModel, loggedUserId: string, createdById: string): ITrip {
     return {
       tripId: o.tripId,
       name: o.name,
@@ -68,7 +68,7 @@ export class TripRepository implements ITripRepository {
       }),
       isDeleted: o.isDeleted,
       createdById: createdById,
-      canContribute: ownerId == createdById,
+      canContribute: loggedUserId == createdById,
       isPublic: o.isPublic
     };
   }
@@ -143,11 +143,11 @@ export class TripRepository implements ITripRepository {
     await userTrips.save();
   }
 
-  public async get(ownerId: string, id: string, createdById: string) {
+  public async get(loggedUserId: string, id: string, createdById: string) {
     const trip = await this.getTripModel(createdById, id);
     if (!trip) return undefined;
     
-    return this.toTripDto(trip, ownerId, createdById);
+    return this.toTripDto(trip, loggedUserId, createdById);
   }
 
   async getTripModel(createdById: string, id: string) {

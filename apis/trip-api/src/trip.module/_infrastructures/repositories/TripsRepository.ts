@@ -45,7 +45,7 @@ export class TripsRepository implements ITripsRepository {
     return userTrips.trips.map(item => this.toTripDto(item, ownerId, ownerId));
   }
 
-  private async getPublicTrips(userId: string, page: number, numberOfTrip: number) {
+  private async getPublicTrips(loggedUserId: string, page: number, numberOfTrip: number) {
     const skip = page * numberOfTrip;
     
     return await this._mg.UserTripsDocument
@@ -53,7 +53,7 @@ export class TripsRepository implements ITripsRepository {
           [{
             $match:
             {              
-              "userId": { "$ne": userId }
+              "userId": { "$ne": loggedUserId }
             }
           },
           {
@@ -77,13 +77,13 @@ export class TripsRepository implements ITripsRepository {
         .exec();
   }
 
-  public async listNewsFeed(userId: string, page: number, numberOfTrip: number) {
-    const userTrips = await this.getPublicTrips(userId, page, numberOfTrip);
+  public async listNewsFeed(loggedUserId: string, page: number, numberOfTrip: number) {
+    const userTrips = await this.getPublicTrips(loggedUserId, page, numberOfTrip);
     
     if (!userTrips) return [];
 
-    var publicTrips : ITripMinimized[]  = userTrips.map((user: any) => {
-      return user.trips
+    var publicTrips : ITripMinimized[]  = userTrips.map((item: any) => {
+      return this.toTripDto(item.trips, loggedUserId, item.userId)
     })
 
     return publicTrips;
