@@ -22,23 +22,23 @@ export async function listTripsAction(
 }
 
 export async function listNewsFeedTripsAction(
-  userId: string
+  loggedUserId: string, page: number
 ): Promise<ITripMinimized[] | CommandResult> {
-  const trips = await minimizedTripQueryHandler.listNewsFeed(userId);
+  const trips = await minimizedTripQueryHandler.listNewsFeed(loggedUserId, page);
 
   if (!trips) return Err("can't get data after create trip");
 
-  console.log("trips len ", trips.length);
+  console.log("public trips len ", trips.length);
   return trips;
 }
 
 export async function getTripByIdAction(
-  userId: string,
+  loggedUserId: string,
   tripId: string,
   createdById: string
 ): Promise<ITrip> {
   console.log("trip id :" + tripId);
-  const trip = await tripQueryHandler.GetById(userId, tripId, createdById);
+  const trip = await tripQueryHandler.GetById(loggedUserId, tripId, createdById);
   if (!trip) throw "trip not found";
   return trip;
 }

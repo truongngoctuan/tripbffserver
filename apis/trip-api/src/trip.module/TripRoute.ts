@@ -22,8 +22,10 @@ module.exports = {
     server.route({
       method: "GET",
       path: "/trips",
-      handler: async request =>
-        await listTripsAction(CUtils.getUserId(request)),
+      handler: async request => {
+        const userId = CUtils.getUserId(request);
+        return await listTripsAction(userId);
+      },        
       options: {
         auth: "simple",
         tags: ["api"],
@@ -127,7 +129,6 @@ module.exports = {
         const tripId = request.params.id;
         const createdById = request.query.createdById as string;
         const loggedUserId = CUtils.getUserId(request);
-        
         return await getTripByIdAction(loggedUserId, tripId, createdById)
         .then(trip => {
           return trip;
@@ -168,8 +169,11 @@ module.exports = {
     server.route({
       method: "GET",
       path: "/newsFeed/trips",
-      handler: async request =>
-        await listNewsFeedTripsAction(CUtils.getUserId(request)),
+      handler: async request => {
+        const page = parseInt(request.query.page as string);        
+        const loggedUserId = CUtils.getUserId(request);
+        return await listNewsFeedTripsAction(loggedUserId, page);
+      },        
       options: {
         auth: "simple",
         tags: ["api"],

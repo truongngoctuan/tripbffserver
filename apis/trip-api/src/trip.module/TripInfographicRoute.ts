@@ -199,5 +199,32 @@ module.exports = {
         },
       },
     });
+
+    server.route({
+      method: "GET",
+      path: "/trips/{tripId}/infographics/{externalStorageId}/view",
+      async handler(request, h) {
+        const tripId = request.params.tripId;
+        const externalStorageId = request.params.externalStorageId;
+        console.log("externalStorageId", externalStorageId);       
+      
+        return new Promise(async (resolve, reject) => {
+          const filePath = `trips/${tripId}/infographics/${externalStorageId}.jpeg`;
+          const signedUrl = await IoC.fileService.signGet(filePath);
+          resolve(h.redirect(signedUrl));
+        });
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+        description: "CLIENT - polling infographic data",
+        validate: {
+          params: Joi.object({
+            tripId: Joi.required().description("the tripId for the todo item"),
+            externalStorageId: Joi.required().description("the id for the todo item"),
+          }),
+        },
+      },
+    });
   },
 };
