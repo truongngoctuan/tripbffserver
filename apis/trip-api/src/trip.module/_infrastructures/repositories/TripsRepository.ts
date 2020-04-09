@@ -47,9 +47,7 @@ export class TripsRepository implements ITripsRepository {
 
   private async getPublicTrips(userId: string, page: number, numberOfTrip: number) {
     const skip = page * numberOfTrip;
-    console.log('page: ' + page);
-    console.log('skip: ' + skip);
-
+    
     return await this._mg.UserTripsDocument
         .aggregate(
           [{
