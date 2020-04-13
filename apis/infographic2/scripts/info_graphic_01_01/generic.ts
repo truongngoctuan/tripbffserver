@@ -6,6 +6,7 @@ import { getRelativePosition } from "./plugins/utils";
 import _ from "lodash";
 import { preProcessInfographicConfig } from "./transformers";
 import { Trip } from "../models/trip";
+import { applyGlobalTransform } from "./transformers/global-transformers";
 const { executePlugins } = require("./plugins/index");
 
 function log(level: number, message: string, data: any = undefined) {
@@ -110,8 +111,12 @@ export async function renderInfographic(
   settings: any,
   trip: Trip
 ) {
-  const processedInfoConfig = preProcessInfographicConfig(
+  const appliedGlobalTransformer = applyGlobalTransform(
     infographicConfig,
+    settings
+  ) as InfographicConfig.TripInfographic;
+  const processedInfoConfig = preProcessInfographicConfig(
+    appliedGlobalTransformer,
     settings,
     trip
   ) as InfographicConfig.Infographic;

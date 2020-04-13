@@ -8,9 +8,32 @@ import _ from "lodash";
 // };
 
 export function applyGlobalTransform(
-  blockConfig: InfographicConfig.TripBlock,
+  block: InfographicConfig.TripBlock,
   option: { scale: number }
 ): InfographicConfig.TripBlock {
+  if (!_.isEmpty((block as InfographicConfig.ContainerBlock).blocks)) {
+    const processedBlocks: InfographicConfig.TripBlock[] = [];
+
+    const childrenBlocks = (block as InfographicConfig.ContainerBlock).blocks;
+
+    for (let i = 0; i < childrenBlocks.length; i++) {
+      const childBlock = childrenBlocks[i];
+      processedBlocks.push(applyGlobalTransform(childBlock, option));
+    }
+
+    return {
+      ...internalProcessBlock(block, option),
+      blocks: processedBlocks,
+    } as InfographicConfig.TripBlock;
+  }
+
+  return internalProcessBlock(block, option);
+}
+
+function internalProcessBlock(
+  blockConfig: InfographicConfig.TripBlock,
+  option: { scale: number }
+) {
   if (option.scale) {
     return globalScale(blockConfig, option.scale);
   }
@@ -21,30 +44,47 @@ function globalScale(
   blockConfig: InfographicConfig.TripBlock,
   scale: number
 ): InfographicConfig.TripBlock {
-  blockConfig["width"] = scaleProperty(blockConfig["width"], scale);
-  blockConfig["height"] = scaleProperty(blockConfig["height"], scale);
-  if (blockConfig["positioning"]) {
-    blockConfig["top"] = scaleProperty(blockConfig["top"], scale);
-    blockConfig["left"] = scaleProperty(blockConfig["left"], scale);
-    blockConfig["right"] = scaleProperty(blockConfig["right"], scale);
-    blockConfig["bottom"] = scaleProperty(blockConfig["bottom"], scale);
+  blockConfig = scaleProperties(
+    blockConfig,
+    [
+      "width",
+      "height",
+      // "fontSize",
+      "x1",
+      "y1",
+      "x2",
+      "y2",
+      "strokeWidth",
+      "x",
+      "y",
+      "r",
+    ],
+    scale
+  );
+
+  if (blockConfig["fontSize"]) {
+    blockConfig["fontSize"] = parseInt(blockConfig["fontSize"].replace("px", "")) * scale + "px";
   }
 
-  blockConfig["fontSize"] = scaleProperty(blockConfig["bottom"], scale);
-
-  blockConfig["x1"] = scaleProperty(blockConfig["x1"], scale);
-  blockConfig["y1"] = scaleProperty(blockConfig["y1"], scale);
-  blockConfig["x2"] = scaleProperty(blockConfig["x2"], scale);
-  blockConfig["y2"] = scaleProperty(blockConfig["y2"], scale);
-  blockConfig["strokeWidth"] = scaleProperty(blockConfig["strokeWidth"], scale);
-
-  blockConfig["x"] = scaleProperty(blockConfig["x"], scale);
-  blockConfig["y"] = scaleProperty(blockConfig["y"], scale);
-  blockConfig["r"] = scaleProperty(blockConfig["r"], scale);
+  if (blockConfig["positioning"]) {
+    blockConfig["positioning"] = scaleProperties(
+      blockConfig["positioning"],
+      ["top", "left", "right", "bottom"],
+      scale
+    );
+  }
 
   return blockConfig;
 }
 
-function scaleProperty(propertyValue, scale) {
-  return propertyValue ? _.floor(propertyValue * scale) : propertyValue;
+
+function scaleProperties(obj, properties, scale) {
+  for (let index = 0; index < properties.length; index++) {
+    const prop = properties[index];
+    if (obj[prop]) {
+      obj[prop] = _.floor(obj[prop] * scale);
+    }
+  }
+
+  return obj;
 }
