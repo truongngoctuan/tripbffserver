@@ -72,12 +72,10 @@ export namespace InfographicConfig {
   type ImageBlock = {
     type: "image";
     url: string;
-    width?: number;
-    height?: number;
     clipPath?: string;
     positioning: RelativePositioning;
     rotate?: number;
-  };
+  } & WidthHeight;
 
   type SvgBlock = {
     type: "svg";

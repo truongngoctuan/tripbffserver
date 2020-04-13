@@ -106,11 +106,13 @@ async function renderBlock(
 
 export async function renderInfographic(
   canvasAdaptor: CanvasAdaptor,
-  infographicConfig: InfographicConfig.Infographic,
+  infographicConfig: InfographicConfig.TripInfographic,
+  settings: any,
   trip: Trip
 ) {
   const processedInfoConfig = preProcessInfographicConfig(
     infographicConfig,
+    settings,
     trip
   ) as InfographicConfig.Infographic;
 

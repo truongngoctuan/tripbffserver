@@ -29,4 +29,5 @@ export type LeafTransformer = {
 export type CursorTransformer = {
   level: number;
   location: number;
+  scale?: number;
 };

@@ -7,7 +7,7 @@ import { renderInfographic } from "./info_graphic_01_01/generic";
 import { Trip } from "./models/trip";
 import { InfographicConfig } from "../configs";
 
-export function drawFirstRelease(
+function getConfigFirstRelease(
   numberOfLocations: number
 ): InfographicConfig.TripInfographic {
   switch (numberOfLocations) {
@@ -20,7 +20,7 @@ export function drawFirstRelease(
   }
 }
 
-export function draw(
+function getConfigNewDesign(
   numberOfLocations: number
 ): InfographicConfig.TripInfographic {
   switch (numberOfLocations) {
@@ -33,6 +33,19 @@ export function draw(
   }
 }
 
+function getSettings(
+  infographicType: INFOGRAPHIC_TYPE,
+  numberOfLocations: number
+): any {
+  if (
+    infographicType == INFOGRAPHIC_TYPE.NEW_DESIGN &&
+    numberOfLocations == 3
+  ) {
+    return config0101.settings03Locations;
+  }
+  return {};
+}
+
 export async function genericDraw(
   trip: Trip,
   infographicType: INFOGRAPHIC_TYPE = INFOGRAPHIC_TYPE.NEW_DESIGN
@@ -41,21 +54,19 @@ export async function genericDraw(
 
   switch (infographicType) {
     case INFOGRAPHIC_TYPE.FIRST_RELEASED:
-      config = drawFirstRelease(trip.locations.length);
+      config = getConfigFirstRelease(trip.locations.length);
       break;
     case INFOGRAPHIC_TYPE.NEW_DESIGN:
-      config = draw(trip.locations.length);
+      config = getConfigNewDesign(trip.locations.length);
       break;
     default:
-      config = draw(trip.locations.length);
+      config = getConfigNewDesign(trip.locations.length);
       break;
   }
 
+  const settings = getSettings(infographicType, trip.locations.length);
+
   const canvasAdaptor = new CanvasAdaptor();
-  await renderInfographic(
-    canvasAdaptor,
-    config as InfographicConfig.ContainerBlock,
-    trip
-  );
+  await renderInfographic(canvasAdaptor, config, settings, trip);
   return canvasAdaptor;
 }
