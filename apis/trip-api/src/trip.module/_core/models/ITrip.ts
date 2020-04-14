@@ -10,6 +10,7 @@ export interface ITrip {
   createdById: string;
   canContribute: boolean;
   isPublic: boolean;
+  createdDate?: Date;
 }
 
 export interface ITripLocation {

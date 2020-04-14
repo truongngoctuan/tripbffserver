@@ -36,7 +36,8 @@ export class TripsMinimizedReducer {
       isDeleted: state.isDeleted,
       createdById: state.createdById,
       canContribute: state.canContribute,
-      isPublic: state.isPublic
+      isPublic: state.isPublic,
+      createdDate: state.createdDate
     };
 
     return newState;

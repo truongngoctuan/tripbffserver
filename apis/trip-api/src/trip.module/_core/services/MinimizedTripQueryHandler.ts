@@ -12,7 +12,7 @@ export class MinimizedTripQueryHandler {
     if (firstEle.fromDate < secondEle.fromDate) return 1;
 
     return 0;
-  };
+  };  
 
   async list(ownerId: string): Promise<ITripMinimized[]> {
     return this.TripsRepository.list(ownerId).then(trips => {
@@ -26,7 +26,6 @@ export class MinimizedTripQueryHandler {
   async listNewsFeed(loggedUserId: string, page: number): Promise<ITripMinimized[]> {
     return this.TripsRepository.listNewsFeed(loggedUserId, page, NumberOfTrips).then(trips => {
       let allTrips = trips.map(trip => this.updateTripImageExternalUrl(trip));
-      allTrips.sort(this.compareTrip);
       return allTrips;
     });
   }
