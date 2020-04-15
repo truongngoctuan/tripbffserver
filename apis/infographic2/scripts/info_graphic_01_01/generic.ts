@@ -131,6 +131,7 @@ export async function renderInfographic(
     level: 0,
     width: infographicConfig.width ? infographicConfig.width : 0,
     height: 0,
+    scale: settings.scale ? settings.scale : 1
   };
 
   const finalCursor: Cursor = await renderBlock(

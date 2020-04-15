@@ -4,4 +4,5 @@ export type Cursor = {
   y: number;
   width: number;
   height: number;
+  scale: number;
 };

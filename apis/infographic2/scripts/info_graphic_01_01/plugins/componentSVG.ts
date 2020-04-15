@@ -24,6 +24,7 @@ export const componentSVG: RendererAsyncFunction = async function (
       console.log("error on load svg file", err);
     },
   });
+  item2.scale(cursor.scale, new paper.Point(0, 0));
 
   const g = new paper.Group([item2]);
   const relativePosition = getRelativePosition(cursor, b.positioning);
