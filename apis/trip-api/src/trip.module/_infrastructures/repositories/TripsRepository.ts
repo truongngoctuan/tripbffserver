@@ -21,7 +21,8 @@ export class TripsRepository implements ITripsRepository {
       isDeleted: o.isDeleted,
       createdById: createdTripUserId,
       canContribute: loggedUserId == createdTripUserId,
-      isPublic: o.isPublic
+      isPublic: o.isPublic,
+      createdDate: o.createdDate
     };
   }
 
@@ -68,6 +69,9 @@ export class TripsRepository implements ITripsRepository {
                 "trips.isDeleted": false
               }
           },
+          {
+            $sort: { "trips.createdDate": -1 }
+          },
           { 
             $skip : skip
           },
@@ -99,7 +103,8 @@ export class TripsRepository implements ITripsRepository {
       toDate: moment(toDate).toDate(),
       locationImages,
       isDeleted: isDeleted,
-      isPublic: isPublic
+      isPublic: isPublic,
+      createdDate: new Date()
     };
 
     let userTrips = await this.getUserTrips(ownerId);

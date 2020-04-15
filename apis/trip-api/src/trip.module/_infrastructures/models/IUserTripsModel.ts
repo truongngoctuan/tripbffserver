@@ -9,6 +9,7 @@ export interface ITripsModel {
   fromDate: Date;
   toDate: Date;
   isDeleted: boolean;
+  createdDate: Date;
   isPublic: boolean;
   locationImages: {
     name: string;

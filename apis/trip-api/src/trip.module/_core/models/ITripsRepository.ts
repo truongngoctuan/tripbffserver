@@ -11,6 +11,7 @@ export interface ITripMinimized {
     imageUrl?: string;
   }[];
   createdById: string;
+  createdDate?: Date;
   canContribute: boolean;
   isPublic: boolean;
 }

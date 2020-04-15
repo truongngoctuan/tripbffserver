@@ -69,7 +69,8 @@ export class TripRepository implements ITripRepository {
       isDeleted: o.isDeleted,
       createdById: createdById,
       canContribute: loggedUserId == createdById,
-      isPublic: o.isPublic
+      isPublic: o.isPublic,
+      createdDate: o.createdDate
     };
   }
 

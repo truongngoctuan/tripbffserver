@@ -176,7 +176,7 @@ module.exports = {
 
                 const signedUrl = await IoC.fileService.signGet(filePath);
                 // console.log("infographic signed request", signedUrl);
-                resolve(h.redirect(signedUrl));
+                resolve({ signedUrl: signedUrl, externalId: externalId});
               }
             } else {
               clearInterval(getEventInterval);

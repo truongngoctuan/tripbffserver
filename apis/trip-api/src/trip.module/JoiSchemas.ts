@@ -74,7 +74,8 @@ export const joiTripSchema = Joi.object({
   isDeleted: Joi.boolean(),
   createdById: Joi.string(),
   canContribute: Joi.boolean(),
-  isPublic: Joi.boolean()
+  isPublic: Joi.boolean(),
+  createdDate: Joi.date().optional()
 });
 
 export const joiMinimizedTripSchema = Joi.object({
@@ -93,5 +94,6 @@ export const joiMinimizedTripSchema = Joi.object({
   isDeleted: Joi.boolean(),
   createdById: Joi.string(),
   canContribute: Joi.boolean(),
-  isPublic: Joi.boolean()
+  isPublic: Joi.boolean(),
+  createdDate: Joi.date().optional()
 });

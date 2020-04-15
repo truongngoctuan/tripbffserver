@@ -18,7 +18,8 @@ const TripsSchema = new Schema({
     description: String,
   }],
   isDeleted: Boolean,
-  isPublic: Boolean
+  isPublic: Boolean,
+  createdDate: Date
 });
 
 export const UserTripsSchema = new Schema({
