@@ -2,6 +2,7 @@ import fs from "fs";
 import { Trip } from "./models/trip";
 import { componentDraw } from "./draw--shared-component";
 import { sharedHeader } from "../configs/02-new-design/shared-components";
+import { InfographicConfig } from "../configs";
 
 const data: Trip = {
   name: " Chuyến đi đầu tiên trên TripBFF",
@@ -30,7 +31,18 @@ const startTimer = new Date().getTime();
   const componentSetting = {
     scale: 0.75
   }
-  const canvasAdaptor = await componentDraw(data, componentConfig, componentSetting);
+  const infoConfig: InfographicConfig.TripInfographic = {
+    width: 960,
+    backgroundColor: "#C0E2E5",
+
+    type: "container",
+    flex: "column",
+    blocks: [{
+      ...componentConfig,
+      ...componentSetting
+    }],
+  };
+  const canvasAdaptor = await componentDraw(data, infoConfig);
   canvasAdaptor.draw();
   // let buf = await canvasAdaptor.toBufferPng();
   // fs.writeFileSync("output.png", buf);
