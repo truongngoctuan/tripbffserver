@@ -1,6 +1,7 @@
 import { LeafTransformer } from "./typings";
 import _ from "lodash";
 import { InfographicRendererConfig } from "../plugins/index.renderer";
+import { scaleBlock } from "../utils";
 
 export const leafLocationImage: LeafTransformer = {
   type: "leaf",
@@ -12,7 +13,7 @@ export const leafLocationImage: LeafTransformer = {
         : "./data/images/EmptyImage01.jpg";
 
     return {
-      ...c,
+      ...scaleBlock(c, cursor.scale),
       type: "image",
       url: imgUri,
     } as InfographicRendererConfig.Block;

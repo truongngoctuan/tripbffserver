@@ -367,7 +367,6 @@ export const config02Locations: InfographicConfig.TripInfographic = {
 
 export const configNLocations: InfographicConfig.TripInfographic = {
   width: 1280,
-  // height: 3000,
   backgroundColor: "#C0E2E5",
 
   type: "container",
