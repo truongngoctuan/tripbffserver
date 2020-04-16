@@ -8,7 +8,7 @@ import { preProcessInfographicConfig } from "./transformers";
 import { Trip } from "../models/trip";
 import { applyGlobalTransform } from "./transformers/global-transformers";
 import { executePlugins } from "./plugins/index";
-import { InfographicRendererConfig } from "../../configs/index.renderer";
+import { InfographicRendererConfig } from "./plugins/index.renderer";
 
 function log(level: number, message: string, data: any = undefined) {
   if (data) console.log(_.repeat("    ", level) + message, data);

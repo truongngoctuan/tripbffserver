@@ -75,7 +75,7 @@ export function processBlock(
   }
 
   //node default
-  if (!(blockConfig as InfographicConfig.ContainerBlock).blocks) {
+  if ((blockConfig as InfographicConfig.ContainerBlock).blocks) {
     return {
       block: blockConfig as InfographicConfig.Block,
       cursor: _.merge({}, cursor, { location: nextCursor.location }),
