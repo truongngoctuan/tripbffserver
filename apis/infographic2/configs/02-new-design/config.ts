@@ -1,5 +1,5 @@
 import { InfographicConfig } from "../index";
-import { sharedHeader, sharedNLocations } from "./03-locations";
+import { sharedHeader, sharedNLocations } from "./shared-components";
 
 export const config01Location: InfographicConfig.TripInfographic = {
   width: 1280,

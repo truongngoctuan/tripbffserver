@@ -1,7 +1,7 @@
 import fs from "fs";
 import { Trip } from "./models/trip";
 import { componentDraw } from "./draw--shared-component";
-import { sharedHeader } from "../configs/02-new-design/03-locations";
+import { sharedHeader } from "../configs/02-new-design/shared-components";
 
 const data: Trip = {
   name: " Chuyến đi đầu tiên trên TripBFF",
