@@ -7,6 +7,7 @@ import { nodeLocation } from "./node-location";
 import { leafText } from "./leaf-text";
 import { leafLocationImage } from "./leaf-location-image";
 import { leafDefault } from "./leaf-default";
+import { leafSVG } from "./leaf-svg";
 
 const transformers: { [id: string]: Transformer } = {
   container: nodeContainer,
@@ -15,6 +16,7 @@ const transformers: { [id: string]: Transformer } = {
 
   text: leafText,
   "location-image": leafLocationImage,
+  svg: leafSVG
 };
 
 export function processBlock(
@@ -23,14 +25,16 @@ export function processBlock(
   cursor: CursorTransformer
 ): { block: InfographicConfig.Block; cursor: CursorTransformer } {
   const transformer = transformers[blockConfig.type];
-
+  let nextCursor: CursorTransformer = cursor;
   if (transformer) {
     if (transformer.type == "node") {
-      blockConfig = transformer.preHandler(blockConfig, trip, cursor);
+      const preHandlerResult = transformer.preHandler(blockConfig, trip, cursor);
+      blockConfig = preHandlerResult.block;
+      nextCursor = preHandlerResult.cursor;
     }
   }
 
-  let nextCursor = _.merge({}, cursor, { level: cursor.level + 1 });
+  nextCursor = _.merge({}, nextCursor, { level: cursor.level + 1 });
   const processedBlockConfigs: InfographicConfig.Block[] = [];
   if (!_.isEmpty((blockConfig as InfographicConfig.ContainerBlock).blocks)) {
     const containerBlockConfig = blockConfig as InfographicConfig.ContainerBlock;

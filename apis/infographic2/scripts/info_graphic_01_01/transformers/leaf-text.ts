@@ -1,11 +1,12 @@
 import { InfographicConfig } from "../../../configs";
 import { LeafTransformer } from "./typings";
 import { scaleBlock } from "../utils";
+import { InfographicRendererConfig } from "../../../configs/index.renderer";
 
 export const leafText: LeafTransformer = {
   type: "leaf",
   handler: (c, trip, cursor) => {
-    const textNode = scaleBlock(c, cursor.scale) as InfographicConfig.TextBlock;
+    const textNode = scaleBlock(c, cursor.scale) as InfographicRendererConfig.TextBlock;
 
     return {
       ...c,
@@ -20,7 +21,7 @@ function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-function getText(blockConfig: InfographicConfig.TextBlock, trip, cursor) {
+function getText(blockConfig: InfographicRendererConfig.TextBlock, trip, cursor) {
   const feelingLabel = commonFunc.getFeelingLabel(trip.locale);
 
   let location = trip.locations[cursor.location],

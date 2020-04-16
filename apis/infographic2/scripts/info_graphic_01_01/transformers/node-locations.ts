@@ -7,7 +7,10 @@ import { scaleBlock } from "../utils";
 export const nodeLocations: NodeTransformer = {
   type: "node",
   preHandler: (c, trip, cursor) => {
-    const containerBlockConfig = scaleBlock(c, cursor.scale) as InfographicConfig.ContainerBlock;
+    const containerBlockConfig = scaleBlock(
+      c,
+      cursor.scale
+    ) as InfographicConfig.ContainerBlock;
     let childBlockConfigs: InfographicConfig.Block[] = [];
     // nLoc > nLocConfig, clone locConfig until n == nLoc
     // else keep just enough logConfig
@@ -25,9 +28,12 @@ export const nodeLocations: NodeTransformer = {
     }
 
     return {
-      ...c,
-      blocks: childBlockConfigs,
-    } as InfographicConfig.Block;
+      block: {
+        ...c,
+        blocks: childBlockConfigs,
+      } as InfographicConfig.Block,
+      cursor,
+    };
   },
   postHandler: (c, children, cursor) => {
     const b = c as InfographicConfig.LocationsBlocks;

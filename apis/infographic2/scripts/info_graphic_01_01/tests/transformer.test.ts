@@ -1,10 +1,11 @@
 import { InfographicConfig } from "../../../configs";
 import { preProcessInfographicConfig } from "../transformers";
+import { InfographicRendererConfig } from "../../../configs/index.renderer";
 
 describe("node transformer", () => {
   test("simple container node", () => {
     //Arrange
-    const config: InfographicConfig.Infographic = {
+    const config: InfographicConfig.TripInfographic = {
       width: 1280,
       backgroundColor: "black",
       type: "container",
@@ -32,7 +33,7 @@ describe("node transformer", () => {
       config,
       { scale: 1 },
       data
-    ) as InfographicConfig.Infographic;
+    ) as InfographicRendererConfig.Infographic;
 
     // Assert
     expect(result).toBeDefined();
@@ -54,10 +55,10 @@ describe("node transformer", () => {
 
     // Act
     const result = preProcessInfographicConfig(
-      config as InfographicConfig.Infographic,
+      config as InfographicConfig.TripInfographic,
       { scale: 1 },
       data
-    ) as InfographicConfig.Infographic;
+    );
 
     // Assert
     expect(result).toBeDefined();
@@ -88,7 +89,7 @@ describe("node transformer", () => {
       config,
       { scale: 1 },
       data
-    ) as InfographicConfig.Infographic;
+    ) as InfographicRendererConfig.Infographic;
 
     // Assert
     expect(result).toBeDefined();
@@ -133,7 +134,7 @@ describe("node transformer", () => {
       config,
       { scale: 1 },
       data
-    ) as InfographicConfig.Infographic;
+    ) as InfographicRendererConfig.Infographic;
 
     // Assert
     expect(result).toBeDefined();

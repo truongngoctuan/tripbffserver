@@ -10,7 +10,7 @@ export type NodeTransformer = {
     c: InfographicConfig.TripBlock,
     trip: Trip,
     cursor: CursorTransformer
-  ) => InfographicConfig.TripBlock;
+  ) => { block: InfographicConfig.TripBlock; cursor: CursorTransformer };
   // transform current node, update cursor (currently only location idx)
   postHandler: (
     c: InfographicConfig.TripBlock,

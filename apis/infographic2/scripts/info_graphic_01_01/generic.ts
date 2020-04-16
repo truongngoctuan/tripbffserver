@@ -8,6 +8,7 @@ import { preProcessInfographicConfig } from "./transformers";
 import { Trip } from "../models/trip";
 import { applyGlobalTransform } from "./transformers/global-transformers";
 import { executePlugins } from "./plugins/index";
+import { InfographicRendererConfig } from "../../configs/index.renderer";
 
 function log(level: number, message: string, data: any = undefined) {
   if (data) console.log(_.repeat("    ", level) + message, data);
@@ -31,7 +32,7 @@ async function renderImage(
 ) {
   log(cursor.level, "render block", blockConfig.type);
   // log(cursor.level, "cursor", cursor);
-  const imageBlock = blockConfig as InfographicConfig.ImageBlock;
+  const imageBlock = blockConfig as InfographicRendererConfig.ImageBlock;
 
   const relativePosition = getRelativePosition(cursor, imageBlock.positioning);
   log(cursor.level, "cursor", cursor);
@@ -110,7 +111,7 @@ async function renderBlock(
 export async function renderInfographic(
   canvasAdaptor: CanvasAdaptor,
   infographicConfig: InfographicConfig.TripInfographic,
-  settings: any,
+  settings: { scale: number },
   trip: Trip
 ) {
   const appliedGlobalTransformer = applyGlobalTransform(
@@ -121,7 +122,7 @@ export async function renderInfographic(
     appliedGlobalTransformer,
     settings,
     trip
-  ) as InfographicConfig.Infographic;
+  ) as InfographicRendererConfig.Infographic;
 
   if (!(processedInfoConfig.height && processedInfoConfig.height > 0)) {
     throw new Error("total height should have value");

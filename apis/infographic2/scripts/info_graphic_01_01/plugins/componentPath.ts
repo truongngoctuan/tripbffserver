@@ -1,12 +1,12 @@
-import { InfographicConfig } from "../../../configs/index";
 import _ from "lodash";
 import { getRelativePosition } from "./utils";
 import { RendererFunction } from "./typings";
 import { CanvasAdaptor } from "../../utils";
+import { InfographicRendererConfig } from "../../../configs/index.renderer";
 
 export const componentPath: RendererFunction = function (
   canvasAdaptor: CanvasAdaptor,
-  blockConfig: InfographicConfig.PathBlock,
+  blockConfig: InfographicRendererConfig.PathBlock,
   cursor
 ) {
   const { fillColor, path } = blockConfig;

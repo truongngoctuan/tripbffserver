@@ -2,7 +2,6 @@ import { InfographicConfig } from "../../../configs/index";
 import { RendererFunction } from "./typings";
 import { backgroundColor } from "./backgroundColor";
 import _ from "lodash";
-import { scaleBlock } from "../utils";
 
 const strokeColorByLevel = {
   1: "green",

@@ -1,12 +1,15 @@
 import { InfographicConfig } from "../../../configs";
-import { NodeTransformer } from "./typings";
+import { NodeTransformer, CursorTransformer } from "./typings";
 import { overrideMissingHeight } from "./dynamic-property-override";
 import { scaleBlock } from "../utils";
 import _ from "lodash";
 
 export const nodeContainer: NodeTransformer = {
   type: "node",
-  preHandler: (c, trip, cursor) => scaleBlock(c, cursor.scale),
+  preHandler: (c, trip, cursor) => ({
+    block: scaleBlock(c, cursor.scale),
+    cursor: _.merge({}, cursor, { scale: getScale(c, cursor) }),
+  }),
   postHandler: (b, children, cursor) => {
     const containerBlock = b as InfographicConfig.ContainerBlock;
 
@@ -22,3 +25,10 @@ export const nodeContainer: NodeTransformer = {
     };
   },
 };
+
+function getScale(
+  c,
+  cursor: CursorTransformer
+) {
+  return c["scale"] ? c["scale"] * cursor.scale : cursor.scale;
+}

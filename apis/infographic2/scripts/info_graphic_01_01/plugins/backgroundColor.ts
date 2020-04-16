@@ -1,9 +1,9 @@
-import { InfographicConfig } from "../../../configs/index";
 import { RendererFunction } from "./typings";
+import { InfographicRendererConfig } from "../../../configs/index.renderer";
 
 export const backgroundColor: RendererFunction = function (
   canvasAdaptor,
-  blockConfig: InfographicConfig.Background,
+  blockConfig: InfographicRendererConfig.Background,
   cursor
 ) {
   // console.log("backgroundColor", blockConfig);

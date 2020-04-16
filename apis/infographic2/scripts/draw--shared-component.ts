@@ -49,11 +49,10 @@ function getSettings(
 export async function componentDraw(
   trip: Trip,
   componentConfig: InfographicConfig.TripBlock,
-  componentSetting: any = {},
+  componentSetting: { scale: number },
 ): Promise<CanvasAdaptor> {
   const infoConfig: InfographicConfig.TripInfographic = {
     width: 960,
-    // height: 3000,
     backgroundColor: "#C0E2E5",
 
     type: "container",
@@ -65,6 +64,6 @@ export async function componentDraw(
   };
 
   const canvasAdaptor = new CanvasAdaptor();
-  await renderInfographic(canvasAdaptor, infoConfig, {}, trip);
+  await renderInfographic(canvasAdaptor, infoConfig, { scale: 1 }, trip);
   return canvasAdaptor;
 }

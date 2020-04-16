@@ -1,11 +1,11 @@
-import { InfographicConfig } from "../../../configs/index";
 import _ from "lodash";
 import { getRelativePosition } from "./utils";
 import { RendererFunction } from "./typings";
+import { InfographicRendererConfig } from "../../../configs/index.renderer";
 
 export const componentLine: RendererFunction = function (
   canvasAdaptor,
-  blockConfig: InfographicConfig.LineBlock,
+  blockConfig: InfographicRendererConfig.LineBlock,
   cursor
 ) {
   const { x1, y1, x2, y2, strokeColor, strokeWidth } = blockConfig;

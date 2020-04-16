@@ -6,7 +6,10 @@ import { scaleBlock } from "../utils";
 
 export const nodeLocation: NodeTransformer = {
   type: "node",
-  preHandler: (c, trip, cursor) => scaleBlock(c, cursor.scale),
+  preHandler: (c, trip, cursor) => ({
+    block: scaleBlock(c, cursor.scale),
+    cursor,
+  }),
   postHandler: (c, children, cursor) => {
     const b = c as InfographicConfig.LocationBlock;
     return {
