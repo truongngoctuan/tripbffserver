@@ -2,7 +2,7 @@ import { getRelativePosition } from "./utils";
 import { RendererFunction } from "./typings";
 import _ from "lodash";
 import { CanvasAdaptor } from "../../utils";
-import { InfographicRendererConfig } from "../../../configs/index.renderer";
+import { InfographicRendererConfig } from "./index.renderer";
 
 export const componentText: RendererFunction = function (
   canvasAdaptor: CanvasAdaptor,

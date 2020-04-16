@@ -1,12 +1,10 @@
-import { InfographicConfig } from "../../../configs";
 import { LeafTransformer } from "./typings";
 import _ from "lodash";
+import { InfographicRendererConfig } from "../plugins/index.renderer";
 
 export const leafLocationImage: LeafTransformer = {
   type: "leaf",
   handler: (c, trip, cursor) => {
-    const locationImageNode = c as InfographicConfig.LocationImageBlock;
-
     const imgUri =
       trip.locations[cursor.location].signedUrl &&
       !_.isEmpty(trip.locations[cursor.location].signedUrl)
@@ -17,6 +15,6 @@ export const leafLocationImage: LeafTransformer = {
       ...c,
       type: "image",
       url: imgUri,
-    } as InfographicConfig.Block;
+    } as InfographicRendererConfig.Block;
   },
 };

@@ -1,7 +1,6 @@
-import { InfographicConfig } from "../../../configs";
 import { LeafTransformer } from "./typings";
 import { scaleBlock } from "../utils";
-import { InfographicRendererConfig } from "../../../configs/index.renderer";
+import { InfographicRendererConfig } from "../plugins/index.renderer";
 
 export const leafText: LeafTransformer = {
   type: "leaf",
@@ -11,7 +10,7 @@ export const leafText: LeafTransformer = {
     return {
       ...c,
       text: getText(textNode, trip, cursor),
-    } as InfographicConfig.Block;
+    } as InfographicRendererConfig.Block;
   },
 };
 

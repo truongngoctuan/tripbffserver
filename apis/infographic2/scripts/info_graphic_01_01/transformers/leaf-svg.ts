@@ -1,6 +1,6 @@
 import { LeafTransformer } from "./typings";
 import { scaleBlock } from "../utils";
-import { InfographicRendererConfig } from "../../../configs/index.renderer";
+import { InfographicRendererConfig } from "../plugins/index.renderer";
 
 export const leafSVG: LeafTransformer = {
   type: "leaf",

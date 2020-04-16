@@ -1,5 +1,6 @@
 import { InfographicConfig } from "../../../configs";
 import { Trip } from "../../models/trip";
+import { InfographicRendererConfig } from "../plugins/index.renderer";
 
 export type Transformer = NodeTransformer | LeafTransformer;
 
@@ -25,7 +26,7 @@ export type LeafTransformer = {
     c: InfographicConfig.TripBlock,
     trip: Trip,
     cursor: CursorTransformer
-  ) => InfographicConfig.Block;
+  ) => InfographicRendererConfig.Block;
 };
 
 export type CursorTransformer = {

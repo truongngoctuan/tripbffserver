@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { getRelativePosition } from "./utils";
 import { RendererFunction } from "./typings";
-import { InfographicRendererConfig } from "../../../configs/index.renderer";
+import { InfographicRendererConfig } from "./index.renderer";
 
 export const componentLine: RendererFunction = function (
   canvasAdaptor,

@@ -1,4 +1,4 @@
-import { InfographicRendererConfig } from "./index.renderer";
+import { InfographicRendererConfig } from "../scripts/info_graphic_01_01/plugins/index.renderer";
 
 export namespace InfographicConfig {
   //for transformer to transform trip specific to something generic

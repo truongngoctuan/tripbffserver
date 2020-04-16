@@ -1,6 +1,6 @@
 import { InfographicConfig } from "../../../configs";
 import { preProcessInfographicConfig } from "../transformers";
-import { InfographicRendererConfig } from "../../../configs/index.renderer";
+import { InfographicRendererConfig } from "../plugins/index.renderer";
 
 describe("node transformer", () => {
   test("simple container node", () => {

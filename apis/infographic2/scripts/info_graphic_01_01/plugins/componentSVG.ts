@@ -3,7 +3,7 @@ import { getRelativePosition } from "./utils";
 import { RendererAsyncFunction } from "./typings";
 import { CanvasAdaptor } from "../../utils";
 import fs from "fs";
-import { InfographicRendererConfig } from "../../../configs/index.renderer";
+import { InfographicRendererConfig } from "./index.renderer";
 
 export const componentSVG: RendererAsyncFunction = async function (
   canvasAdaptor: CanvasAdaptor,

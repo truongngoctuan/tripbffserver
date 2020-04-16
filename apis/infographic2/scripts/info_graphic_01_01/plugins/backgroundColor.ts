@@ -1,5 +1,5 @@
 import { RendererFunction } from "./typings";
-import { InfographicRendererConfig } from "../../../configs/index.renderer";
+import { InfographicRendererConfig } from "./index.renderer";
 
 export const backgroundColor: RendererFunction = function (
   canvasAdaptor,
