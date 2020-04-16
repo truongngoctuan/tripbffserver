@@ -1,5 +1,6 @@
 import * as config01 from "../configs/01-old-design/config";
 import * as config0101 from "../configs/02-new-design/config";
+import * as config0101_03Locations from "../configs/02-new-design/03-locations";
 
 import { INFOGRAPHIC_TYPE } from "./info_graphic_type";
 import { CanvasAdaptor } from "./utils";
@@ -28,6 +29,8 @@ function getConfigNewDesign(
       return config0101.config01Location;
     case 2:
       return config0101.config02Locations;
+    case 3:
+      return config0101_03Locations.config03Locations;
     default:
       return config0101.configNLocations;
   }
@@ -37,13 +40,13 @@ function getSettings(
   infographicType: INFOGRAPHIC_TYPE,
   numberOfLocations: number
 ): any {
-  if (
-    infographicType == INFOGRAPHIC_TYPE.NEW_DESIGN &&
-    numberOfLocations == 3
-  ) {
-    return config0101.settings03Locations;
-  }
-  return {};
+  // if (
+  //   infographicType == INFOGRAPHIC_TYPE.NEW_DESIGN &&
+  //   numberOfLocations == 3
+  // ) {
+  //   return config0101.settings03Locations;
+  // }
+  return { scale: 1 };
 }
 
 export async function genericDraw(

@@ -123,6 +123,7 @@ export async function renderInfographic(
     settings,
     trip
   ) as InfographicRendererConfig.Infographic;
+  console.log(JSON.stringify(processedInfoConfig));
 
   if (!(processedInfoConfig.height && processedInfoConfig.height > 0)) {
     throw new Error("total height should have value");
@@ -134,7 +135,7 @@ export async function renderInfographic(
     level: 0,
     width: infographicConfig.width ? infographicConfig.width : 0,
     height: 0,
-    scale: settings.scale ? settings.scale : 1
+    scale: settings.scale ? settings.scale : 1,
   };
 
   const finalCursor: Cursor = await renderBlock(

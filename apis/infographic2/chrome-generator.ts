@@ -1,6 +1,6 @@
 import moment from "moment";
 import { INFOGRAPHIC_TYPE } from "./scripts/info_graphic_type";
-import { genericDraw } from "./scripts/draw--info_graphic_general";
+import { genericDraw } from "./scripts/draw--infographic";
 import axios from "axios";
 import _ from "lodash";
 

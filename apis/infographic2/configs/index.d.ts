@@ -33,7 +33,8 @@ export namespace InfographicConfig {
   type LocationsBlocks = {
     type: "locations";
     blocks: LocationBlock[];
-  } & InfographicRendererConfig.ContainerFlex;
+  } & InfographicRendererConfig.ContainerFlex &
+    InfographicRendererConfig.Scalable;
 
   type LocationBlock = {
     type: "location";
@@ -61,7 +62,7 @@ export namespace InfographicConfig {
     | InfographicRendererConfig.LineBlock
     | InfographicRendererConfig.CircleBlock
     | InfographicRendererConfig.PathBlock;
-  
+
   type ContainerBlock = {
     type: "container";
     blocks: Block[];

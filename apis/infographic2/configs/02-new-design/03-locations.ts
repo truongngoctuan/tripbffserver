@@ -155,8 +155,85 @@ const locationDetailsChildren02: InfographicConfig.Block[] = [
   },
 ];
 
+export const sharedNLocations: InfographicConfig.LocationsBlocks = {
+  type: "locations",
+  flex: "column",
+  blocks: [
+    // 1st location
+    {
+      type: "location",
+      height: 550,
+      positioning: {
+        // top: 412,
+        left: 97,
+      },
+      blocks: [
+        {
+          type: "location-image",
+          width: 550 - 4,
+          height: 680 - 4,
+          positioning: {
+            top: 26,
+            left: 32,
+          },
+          rotate: -5.57,
+        },
+        {
+          type: "svg",
+          url: "./configs/02-new-design/images/02-location-01-border.svg",
+        },
+        // location 1 details
+        {
+          type: "container",
+          positioning: {
+            top: 100,
+            left: 625,
+          },
+          flex: "column",
+          blocks: locationDetailsChildren02,
+        },
+      ],
+    },
+    //2nd location
+    {
+      type: "location",
+      height: 625,
+      positioning: {
+        // top: 724,
+        left: 630,
+      },
+      blocks: [
+        {
+          type: "location-image",
+          width: 550 - 4,
+          height: 680 - 4,
+          positioning: {
+            top: 23,
+            left: 29,
+          },
+          rotate: 5.11,
+        },
+        {
+          type: "svg",
+          url: "./configs/02-new-design/images/02-location-02-border.svg",
+        },
+        // location 1 details
+        {
+          type: "container",
+          positioning: {
+            top: 270,
+            left: -450,
+          },
+          flex: "column",
+          blocks: locationDetailsChildren02,
+        },
+      ],
+    },
+  ],
+};
+
 export const config03Locations: InfographicConfig.TripInfographic = {
-  width: 1280,
+  width: 960,
   // height: 3000,
   backgroundColor: "#C0E2E5",
 
@@ -165,87 +242,16 @@ export const config03Locations: InfographicConfig.TripInfographic = {
   blocks: [
     {
       ...sharedHeader,
-      scale: 1,
+      scale: 0.75,
     },
     {
-      type: "locations",
-      flex: "column",
-      blocks: [
-        // 1st location
-        {
-          type: "location",
-          height: 550,
-          positioning: {
-            // top: 412,
-            left: 97,
-          },
-          blocks: [
-            {
-              type: "location-image",
-              width: 550 - 4,
-              height: 680 - 4,
-              positioning: {
-                top: 26,
-                left: 32,
-              },
-              rotate: -5.57,
-            },
-            {
-              type: "svg",
-              url: "./configs/02-new-design/images/02-location-01-border.svg",
-            },
-            // location 1 details
-            {
-              type: "container",
-              positioning: {
-                top: 100,
-                left: 625,
-              },
-              flex: "column",
-              blocks: locationDetailsChildren02,
-            },
-          ],
-        },
-        //2nd location
-        {
-          type: "location",
-          height: 625,
-          positioning: {
-            // top: 724,
-            left: 630,
-          },
-          blocks: [
-            {
-              type: "location-image",
-              width: 550 - 4,
-              height: 680 - 4,
-              positioning: {
-                top: 23,
-                left: 29,
-              },
-              rotate: 5.11,
-            },
-            {
-              type: "svg",
-              url: "./configs/02-new-design/images/02-location-02-border.svg",
-            },
-            // location 1 details
-            {
-              type: "container",
-              positioning: {
-                top: 270,
-                left: -450,
-              },
-              flex: "column",
-              blocks: locationDetailsChildren02,
-            },
-          ],
-        },
-      ],
+      ...sharedNLocations,
+      scale: 0.75,
     },
     {
       type: "container",
       height: 300,
+      scale: 0.75,
       blocks: [],
     },
   ],

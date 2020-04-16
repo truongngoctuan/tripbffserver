@@ -37,13 +37,13 @@ function getSettings(
   infographicType: INFOGRAPHIC_TYPE,
   numberOfLocations: number
 ): any {
-  if (
-    infographicType == INFOGRAPHIC_TYPE.NEW_DESIGN &&
-    numberOfLocations == 3
-  ) {
-    return config0101.settings03Locations;
-  }
-  return {};
+  // if (
+  //   infographicType == INFOGRAPHIC_TYPE.NEW_DESIGN &&
+  //   numberOfLocations == 3
+  // ) {
+  //   return config0101.settings03Locations;
+  // }
+  return { scale: 1 };
 }
 
 export async function componentDraw(
