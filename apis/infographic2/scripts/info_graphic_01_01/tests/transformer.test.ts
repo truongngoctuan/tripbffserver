@@ -30,7 +30,7 @@ describe("node transformer", () => {
     // Act
     const result = preProcessInfographicConfig(
       config,
-      {},
+      { scale: 1 },
       data
     ) as InfographicConfig.Infographic;
 
@@ -55,7 +55,7 @@ describe("node transformer", () => {
     // Act
     const result = preProcessInfographicConfig(
       config as InfographicConfig.Infographic,
-      {},
+      { scale: 1 },
       data
     ) as InfographicConfig.Infographic;
 
@@ -86,7 +86,7 @@ describe("node transformer", () => {
     // Act
     const result = preProcessInfographicConfig(
       config,
-      {},
+      { scale: 1 },
       data
     ) as InfographicConfig.Infographic;
 
@@ -131,7 +131,7 @@ describe("node transformer", () => {
     // Act
     const result = preProcessInfographicConfig(
       config,
-      {},
+      { scale: 1 },
       data
     ) as InfographicConfig.Infographic;
 

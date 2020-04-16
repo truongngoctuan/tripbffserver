@@ -1,4 +1,5 @@
 import { InfographicConfig } from "../../../configs";
+import { Trip } from "../../models/trip";
 
 export type Transformer = NodeTransformer | LeafTransformer;
 
@@ -7,7 +8,8 @@ export type NodeTransformer = {
   // focus on transform original tree/node to a more detailed tree/node
   preHandler: (
     c: InfographicConfig.TripBlock,
-    trip
+    trip: Trip,
+    cursor: CursorTransformer
   ) => InfographicConfig.TripBlock;
   // transform current node, update cursor (currently only location idx)
   postHandler: (
@@ -21,13 +23,13 @@ export type LeafTransformer = {
   type: "leaf";
   handler: (
     c: InfographicConfig.TripBlock,
-    trip,
-    cursor
+    trip: Trip,
+    cursor: CursorTransformer
   ) => InfographicConfig.Block;
 };
 
 export type CursorTransformer = {
   level: number;
   location: number;
-  scale?: number;
+  scale: number;
 };

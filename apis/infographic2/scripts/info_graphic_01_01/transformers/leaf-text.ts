@@ -1,10 +1,11 @@
 import { InfographicConfig } from "../../../configs";
 import { LeafTransformer } from "./typings";
+import { scaleBlock } from "../utils";
 
 export const leafText: LeafTransformer = {
   type: "leaf",
   handler: (c, trip, cursor) => {
-    const textNode = c as InfographicConfig.TextBlock;
+    const textNode = scaleBlock(c, cursor.scale) as InfographicConfig.TextBlock;
 
     return {
       ...c,

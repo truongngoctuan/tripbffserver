@@ -14,7 +14,7 @@ export const componentText: RendererFunction = function (
 
   const newCursor = renderTextBlock(
     canvasAdaptor,
-    scaleBlock(blockConfig, cursor.scale),
+    blockConfig,
     blockConfig.text,
     cursor
   );

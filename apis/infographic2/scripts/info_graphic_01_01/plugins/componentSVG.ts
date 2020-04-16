@@ -4,17 +4,14 @@ import { getRelativePosition } from "./utils";
 import { RendererAsyncFunction } from "./typings";
 import { CanvasAdaptor } from "../../utils";
 import fs from "fs";
-import { scaleBlock } from "../utils";
 
 export const componentSVG: RendererAsyncFunction = async function (
   canvasAdaptor: CanvasAdaptor,
   b: InfographicConfig.SvgBlock,
   cursor
 ) {
-  const { url, shadowOffset, shadowColor, shadowBlur } = scaleBlock(
-    b,
-    cursor.scale
-  );
+  const { url, shadowOffset, shadowColor, shadowBlur } = 
+    b;
   const paper = canvasAdaptor.getPaper();
   const item = new paper.Item();
 

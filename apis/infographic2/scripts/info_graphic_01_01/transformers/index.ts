@@ -6,11 +6,13 @@ import { nodeLocations } from "./node-locations";
 import { nodeLocation } from "./node-location";
 import { leafText } from "./leaf-text";
 import { leafLocationImage } from "./leaf-location-image";
+import { leafDefault } from "./leaf-default";
 
 const transformers: { [id: string]: Transformer } = {
   container: nodeContainer,
   locations: nodeLocations,
   location: nodeLocation,
+
   text: leafText,
   "location-image": leafLocationImage,
 };
@@ -21,9 +23,10 @@ export function processBlock(
   cursor: CursorTransformer
 ): { block: InfographicConfig.Block; cursor: CursorTransformer } {
   const transformer = transformers[blockConfig.type];
+
   if (transformer) {
     if (transformer.type == "node") {
-      blockConfig = transformer.preHandler(blockConfig, trip);
+      blockConfig = transformer.preHandler(blockConfig, trip, cursor);
     }
   }
 
@@ -45,6 +48,7 @@ export function processBlock(
   }
 
   if (transformer) {
+    // node handler
     if (transformer.type == "node") {
       const postHandlerResult = transformer.postHandler(
         blockConfig,
@@ -59,23 +63,31 @@ export function processBlock(
       };
     }
 
-    if (transformer.type == "leaf") {
-      return {
-        block: transformer.handler(blockConfig, trip, cursor),
-        cursor: _.merge({}, cursor, { location: nextCursor.location }),
-      };
-    }
+    //leaf handler
+    return {
+      block: transformer.handler(blockConfig, trip, cursor),
+      cursor: _.merge({}, cursor, { location: nextCursor.location }),
+    };
   }
 
+  //node default
+  if (!(blockConfig as InfographicConfig.ContainerBlock).blocks) {
+    return {
+      block: blockConfig as InfographicConfig.Block,
+      cursor: _.merge({}, cursor, { location: nextCursor.location }),
+    };
+  }
+
+  //leaf default
   return {
-    block: blockConfig as InfographicConfig.Block,
+    block: leafDefault.handler(blockConfig, trip, cursor),
     cursor: _.merge({}, cursor, { location: nextCursor.location }),
   };
 }
 
 export function preProcessInfographicConfig(
   config: InfographicConfig.TripInfographic,
-  settings: any,
+  settings: { scale: number },
   trip
 ) {
   const defaultCursor: CursorTransformer = {

@@ -2,11 +2,12 @@ import { InfographicConfig } from "../../../configs";
 import { NodeTransformer } from "./typings";
 import _ from "lodash";
 import { overrideMissingHeight } from "./dynamic-property-override";
+import { scaleBlock } from "../utils";
 
 export const nodeLocations: NodeTransformer = {
   type: "node",
-  preHandler: (c, trip) => {
-    const containerBlockConfig = c as InfographicConfig.ContainerBlock;
+  preHandler: (c, trip, cursor) => {
+    const containerBlockConfig = scaleBlock(c, cursor.scale) as InfographicConfig.ContainerBlock;
     let childBlockConfigs: InfographicConfig.Block[] = [];
     // nLoc > nLocConfig, clone locConfig until n == nLoc
     // else keep just enough logConfig

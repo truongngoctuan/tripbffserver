@@ -32,7 +32,7 @@ describe("complex transformer", () => {
     };
 
     // Act
-    const result = processBlock(config, data, { level: 0, location: 0 });
+    const result = processBlock(config, data, { level: 0, location: 0, scale: 1 });
 
     // Assert
     expect(result).toBeDefined();
@@ -75,7 +75,7 @@ describe("complex transformer", () => {
     };
 
     // Act
-    const result = processBlock(config, data, { level: 0, location: 0 });
+    const result = processBlock(config, data, { level: 0, location: 0, scale: 1 });
 
     // Assert
     expect(result).toBeDefined();
@@ -128,7 +128,7 @@ describe("complex transformer", () => {
     };
 
     // Act
-    const result = processBlock(config, data, { level: 0, location: 0 });
+    const result = processBlock(config, data, { level: 0, location: 0, scale: 1 });
 
     // Assert
     expect(result).toBeDefined();

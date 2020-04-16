@@ -566,6 +566,7 @@ Object {
   "cursor": Object {
     "level": 0,
     "location": 3,
+    "scale": 1,
   },
 }
 `;
