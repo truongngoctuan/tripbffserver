@@ -3,6 +3,7 @@ import { getRelativePosition } from "./utils";
 import { RendererFunction } from "./typings";
 import _ from "lodash";
 import { CanvasAdaptor } from "../../utils";
+import { scaleBlock } from "../utils";
 
 export const componentText: RendererFunction = function (
   canvasAdaptor: CanvasAdaptor,
@@ -13,7 +14,7 @@ export const componentText: RendererFunction = function (
 
   const newCursor = renderTextBlock(
     canvasAdaptor,
-    blockConfig,
+    scaleBlock(blockConfig, cursor.scale),
     blockConfig.text,
     cursor
   );

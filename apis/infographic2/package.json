@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "serve": "nodemon --delay 100ms --watch . --exec node dist/index.js",
-    "serve2": "nodemon --delay 100ms --watch . --exec node ./dist/scripts/export-infographic-test.js",
+    "serve2": "nodemon --delay 100ms --watch . --exec node ./dist/scripts/test--export-infographic.js",
+    "serve-c": "nodemon --delay 100ms --watch . --exec node ./dist/scripts/test--shared-component.js",
     "serve-paper": "nodemon --delay 100ms --watch . --exec node index-paper.js",
     "serve-paper-lottie": "nodemon --delay 100ms --watch . --exec node index-paper-lottie.js",
     "serve-node-canvas": "nodemon --delay 100ms --watch . --exec node index-node-canvas.js",

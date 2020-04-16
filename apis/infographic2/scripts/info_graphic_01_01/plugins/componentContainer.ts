@@ -2,6 +2,7 @@ import { InfographicConfig } from "../../../configs/index";
 import { RendererFunction } from "./typings";
 import { backgroundColor } from "./backgroundColor";
 import _ from "lodash";
+import { scaleBlock } from "../utils";
 
 const strokeColorByLevel = {
   1: "green",
@@ -14,7 +15,10 @@ export const componentContainer: RendererFunction = function (
   blockConfig: InfographicConfig.ContainerBlock,
   cursor
 ) {
-  const { width, height } = blockConfig;
+  const scale = blockConfig["scale"]
+    ? blockConfig["scale"] * cursor.scale
+    : cursor.scale;
+  const { width, height } = scaleBlock(blockConfig, scale);
 
   const paper = canvasAdaptor.getPaper();
 
@@ -52,7 +56,7 @@ export const componentContainer: RendererFunction = function (
   return backgroundColor(
     canvasAdaptor,
     blockConfig,
-    _.assign({}, cursor, newBounds)
+    _.assign({}, cursor, newBounds, { scale })
   );
 };
 

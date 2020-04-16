@@ -7,7 +7,7 @@ import _ from "lodash";
 import { preProcessInfographicConfig } from "./transformers";
 import { Trip } from "../models/trip";
 import { applyGlobalTransform } from "./transformers/global-transformers";
-const { executePlugins } = require("./plugins/index");
+import { executePlugins } from "./plugins/index";
 
 function log(level: number, message: string, data: any = undefined) {
   if (data) console.log(_.repeat("    ", level) + message, data);
@@ -38,13 +38,15 @@ async function renderImage(
   log(cursor.level, "relative position", relativePosition);
 
   await canvasAdaptor.drawImage(imageBlock.url, relativePosition, imageBlock);
+
+  return cursor;
 }
 
 async function renderBlock(
   canvasAdaptor: CanvasAdaptor,
   b: InfographicConfig.Block,
   cursor: Cursor
-) {
+): Promise<Cursor> {
   if (b.type === "container") {
     log(cursor.level, "render block", b.type);
     log(cursor.level, "render cursor", cursor);

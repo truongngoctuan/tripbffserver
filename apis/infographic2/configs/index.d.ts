@@ -15,7 +15,8 @@ export namespace InfographicConfig {
     positioning?: RelativePositioning;
   } & Background &
     WidthHeight &
-    ContainerFlex;
+    ContainerFlex &
+    Scalable;
 
   type TripNameTextBlock = {
     type: "text";
@@ -84,7 +85,7 @@ export namespace InfographicConfig {
     shadowBlur?: number;
     shadowColor?: string;
     positioning?: RelativePositioning;
-  };
+  } & Scalable;
 
   type BaseTextBlock = {
     fontSize?: string;
@@ -143,5 +144,8 @@ export namespace InfographicConfig {
   };
   type ContainerFlex = {
     flex?: "column" | "row";
+  };
+  type Scalable = {
+    scale?: number;
   };
 }

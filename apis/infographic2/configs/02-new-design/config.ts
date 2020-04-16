@@ -529,6 +529,5 @@ export const configNLocations: InfographicConfig.TripInfographic = {
 };
 
 export const settings03Locations = {
-  scale: 0.6
-  // scale: 0.456,
+  scale: 0.75,
 };
