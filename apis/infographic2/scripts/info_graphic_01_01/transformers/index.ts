@@ -16,7 +16,7 @@ const transformers: { [id: string]: Transformer } = {
 
   text: leafText,
   "location-image": leafLocationImage,
-  svg: leafSVG
+  svg: leafSVG,
 };
 
 export function processBlock(
@@ -25,13 +25,35 @@ export function processBlock(
   cursor: CursorTransformer
 ): { block: InfographicConfig.Block; cursor: CursorTransformer } {
   const transformer = transformers[blockConfig.type];
+
+  // leaf handler
+  if (transformer && transformer.type == "leaf") {
+    return {
+      block: transformer.handler(blockConfig, trip, cursor),
+      cursor,
+    };
+  }
+
+  //leaf default handler
+  if (!transformer && !blockConfig["blocks"]) {
+    return {
+      block: leafDefault.handler(blockConfig, trip, cursor),
+      cursor,
+    };
+  }
+
+  if (!transformer)
+    throw new Error("missing transformer for node type " + blockConfig.type);
+
   let nextCursor: CursorTransformer = cursor;
-  if (transformer) {
-    if (transformer.type == "node") {
-      const preHandlerResult = transformer.preHandler(blockConfig, trip, cursor);
-      blockConfig = preHandlerResult.block;
-      nextCursor = preHandlerResult.cursor;
-    }
+
+  // pre node handler
+  if (transformer.type == "node") {
+    const preHandlerResult = transformer.preHandler(blockConfig, trip, cursor);
+    blockConfig = preHandlerResult.block;
+    nextCursor = preHandlerResult.cursor;
+    console.log("pre handler node ", blockConfig);
+    console.log("cursor", nextCursor);
   }
 
   nextCursor = _.merge({}, nextCursor, { level: cursor.level + 1 });
@@ -51,40 +73,16 @@ export function processBlock(
     }
   }
 
-  if (transformer) {
-    // node handler
-    if (transformer.type == "node") {
-      const postHandlerResult = transformer.postHandler(
-        blockConfig,
-        processedBlockConfigs,
-        nextCursor
-      );
-      nextCursor = postHandlerResult.cursor;
+  // post node handler
+  const postHandlerResult = transformer.postHandler(
+    blockConfig,
+    processedBlockConfigs,
+    nextCursor
+  );
+  nextCursor = postHandlerResult.cursor;
 
-      return {
-        block: postHandlerResult.block,
-        cursor: _.merge({}, cursor, { location: nextCursor.location }),
-      };
-    }
-
-    //leaf handler
-    return {
-      block: transformer.handler(blockConfig, trip, cursor),
-      cursor: _.merge({}, cursor, { location: nextCursor.location }),
-    };
-  }
-
-  //node default
-  if ((blockConfig as InfographicConfig.ContainerBlock).blocks) {
-    return {
-      block: blockConfig as InfographicConfig.Block,
-      cursor: _.merge({}, cursor, { location: nextCursor.location }),
-    };
-  }
-
-  //leaf default
   return {
-    block: leafDefault.handler(blockConfig, trip, cursor),
+    block: postHandlerResult.block,
     cursor: _.merge({}, cursor, { location: nextCursor.location }),
   };
 }

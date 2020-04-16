@@ -10,7 +10,6 @@ export function scaleBlock<T>(
     [
       "width",
       "height",
-      // "fontSize",
       "x1",
       "y1",
       "x2",

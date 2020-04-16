@@ -3,6 +3,7 @@ import { NodeTransformer } from "./typings";
 import _ from "lodash";
 import { overrideMissingHeight } from "./dynamic-property-override";
 import { scaleBlock } from "../utils";
+import { nodeContainer } from "./node-container";
 
 export const nodeLocations: NodeTransformer = {
   type: "node",
@@ -27,13 +28,14 @@ export const nodeLocations: NodeTransformer = {
       );
     }
 
-    return {
-      block: {
+    return nodeContainer.preHandler(
+      {
         ...c,
         blocks: childBlockConfigs,
       } as InfographicConfig.Block,
-      cursor,
-    };
+      trip,
+      cursor
+    );
   },
   postHandler: (c, children, cursor) => {
     const b = c as InfographicConfig.LocationsBlocks;

@@ -7,7 +7,7 @@ import _ from "lodash";
 export const nodeContainer: NodeTransformer = {
   type: "node",
   preHandler: (c, trip, cursor) => ({
-    block: scaleBlock(c, cursor.scale),
+    block: scaleBlock(c, getScale(c, cursor)),
     cursor: _.merge({}, cursor, { scale: getScale(c, cursor) }),
   }),
   postHandler: (b, children, cursor) => {
@@ -27,7 +27,7 @@ export const nodeContainer: NodeTransformer = {
 };
 
 function getScale(
-  c,
+  c: any,
   cursor: CursorTransformer
 ) {
   return c["scale"] ? c["scale"] * cursor.scale : cursor.scale;
