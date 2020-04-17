@@ -6,8 +6,7 @@ import {
   locationDetails,
 } from "./shared-components";
 
-// locationDetails will be able to reuse
-export const sharedNLocations: InfographicConfig.LocationsBlocks = {
+const locations: InfographicConfig.LocationsBlocks = {
   type: "locations",
   flex: "column",
   blocks: [
@@ -20,7 +19,10 @@ export const sharedNLocations: InfographicConfig.LocationsBlocks = {
         left: 97,
       },
       blocks: [
-        sharedLocationImage01,
+        {
+          ...sharedLocationImage02,
+          scale: 0.85,
+        },
         // location details
         {
           ...locationDetails,
@@ -40,12 +42,15 @@ export const sharedNLocations: InfographicConfig.LocationsBlocks = {
         left: 630,
       },
       blocks: [
-        sharedLocationImage02,
+        {
+          ...sharedLocationImage01,
+          scale: 0.85,
+        },
         // location details
         {
           ...locationDetails,
           positioning: {
-            top: 270,
+            top: 170,
             left: -450,
           },
         },
@@ -67,7 +72,7 @@ export const configNLocations: InfographicConfig.TripInfographic = {
       scale: 0.75,
     },
     {
-      ...sharedNLocations,
+      ...locations,
       scale: 0.75,
     },
     {
