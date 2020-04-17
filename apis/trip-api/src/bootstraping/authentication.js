@@ -55,50 +55,47 @@ const jwt = require("jsonwebtoken");
 // }
 
 async function addAuth(server) {
+  await server.register(AuthBearer);
 
-    await server.register(AuthBearer);
+  server.auth.strategy("simple", "bearer-access-token", {
+    allowQueryToken: true, // optional, false by default
+    validate: async (request, token, h) => {
+      // console.log(token);
+      // console.log(`${request.route.method} ${request.route.path}`);
 
-    server.auth.strategy("simple", "bearer-access-token", {
+      try {
+        var decoded = jwt.verify(token, "secret");
+        console.log("decoded", decoded.userName);
+      } catch (err) {
+        console.log("verify error", err);
+        return {
+          isValid: false,
+          credentials: null,
+          artifacts: null,
+        };
+      }
 
-        allowQueryToken: true, // optional, false by default
-        validate: async (request, token, h) => {
-            // console.log(token);
-            // console.log(`${request.route.method} ${request.route.path}`);
+      const isValid = true;
 
-            try {
-                var decoded = jwt.verify(token, "secret");
-                console.log("decoded", decoded.userName);
-            } catch(err) {
-                console.log("verify error", err);
-                return {
-                    isValid: false,
-                    credentials: null,
-                    artifacts: null
-                };
-            }
+      const { userName, id } = decoded;
 
-            const isValid = true;
+      const credentials = {
+        token,
+        user: { id, userName },
+      };
+      const artifacts = {
+        test: "info",
+      };
 
-            const { userName, id } = decoded;
+      return {
+        isValid,
+        credentials,
+        artifacts,
+      };
+    },
+  });
 
-            const credentials = {
-                token,
-                user: { id, userName },
-            };
-            const artifacts = {
-                test: "info"
-            };
-
-            return {
-                isValid,
-                credentials,
-                artifacts
-            };
-        }
-    });
-
-    // server.auth.default('simple');
-
+  // server.auth.default('simple');
 }
 
 module.exports.addAuth = addAuth;

@@ -20,7 +20,15 @@ export async function UpdateLocationActivity(
   reducers: TripReducers,
   emitter: ServiceBus
 ) {
-  const { ownerId, tripId, locationId, activityId, label_en, label_vi, activityIcon } = command;
+  const {
+    ownerId,
+    tripId,
+    locationId,
+    activityId,
+    label_en,
+    label_vi,
+    activityIcon,
+  } = command;
 
   const event: TripEvent = {
     type: "LocationActivityUpdated",
@@ -30,7 +38,7 @@ export async function UpdateLocationActivity(
     activityId,
     label_en,
     label_vi,
-    activityIcon
+    activityIcon,
   };
 
   eventHandler.save(event);

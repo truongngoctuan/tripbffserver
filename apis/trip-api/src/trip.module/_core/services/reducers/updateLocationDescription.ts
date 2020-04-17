@@ -8,11 +8,13 @@ export function updateLocationDescription(
 ): ITrip {
   return {
     ...prevState,
-    locations: prevState.locations.map(item => {
-        return item.locationId !== event.locationId ? item : {
+    locations: prevState.locations.map((item) => {
+      return item.locationId !== event.locationId
+        ? item
+        : {
             ...item,
-            description: event.description
-        };
-    })
+            description: event.description,
+          };
+    }),
   };
 }

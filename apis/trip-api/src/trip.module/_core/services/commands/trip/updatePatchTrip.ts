@@ -13,10 +13,14 @@ export type UpdatePatchTripCommand = {
   isPublic: boolean;
 };
 
-export async function updatePatchTrip(command: UpdatePatchTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus): Promise<CommandResult> {
-  
+export async function updatePatchTrip(
+  command: UpdatePatchTripCommand,
+  eventHandler: EventHandler,
+  reducers: TripReducers,
+  emitter: ServiceBus
+): Promise<CommandResult> {
   const { ownerId, tripId, name, fromDate, toDate, isPublic } = command;
-  
+
   //validate
   const state = await reducers.getCurrentState(tripId);
 
@@ -27,7 +31,7 @@ export async function updatePatchTrip(command: UpdatePatchTripCommand, eventHand
       ownerId,
       tripId,
       name,
-      isPublic
+      isPublic,
     };
 
     eventHandler.save(event);
@@ -52,6 +56,6 @@ export async function updatePatchTrip(command: UpdatePatchTripCommand, eventHand
     await emitter.emit(event);
   }
 
-  //todo handle multi-event that 
+  //todo handle multi-event that
   return Succeed();
 }

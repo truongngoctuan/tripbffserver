@@ -20,7 +20,6 @@ afterAll(async () => {
   await mongoUtil.afterAll();
 });
 
-
 let tripRepository: ITripRepository;
 let tripsRepository: ITripsRepository;
 let serviceBus: ServiceBus;
@@ -38,16 +37,16 @@ beforeEach(async () => {
     name: "name",
     fromDate: moment("2019-01-01").toDate(),
     toDate: moment("2019-01-10").toDate(),
-    isPublic: true
+    isPublic: true,
   };
 
   await serviceBus.emit(event);
-
 });
 
 it("create trip", async () => {
-  expect(await tripRepository.get("ownerId", "tripId", "ownerId"))
-    .toMatchSnapshot();
+  expect(
+    await tripRepository.get("ownerId", "tripId", "ownerId")
+  ).toMatchSnapshot();
 });
 
 it("update trip name", async () => {
@@ -56,12 +55,13 @@ it("update trip name", async () => {
     ownerId: "ownerId",
     tripId: "tripId",
     name: "name 2",
-    isPublic: true
+    isPublic: true,
   };
   await serviceBus.emit(updateEvent);
 
-  expect(await tripRepository.get("ownerId", "tripId", "ownerId"))
-    .toMatchSnapshot();
+  expect(
+    await tripRepository.get("ownerId", "tripId", "ownerId")
+  ).toMatchSnapshot();
 });
 
 test("import trip location", async () => {
@@ -69,47 +69,53 @@ test("import trip location", async () => {
     type: "TripImportLocations",
     ownerId: "ownerId",
     tripId: "tripId",
-    locations: [{
-      locationId: "locationId01",
-      name: "name",
-      location: {
-        long: 1,
-        lat: 1,
-        address: "address", //todo: need address here ?
+    locations: [
+      {
+        locationId: "locationId01",
+        name: "name",
+        location: {
+          long: 1,
+          lat: 1,
+          address: "address", //todo: need address here ?
+        },
+        fromTime: moment("2019-01-01").toDate(),
+        toTime: moment("2019-01-10").toDate(),
+        images: [],
       },
-      fromTime: moment("2019-01-01").toDate(),
-      toTime: moment("2019-01-10").toDate(),
-      images: [],
-    }]
+    ],
   };
   await serviceBus.emit(importEvent);
 
-  expect(await tripRepository.get("ownerId", "tripId", "ownerId"))
-    .toMatchSnapshot();
+  expect(
+    await tripRepository.get("ownerId", "tripId", "ownerId")
+  ).toMatchSnapshot();
 });
-
 
 test("import trip location with images", async () => {
   const importEvent: TripEvent = {
     type: "TripImportLocations",
     ownerId: "ownerId",
     tripId: "tripId",
-    locations: [{
-      locationId: "locationId01",
-      name: "name",
-      location: {
-        long: 1,
-        lat: 1,
-        address: "address",
+    locations: [
+      {
+        locationId: "locationId01",
+        name: "name",
+        location: {
+          long: 1,
+          lat: 1,
+          address: "address",
+        },
+        fromTime: moment("2019-01-01").toDate(),
+        toTime: moment("2019-01-10").toDate(),
+        images: [
+          {
+            imageId: "imageId01",
+            url: "url",
+            time: moment("2019-01-01").toDate(),
+          },
+        ],
       },
-      fromTime: moment("2019-01-01").toDate(),
-      toTime: moment("2019-01-10").toDate(),
-      images: [{
-        imageId: "imageId01",
-        url: "url",
-        time: moment("2019-01-01").toDate(),
-      }],
-    }]
+    ],
   };
   await serviceBus.emit(importEvent);
 
@@ -124,22 +130,26 @@ test("upload location image", async () => {
     type: "TripImportLocations",
     ownerId: "ownerId",
     tripId: "tripId",
-    locations: [{
-      locationId: "locationId01",
-      name: "name",
-      location: {
-        long: 1,
-        lat: 1,
-        address: "address",
+    locations: [
+      {
+        locationId: "locationId01",
+        name: "name",
+        location: {
+          long: 1,
+          lat: 1,
+          address: "address",
+        },
+        fromTime: moment("2019-01-01").toDate(),
+        toTime: moment("2019-01-10").toDate(),
+        images: [
+          {
+            imageId: "imageId01",
+            url: "url",
+            time: moment("2019-01-01").toDate(),
+          },
+        ],
       },
-      fromTime: moment("2019-01-01").toDate(),
-      toTime: moment("2019-01-10").toDate(),
-      images: [{
-        imageId: "imageId01",
-        url: "url",
-        time: moment("2019-01-01").toDate(),
-      }],
-    }]
+    ],
   };
   await serviceBus.emit(importEvent);
 
@@ -163,22 +173,26 @@ test("favorite location image", async () => {
     type: "TripImportLocations",
     ownerId: "ownerId",
     tripId: "tripId",
-    locations: [{
-      locationId: "locationId01",
-      name: "name",
-      location: {
-        long: 1,
-        lat: 1,
-        address: "address",
+    locations: [
+      {
+        locationId: "locationId01",
+        name: "name",
+        location: {
+          long: 1,
+          lat: 1,
+          address: "address",
+        },
+        fromTime: moment("2019-01-01").toDate(),
+        toTime: moment("2019-01-10").toDate(),
+        images: [
+          {
+            imageId: "imageId01",
+            url: "url",
+            time: moment("2019-01-01").toDate(),
+          },
+        ],
       },
-      fromTime: moment("2019-01-01").toDate(),
-      toTime: moment("2019-01-10").toDate(),
-      images: [{
-        imageId: "imageId01",
-        url: "url",
-        time: moment("2019-01-01").toDate(),
-      }],
-    }]
+    ],
   };
   await serviceBus.emit(importEvent);
 
@@ -188,7 +202,7 @@ test("favorite location image", async () => {
     tripId: "tripId",
     locationId: "locationId01",
     imageId: "imageId01",
-    isFavorite: true
+    isFavorite: true,
   };
   await serviceBus.emit(uploadImageEvent);
   const trip = await tripRepository.get("ownerId", "tripId", "ownerId");
@@ -197,28 +211,31 @@ test("favorite location image", async () => {
   expect(img.isFavorite).toBe(true);
 });
 
-
 test("add a location image", async () => {
   const importEvent: TripEvent = {
     type: "TripImportLocations",
     ownerId: "ownerId",
     tripId: "tripId",
-    locations: [{
-      locationId: "locationId01",
-      name: "name",
-      location: {
-        long: 1,
-        lat: 1,
-        address: "address",
+    locations: [
+      {
+        locationId: "locationId01",
+        name: "name",
+        location: {
+          long: 1,
+          lat: 1,
+          address: "address",
+        },
+        fromTime: moment("2019-01-01").toDate(),
+        toTime: moment("2019-01-10").toDate(),
+        images: [
+          {
+            imageId: "imageId01",
+            url: "url",
+            time: moment("2019-01-01").toDate(),
+          },
+        ],
       },
-      fromTime: moment("2019-01-01").toDate(),
-      toTime: moment("2019-01-10").toDate(),
-      images: [{
-        imageId: "imageId01",
-        url: "url",
-        time: moment("2019-01-01").toDate(),
-      }],
-    }]
+    ],
   };
   await serviceBus.emit(importEvent);
 
@@ -229,7 +246,7 @@ test("add a location image", async () => {
     locationId: "locationId01",
     imageId: "imageId02",
     url: "url2",
-    time: moment("2019-01-02").toDate()
+    time: moment("2019-01-02").toDate(),
   };
   await serviceBus.emit(uploadImageEvent);
   const trip = await tripRepository.get("ownerId", "tripId", "ownerId");

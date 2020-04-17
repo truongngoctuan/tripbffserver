@@ -25,7 +25,6 @@ describe("s3 service", () => {
     expect(result).toBe(false);
   });
 
-
   test("read file", async () => {
     // Arrange
     const relativeImageUrl = "redcat.png";
@@ -36,16 +35,14 @@ describe("s3 service", () => {
     // Assert
     expect(result).toBeDefined();
     expect(result.length).toBe(425521);
-
   }, 10000);
-
 
   test("upload file", async () => {
     return new Promise((resolve, reject) => {
-
       // var currentPath = process.cwd();
       // console.log(currentPath)
-      const fileNeedToUpload = "./src/image.module/_infrastructures/__tests__/redcat_tiny.png";
+      const fileNeedToUpload =
+        "./src/image.module/_infrastructures/__tests__/redcat_tiny.png";
       // Arrange
       fs.readFile(fileNeedToUpload, "binary", async (err, dataDemo1) => {
         if (err) throw err;
@@ -62,8 +59,6 @@ describe("s3 service", () => {
 
         resolve(true);
       });
-
     });
-
   }, 5000);
 });

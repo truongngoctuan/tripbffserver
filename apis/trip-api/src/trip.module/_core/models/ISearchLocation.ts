@@ -1,8 +1,6 @@
-
 export interface ISearchLocation {
-    title: string;
-    address: string;
-    long: number;
-    lat: number;
+  title: string;
+  address: string;
+  long: number;
+  lat: number;
 }
-  

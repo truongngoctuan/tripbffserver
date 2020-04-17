@@ -24,7 +24,7 @@ export async function UpdateLocationDescription(
     ownerId,
     tripId,
     locationId,
-    description
+    description,
   };
 
   eventHandler.save(event);

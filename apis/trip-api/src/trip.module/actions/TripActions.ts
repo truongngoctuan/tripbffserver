@@ -22,9 +22,13 @@ export async function listTripsAction(
 }
 
 export async function listNewsFeedTripsAction(
-  loggedUserId: string, page: number
+  loggedUserId: string,
+  page: number
 ): Promise<ITripMinimized[] | CommandResult> {
-  const trips = await minimizedTripQueryHandler.listNewsFeed(loggedUserId, page);
+  const trips = await minimizedTripQueryHandler.listNewsFeed(
+    loggedUserId,
+    page
+  );
 
   if (!trips) return Err("can't get data after create trip");
 
@@ -38,7 +42,11 @@ export async function getTripByIdAction(
   createdById: string
 ): Promise<ITrip> {
   console.log("trip id :" + tripId);
-  const trip = await tripQueryHandler.GetById(loggedUserId, tripId, createdById);
+  const trip = await tripQueryHandler.GetById(
+    loggedUserId,
+    tripId,
+    createdById
+  );
   if (!trip) throw "trip not found";
   return trip;
 }
@@ -59,7 +67,8 @@ export async function createTripAction(
   fromDate: string,
   toDate: string,
   isPublic: boolean
-): Promise<string | CommandResult | string[] | undefined> { // todo refactor return commandResult.errors
+): Promise<string | CommandResult | string[] | undefined> {
+  // todo refactor return commandResult.errors
   console.log("trip name :" + name);
   console.log("trip from date:" + fromDate);
   console.log("trip to date:" + toDate);
@@ -73,7 +82,7 @@ export async function createTripAction(
     name,
     fromDate: moment(fromDate).toDate(),
     toDate: moment(toDate).toDate(),
-    isPublic
+    isPublic,
   });
 
   if (commandResult.isSucceed) {
@@ -97,7 +106,8 @@ export async function patchTripAction(
   fromDate: string,
   toDate: string,
   isPublic: boolean
-): Promise<ITrip | CommandResult | string[] | undefined> { // todo refactor return commandResult.errors
+): Promise<ITrip | CommandResult | string[] | undefined> {
+  // todo refactor return commandResult.errors
   console.log("trip name", name);
   console.log("trip from date:", fromDate);
   console.log("trip to date:", toDate);
@@ -109,7 +119,7 @@ export async function patchTripAction(
     name,
     fromDate: moment(fromDate).toDate(),
     toDate: moment(toDate).toDate(),
-    isPublic
+    isPublic,
   });
 
   if (commandResult.isSucceed) {
@@ -129,12 +139,13 @@ export async function patchTripAction(
 export async function deleteTripAction(
   ownerId: string,
   tripId: string
-): Promise<boolean | CommandResult | string[] | undefined> { // todo refactor return commandResult.errors
+): Promise<boolean | CommandResult | string[] | undefined> {
+  // todo refactor return commandResult.errors
   const commandResult = await tripCommandHandler.exec({
     type: "deleteTrip",
     ownerId,
     tripId,
-    isDeleted: true
+    isDeleted: true,
   });
 
   if (commandResult.isSucceed) {

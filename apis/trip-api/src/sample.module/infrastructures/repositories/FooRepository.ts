@@ -7,13 +7,13 @@ export class FooRepository implements IFooRepository {
     return {
       id: o.id,
       name: o.name,
-      description: o.description
+      description: o.description,
     };
   }
 
   public async list() {
     const foos = await Foo.find().exec();
-    return foos.map(item => this.toFooDto(item));
+    return foos.map((item) => this.toFooDto(item));
   }
 
   public async create(payload: IFoo) {
@@ -21,7 +21,7 @@ export class FooRepository implements IFooRepository {
     const foo = new Foo({
       id,
       name,
-      description
+      description,
     });
     await foo.save();
 
@@ -29,10 +29,7 @@ export class FooRepository implements IFooRepository {
   }
 
   public async update(payload: IFoo) {
-    const foo = await Foo.findOne()
-      .where("id")
-      .equals(payload.id)
-      .exec();
+    const foo = await Foo.findOne().where("id").equals(payload.id).exec();
     if (!foo) throw "can't find foo with id = " + payload.id;
 
     foo.name = payload.name;
@@ -42,10 +39,7 @@ export class FooRepository implements IFooRepository {
   }
 
   public async get(id: string) {
-    const foo = await Foo.findOne()
-      .where("id")
-      .equals(id)
-      .exec();
+    const foo = await Foo.findOne().where("id").equals(id).exec();
     if (!foo) return undefined;
 
     return this.toFooDto(foo);

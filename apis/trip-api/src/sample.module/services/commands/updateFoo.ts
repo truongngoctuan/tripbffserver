@@ -10,7 +10,12 @@ export type UpdateFooCommand = {
   description: string;
 };
 
-export async function updateFoo(command: UpdateFooCommand, eventHandler: EventHandler, reducers: FooReducers, emitter: ServiceBus) {
+export async function updateFoo(
+  command: UpdateFooCommand,
+  eventHandler: EventHandler,
+  reducers: FooReducers,
+  emitter: ServiceBus
+) {
   //validate
 
   const { fooId, name, description } = command;
@@ -25,7 +30,7 @@ export async function updateFoo(command: UpdateFooCommand, eventHandler: EventHa
     type: "FooUpdated",
     fooId,
     name,
-    description
+    description,
   };
 
   eventHandler.save(event);

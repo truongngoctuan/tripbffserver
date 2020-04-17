@@ -11,18 +11,20 @@ const TripsSchema = new Schema({
   name: String,
   fromDate: Date,
   toDate: Date,
-  locationImages: [{
-    name: String,
-    address: String,
-    imageUrl: String,
-    description: String,
-  }],
+  locationImages: [
+    {
+      name: String,
+      address: String,
+      imageUrl: String,
+      description: String,
+    },
+  ],
   isDeleted: Boolean,
   isPublic: Boolean,
-  createdDate: Date
+  createdDate: Date,
 });
 
 export const UserTripsSchema = new Schema({
   userId: String,
-  trips: [TripsSchema]
+  trips: [TripsSchema],
 });

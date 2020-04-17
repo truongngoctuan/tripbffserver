@@ -5,7 +5,7 @@ export interface ITrip {
   toDate: Date;
   locations: Array<ITripLocation>;
   infographics: Array<IInfographic>;
-  latestExportedExternalStorageId?: string,
+  latestExportedExternalStorageId?: string;
   isDeleted: boolean;
   createdById: string;
   canContribute: boolean;

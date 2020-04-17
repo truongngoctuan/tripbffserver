@@ -1,7 +1,7 @@
 export const config = {
   trip: {
-    keyPrefix: "trip"
-  }
+    keyPrefix: "trip",
+  },
   // db: {
   //   host: 'localhost',
   //   port: 27017,

@@ -1,7 +1,7 @@
 import mongoose, { Model, Document } from "mongoose";
 import { IUser } from "../../_core/models/IUser";
 
-export interface IUserDocument extends IUser, Document { }
+export interface IUserDocument extends IUser, Document {}
 
 const { Schema } = mongoose;
 
@@ -22,15 +22,14 @@ const LoginsSchema = new Schema({
     name: String,
     first_name: String,
     last_name: String,
-    email: String
+    email: String,
   },
-  loggedInDate: Date
+  loggedInDate: Date,
 });
 
 export const UsersSchema = new Schema({
   userId: String,
   userName: String,
   fullName: String,
-  logins: [LoginsSchema]
+  logins: [LoginsSchema],
 });
-

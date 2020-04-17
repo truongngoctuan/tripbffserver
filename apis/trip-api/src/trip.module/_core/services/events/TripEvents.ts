@@ -5,7 +5,7 @@ export type TripCreatedEvent = {
   name: string;
   fromDate: Date;
   toDate: Date;
-  isPublic: boolean
+  isPublic: boolean;
 };
 
 export type TripUpdatedEvent = {
@@ -15,7 +15,7 @@ export type TripUpdatedEvent = {
   name: string;
   fromDate: Date;
   toDate: Date;
-  isPublic: boolean
+  isPublic: boolean;
 };
 
 export type TripDateRangeUpdatedEvent = {

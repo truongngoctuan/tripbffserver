@@ -18,7 +18,7 @@ const TripSchema = new Schema({
       location: {
         long: Number,
         lat: Number,
-        address: String
+        address: String,
       },
       fromTime: Date,
       toTime: Date,
@@ -30,45 +30,45 @@ const TripSchema = new Schema({
           time: Date,
           externalStorageId: String,
           isFavorite: Boolean,
-        }
+        },
       ],
       feeling: {
         feelingId: String,
         label_en: String,
         label_vi: String,
-        icon: String
+        icon: String,
       },
       activity: {
         activityId: String,
         label_en: String,
         label_vi: String,
-        icon: String
+        icon: String,
       },
       highlights: [
         {
           highlightId: String,
           label_en: String,
           label_vi: String,
-          highlightType: String
-        }
-      ]
-    }
+          highlightType: String,
+        },
+      ],
+    },
   ],
   infographics: [
     {
       infographicId: String,
       externalStorageId: String,
-      status: String
-    }
+      status: String,
+    },
   ],
   isDeleted: Boolean,
   createdDate: Date,
-  isPublic: Boolean
+  isPublic: Boolean,
 });
 
 export const UserTripSchema = new Schema({
   userId: String,
-  trips: [TripSchema]
+  trips: [TripSchema],
 });
 
 // export const UserTripDocument: Model<IUserTripDocument> = mongoose.model<IUserTripDocument>(

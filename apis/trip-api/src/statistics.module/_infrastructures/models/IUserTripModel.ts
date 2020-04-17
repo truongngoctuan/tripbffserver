@@ -1,4 +1,3 @@
-
 export interface IUserTripModel {
   userId: string;
   trips: Array<ITripModel>;

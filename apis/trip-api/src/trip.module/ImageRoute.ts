@@ -15,10 +15,12 @@ module.exports = {
           const { category, mimeType } = request.query as any;
           console.log(mimeType);
 
-          const result = await IoC.fileService.signUpload(category ? category : "images", mimeType);
+          const result = await IoC.fileService.signUpload(
+            category ? category : "images",
+            mimeType
+          );
 
           return result;
-
         } catch (error) {
           console.log(error);
           return error;
@@ -39,8 +41,12 @@ module.exports = {
           const result = await IoC.fileService.save(fullPath);
           const { externalId } = result;
 
-          const thumbnailExternalUrl = await tripQueryHandler.getThumbnailUrlByExternalId(externalId);
-          const externalUrl = await tripQueryHandler.getExternalUrlByExternalId(externalId);
+          const thumbnailExternalUrl = await tripQueryHandler.getThumbnailUrlByExternalId(
+            externalId
+          );
+          const externalUrl = await tripQueryHandler.getExternalUrlByExternalId(
+            externalId
+          );
           return { externalId, thumbnailExternalUrl, externalUrl };
         } catch (error) {
           console.log(error);
@@ -69,16 +75,25 @@ module.exports = {
     //     --> trigger event
     //     --> pickup event --> query thumbnail images, wait until data available
 
-    async function returnFileFromWH(imageId: string, wi: number, he: number, h: ResponseToolkit): Promise<string> {
+    async function returnFileFromWH(
+      imageId: string,
+      wi: number,
+      he: number,
+      h: ResponseToolkit
+    ): Promise<string> {
       const { fileInfo } = await IoC.fileService.getInfoById(imageId);
 
       await IoC.imageService.saveThumbnail(fileInfo.path, wi, he);
 
-      const imageThumbnail = IoC.imageService.generateThumbnailUri(fileInfo.fileName, wi, he);
+      const imageThumbnail = IoC.imageService.generateThumbnailUri(
+        fileInfo.fileName,
+        wi,
+        he
+      );
 
-      const start = (new Date()).getTime();
+      const start = new Date().getTime();
       const signedUrl = await IoC.fileService.signGet(imageThumbnail);
-      const end = (new Date()).getTime();
+      const end = new Date().getTime();
       const responseTime = end - start;
       console.log(`signed thumbnail ${responseTime}`, signedUrl);
       return signedUrl;
@@ -105,7 +120,6 @@ module.exports = {
           signedUrl = await returnFileFromWH(imageId, 400, 400, h);
 
           return h.redirect(signedUrl);
-
         } catch (error) {
           console.log(error);
           return error;
@@ -121,18 +135,25 @@ module.exports = {
             s: Joi.number().description("size"),
           }),
         },
-        response: {
-        },
+        response: {},
       },
     });
 
-
-    async function returnSignOnlyFromWH(imageId: string, wi: number, he: number, h: ResponseToolkit): Promise<string> {
+    async function returnSignOnlyFromWH(
+      imageId: string,
+      wi: number,
+      he: number,
+      h: ResponseToolkit
+    ): Promise<string> {
       const { fileInfo } = await IoC.fileService.getInfoById(imageId);
-      const imageThumbnail = IoC.imageService.generateThumbnailUri(fileInfo.fileName, wi, he);
-      const start = (new Date()).getTime();
+      const imageThumbnail = IoC.imageService.generateThumbnailUri(
+        fileInfo.fileName,
+        wi,
+        he
+      );
+      const start = new Date().getTime();
       const signedUrl = await IoC.fileService.signGet(imageThumbnail);
-      const end = (new Date()).getTime();
+      const end = new Date().getTime();
       const responseTime = end - start;
       console.log(`signed thumbnail ${responseTime}`, signedUrl);
       return signedUrl;
@@ -159,7 +180,6 @@ module.exports = {
           signedUrl = await returnSignOnlyFromWH(imageId, 400, 400, h);
 
           return h.redirect(signedUrl);
-
         } catch (error) {
           console.log(error);
           return error;
@@ -175,8 +195,7 @@ module.exports = {
             s: Joi.number().description("size"),
           }),
         },
-        response: {
-        },
+        response: {},
       },
     });
 
@@ -191,7 +210,6 @@ module.exports = {
           // sign url then redirect
           const signedUrl = await IoC.fileService.signGet(fileInfo.fileName);
           return h.redirect(signedUrl);
-
         } catch (error) {
           console.log(error);
           return error;
@@ -205,6 +223,5 @@ module.exports = {
         },
       },
     });
-
   },
 };

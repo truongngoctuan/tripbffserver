@@ -3,7 +3,8 @@ import {
   ITripEventRepository,
   TripImportLocationsEvent,
   TripEvent,
-  TripLocationImageUploadedEvent} from "../events";
+  TripLocationImageUploadedEvent,
+} from "../events";
 import moment from "moment";
 import _ from "lodash";
 import createInfographic from "./createInfographic";
@@ -32,7 +33,7 @@ import finishShareInfographic from "./finishShareInfographic";
 
 export class TripReducers {
   constructor(private TripEventRepository?: ITripEventRepository) {}
-  
+
   helloWorld() {
     return "hello world";
   }
@@ -54,7 +55,7 @@ export class TripReducers {
       isDeleted: false,
       createdById: "",
       canContribute: false,
-      isPublic: true
+      isPublic: true,
     };
 
     events.forEach((event) => {
@@ -90,19 +91,19 @@ export class TripReducers {
         return updateLocationHighlight(state, event);
       case "LocationDescriptionUpdated":
         return updateLocationDescription(state, event);
-        case "LocationImageAdded":
+      case "LocationImageAdded":
         return addTripLocationImage(state, event);
       case "LocationImageUploaded":
         return this.updateTripLocationImage(state, event);
       case "LocationImagesRemoved":
         return removeTripLocationImages(state, event);
-        case "LocationImagesFavored":
+      case "LocationImagesFavored":
         return favorTripLocationImage(state, event);
       case "InfographicCreated":
         return createInfographic(state, event);
       case "InfographicExported":
         return finishCreateInfographic(state, event);
-      case "InfographicShared": 
+      case "InfographicShared":
         return finishShareInfographic(state, event);
       case "TripDeleted":
         return deleteTrip(state, event);
@@ -123,46 +124,42 @@ export class TripReducers {
       isDeleted: false,
       createdById: command.ownerId,
       canContribute: false,
-      isPublic: command.isPublic
+      isPublic: command.isPublic,
     };
   }
 
-  updateTrip(
-    prevState: ITrip,
-    command: TripUpdatedEvent
-  ): ITrip {
+  updateTrip(prevState: ITrip, command: TripUpdatedEvent): ITrip {
     return {
       ...prevState,
       name: command.name,
       fromDate: command.fromDate,
       toDate: command.toDate,
-      isPublic: command.isPublic
+      isPublic: command.isPublic,
     };
   }
 
   private defaultImageValue = {
     externalUrl: "",
     thumbnailExternalUrl: "",
-    isFavorite: false
-  }
+    isFavorite: false,
+  };
   private updateTripLocations(
     prevState: ITrip,
     command: TripImportLocationsEvent
   ): ITrip {
-
     return {
       ...prevState,
-      locations: command.locations.map(location => {
+      locations: command.locations.map((location) => {
         return {
           ...location,
-          images: location.images.map(img => {
+          images: location.images.map((img) => {
             return {
               ...this.defaultImageValue,
-              ...img
+              ...img,
             };
-        })
+          }),
         };
-      })
+      }),
     };
   }
 
@@ -170,11 +167,10 @@ export class TripReducers {
     prevState: ITrip,
     command: TripLocationImageUploadedEvent
   ): ITrip {
-
     //get location
     const locationIdx = _.findIndex(
       prevState.locations,
-      loc => loc.locationId == command.locationId
+      (loc) => loc.locationId == command.locationId
     );
 
     const location = prevState.locations[locationIdx];
@@ -182,7 +178,7 @@ export class TripReducers {
       //get image
       const imageIdx = _.findIndex(
         location.images,
-        img => img.imageId == command.imageId
+        (img) => img.imageId == command.imageId
       );
       const image = location.images[imageIdx];
 
@@ -193,21 +189,20 @@ export class TripReducers {
         location.images = [
           ...location.images.slice(0, imageIdx),
           image,
-          ...location.images.slice(imageIdx + 1)
+          ...location.images.slice(imageIdx + 1),
         ];
-  
+
         return {
           ...prevState,
           locations: [
             ...prevState.locations.slice(0, locationIdx),
             location,
-            ...prevState.locations.slice(locationIdx + 1)
-          ]
+            ...prevState.locations.slice(locationIdx + 1),
+          ],
         };
-      }      
+      }
     }
-    
+
     return prevState;
   }
-
 }

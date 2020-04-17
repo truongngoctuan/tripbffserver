@@ -11,7 +11,8 @@ export class DataSourceQueryHandler {
     private FeelingRepository: IFeelingRepository,
     private ActivityRepository: IActivityRepository,
     private HighlightRepository: IHighlightRepository,
-    private SearchLocationRepository: ISearchLocationRepository) {}
+    private SearchLocationRepository: ISearchLocationRepository
+  ) {}
 
   async getFeelingById(id: number): Promise<IFeeling | undefined> {
     return this.FeelingRepository.get(id);
@@ -45,30 +46,36 @@ export class DataSourceQueryHandler {
     return results;
   }
 
-  async getTopNearerLocationsByCoordinate(lat: number, long: number): Promise<ISearchLocation[]> {
-    const locations = await this.SearchLocationRepository.list("");    
+  async getTopNearerLocationsByCoordinate(
+    lat: number,
+    long: number
+  ): Promise<ISearchLocation[]> {
+    const locations = await this.SearchLocationRepository.list("");
     const sortLocations: any[] = [];
 
-    locations.forEach(location => {
-      const distance = calculateDistance(lat, long, location.lat, location.long);         
+    locations.forEach((location) => {
+      const distance = calculateDistance(
+        lat,
+        long,
+        location.lat,
+        location.long
+      );
       sortLocations.push({
         distance: distance,
-        location: location
-      });      
+        location: location,
+      });
     });
-    
+
     sortLocations.sort(compareLocation);
 
-    const topNearerLocations = sortLocations.slice(0, 4).map(lo => 
-      {
-        return lo.location;
-      }
-    );
+    const topNearerLocations = sortLocations.slice(0, 4).map((lo) => {
+      return lo.location;
+    });
 
     return topNearerLocations;
   }
-};
+}
 
-  function compareLocation(a: any, b: any) {
-    return a.distance - b.distance;
-  }
+function compareLocation(a: any, b: any) {
+  return a.distance - b.distance;
+}

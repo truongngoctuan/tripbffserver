@@ -10,7 +10,12 @@ export type CreateFooCommand = {
   description: string;
 };
 
-export async function createFoo(command: CreateFooCommand, eventHandler: EventHandler, reducers: FooReducers, emitter: ServiceBus): Promise<CommandResult> {
+export async function createFoo(
+  command: CreateFooCommand,
+  eventHandler: EventHandler,
+  reducers: FooReducers,
+  emitter: ServiceBus
+): Promise<CommandResult> {
   //validate
 
   const { fooId, name, description } = command;
@@ -18,7 +23,7 @@ export async function createFoo(command: CreateFooCommand, eventHandler: EventHa
     type: "FooCreated",
     fooId,
     name,
-    description
+    description,
   };
 
   eventHandler.save(event);

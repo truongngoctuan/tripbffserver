@@ -13,8 +13,7 @@ beforeAll(async () => {
   // console.log("mongo config: ", global.__MONGO_URI__);
   // console.log("mongo config: ", global.__MONGO_DB_NAME__);
 
-  mongoosed = await mongoose.connect(global.__MONGO_URI__)
-  .catch(err => {
+  mongoosed = await mongoose.connect(global.__MONGO_URI__).catch((err) => {
     console.log("error on connect to mongo db");
     console.log(err);
   });
@@ -38,12 +37,11 @@ beforeEach(async () => {
     await Promise.all(
       Object.keys(connection.collections).map(async (key) => {
         return await connection.collections[key].remove({});
-      }),
+      })
     );
   }
 
   await clearDB();
-
 });
 
 it("should aggregate docs from collection", async () => {

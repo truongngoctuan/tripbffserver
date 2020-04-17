@@ -29,7 +29,7 @@ export async function finishExportInfographic(
     ownerId,
     tripId,
     infographicId,
-    externalStorageId
+    externalStorageId,
   };
 
   eventHandler.save(event);

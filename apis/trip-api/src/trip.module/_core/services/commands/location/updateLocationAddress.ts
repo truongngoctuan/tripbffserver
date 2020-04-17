@@ -30,7 +30,7 @@ export async function UpdateLocationAddress(
     name,
     address,
     long,
-    lat
+    lat,
   };
 
   eventHandler.save(event);

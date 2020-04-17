@@ -10,13 +10,13 @@ let connection: any;
 let db;
 // let schemas = {}; //: IMongooseSchemas;
 
-
 async function beforeAll() {
   // console.log("mongo config: ", global.__MONGO_URI__);
   // console.log("mongo config: ", global.__MONGO_DB_NAME__);
 
-  mongoosed = await mongoose.connect((global as any).__MONGO_URI__)
-    .catch(err => {
+  mongoosed = await mongoose
+    .connect((global as any).__MONGO_URI__)
+    .catch((err) => {
       console.log("error on connect to mongo db");
       console.log(err);
     });
@@ -46,14 +46,12 @@ async function beforeEach() {
       await Promise.all(
         Object.keys(connection.collections).map(async (key) => {
           return await connection.collections[key].remove({});
-        }),
+        })
       );
     }
-
   }
 
   await clearDB();
-
 }
 
 export default {

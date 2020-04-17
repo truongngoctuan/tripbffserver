@@ -7,13 +7,13 @@ export interface IUser {
   logins: ILogin[];
 }
 
-export type ILogin = {
-  loginType: "login type...";
-}
+export type ILogin =
+  | {
+      loginType: "login type...";
+    }
   | ILoginLocal
   | ILoginFacebook
-  | ILoginDevice
-  ;
+  | ILoginDevice;
 
 export type ILoginLocal = {
   loginType: "LOCAL";
@@ -23,7 +23,7 @@ export type ILoginLocal = {
     salt: string;
   };
   loggedInDate: Date;
-}
+};
 
 export type ILoginFacebook = {
   loginType: "FACEBOOK";
@@ -46,4 +46,3 @@ export type ILoginDevice = {
   };
   loggedInDate: Date;
 };
-

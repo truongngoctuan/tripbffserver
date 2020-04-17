@@ -7,11 +7,11 @@ export default function createInfographic(
 ): ITrip {
   const newInfographic: IInfographic = {
     infographicId: command.infographicId,
-    status: "CREATED"
+    status: "CREATED",
   };
 
   return {
     ...prevState,
-    infographics: [...prevState.infographics, newInfographic]
+    infographics: [...prevState.infographics, newInfographic],
   };
 }

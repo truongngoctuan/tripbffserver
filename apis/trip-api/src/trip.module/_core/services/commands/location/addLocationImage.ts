@@ -26,7 +26,9 @@ export async function AddLocationImage(
     ownerId,
     tripId,
     locationId,
-    imageId, url, time,
+    imageId,
+    url,
+    time,
   };
 
   eventHandler.save(event);

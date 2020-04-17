@@ -15,9 +15,7 @@ export type FooUpdatedEvent = {
 };
 
 export class EventHandler {
-  constructor(private eventRepository: IFooEventRepository) {
-
-  }
+  constructor(private eventRepository: IFooEventRepository) {}
   async save(event: FooEvent) {
     await this.eventRepository.save(event);
   }

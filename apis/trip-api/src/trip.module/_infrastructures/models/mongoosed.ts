@@ -8,18 +8,16 @@ export interface IMongooseSchemas {
 }
 
 export function initSchemas(mongoose: any) {
-  const UserTripDocument: Model<IUserTripDocument> = (mongoose as Mongoose).model<IUserTripDocument>(
-    "UserTrip",
-    UserTripSchema
-  );
-  const UserTripsDocument: Model<IUserTripsDocument> = (mongoose as Mongoose).model<IUserTripsDocument>(
-    "UserMinimizedTrips",
-    UserTripsSchema
-  );
+  const UserTripDocument: Model<IUserTripDocument> = (mongoose as Mongoose).model<
+    IUserTripDocument
+  >("UserTrip", UserTripSchema);
+  const UserTripsDocument: Model<IUserTripsDocument> = (mongoose as Mongoose).model<
+    IUserTripsDocument
+  >("UserMinimizedTrips", UserTripsSchema);
 
   const SchemaCollections: IMongooseSchemas = {
     UserTripDocument,
-    UserTripsDocument
+    UserTripsDocument,
   };
 
   return SchemaCollections;

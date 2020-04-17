@@ -29,6 +29,6 @@ export class TripEventRepository implements ITripEventRepository {
 
   async getAll(id: string): Promise<TripEvent[]> {
     const Trips = await TripEventModel.find({ TripId: id }).exec();
-    return Trips.map(item => item.data);
+    return Trips.map((item) => item.data);
   }
 }

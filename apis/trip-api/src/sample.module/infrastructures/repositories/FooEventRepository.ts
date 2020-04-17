@@ -30,6 +30,6 @@ export class FooEventRepository implements IFooEventRepository {
 
   async getAll(id: string): Promise<FooEvent[]> {
     const foos = await FooEventModel.find({ fooId: id }).exec();
-    return foos.map(item => item.data);
+    return foos.map((item) => item.data);
   }
 }

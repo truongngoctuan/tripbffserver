@@ -60,15 +60,24 @@ const redis = require("redis");
 
   // log requests
   server.ext("onRequest", (request, h) => {
-    request.headers["x-req-start"] = (new Date()).getTime().toString();
+    request.headers["x-req-start"] = new Date().getTime().toString();
     return h.continue;
   });
 
   server.events.on("response", (request) => {
     const start = parseInt(request.headers["x-req-start"]);
-    const end = (new Date()).getTime();
+    const end = new Date().getTime();
     const responseTime = end - start;
-    console.log(request.info.remoteAddress + ": " + `${responseTime.toString().padStart(6, "0")} milli ` + request.method.toUpperCase() + " " + request.path + " --> " + (request.response as any).statusCode);
+    console.log(
+      request.info.remoteAddress +
+        ": " +
+        `${responseTime.toString().padStart(6, "0")} milli ` +
+        request.method.toUpperCase() +
+        " " +
+        request.path +
+        " --> " +
+        (request.response as any).statusCode
+    );
   });
 
   const client = redis.createClient({

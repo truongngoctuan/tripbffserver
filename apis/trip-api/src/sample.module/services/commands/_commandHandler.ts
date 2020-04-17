@@ -15,7 +15,12 @@ function staticRegister(func: Function) {
   staticHandlers.set(func.name, func as CommandFunc);
 }
 
-type CommandFunc = (command: FooCommand, eventHandler: EventHandler, reducers: FooReducers, emitter: ServiceBus) => Promise<CommandResult>;
+type CommandFunc = (
+  command: FooCommand,
+  eventHandler: EventHandler,
+  reducers: FooReducers,
+  emitter: ServiceBus
+) => Promise<CommandResult>;
 
 export class FooCommandHandler {
   private reducers: FooReducers;
@@ -41,10 +46,13 @@ export class FooCommandHandler {
   async exec(command: FooCommand) {
     const func = this.handlers.get(command.type);
     if (func) {
-      return await func(command, this.eventHandler, this.reducers, this.emitter);
+      return await func(
+        command,
+        this.eventHandler,
+        this.reducers,
+        this.emitter
+      );
     }
     return Err(`Can't find command handler ${command.type}`);
   }
-
 }
-

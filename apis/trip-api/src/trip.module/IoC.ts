@@ -17,7 +17,7 @@ import ActivityRepository from "./_infrastructures/repositories/ActivityReposito
 import { HighlightRepository } from "./_infrastructures/repositories/HighlightRepository";
 
 import mongoose from "mongoose";
-import {initSchemas} from "./_infrastructures/models/mongoosed";
+import { initSchemas } from "./_infrastructures/models/mongoosed";
 import SearchLocationRepository from "./_infrastructures/repositories/SearchLocationRepository";
 const mg = initSchemas(mongoose);
 
@@ -29,19 +29,24 @@ const jobDispatcher = new JobDispatcher();
 const tripCommandHandler = new TripCommandHandler(
   tripEventRepository,
   new ServiceBus(tripRepository, tripsRepository),
-  jobDispatcher,
+  jobDispatcher
 );
 const tripQueryHandler = new TripQueryHandler(tripRepository);
-const minimizedTripsQueryHandler = new MinimizedTripQueryHandler(tripsRepository);
-const tripEventQueryHandler = new TripEventQueryHandler(new TripEventRepository());
+const minimizedTripsQueryHandler = new MinimizedTripQueryHandler(
+  tripsRepository
+);
+const tripEventQueryHandler = new TripEventQueryHandler(
+  new TripEventRepository()
+);
 const fileService: IFileStorageService2 = new FileStorageS3Service();
 const imageService: IImageService = new ImageS3Service();
 
 const dataSourceQueryHandler = new DataSourceQueryHandler(
   new FeelingRepository(),
-  new ActivityRepository(),  
+  new ActivityRepository(),
   new HighlightRepository(),
-  new SearchLocationRepository());
+  new SearchLocationRepository()
+);
 
 export const IoC = {
   tripCommandHandler,
@@ -50,5 +55,5 @@ export const IoC = {
   fileService,
   imageService,
   tripEventQueryHandler,
-  dataSourceQueryHandler
+  dataSourceQueryHandler,
 };

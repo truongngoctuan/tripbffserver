@@ -5,7 +5,6 @@ import { TripsMinimizedReducer } from "./mirroredReducers/TripsMinimizedReducer"
 import { ITrip } from "../models/ITrip";
 import { ITripsRepository } from "../models/ITripsRepository";
 
-
 /**
  * todo use kafka to stream events or gRPC
  * todo can rerun events
@@ -19,9 +18,11 @@ export class ServiceBus {
   //   this.eventHandlers.push(handler);
   // }
   private reducer: TripReducers;
-  private _tripMinimizedReducer: TripsMinimizedReducer
-  constructor(private TripRepository: ITripRepository,
-    private TripsRepository: ITripsRepository) {
+  private _tripMinimizedReducer: TripsMinimizedReducer;
+  constructor(
+    private TripRepository: ITripRepository,
+    private TripsRepository: ITripsRepository
+  ) {
     this.reducer = new TripReducers();
     this._tripMinimizedReducer = new TripsMinimizedReducer();
   }
