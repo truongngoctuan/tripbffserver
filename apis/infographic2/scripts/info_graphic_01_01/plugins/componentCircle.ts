@@ -1,10 +1,10 @@
-import { InfographicConfig } from "../../../configs/index";
 import { getRelativePosition } from "./utils";
 import { RendererFunction } from "./typings";
+import { InfographicRendererConfig } from "./index.renderer";
 
 export const componentCircle: RendererFunction = function (
   canvasAdaptor,
-  blockConfig: InfographicConfig.CircleBlock,
+  blockConfig: InfographicRendererConfig.CircleBlock,
   cursor
 ) {
   const { x, y, r, fillColor } = blockConfig;

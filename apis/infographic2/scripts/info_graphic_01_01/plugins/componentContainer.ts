@@ -14,7 +14,7 @@ export const componentContainer: RendererFunction = function (
   blockConfig: InfographicConfig.ContainerBlock,
   cursor
 ) {
-  const { width, height } = blockConfig;
+  const { width, height, positioning } = blockConfig;
 
   const paper = canvasAdaptor.getPaper();
 
@@ -35,8 +35,8 @@ export const componentContainer: RendererFunction = function (
     height: height ? height : cursor.height,
   };
 
-  if (blockConfig.positioning) {
-    newBounds = getRelativeBounds(newBounds, blockConfig.positioning);
+  if (positioning) {
+    newBounds = getRelativeBounds(newBounds, positioning);
     // console.log("newXY", newXY)
   }
   // console.log("cursor container", cursor);

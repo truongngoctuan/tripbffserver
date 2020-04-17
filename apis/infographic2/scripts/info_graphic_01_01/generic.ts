@@ -6,7 +6,9 @@ import { getRelativePosition } from "./plugins/utils";
 import _ from "lodash";
 import { preProcessInfographicConfig } from "./transformers";
 import { Trip } from "../models/trip";
-const { executePlugins } = require("./plugins/index");
+import { applyGlobalTransform } from "./transformers/global-transformers";
+import { executePlugins } from "./plugins/index";
+import { InfographicRendererConfig } from "./plugins/index.renderer";
 
 function log(level: number, message: string, data: any = undefined) {
   if (data) console.log(_.repeat("    ", level) + message, data);
@@ -30,20 +32,22 @@ async function renderImage(
 ) {
   log(cursor.level, "render block", blockConfig.type);
   // log(cursor.level, "cursor", cursor);
-  const imageBlock = blockConfig as InfographicConfig.ImageBlock;
+  const imageBlock = blockConfig as InfographicRendererConfig.ImageBlock;
 
   const relativePosition = getRelativePosition(cursor, imageBlock.positioning);
   log(cursor.level, "cursor", cursor);
   log(cursor.level, "relative position", relativePosition);
 
   await canvasAdaptor.drawImage(imageBlock.url, relativePosition, imageBlock);
+
+  return cursor;
 }
 
 async function renderBlock(
   canvasAdaptor: CanvasAdaptor,
   b: InfographicConfig.Block,
   cursor: Cursor
-) {
+): Promise<Cursor> {
   if (b.type === "container") {
     log(cursor.level, "render block", b.type);
     log(cursor.level, "render cursor", cursor);
@@ -106,13 +110,20 @@ async function renderBlock(
 
 export async function renderInfographic(
   canvasAdaptor: CanvasAdaptor,
-  infographicConfig: InfographicConfig.Infographic,
+  infographicConfig: InfographicConfig.TripInfographic,
+  settings: { scale: number },
   trip: Trip
 ) {
-  const processedInfoConfig = preProcessInfographicConfig(
+  const appliedGlobalTransformer = applyGlobalTransform(
     infographicConfig,
+    settings
+  ) as InfographicConfig.TripInfographic;
+  const processedInfoConfig = preProcessInfographicConfig(
+    appliedGlobalTransformer,
+    settings,
     trip
-  ) as InfographicConfig.Infographic;
+  ) as InfographicRendererConfig.Infographic;
+  console.log(JSON.stringify(processedInfoConfig));
 
   if (!(processedInfoConfig.height && processedInfoConfig.height > 0)) {
     throw new Error("total height should have value");
@@ -124,6 +135,7 @@ export async function renderInfographic(
     level: 0,
     width: infographicConfig.width ? infographicConfig.width : 0,
     height: 0,
+    scale: settings.scale ? settings.scale : 1,
   };
 
   const finalCursor: Cursor = await renderBlock(

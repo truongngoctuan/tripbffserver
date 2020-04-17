@@ -1,5 +1,5 @@
 import { INFOGRAPHIC_TYPE } from "./info_graphic_type";
-import { genericDraw } from "./info_graphic_general_draw";
+import { genericDraw } from "./draw--infographic";
 import fs from "fs";
 import { Trip } from "./models/trip";
 

@@ -89,7 +89,7 @@ Object {
           "fontSize": "64px",
           "fontWeight": "bold",
           "positioning": Object {},
-          "text": " CHUYẾN ĐI ĐẦU TIÊN TRÊN TRIPBFF",
+          "text": " Chuyến đi đầu tiên trên TripBFF",
           "textAnchor": "middle",
           "textTransform": "uppercase",
           "type": "text",
@@ -262,7 +262,7 @@ Object {
             "positioning": Object {
               "top": 80,
             },
-            "text": " CHUYẾN ĐI ĐẦU TIÊN TRÊN TRIPBFF",
+            "text": " Chuyến đi đầu tiên trên TripBFF",
             "textAnchor": "middle",
             "textTransform": "uppercase",
             "type": "text",
@@ -566,6 +566,7 @@ Object {
   "cursor": Object {
     "level": 0,
     "location": 3,
+    "scale": 1,
   },
 }
 `;

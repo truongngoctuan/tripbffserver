@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "serve": "nodemon --delay 100ms --watch . --exec node dist/index.js",
-    "serve2": "nodemon --delay 100ms --watch . --exec node ./dist/scripts/export-infographic-test.js",
+    "serve2": "nodemon --delay 100ms --watch . --exec node ./dist/scripts/test--export-infographic.js",
+    "serve-c": "nodemon --delay 100ms --watch . --exec node ./dist/scripts/test--shared-component.js",
     "serve-paper": "nodemon --delay 100ms --watch . --exec node index-paper.js",
     "serve-paper-lottie": "nodemon --delay 100ms --watch . --exec node index-paper-lottie.js",
     "serve-node-canvas": "nodemon --delay 100ms --watch . --exec node index-node-canvas.js",
@@ -20,8 +21,8 @@
     "test-e2e": "node ./dist/e2e/index.js",
     "gen:all": "node ./dist/scripts/gen_all.js",
     "lint-full": "tsc --noEmit && eslint '*/**/*.{js,ts}' --quiet --fix",
-    "lint": "tsc --noEmit && eslint {_services,scripts,configs}/**/*.{ts,js} --fix",
-    "prettier": "prettier --write {_services,scripts,configs}/**/*.{ts,js}",
+    "lint": "tsc --noEmit && eslint {scripts,configs}/**/*.{ts,js} --fix",
+    "prettier": "prettier --write {scripts,configs}/**/*.{ts,js}",
     "pre-commit": "npm run lint & npm run prettier"
   },
   "author": "",

@@ -1,10 +1,10 @@
 import { INFOGRAPHIC_TYPE } from "./info_graphic_type";
-import { genericDraw } from "./info_graphic_general_draw";
+import { genericDraw } from "./draw--infographic";
 import fs from "fs";
 import { Trip } from "./models/trip";
 
 const data: Trip = {
-  name: " Chuyến đi đầu tiên trên TripBFF",
+  name: "Wonder tripppppp",
   fromDate: 1567962000000,
   toDate: 1568221199999,
   locations: [
@@ -28,16 +28,16 @@ const data: Trip = {
       highlights: "Đẹp, Rẻ",
       signedUrl: "http://placekitten.com/1200/1200",
     },
-    // {
-    //   locationId: "1f611a70-abde-4e5d-95d3-ae5e7959a9cb",
-    //   name: "Tú Lệ",
-    //   fromTime: "September 10, 2019",
-    //   toTime: "2019-09-10T03:16:00.000Z",
-    //   feeling: "Chill",
-    //   activity: "Ngắm mặt trời lặn",
-    //   highlights: "Đẹp, Đồ ăn ngon",
-    //   signedUrl: "http://placekitten.com/800/600",
-    // },
+    {
+      locationId: "1f611a70-abde-4e5d-95d3-ae5e7959a9cb",
+      name: "Tú Lệ",
+      fromTime: "September 10, 2019",
+      toTime: "2019-09-10T03:16:00.000Z",
+      feeling: "Chill",
+      activity: "Ngắm mặt trời lặn",
+      highlights: "Đẹp, Đồ ăn ngon",
+      signedUrl: "http://placekitten.com/800/600",
+    },
     // {
     //   locationId: "731b2d4e-dddb-4a06-b59a-72d43e969df7",
     //   name: "Y Tý",

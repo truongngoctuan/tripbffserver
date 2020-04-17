@@ -1,12 +1,11 @@
-import { InfographicConfig } from "../../../configs";
 import { LeafTransformer } from "./typings";
 import _ from "lodash";
+import { InfographicRendererConfig } from "../plugins/index.renderer";
+import { scaleBlock } from "../utils";
 
 export const leafLocationImage: LeafTransformer = {
   type: "leaf",
   handler: (c, trip, cursor) => {
-    const locationImageNode = c as InfographicConfig.LocationImageBlock;
-
     const imgUri =
       trip.locations[cursor.location].signedUrl &&
       !_.isEmpty(trip.locations[cursor.location].signedUrl)
@@ -14,9 +13,9 @@ export const leafLocationImage: LeafTransformer = {
         : "./data/images/EmptyImage01.jpg";
 
     return {
-      ...c,
+      ...scaleBlock(c, cursor.scale),
       type: "image",
       url: imgUri,
-    } as InfographicConfig.Block;
+    } as InfographicRendererConfig.Block;
   },
 };

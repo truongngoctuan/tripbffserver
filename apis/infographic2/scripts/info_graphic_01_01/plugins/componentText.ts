@@ -1,12 +1,12 @@
-import { InfographicConfig } from "../../../configs/index";
 import { getRelativePosition } from "./utils";
 import { RendererFunction } from "./typings";
 import _ from "lodash";
 import { CanvasAdaptor } from "../../utils";
+import { InfographicRendererConfig } from "./index.renderer";
 
 export const componentText: RendererFunction = function (
   canvasAdaptor: CanvasAdaptor,
-  blockConfig: InfographicConfig.TextBlock,
+  blockConfig: InfographicRendererConfig.TextBlock,
   cursor
 ) {
   const paper = canvasAdaptor.getPaper();
@@ -23,7 +23,7 @@ export const componentText: RendererFunction = function (
 
 function renderTextBlock(
   canvasAdaptor: CanvasAdaptor,
-  blockConfig: InfographicConfig.TextBlock,
+  blockConfig: InfographicRendererConfig.TextBlock,
   text: string,
   cursor
 ) {

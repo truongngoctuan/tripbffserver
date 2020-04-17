@@ -1,16 +1,16 @@
-import { InfographicConfig } from "../../../configs/index";
-import _ from "lodash";
 import { getRelativePosition } from "./utils";
 import { RendererAsyncFunction } from "./typings";
 import { CanvasAdaptor } from "../../utils";
 import fs from "fs";
+import { InfographicRendererConfig } from "./index.renderer";
 
 export const componentSVG: RendererAsyncFunction = async function (
   canvasAdaptor: CanvasAdaptor,
-  b: InfographicConfig.SvgBlock,
+  b: InfographicRendererConfig.SvgBlock,
   cursor
 ) {
-  const { url, shadowOffset, shadowColor, shadowBlur } = b;
+  const { url, shadowOffset, shadowColor, shadowBlur, scale } = 
+    b;
   const paper = canvasAdaptor.getPaper();
   const item = new paper.Item();
 
@@ -24,6 +24,7 @@ export const componentSVG: RendererAsyncFunction = async function (
       console.log("error on load svg file", err);
     },
   });
+  item2.scale(scale, new paper.Point(0, 0));
 
   const g = new paper.Group([item2]);
   const relativePosition = getRelativePosition(cursor, b.positioning);

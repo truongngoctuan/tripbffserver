@@ -1,34 +1,42 @@
-import { InfographicConfig } from "../../../configs";
 import { LeafTransformer } from "./typings";
+import { scaleBlock } from "../utils";
+import { InfographicRendererConfig } from "../plugins/index.renderer";
 
 export const leafText: LeafTransformer = {
   type: "leaf",
   handler: (c, trip, cursor) => {
-    const textNode = c as InfographicConfig.TextBlock;
+    const textNode = scaleBlock(
+      c,
+      cursor.scale
+    ) as InfographicRendererConfig.TextBlock;
 
     return {
       ...c,
       text: getText(textNode, trip, cursor),
-    } as InfographicConfig.Block;
+    } as InfographicRendererConfig.Block;
   },
 };
 
-const commonFunc = require("../../commonFunc");
+import * as commonFunc from "../../commonFunc";
 
 function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-function getText(blockConfig: InfographicConfig.TextBlock, trip, cursor) {
+function getText(
+  blockConfig: InfographicRendererConfig.TextBlock,
+  trip,
+  cursor
+) {
   const feelingLabel = commonFunc.getFeelingLabel(trip.locale);
 
-  let location = trip.locations[cursor.location],
-    locationName = capitalizeFirstLetter(location.name) + ".",
-    feeling = location.feeling ? feelingLabel + " " + location.feeling : "",
-    activity = location.activity,
-    highlights = location.highlights.toLowerCase(),
-    textActivity = "",
-    textFeeling = "";
+  const location = trip.locations[cursor.location];
+  const locationName = capitalizeFirstLetter(location.name) + ".";
+  let feeling = location.feeling ? feelingLabel + " " + location.feeling : "";
+  const activity = location.activity;
+  let highlights = location.highlights.toLowerCase();
+  let textActivity = "";
+  let textFeeling = "";
 
   if (activity) {
     textActivity = capitalizeFirstLetter(activity.toLowerCase());
