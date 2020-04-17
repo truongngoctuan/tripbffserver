@@ -4,7 +4,7 @@ import fs from "fs";
 import { Trip } from "./models/trip";
 
 const data: Trip = {
-  name: " Chuyến đi đầu tiên trên TripBFF",
+  name: "Wonder tripppppp",
   fromDate: 1567962000000,
   toDate: 1568221199999,
   locations: [

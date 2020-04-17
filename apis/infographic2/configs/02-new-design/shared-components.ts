@@ -161,6 +161,46 @@ export const locationDetails: InfographicConfig.ContainerBlock = {
   blocks: locationDetailsChildren02,
 };
 
+export const sharedLocationImage01: InfographicConfig.TripContainerBlock = {
+  type: "container",
+  blocks: [
+    {
+      type: "location-image",
+      width: 550 - 4,
+      height: 680 - 4,
+      positioning: {
+        top: 26,
+        left: 32,
+      },
+      rotate: -5.57,
+    },
+    {
+      type: "svg",
+      url: "./configs/02-new-design/images/02-location-01-border.svg",
+    },
+  ],
+};
+
+export const sharedLocationImage02: InfographicConfig.TripContainerBlock = {
+  type: "container",
+  blocks: [
+    {
+      type: "location-image",
+      width: 550 - 4,
+      height: 680 - 4,
+      positioning: {
+        top: 23,
+        left: 29,
+      },
+      rotate: 5.11,
+    },
+    {
+      type: "svg",
+      url: "./configs/02-new-design/images/02-location-02-border.svg",
+    },
+  ],
+};
+
 //todo should handle for 3 locations only
 // locationDetails will be able to reuse
 export const sharedNLocations: InfographicConfig.LocationsBlocks = {
@@ -176,21 +216,7 @@ export const sharedNLocations: InfographicConfig.LocationsBlocks = {
         left: 97,
       },
       blocks: [
-        // todo reuse location-image and its border
-        {
-          type: "location-image",
-          width: 550 - 4,
-          height: 680 - 4,
-          positioning: {
-            top: 26,
-            left: 32,
-          },
-          rotate: -5.57,
-        },
-        {
-          type: "svg",
-          url: "./configs/02-new-design/images/02-location-01-border.svg",
-        },
+        sharedLocationImage01,
         // location details
         {
           ...locationDetails,
@@ -210,20 +236,7 @@ export const sharedNLocations: InfographicConfig.LocationsBlocks = {
         left: 630,
       },
       blocks: [
-        {
-          type: "location-image",
-          width: 550 - 4,
-          height: 680 - 4,
-          positioning: {
-            top: 23,
-            left: 29,
-          },
-          rotate: 5.11,
-        },
-        {
-          type: "svg",
-          url: "./configs/02-new-design/images/02-location-02-border.svg",
-        },
+        sharedLocationImage02,
         // location details
         {
           ...locationDetails,

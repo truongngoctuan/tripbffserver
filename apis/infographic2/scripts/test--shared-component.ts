@@ -1,7 +1,10 @@
 import fs from "fs";
 import { Trip } from "./models/trip";
 import { componentDraw } from "./draw--shared-component";
-import { locationDetails } from "../configs/02-new-design/shared-components";
+import {
+  locationDetails,
+  sharedLocationImage01,
+} from "../configs/02-new-design/shared-components";
 import { InfographicConfig } from "../configs";
 
 const data: Trip = {
@@ -27,21 +30,33 @@ const data: Trip = {
 const startTimer = new Date().getTime();
 
 (async () => {
-  const componentConfig = locationDetails;
+  const componentConfig = sharedLocationImage01;
   const componentSetting = {
-    scale: 1
+    scale: 1,
   };
   const infoConfig: InfographicConfig.TripInfographic = {
-    width: 960,
-    height: 600,
+    width: 1280,
+    height: 800,
     backgroundColor: "#C0E2E5",
 
     type: "container",
     flex: "column",
-    blocks: [{
-      ...componentConfig,
-      ...componentSetting
-    }],
+    blocks: [
+      {
+        type: "location",
+        blocks: [
+          componentConfig,
+          {
+            ...locationDetails,
+            positioning: {
+              top: 100,
+              left: 625,
+            },
+          },
+        ],
+        ...componentSetting,
+      },
+    ],
   };
   const canvasAdaptor = await componentDraw(data, infoConfig);
   canvasAdaptor.draw();
