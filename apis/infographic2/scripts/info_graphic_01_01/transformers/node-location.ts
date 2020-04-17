@@ -2,7 +2,6 @@ import { InfographicConfig } from "../../../configs";
 import { NodeTransformer } from "./typings";
 import { overrideMissingHeight } from "./dynamic-property-override";
 import _ from "lodash";
-import { scaleBlock } from "../utils";
 import { nodeContainer } from "./node-container";
 
 export const nodeLocation: NodeTransformer = {

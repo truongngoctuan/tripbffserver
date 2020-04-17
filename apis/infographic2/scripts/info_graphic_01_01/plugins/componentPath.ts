@@ -1,5 +1,3 @@
-import _ from "lodash";
-import { getRelativePosition } from "./utils";
 import { RendererFunction } from "./typings";
 import { CanvasAdaptor } from "../../utils";
 import { InfographicRendererConfig } from "./index.renderer";

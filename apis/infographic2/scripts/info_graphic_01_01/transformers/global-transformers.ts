@@ -1,4 +1,3 @@
-import { Transformer } from "./typings";
 import { InfographicConfig } from "../../../configs";
 import _ from "lodash";
 import { scaleBlock } from "../utils";

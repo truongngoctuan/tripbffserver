@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { getRelativePosition } from "./utils";
 import { RendererAsyncFunction } from "./typings";
 import { CanvasAdaptor } from "../../utils";

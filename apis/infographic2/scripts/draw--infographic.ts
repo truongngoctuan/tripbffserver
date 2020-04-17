@@ -1,6 +1,5 @@
 import * as config01 from "../configs/01-old-design/config";
-import * as config0101 from "../configs/02-new-design/config";
-import * as config0101_03Locations from "../configs/02-new-design/03-locations";
+import { fullNewDesignConfig } from "../configs/02-new-design";
 
 import { INFOGRAPHIC_TYPE } from "./info_graphic_type";
 import { CanvasAdaptor } from "./utils";
@@ -26,13 +25,11 @@ function getConfigNewDesign(
 ): InfographicConfig.TripInfographic {
   switch (numberOfLocations) {
     case 1:
-      return config0101.config01Location;
     case 2:
-      return config0101.config02Locations;
     case 3:
-      return config0101_03Locations.config03Locations;
+      return fullNewDesignConfig[numberOfLocations];
     default:
-      return config0101.configNLocations;
+      return fullNewDesignConfig["n"];
   }
 }
 

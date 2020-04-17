@@ -1,7 +1,7 @@
 import fs from "fs";
 import { Trip } from "./models/trip";
 import { componentDraw } from "./draw--shared-component";
-import { sharedHeader } from "../configs/02-new-design/shared-components";
+import { locationDetails } from "../configs/02-new-design/shared-components";
 import { InfographicConfig } from "../configs";
 
 const data: Trip = {
@@ -27,12 +27,13 @@ const data: Trip = {
 const startTimer = new Date().getTime();
 
 (async () => {
-  const componentConfig = sharedHeader;
+  const componentConfig = locationDetails;
   const componentSetting = {
-    scale: 0.75
-  }
+    scale: 1
+  };
   const infoConfig: InfographicConfig.TripInfographic = {
     width: 960,
+    height: 600,
     backgroundColor: "#C0E2E5",
 
     type: "container",
@@ -47,6 +48,6 @@ const startTimer = new Date().getTime();
   // let buf = await canvasAdaptor.toBufferPng();
   // fs.writeFileSync("output.png", buf);
   const buf = await canvasAdaptor.toBufferJpeg();
-  fs.writeFileSync("output.jpeg", buf);
+  fs.writeFileSync("output-component.jpeg", buf);
   console.log(`TIMER ${new Date().getTime() - startTimer} ms: completed`);
 })();

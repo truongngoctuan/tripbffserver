@@ -1,4 +1,3 @@
-import { InfographicConfig } from "../../configs";
 import _ from "lodash";
 
 export function scaleBlock<T>(

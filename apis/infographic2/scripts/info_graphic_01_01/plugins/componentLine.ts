@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { getRelativePosition } from "./utils";
 import { RendererFunction } from "./typings";
 import { InfographicRendererConfig } from "./index.renderer";

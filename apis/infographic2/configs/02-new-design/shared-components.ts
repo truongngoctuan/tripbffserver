@@ -155,6 +155,14 @@ const locationDetailsChildren02: InfographicConfig.Block[] = [
   },
 ];
 
+export const locationDetails: InfographicConfig.ContainerBlock = {
+  type: "container",
+  flex: "column",
+  blocks: locationDetailsChildren02,
+};
+
+//todo should handle for 3 locations only
+// locationDetails will be able to reuse
 export const sharedNLocations: InfographicConfig.LocationsBlocks = {
   type: "locations",
   flex: "column",
@@ -168,6 +176,7 @@ export const sharedNLocations: InfographicConfig.LocationsBlocks = {
         left: 97,
       },
       blocks: [
+        // todo reuse location-image and its border
         {
           type: "location-image",
           width: 550 - 4,
@@ -182,15 +191,13 @@ export const sharedNLocations: InfographicConfig.LocationsBlocks = {
           type: "svg",
           url: "./configs/02-new-design/images/02-location-01-border.svg",
         },
-        // location 1 details
+        // location details
         {
-          type: "container",
+          ...locationDetails,
           positioning: {
             top: 100,
             left: 625,
           },
-          flex: "column",
-          blocks: locationDetailsChildren02,
         },
       ],
     },
@@ -217,15 +224,13 @@ export const sharedNLocations: InfographicConfig.LocationsBlocks = {
           type: "svg",
           url: "./configs/02-new-design/images/02-location-02-border.svg",
         },
-        // location 1 details
+        // location details
         {
-          type: "container",
+          ...locationDetails,
           positioning: {
             top: 270,
             left: -450,
           },
-          flex: "column",
-          blocks: locationDetailsChildren02,
         },
       ],
     },

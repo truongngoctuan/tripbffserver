@@ -21,8 +21,8 @@
     "test-e2e": "node ./dist/e2e/index.js",
     "gen:all": "node ./dist/scripts/gen_all.js",
     "lint-full": "tsc --noEmit && eslint '*/**/*.{js,ts}' --quiet --fix",
-    "lint": "tsc --noEmit && eslint {_services,scripts,configs}/**/*.{ts,js} --fix",
-    "prettier": "prettier --write {_services,scripts,configs}/**/*.{ts,js}",
+    "lint": "tsc --noEmit && eslint {scripts,configs}/**/*.{ts,js} --fix",
+    "prettier": "prettier --write {scripts,configs}/**/*.{ts,js}",
     "pre-commit": "npm run lint & npm run prettier"
   },
   "author": "",
