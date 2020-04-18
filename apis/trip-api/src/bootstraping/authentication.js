@@ -64,7 +64,7 @@ async function addAuth(server) {
       // console.log(`${request.route.method} ${request.route.path}`);
 
       try {
-        var decoded = jwt.verify(token, "secret");
+        let decoded = jwt.verify(token, "secret");
         console.log("decoded", decoded.userName);
       } catch (err) {
         console.log("verify error", err);
