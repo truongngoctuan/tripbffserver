@@ -51,6 +51,7 @@ export namespace InfographicRendererConfig {
     type: "text";
     text: string;
     width?: number;
+    numberOfLines?: number;
   } & BaseTextBlock;
 
   type LineBlock = {

@@ -17,7 +17,7 @@ export const config02Locations: InfographicConfig.TripInfographic = {
     {
       type: "location",
       positioning: {
-        top: 412,
+        top: 370,
         left: 97,
       },
       blocks: [
@@ -25,7 +25,7 @@ export const config02Locations: InfographicConfig.TripInfographic = {
         {
           ...locationDetails,
           positioning: {
-            top: -30,
+            top: 0,
             left: 625,
           },
         },
@@ -34,7 +34,7 @@ export const config02Locations: InfographicConfig.TripInfographic = {
     {
       type: "location",
       positioning: {
-        top: 724,
+        top: 770,
         left: 630,
       },
       blocks: [
@@ -42,8 +42,8 @@ export const config02Locations: InfographicConfig.TripInfographic = {
         {
           ...locationDetails,
           positioning: {
-            top: 420,
-            left: -450,
+            top: 380,
+            left: -510,
           },
         },
       ],

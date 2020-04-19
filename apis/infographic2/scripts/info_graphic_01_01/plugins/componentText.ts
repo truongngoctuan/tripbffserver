@@ -40,6 +40,7 @@ function renderTextBlock(
     textAnchor: blockConfig.textAnchor,
     textTransform: blockConfig.textTransform,
     wrapNumber: blockConfig.width,
+    numberOfLines: blockConfig.numberOfLines
     // wrapNumber: w - paddingLeftRight
   });
 

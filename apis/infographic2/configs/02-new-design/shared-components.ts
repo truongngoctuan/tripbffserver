@@ -51,6 +51,7 @@ export const sharedHeader: InfographicConfig.ContainerBlock = {
             top: 104,
             left: -40,
           },
+          numberOfLines: 1
         },
         {
           // location activity
@@ -66,6 +67,7 @@ export const sharedHeader: InfographicConfig.ContainerBlock = {
             top: 190,
             left: -40,
           },
+          numberOfLines: 1
         },
       ],
     },
@@ -77,12 +79,14 @@ const locationDetailsChildren02: InfographicConfig.Block[] = [
     // location name
     type: "text",
     text: "{{location.name}}",
-    fontSize: "64px",
+    fontSize: "54px",
     fontFamily: "Nunito",
     fontWeight: "900",
     color: "#2E97A1",
     textAnchor: "start",
     positioning: {},
+    numberOfLines: 2,
+    width: 500
   },
   {
     // location activity
@@ -98,6 +102,7 @@ const locationDetailsChildren02: InfographicConfig.Block[] = [
       top: 20,
       left: 0,
     },
+    numberOfLines: 2
   },
   {
     type: "container",
@@ -123,6 +128,7 @@ const locationDetailsChildren02: InfographicConfig.Block[] = [
         positioning: {
           left: 50,
         },
+        numberOfLines: 2
       },
     ],
   },
@@ -150,6 +156,7 @@ const locationDetailsChildren02: InfographicConfig.Block[] = [
         positioning: {
           left: 50,
         },
+        numberOfLines: 2
       },
     ],
   },

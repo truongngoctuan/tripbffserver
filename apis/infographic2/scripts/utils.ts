@@ -277,16 +277,26 @@ export class CanvasAdaptor {
     const words = text.trim().split(/\s+/).reverse();
     let previousLine = "";
     let word = "";
+    let lineNumber = 0;
 
     while ((word = words.pop())) {
       textNode.content = previousLine + " " + word;
+
       if (textNode.bounds.width > width) {
-        previousLine += "\n" + word;
-      } else {
+        lineNumber++;
+
+        if (lineNumber >= options.numberOfLines) {
+          previousLine += "...";
+          break;
+        }          
+        else
+          previousLine += "\n" + word;        
+      }
+      else {
         previousLine = _.isEmpty(previousLine)
           ? word
           : previousLine + " " + word;
-      }
+      }      
     }
 
     textNode.content = previousLine;
