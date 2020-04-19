@@ -14,11 +14,7 @@ export const sharedHeader: InfographicConfig.ContainerBlock = {
       blocks: [
         {
           type: "svg",
-          url: "./configs/02-new-design/images/02-location-name-background.svg",
-          positioning: {
-            // left: 133,
-            // top: 24
-          },
+          url: "./configs/02-new-design/images/02-location-name-background.svg",      
         },
         // together making location icon with white background
         {
@@ -39,7 +35,7 @@ export const sharedHeader: InfographicConfig.ContainerBlock = {
 
         // infographic name
         {
-          // location name
+          // trip name
           type: "text",
           text: "{{trip.name}}",
           fontSize: "64px",
@@ -54,7 +50,7 @@ export const sharedHeader: InfographicConfig.ContainerBlock = {
           numberOfLines: 1
         },
         {
-          // location activity
+          // trip information
           type: "text",
           text: "{{trip.info}}",
           fontSize: "40px",

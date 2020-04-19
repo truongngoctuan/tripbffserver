@@ -83,34 +83,6 @@ export const config01Location: InfographicConfig.TripInfographic = {
     {
       type: "container",
       positioning: {
-        top: 1118,
-        left: 846 - 50, // todo
-      },
-      blocks: [
-        {
-          type: "svg",
-          url: "./configs/02-new-design/images/star.svg",
-        },
-        {
-          // location activity
-          type: "text",
-          text: "{{location.hight-lights}}",
-          fontSize: "32px",
-          fontFamily: "Nunito",
-          color: "white",
-          textAnchor: "start",
-          width: 480,
-          positioning: {
-            top: 0 - 4,
-            left: 46,
-          },
-          numberOfLines: 2
-        },
-      ],
-    },
-    {
-      type: "container",
-      positioning: {
         top: 1200,
         left: 846 - 50,
       },
@@ -136,5 +108,33 @@ export const config01Location: InfographicConfig.TripInfographic = {
         },
       ],
     },
+    {
+      type: "container",
+      positioning: {
+        top: 1118,
+        left: 846 - 50, // todo
+      },
+      blocks: [
+        {
+          type: "svg",
+          url: "./configs/02-new-design/images/star.svg",
+        },
+        {
+          // location activity
+          type: "text",
+          text: "{{location.hight-lights}}",
+          fontSize: "32px",
+          fontFamily: "Nunito",
+          color: "white",
+          textAnchor: "start",
+          width: 480,
+          positioning: {
+            top: 0 - 4,
+            left: 46,
+          },
+          numberOfLines: 2
+        },
+      ],
+    },    
   ],
 };

@@ -27,7 +27,7 @@ const locations: InfographicConfig.LocationsBlocks = {
         {
           ...locationDetails,
           positioning: {
-            top: 100,
+            top: 80,
             left: 625,
           },
         },
@@ -50,8 +50,8 @@ const locations: InfographicConfig.LocationsBlocks = {
         {
           ...locationDetails,
           positioning: {
-            top: 170,
-            left: -450,
+            top: 150,
+            left: -500,
           },
         },
       ],

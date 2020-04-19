@@ -113,17 +113,19 @@ export async function renderInfographic(
   infographicConfig: InfographicConfig.TripInfographic,
   settings: { scale: number },
   trip: Trip
-) {
+) {  
+  let cloneInfographicConfig = _.cloneDeep(infographicConfig);
+
   const appliedGlobalTransformer = applyGlobalTransform(
-    infographicConfig,
+    cloneInfographicConfig,
     settings
   ) as InfographicConfig.TripInfographic;
+  
   const processedInfoConfig = preProcessInfographicConfig(
     appliedGlobalTransformer,
     settings,
     trip
   ) as InfographicRendererConfig.Infographic;
-  console.log(JSON.stringify(processedInfoConfig));
 
   if (!(processedInfoConfig.height && processedInfoConfig.height > 0)) {
     throw new Error("total height should have value");
