@@ -8,7 +8,7 @@ import {
 
 export const config02Locations: InfographicConfig.TripInfographic = {
   width: 1280,
-  height: 1600,
+  height: 1700,
   backgroundColor: "#C0E2E5",
 
   type: "container",
