@@ -4,20 +4,19 @@ function addMonitoringService(server) {
   const plugin = createPlugin();
   const options = {};
   let done;
-  
+
   plugin.register(server, options, done);
 
   server.route({
     method: "GET",
     path: "/metrics",
-    handler: function(req, h) {
+    handler: function (req, h) {
       // req.statusCode = 200;
-      return h.response(getSummary())
-      .header("Content-Type", getContentType());
+      return h.response(getSummary()).header("Content-Type", getContentType());
     },
     options: {
-      tags: ["api"]
-    }
+      tags: ["api"],
+    },
   });
   console.log("prometheus client registered");
 }

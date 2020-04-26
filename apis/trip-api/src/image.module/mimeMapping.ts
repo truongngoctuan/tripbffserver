@@ -1,4 +1,3 @@
-
 //todo can use this https://www.npmjs.com/package/mime-types to lookup mime type
 export function mimeMapping(fileExtension: string) {
   if (!fileExtension.startsWith(".")) fileExtension = "." + fileExtension;
@@ -119,10 +118,12 @@ const _mappings: any = {
   ".dlm": "text/dlm",
   ".doc": "application/msword",
   ".docm": "application/vnd.ms-word.document.macroEnabled.12",
-  ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  ".docx":
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   ".dot": "application/msword",
   ".dotm": "application/vnd.ms-word.template.macroEnabled.12",
-  ".dotx": "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
+  ".dotx":
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
   ".dsp": "application/octet-stream",
   ".dsw": "text/plain",
   ".dtd": "text/xml",
@@ -340,16 +341,19 @@ const _mappings: any = {
   ".pnz": "image/png",
   ".pot": "application/vnd.ms-powerpoint",
   ".potm": "application/vnd.ms-powerpoint.template.macroEnabled.12",
-  ".potx": "application/vnd.openxmlformats-officedocument.presentationml.template",
+  ".potx":
+    "application/vnd.openxmlformats-officedocument.presentationml.template",
   ".ppa": "application/vnd.ms-powerpoint",
   ".ppam": "application/vnd.ms-powerpoint.addin.macroEnabled.12",
   ".ppm": "image/x-portable-pixmap",
   ".pps": "application/vnd.ms-powerpoint",
   ".ppsm": "application/vnd.ms-powerpoint.slideshow.macroEnabled.12",
-  ".ppsx": "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
+  ".ppsx":
+    "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
   ".ppt": "application/vnd.ms-powerpoint",
   ".pptm": "application/vnd.ms-powerpoint.presentation.macroEnabled.12",
-  ".pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  ".pptx":
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
   ".prf": "application/pics-rules",
   ".prm": "application/octet-stream",
   ".prx": "application/octet-stream",
@@ -554,7 +558,8 @@ const _mappings: any = {
   ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   ".xlt": "application/vnd.ms-excel",
   ".xltm": "application/vnd.ms-excel.template.macroEnabled.12",
-  ".xltx": "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
+  ".xltx":
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
   ".xlw": "application/vnd.ms-excel",
   ".xml": "text/xml",
   ".xmta": "application/xml",

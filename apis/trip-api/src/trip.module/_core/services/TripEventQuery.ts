@@ -6,4 +6,4 @@ export class TripEventQueryHandler {
   async getAll(id: string): Promise<TripEvent[] | undefined> {
     return this.TripEventRepository.getAll(id);
   }
-};
+}

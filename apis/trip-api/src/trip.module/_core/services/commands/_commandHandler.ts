@@ -13,10 +13,10 @@ export function staticRegister(func: CommandFunc) {
 }
 
 export function staticRegisterModule(funcs: Array<CommandFunc>) {
-  funcs.forEach(func => staticRegister(func));
+  funcs.forEach((func) => staticRegister(func));
 }
 
-export type IExtraParams =  { jobDispatcher: IJobDispatcher}
+export type IExtraParams = { jobDispatcher: IJobDispatcher };
 
 // lower the standard for simplicity, instead of ITripCommand: export type ITripCommand = {};
 export type CommandFunc = (
@@ -24,7 +24,8 @@ export type CommandFunc = (
   eventHandler: EventHandler,
   reducers: TripReducers,
   emitter: ServiceBus,
-  extraParams: IExtraParams) => Promise<CommandResult>;
+  extraParams: IExtraParams
+) => Promise<CommandResult>;
 
 export class TripCommandHandler {
   private reducers: TripReducers;
@@ -52,10 +53,14 @@ export class TripCommandHandler {
   async exec(command: TripBCommand) {
     const func = this.handlers.get(command.type);
     if (func) {
-      return await func(command, this.eventHandler, this.reducers, this.emitter, { jobDispatcher: this.jobDispatcher});
+      return await func(
+        command,
+        this.eventHandler,
+        this.reducers,
+        this.emitter,
+        { jobDispatcher: this.jobDispatcher }
+      );
     }
     return Err(`Can't find command handler ${command.type}`);
   }
-
 }
-

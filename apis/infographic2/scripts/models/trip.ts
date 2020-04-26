@@ -1,4 +1,5 @@
 export type Trip = {
+  name: string;
   fromDate: number;
   toDate: number;
   locations: {

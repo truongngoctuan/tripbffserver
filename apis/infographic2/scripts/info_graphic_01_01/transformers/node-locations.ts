@@ -2,11 +2,16 @@ import { InfographicConfig } from "../../../configs";
 import { NodeTransformer } from "./typings";
 import _ from "lodash";
 import { overrideMissingHeight } from "./dynamic-property-override";
+import { scaleBlock } from "../utils";
+import { nodeContainer } from "./node-container";
 
 export const nodeLocations: NodeTransformer = {
   type: "node",
-  preHandler: (c, trip) => {
-    const containerBlockConfig = c as InfographicConfig.ContainerBlock;
+  preHandler: (c, trip, cursor) => {
+    const containerBlockConfig = scaleBlock(
+      c,
+      cursor.scale
+    ) as InfographicConfig.ContainerBlock;
     let childBlockConfigs: InfographicConfig.Block[] = [];
     // nLoc > nLocConfig, clone locConfig until n == nLoc
     // else keep just enough logConfig
@@ -18,27 +23,29 @@ export const nodeLocations: NodeTransformer = {
         childBlockConfigs.push(_.cloneDeep(locConfig));
       }
     } else {
-      childBlockConfigs = _.cloneDeep(containerBlockConfig.blocks.slice(0, nLoc));
+      childBlockConfigs = _.cloneDeep(
+        containerBlockConfig.blocks.slice(0, nLoc)
+      );
     }
 
-    return {
-      ...c,
-      blocks: childBlockConfigs
-    } as InfographicConfig.Block;
+    return nodeContainer.preHandler(
+      {
+        ...c,
+        blocks: childBlockConfigs,
+      } as InfographicConfig.Block,
+      trip,
+      cursor
+    );
   },
-  postHandler: (
-    c,
-    children,
-    cursor
-  ) => {
+  postHandler: (c, children, cursor) => {
     const b = c as InfographicConfig.LocationsBlocks;
     return {
       block: overrideMissingHeight({
         ...b,
         type: "container",
-        blocks: children
+        blocks: children,
       } as InfographicConfig.Block),
-      cursor
+      cursor,
     };
-  }
+  },
 };

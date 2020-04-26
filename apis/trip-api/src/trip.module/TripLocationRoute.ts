@@ -13,7 +13,6 @@ import { failActionInResponse } from "../_shared/joi-utils";
 
 module.exports = {
   init(server: Server): void {
-    
     //todo merge 2 addLocation into one endpoint
     //todo this api `replace` old locations by a new one
     server.route({
@@ -35,7 +34,11 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            const queryResult = await tripQueryHandler.GetById(ownerId, tripId);
+            const queryResult = await tripQueryHandler.GetById(
+              ownerId,
+              tripId,
+              ownerId
+            );
             if (!queryResult) return Err("can't get data after import trip");
 
             // console.log(queryResult);
@@ -55,7 +58,7 @@ module.exports = {
         tags: ["api"],
         validate: {
           payload: Joi.array().items(joiLocationSchema),
-          failAction: failActionInResponse
+          failAction: failActionInResponse,
         },
       },
     });
@@ -93,7 +96,7 @@ module.exports = {
         tags: ["api"],
         validate: {
           payload: joiLocationSchema,
-          failAction: failActionInResponse
+          failAction: failActionInResponse,
         },
       },
     });
@@ -117,7 +120,11 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            const queryResult = await tripQueryHandler.GetById(ownerId, tripId.toString());
+            const queryResult = await tripQueryHandler.GetById(
+              ownerId,
+              tripId.toString(),
+              ownerId
+            );
             if (!queryResult) return Err("can't get data after import trip");
 
             // console.log(queryResult);
@@ -162,17 +169,17 @@ module.exports = {
               feelingIcon: feeling.icon,
             });
 
-            if (commandResult.isSucceed)
-              return "Success!";
+            if (commandResult.isSucceed) return "Success!";
 
             console.log("err: " + commandResult.errors);
             return commandResult.errors;
-          }
-          else {
+          } else {
             return "Selected feeling does not exists!";
           }
         } catch (error) {
-          console.log("ERROR: UPDATE /trips/{tripId}/locations/{locationId}/feeling");
+          console.log(
+            "ERROR: UPDATE /trips/{tripId}/locations/{locationId}/feeling"
+          );
           console.log(error);
           throw error;
         }
@@ -207,17 +214,17 @@ module.exports = {
               activityIcon: activity.icon,
             });
 
-            if (commandResult.isSucceed)
-              return "Success!";
+            if (commandResult.isSucceed) return "Success!";
 
             console.log("err: " + commandResult.errors);
             return commandResult.errors;
-          }
-          else {
+          } else {
             return "Selected activity does not exists!";
           }
         } catch (error) {
-          console.log("ERROR: UPDATE /trips/{tripId}/locations/{locationId}/activity");
+          console.log(
+            "ERROR: UPDATE /trips/{tripId}/locations/{locationId}/activity"
+          );
           console.log(error);
           throw error;
         }
@@ -249,16 +256,15 @@ module.exports = {
               highlights,
             });
 
-            if (commandResult.isSucceed)
-              return "Success!";
+            if (commandResult.isSucceed) return "Success!";
 
             console.log("err: " + commandResult.errors);
             return commandResult.errors;
-          }
-          else
-            return "Please select at least 1 highlight!";
+          } else return "Please select at least 1 highlight!";
         } catch (error) {
-          console.log("ERROR: UPDATE /trips/{tripId}/locations/{locationId}/highlights");
+          console.log(
+            "ERROR: UPDATE /trips/{tripId}/locations/{locationId}/highlights"
+          );
           console.log(error);
           throw error;
         }
@@ -288,13 +294,14 @@ module.exports = {
             description,
           });
 
-          if (commandResult.isSucceed)
-            return "Success!";
+          if (commandResult.isSucceed) return "Success!";
 
           console.log("err: " + commandResult.errors);
           return commandResult.errors;
         } catch (error) {
-          console.log("ERROR: UPDATE /trips/{tripId}/locations/{locationId}/description");
+          console.log(
+            "ERROR: UPDATE /trips/{tripId}/locations/{locationId}/description"
+          );
           console.log(error);
           throw error;
         }
@@ -312,10 +319,13 @@ module.exports = {
         try {
           const tripId = request.params.id;
           const userId = CUtils.getUserId(request);
-          const queryResult = await tripQueryHandler.GetById(userId, tripId.toString());
+          const queryResult = await tripQueryHandler.GetById(
+            userId,
+            tripId.toString(),
+            userId
+          );
           if (!queryResult) return Err("can't get data after import trip");
           return queryResult;
-
         } catch (error) {
           console.log(error);
           return error;
@@ -352,7 +362,6 @@ module.exports = {
           const result = await IoC.fileService.signUpload(category, mimeType);
           console.log("signed result", result);
           return result;
-
         } catch (error) {
           console.log(error);
           return error;
@@ -372,11 +381,7 @@ module.exports = {
 
         try {
           const { tripId } = request.params;
-          const {
-            locationId,
-            imageId,
-            fullPath,
-          } = request.payload as any;
+          const { locationId, imageId, fullPath } = request.payload as any;
           const ownerId = CUtils.getUserId(request);
 
           const { externalId } = await IoC.fileService.save(fullPath);
@@ -392,13 +397,16 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            const thumbnailExternalUrl = await tripQueryHandler.getThumbnailUrlByExternalId(externalId);
-            const externalUrl = await tripQueryHandler.getExternalUrlByExternalId(externalId);
+            const thumbnailExternalUrl = await tripQueryHandler.getThumbnailUrlByExternalId(
+              externalId
+            );
+            const externalUrl = await tripQueryHandler.getExternalUrlByExternalId(
+              externalId
+            );
             return { externalId, thumbnailExternalUrl, externalUrl };
           }
 
           return commandResult.errors;
-
         } catch (error) {
           console.log(error);
           return error;
@@ -445,14 +453,14 @@ module.exports = {
             lat,
           });
 
-          if (commandResult.isSucceed)
-            return "Success!";
+          if (commandResult.isSucceed) return "Success!";
 
           console.log("err: " + commandResult.errors);
           return commandResult.errors;
-        }
-        catch (error) {
-          console.log("ERROR: UPDATE /trips/{tripId}/locations/{locationId}/address");
+        } catch (error) {
+          console.log(
+            "ERROR: UPDATE /trips/{tripId}/locations/{locationId}/address"
+          );
           console.log(error);
           throw error;
         }
@@ -486,16 +494,22 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            const queryResult = await tripQueryHandler.GetById(ownerId, tripId);
-            if (!queryResult) return Err("can't get data after update trip location image");
+            const queryResult = await tripQueryHandler.GetById(
+              ownerId,
+              tripId,
+              ownerId
+            );
+            if (!queryResult)
+              return Err("can't get data after update trip location image");
             return queryResult;
           }
 
           console.log("err: " + commandResult.errors);
           return commandResult.errors;
-        }
-        catch (error) {
-          console.log("ERROR: PATCH /trips/{tripId}/locations/{locationId}/images/{imageId}");
+        } catch (error) {
+          console.log(
+            "ERROR: PATCH /trips/{tripId}/locations/{locationId}/images/{imageId}"
+          );
           console.log(error);
           throw error;
         }
@@ -505,7 +519,9 @@ module.exports = {
         tags: ["api"],
         validate: {
           payload: Joi.object({
-            isFavorite: Joi.boolean().description("mark the image favorite/highlighted or not"),
+            isFavorite: Joi.boolean().description(
+              "mark the image favorite/highlighted or not"
+            ),
           }),
         },
       },
@@ -523,13 +539,14 @@ module.exports = {
           const ownerId = CUtils.getUserId(request);
           const imageId = uuid4();
 
-
           const commandResult = await tripCommandHandler.exec({
             type: "AddLocationImage",
             ownerId,
             tripId,
             locationId,
-            imageId, url, time,
+            imageId,
+            url,
+            time,
           });
 
           if (commandResult.isSucceed) {
@@ -538,9 +555,10 @@ module.exports = {
 
           console.log("err: " + commandResult.errors);
           return commandResult.errors;
-        }
-        catch (error) {
-          console.log("ERROR: POST /trips/{tripId}/locations/{locationId}/images");
+        } catch (error) {
+          console.log(
+            "ERROR: POST /trips/{tripId}/locations/{locationId}/images"
+          );
           console.log(error);
           throw error;
         }
@@ -578,18 +596,25 @@ module.exports = {
           });
 
           if (commandResult.isSucceed) {
-            const queryResult = await tripQueryHandler.GetById(ownerId, tripId);
+            const queryResult = await tripQueryHandler.GetById(
+              ownerId,
+              tripId,
+              ownerId
+            );
             if (!queryResult) return Err("can't get data after import trip");
-            const newLoc = queryResult.locations.find(loc => loc.locationId == locationId);
+            const newLoc = queryResult.locations.find(
+              (loc) => loc.locationId == locationId
+            );
             console.log(newLoc && newLoc.images.length);
             return newLoc;
           }
 
           console.log("err: " + commandResult.errors);
           return commandResult.errors;
-        }
-        catch (error) {
-          console.log("ERROR: DELETE /trips/{tripId}/locations/{locationId}/images");
+        } catch (error) {
+          console.log(
+            "ERROR: DELETE /trips/{tripId}/locations/{locationId}/images"
+          );
           console.log(error);
           throw error;
         }
@@ -599,7 +624,9 @@ module.exports = {
         tags: ["api"],
         validate: {
           payload: Joi.object({
-            deletingIds: Joi.array().description("delete image with list of ids"),
+            deletingIds: Joi.array().description(
+              "delete image with list of ids"
+            ),
           }),
         },
       },

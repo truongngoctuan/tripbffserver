@@ -1,4 +1,4 @@
-export interface ITrip {  
+export interface ITrip {
   userId: string;
   tripId: string;
   name: string;
@@ -6,6 +6,7 @@ export interface ITrip {
   toDate: Date;
   infographics: Array<IInfographic>;
   isDeleted: boolean;
+  isPublic: boolean;
 }
 
 export interface IInfographic {

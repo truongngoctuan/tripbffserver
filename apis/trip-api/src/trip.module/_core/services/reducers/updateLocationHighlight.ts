@@ -6,14 +6,15 @@ export function updateLocationHighlight(
   prevState: ITrip,
   event: TripLocationUpdatedHighlightEvent
 ): ITrip {
-
   return {
     ...prevState,
-    locations: prevState.locations.map(item => {
-        return item.locationId !== event.locationId ? item : {
+    locations: prevState.locations.map((item) => {
+      return item.locationId !== event.locationId
+        ? item
+        : {
             ...item,
-            highlights: event.highlights
-        };
-    })
+            highlights: event.highlights,
+          };
+    }),
   };
 }

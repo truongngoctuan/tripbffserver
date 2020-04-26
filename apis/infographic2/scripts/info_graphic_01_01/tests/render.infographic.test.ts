@@ -1,7 +1,8 @@
-import { InfographicConfig } from "../../../configs";
-import { renderInfographic } from "../generic";
-import { CanvasAdaptor } from "../../utils";
-import fs from "fs";
+// import { InfographicConfig } from "../../../configs";
+// import { renderInfographic } from "../generic";
+// import { CanvasAdaptor } from "../../utils";
+// import fs from "fs";
+// import { Trip } from "../../models/trip";
 
 // describe("node transformer", () => {
 //   test("simple container node", async () => {
@@ -26,11 +27,11 @@ import fs from "fs";
 //       ]
 //     };
 
-//     const data = {};
+//     const data = {} as Trip;
 
 //     // Act
 //     let canvasAdaptor = new CanvasAdaptor();
-//     await renderInfographic(canvasAdaptor, config, data);
+//     await renderInfographic(canvasAdaptor, config, {}, data);
 //     canvasAdaptor.draw();
 //     let result = await canvasAdaptor.toBufferJpeg();
 //     // fs.writeFileSync("output.jpeg", buf);

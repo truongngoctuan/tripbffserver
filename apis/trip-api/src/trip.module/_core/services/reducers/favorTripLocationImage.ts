@@ -1,4 +1,3 @@
-
 import { ITrip } from "../../models/ITrip";
 import { TripLocationImageFavoredEvent } from "../events";
 import _ from "lodash";
@@ -7,11 +6,10 @@ export function favorTripLocationImage(
   prevState: ITrip,
   command: TripLocationImageFavoredEvent
 ): ITrip {
-
   //get location
   const locationIdx = _.findIndex(
     prevState.locations,
-    loc => loc.locationId == command.locationId
+    (loc) => loc.locationId == command.locationId
   );
 
   const location = prevState.locations[locationIdx];
@@ -20,7 +18,7 @@ export function favorTripLocationImage(
     //get image
     const imageIdx = _.findIndex(
       location.images,
-      img => img.imageId == command.imageId
+      (img) => img.imageId == command.imageId
     );
     const image = location.images[imageIdx];
 
@@ -31,18 +29,18 @@ export function favorTripLocationImage(
       location.images = [
         ...location.images.slice(0, imageIdx),
         image,
-        ...location.images.slice(imageIdx + 1)
+        ...location.images.slice(imageIdx + 1),
       ];
       return {
         ...prevState,
         locations: [
           ...prevState.locations.slice(0, locationIdx),
           location,
-          ...prevState.locations.slice(locationIdx + 1)
-        ]
+          ...prevState.locations.slice(locationIdx + 1),
+        ],
       };
     }
-  }  
-  
+  }
+
   return prevState;
 }

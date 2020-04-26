@@ -10,14 +10,19 @@ export type DeleteTripCommand = {
   isDeleted: boolean;
 };
 
-export async function deleteTrip(command: DeleteTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus) {
+export async function deleteTrip(
+  command: DeleteTripCommand,
+  eventHandler: EventHandler,
+  reducers: TripReducers,
+  emitter: ServiceBus
+) {
   const { ownerId, tripId, isDeleted } = command;
-  
+
   const event: TripEvent = {
     type: "TripDeleted",
     ownerId,
     tripId,
-    isDeleted
+    isDeleted,
   };
 
   eventHandler.save(event);
@@ -26,4 +31,4 @@ export async function deleteTrip(command: DeleteTripCommand, eventHandler: Event
   await emitter.emit(event);
 
   return Succeed();
-};
+}

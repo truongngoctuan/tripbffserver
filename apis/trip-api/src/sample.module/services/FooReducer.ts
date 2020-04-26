@@ -3,20 +3,21 @@ import {
   IFooEventRepository,
   FooCreatedEvent,
   FooUpdatedEvent,
-  FooEvent
+  FooEvent,
 } from "./FooEvent";
 
 export class FooReducers {
   constructor(private fooEventRepository?: IFooEventRepository) {}
 
   async getCurrentState(id: string): Promise<IFoo> {
-    if (!this.fooEventRepository) throw "are you forgot to init fooEventRepository ?";
-    
+    if (!this.fooEventRepository)
+      throw "are you forgot to init fooEventRepository ?";
+
     const events = await this.fooEventRepository.getAll(id);
     let state: IFoo = {
       id: "",
       name: "",
-      description: ""
+      description: "",
     };
 
     events.forEach(async (event, idx) => {
@@ -45,7 +46,7 @@ export class FooReducers {
     return {
       id: command.fooId,
       name: command.name,
-      description: command.description
+      description: command.description,
     };
   }
 
@@ -53,7 +54,7 @@ export class FooReducers {
     return {
       ...prevState,
       name: command.name,
-      description: command.description
+      description: command.description,
     };
   }
 }

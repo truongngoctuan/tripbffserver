@@ -21,11 +21,15 @@ export async function RemoveLocationImages(
   const { ownerId, tripId, locationId, imageIds } = command;
 
   const state = await reducers.getCurrentState(tripId);
-  const location = _.find(state.locations, loc => loc.locationId == locationId);
+  const location = _.find(
+    state.locations,
+    (loc) => loc.locationId == locationId
+  );
   if (!location) return BadRequest("LocationNotFound");
 
-  imageIds.forEach(imageId => {
-    if (!_.find(location.images, img => img.imageId == imageId)) return BadRequest("LocationImageNotFound");
+  imageIds.forEach((imageId) => {
+    if (!_.find(location.images, (img) => img.imageId == imageId))
+      return BadRequest("LocationImageNotFound");
   });
 
   const event: TripEvent = {

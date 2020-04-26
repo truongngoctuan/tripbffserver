@@ -15,7 +15,7 @@ export interface IFooModel extends IFoo, Document {}
 export const FooSchema = new Schema({
   id: String,
   name: String,
-  description: String
+  description: String,
 });
 
 export const Foo: Model<IFooModel> = mongoose.model<IFooModel>(

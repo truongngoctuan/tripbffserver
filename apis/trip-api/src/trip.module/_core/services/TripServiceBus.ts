@@ -5,7 +5,6 @@ import { TripsMinimizedReducer } from "./mirroredReducers/TripsMinimizedReducer"
 import { ITrip } from "../models/ITrip";
 import { ITripsRepository } from "../models/ITripsRepository";
 
-
 /**
  * todo use kafka to stream events or gRPC
  * todo can rerun events
@@ -19,9 +18,11 @@ export class ServiceBus {
   //   this.eventHandlers.push(handler);
   // }
   private reducer: TripReducers;
-  private _tripMinimizedReducer: TripsMinimizedReducer
-  constructor(private TripRepository: ITripRepository,
-    private TripsRepository: ITripsRepository) {
+  private _tripMinimizedReducer: TripsMinimizedReducer;
+  constructor(
+    private TripRepository: ITripRepository,
+    private TripsRepository: ITripsRepository
+  ) {
     this.reducer = new TripReducers();
     this._tripMinimizedReducer = new TripsMinimizedReducer();
   }
@@ -32,7 +33,7 @@ export class ServiceBus {
     const ownerId = event.ownerId;
 
     //the first subscriber consume our event
-    let state = await this.TripRepository.get(ownerId, tripId);
+    let state = await this.TripRepository.get(ownerId, tripId, ownerId);
     state = await this.reducer.updateState(state as ITrip, event);
 
     if (event.type == "TripCreated") {

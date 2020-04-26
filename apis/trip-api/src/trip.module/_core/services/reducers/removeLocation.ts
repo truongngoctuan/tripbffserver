@@ -8,6 +8,8 @@ export function removeLocation(
 ): ITrip {
   return {
     ...prevState,
-    locations: prevState.locations.filter(lo => lo.locationId != command.locationId)
+    locations: prevState.locations.filter(
+      (lo) => lo.locationId != command.locationId
+    ),
   };
 }

@@ -1,6 +1,4 @@
-import {
-  TripReducers
-} from "../_tripReducer";
+import { TripReducers } from "../_tripReducer";
 import moment from "moment";
 import { TripEvent, ITripEventRepository } from "../../events";
 import { TripCreatedEvent } from "../../events/TripEvents";
@@ -12,7 +10,7 @@ test("hello world example", () => {
 });
 
 class MockTripEventRepository implements ITripEventRepository {
-  constructor(private events: TripEvent[]) { }
+  constructor(private events: TripEvent[]) {}
 
   save = (event: TripEvent): Promise<void> => {
     return new Promise(() => {});
@@ -22,26 +20,26 @@ class MockTripEventRepository implements ITripEventRepository {
       resolve(this.events);
     });
   };
-
 }
 
 test("create trip", async () => {
-  const tripEventRepository = new MockTripEventRepository([{
-    type: "TripCreated",
-    ownerId: "ownerId",
-    tripId: "tripId",
-    name: "name",
-    fromDate: moment("2019-01-01").toDate(),
-    toDate: moment("2019-01-10").toDate()
-  }]);
+  const tripEventRepository = new MockTripEventRepository([
+    {
+      type: "TripCreated",
+      ownerId: "ownerId",
+      tripId: "tripId",
+      name: "name",
+      fromDate: moment("2019-01-01").toDate(),
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true,
+    },
+  ]);
 
   const tripReducer = new TripReducers(tripEventRepository);
-  return tripReducer.getCurrentState("tripId")
-    .then(data => {
-      expect(data).toMatchSnapshot();
-    });
+  return tripReducer.getCurrentState("tripId").then((data) => {
+    expect(data).toMatchSnapshot();
+  });
 });
-
 
 test("update trip name", async () => {
   const tripEventRepository = new MockTripEventRepository([
@@ -51,23 +49,23 @@ test("update trip name", async () => {
       tripId: "tripId",
       name: "name",
       fromDate: moment("2019-01-01").toDate(),
-      toDate: moment("2019-01-10").toDate()
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true,
     },
     {
       type: "TripNameUpdated",
       ownerId: "ownerId",
       tripId: "tripId",
       name: "name 2",
-    }
+      isPublic: true,
+    },
   ]);
 
   const tripReducer = new TripReducers(tripEventRepository);
-  return tripReducer.getCurrentState("tripId")
-    .then(data => {
-      expect(data).toMatchSnapshot();
-    });
+  return tripReducer.getCurrentState("tripId").then((data) => {
+    expect(data).toMatchSnapshot();
+  });
 });
-
 
 test("import trip location", async () => {
   const tripEventRepository = new MockTripEventRepository([
@@ -77,34 +75,35 @@ test("import trip location", async () => {
       tripId: "tripId",
       name: "name",
       fromDate: moment("2019-01-01").toDate(),
-      toDate: moment("2019-01-10").toDate()
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true,
     },
     {
       type: "TripImportLocations",
       ownerId: "ownerId",
       tripId: "tripId",
-      locations: [{
-        locationId: "locationId01",
-        name: "name",
-        location: {
-          long: 1,
-          lat: 1,
-          address: "address",
+      locations: [
+        {
+          locationId: "locationId01",
+          name: "name",
+          location: {
+            long: 1,
+            lat: 1,
+            address: "address",
+          },
+          fromTime: moment("2019-01-01").toDate(),
+          toTime: moment("2019-01-10").toDate(),
+          images: [],
         },
-        fromTime: moment("2019-01-01").toDate(),
-        toTime: moment("2019-01-10").toDate(),
-        images: [],
-      }] as ITripLocation[]
-    }
+      ] as ITripLocation[],
+    },
   ]);
 
   const tripReducer = new TripReducers(tripEventRepository);
-  return tripReducer.getCurrentState("tripId")
-    .then(data => {
-      expect(data).toMatchSnapshot();
-    });
+  return tripReducer.getCurrentState("tripId").then((data) => {
+    expect(data).toMatchSnapshot();
+  });
 });
-
 
 test("upload location image", async () => {
   const tripEventRepository = new MockTripEventRepository([
@@ -114,27 +113,32 @@ test("upload location image", async () => {
       tripId: "tripId",
       name: "name",
       fromDate: moment("2019-01-01").toDate(),
-      toDate: moment("2019-01-10").toDate()
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true,
     },
     {
       type: "TripImportLocations",
       ownerId: "ownerId",
       tripId: "tripId",
-      locations: [{
-        locationId: "locationId01",
-        name: "name",
-        location: {
-          long: 1,
-          lat: 1,
-          address: "address",
+      locations: [
+        {
+          locationId: "locationId01",
+          name: "name",
+          location: {
+            long: 1,
+            lat: 1,
+            address: "address",
+          },
+          fromTime: moment("2019-01-01").toDate(),
+          toTime: moment("2019-01-10").toDate(),
+          images: [
+            {
+              imageId: "imageId01",
+              url: "url",
+            },
+          ],
         },
-        fromTime: moment("2019-01-01").toDate(),
-        toTime: moment("2019-01-10").toDate(),
-        images: [{
-          imageId: "imageId01",
-          url: "url",
-        }],
-      }] as ITripLocation[]
+      ] as ITripLocation[],
     },
     {
       type: "LocationImageUploaded",
@@ -143,14 +147,13 @@ test("upload location image", async () => {
       locationId: "locationId01",
       imageId: "imageId01",
       externalStorageId: "guid01",
-    }
+    },
   ]);
 
   const tripReducer = new TripReducers(tripEventRepository);
-  return tripReducer.getCurrentState("tripId")
-    .then(data => {
-      expect(data).toMatchSnapshot();
-    });
+  return tripReducer.getCurrentState("tripId").then((data) => {
+    expect(data).toMatchSnapshot();
+  });
 });
 
 test("remove location images", async () => {
@@ -161,27 +164,32 @@ test("remove location images", async () => {
       tripId: "tripId",
       name: "name",
       fromDate: moment("2019-01-01").toDate(),
-      toDate: moment("2019-01-10").toDate()
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true,
     },
     {
       type: "TripImportLocations",
       ownerId: "ownerId",
       tripId: "tripId",
-      locations: [{
-        locationId: "locationId01",
-        name: "name",
-        location: {
-          long: 1,
-          lat: 1,
-          address: "address",
+      locations: [
+        {
+          locationId: "locationId01",
+          name: "name",
+          location: {
+            long: 1,
+            lat: 1,
+            address: "address",
+          },
+          fromTime: moment("2019-01-01").toDate(),
+          toTime: moment("2019-01-10").toDate(),
+          images: [
+            {
+              imageId: "imageId01",
+              url: "url",
+            },
+          ],
         },
-        fromTime: moment("2019-01-01").toDate(),
-        toTime: moment("2019-01-10").toDate(),
-        images: [{
-          imageId: "imageId01",
-          url: "url",
-        }],
-      }] as ITripLocation[]
+      ] as ITripLocation[],
     },
     {
       type: "LocationImagesRemoved",
@@ -189,16 +197,14 @@ test("remove location images", async () => {
       tripId: "tripId",
       locationId: "locationId01",
       imageIds: ["imageId01"],
-    }
+    },
   ]);
 
   const tripReducer = new TripReducers(tripEventRepository);
-  return tripReducer.getCurrentState("tripId")
-    .then(data => {
-      expect(data.locations[0].images).toMatchSnapshot();
-    });
+  return tripReducer.getCurrentState("tripId").then((data) => {
+    expect(data.locations[0].images).toMatchSnapshot();
+  });
 });
-
 
 test("remove location multi mages", async () => {
   const tripEventRepository = new MockTripEventRepository([
@@ -208,45 +214,50 @@ test("remove location multi mages", async () => {
       tripId: "tripId",
       name: "name",
       fromDate: moment("2019-01-01").toDate(),
-      toDate: moment("2019-01-10").toDate()
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true,
     },
     {
       type: "TripImportLocations",
       ownerId: "ownerId",
       tripId: "tripId",
-      locations: [{
-        locationId: "locationId01",
-        name: "name",
-        location: {
-          long: 1,
-          lat: 1,
-          address: "address",
-        },
-        fromTime: moment("2019-01-01").toDate(),
-        toTime: moment("2019-01-10").toDate(),
-        images: [{
-          imageId: "imageId01",
-          url: "url",
-        },
+      locations: [
         {
-          imageId: "imageId02",
-          url: "url",
-          externalUrl: "",
-          thumbnailExternalUrl: ""
+          locationId: "locationId01",
+          name: "name",
+          location: {
+            long: 1,
+            lat: 1,
+            address: "address",
+          },
+          fromTime: moment("2019-01-01").toDate(),
+          toTime: moment("2019-01-10").toDate(),
+          images: [
+            {
+              imageId: "imageId01",
+              url: "url",
+            },
+            {
+              imageId: "imageId02",
+              url: "url",
+              externalUrl: "",
+              thumbnailExternalUrl: "",
+            },
+            {
+              imageId: "imageId03",
+              url: "url",
+              externalUrl: "",
+              thumbnailExternalUrl: "",
+            },
+            {
+              imageId: "imageId04",
+              url: "url",
+              externalUrl: "",
+              thumbnailExternalUrl: "",
+            },
+          ],
         },
-        {
-          imageId: "imageId03",
-          url: "url",
-          externalUrl: "",
-          thumbnailExternalUrl: ""
-        },
-        {
-          imageId: "imageId04",
-          url: "url",
-          externalUrl: "",
-          thumbnailExternalUrl: ""
-        },],
-      }] as ITripLocation[]
+      ] as ITripLocation[],
     },
     {
       type: "LocationImagesRemoved",
@@ -254,14 +265,15 @@ test("remove location multi mages", async () => {
       tripId: "tripId",
       locationId: "locationId01",
       imageIds: ["imageId01", "imageId03"],
-    }
+    },
   ]);
 
   const tripReducer = new TripReducers(tripEventRepository);
-  return tripReducer.getCurrentState("tripId")
-    .then(data => {
-      expect(data.locations[0].images.map(img => img.imageId)).toMatchSnapshot();
-    });
+  return tripReducer.getCurrentState("tripId").then((data) => {
+    expect(
+      data.locations[0].images.map((img) => img.imageId)
+    ).toMatchSnapshot();
+  });
 });
 
 test("favorite location image", async () => {
@@ -272,27 +284,32 @@ test("favorite location image", async () => {
       tripId: "tripId",
       name: "name",
       fromDate: moment("2019-01-01").toDate(),
-      toDate: moment("2019-01-10").toDate()
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true,
     },
     {
       type: "TripImportLocations",
       ownerId: "ownerId",
       tripId: "tripId",
-      locations: [{
-        locationId: "locationId01",
-        name: "name",
-        location: {
-          long: 1,
-          lat: 1,
-          address: "address",
+      locations: [
+        {
+          locationId: "locationId01",
+          name: "name",
+          location: {
+            long: 1,
+            lat: 1,
+            address: "address",
+          },
+          fromTime: moment("2019-01-01").toDate(),
+          toTime: moment("2019-01-10").toDate(),
+          images: [
+            {
+              imageId: "imageId01",
+              url: "url",
+            },
+          ],
         },
-        fromTime: moment("2019-01-01").toDate(),
-        toTime: moment("2019-01-10").toDate(),
-        images: [{
-          imageId: "imageId01",
-          url: "url",
-        }],
-      }] as ITripLocation[]
+      ] as ITripLocation[],
     },
     {
       type: "LocationImagesFavored",
@@ -300,17 +317,15 @@ test("favorite location image", async () => {
       tripId: "tripId",
       locationId: "locationId01",
       imageId: "imageId01",
-      isFavorite: true
-    }
+      isFavorite: true,
+    },
   ]);
 
   const tripReducer = new TripReducers(tripEventRepository);
-  return tripReducer.getCurrentState("tripId")
-    .then(data => {
-      expect(data.locations[0].images[0].isFavorite).toBe(true);
-    });
+  return tripReducer.getCurrentState("tripId").then((data) => {
+    expect(data.locations[0].images[0].isFavorite).toBe(true);
+  });
 });
-
 
 test("un-favorite location image", async () => {
   const tripEventRepository = new MockTripEventRepository([
@@ -320,27 +335,32 @@ test("un-favorite location image", async () => {
       tripId: "tripId",
       name: "name",
       fromDate: moment("2019-01-01").toDate(),
-      toDate: moment("2019-01-10").toDate()
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true,
     },
     {
       type: "TripImportLocations",
       ownerId: "ownerId",
       tripId: "tripId",
-      locations: [{
-        locationId: "locationId01",
-        name: "name",
-        location: {
-          long: 1,
-          lat: 1,
-          address: "address",
+      locations: [
+        {
+          locationId: "locationId01",
+          name: "name",
+          location: {
+            long: 1,
+            lat: 1,
+            address: "address",
+          },
+          fromTime: moment("2019-01-01").toDate(),
+          toTime: moment("2019-01-10").toDate(),
+          images: [
+            {
+              imageId: "imageId01",
+              url: "url",
+            },
+          ],
         },
-        fromTime: moment("2019-01-01").toDate(),
-        toTime: moment("2019-01-10").toDate(),
-        images: [{
-          imageId: "imageId01",
-          url: "url",
-        }],
-      }] as ITripLocation[]
+      ] as ITripLocation[],
     },
     {
       type: "LocationImagesFavored",
@@ -348,7 +368,7 @@ test("un-favorite location image", async () => {
       tripId: "tripId",
       locationId: "locationId01",
       imageId: "imageId01",
-      isFavorite: true
+      isFavorite: true,
     },
     {
       type: "LocationImagesFavored",
@@ -356,18 +376,15 @@ test("un-favorite location image", async () => {
       tripId: "tripId",
       locationId: "locationId01",
       imageId: "imageId01",
-      isFavorite: false
-    }
+      isFavorite: false,
+    },
   ]);
 
   const tripReducer = new TripReducers(tripEventRepository);
-  return tripReducer.getCurrentState("tripId")
-    .then(data => {
-      expect(data.locations[0].images[0].isFavorite).toBe(false);
-    });
+  return tripReducer.getCurrentState("tripId").then((data) => {
+    expect(data.locations[0].images[0].isFavorite).toBe(false);
+  });
 });
-
-
 
 test("add a location image", async () => {
   const tripEventRepository = new MockTripEventRepository([
@@ -377,28 +394,33 @@ test("add a location image", async () => {
       tripId: "tripId",
       name: "name",
       fromDate: moment("2019-01-01").toDate(),
-      toDate: moment("2019-01-10").toDate()
+      toDate: moment("2019-01-10").toDate(),
+      isPublic: true,
     },
     {
       type: "TripImportLocations",
       ownerId: "ownerId",
       tripId: "tripId",
-      locations: [{
-        locationId: "locationId01",
-        name: "name",
-        location: {
-          long: 1,
-          lat: 1,
-          address: "address",
+      locations: [
+        {
+          locationId: "locationId01",
+          name: "name",
+          location: {
+            long: 1,
+            lat: 1,
+            address: "address",
+          },
+          fromTime: moment("2019-01-01").toDate(),
+          toTime: moment("2019-01-10").toDate(),
+          images: [
+            {
+              imageId: "imageId01",
+              url: "url",
+              time: moment("2019-01-01").toDate(),
+            },
+          ],
         },
-        fromTime: moment("2019-01-01").toDate(),
-        toTime: moment("2019-01-10").toDate(),
-        images: [{
-          imageId: "imageId01",
-          url: "url",
-          time: moment("2019-01-01").toDate(),
-        }],
-      }] as ITripLocation[]
+      ] as ITripLocation[],
     },
     {
       type: "LocationImageAdded",
@@ -408,12 +430,11 @@ test("add a location image", async () => {
       imageId: "imageId02",
       url: "url2",
       time: moment("2019-01-02").toDate(),
-    }
+    },
   ]);
 
   const tripReducer = new TripReducers(tripEventRepository);
-  return tripReducer.getCurrentState("tripId")
-    .then(data => {
-      expect(data.locations[0].images).toMatchSnapshot();
-    });
+  return tripReducer.getCurrentState("tripId").then((data) => {
+    expect(data.locations[0].images).toMatchSnapshot();
+  });
 });

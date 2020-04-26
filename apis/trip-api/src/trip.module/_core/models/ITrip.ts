@@ -5,7 +5,12 @@ export interface ITrip {
   toDate: Date;
   locations: Array<ITripLocation>;
   infographics: Array<IInfographic>;
+  latestExportedExternalStorageId?: string;
   isDeleted: boolean;
+  createdById: string;
+  canContribute: boolean;
+  isPublic: boolean;
+  createdDate?: Date;
 }
 
 export interface ITripLocation {

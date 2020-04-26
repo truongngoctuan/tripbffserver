@@ -1,3 +1,5 @@
+import { InfographicRendererConfig } from "../scripts/info_graphic_01_01/plugins/index.renderer";
+
 export namespace InfographicConfig {
   //for transformer to transform trip specific to something generic
   type TripInfographic = TripContainerBlock | LocationBlock;
@@ -12,10 +14,11 @@ export namespace InfographicConfig {
   type TripContainerBlock = {
     type: "container";
     blocks: TripBlock[];
-    positioning?: RelativePositioning;
-  } & Background &
-    WidthHeight &
-    ContainerFlex;
+    positioning?: InfographicRendererConfig.RelativePositioning;
+  } & InfographicRendererConfig.Background &
+    InfographicRendererConfig.WidthHeight &
+    InfographicRendererConfig.ContainerFlex &
+    InfographicRendererConfig.Scalable;
 
   type TripNameTextBlock = {
     type: "text";
@@ -25,102 +28,55 @@ export namespace InfographicConfig {
       | "{{location.name}}"
       | "{{location.feeling}}"
       | "{{location.hight-lights}}";
-  } & BaseTextBlock;
+  } & InfographicRendererConfig.BaseTextBlock;
 
   type LocationsBlocks = {
     type: "locations";
     blocks: LocationBlock[];
-  } & ContainerFlex;
+  } & InfographicRendererConfig.ContainerFlex &
+    InfographicRendererConfig.Scalable;
 
   type LocationBlock = {
     type: "location";
     blocks: TripBasicBlock[];
-    positioning?: RelativePositioning;
-  } & Background &
-    WidthHeight &
-    ContainerFlex;
+    positioning?: InfographicRendererConfig.RelativePositioning;
+  } & InfographicRendererConfig.Background &
+    InfographicRendererConfig.WidthHeight &
+    InfographicRendererConfig.ContainerFlex;
 
   type LocationImageBlock = {
     type: "location-image";
     width: number;
     height: number;
     clipPath?: string;
-    positioning?: RelativePositioning;
+    positioning?: InfographicRendererConfig.RelativePositioning;
+    rotate?: number;
   };
 
-  // for renderer definition
-  type Infographic = ContainerBlock;
-
   type Block = ContainerBlock | BasicBlock;
-  type BasicBlock = ImageBlock | TextBlock | LineBlock | CircleBlock;
+
+  type BasicBlock =
+    | InfographicRendererConfig.ImageBlock
+    | SvgBlock
+    | InfographicRendererConfig.TextBlock
+    | InfographicRendererConfig.LineBlock
+    | InfographicRendererConfig.CircleBlock
+    | InfographicRendererConfig.PathBlock;
 
   type ContainerBlock = {
     type: "container";
     blocks: Block[];
-    positioning?: RelativePositioning;
-  } & Background &
-    WidthHeight &
-    ContainerFlex;
+    positioning?: InfographicRendererConfig.RelativePositioning;
+  } & InfographicRendererConfig.Background &
+    InfographicRendererConfig.WidthHeight &
+    InfographicRendererConfig.ContainerFlex;
 
-  type ImageBlock = {
-    type: "image";
+  type SvgBlock = {
+    type: "svg";
     url: string;
-    width?: number;
-    height?: number;
-    clipPath?: string;
-    positioning: RelativePositioning;
-  };
-
-  type BaseTextBlock = {
-    fontSize?: string;
-    fontFamily?: string;
-    color?: string;
-    fontWeight?: string;
-    textAnchor?: string;
-    textTransform?: string;
-    positioning: RelativePositioning;
-  };
-
-  type TextBlock = {
-    type: "text";
-    text: string;
-    width?: number;
-  } & BaseTextBlock;
-
-  type LineBlock = {
-    type: "line";
-    x1: number;
-    y1: number;
-    x2: number;
-    y2: number;
-    strokeColor: string;
-    strokeWidth: number;
-  };
-
-  type CircleBlock = {
-    type: "circle";
-    x: number;
-    y: number;
-    r: number;
-    fillColor: string;
-  };
-
-  //base types
-  type RelativePositioning = {
-    top?: number;
-    left?: number;
-    right?: number;
-    bottom?: number;
-  };
-
-  type Background = {
-    backgroundColor?: string;
-  };
-  type WidthHeight = {
-    width?: number;
-    height?: number;
-  };
-  type ContainerFlex = {
-    flex?: "column" | "row";
+    shadowOffset?: { x: number; y: number };
+    shadowBlur?: number;
+    shadowColor?: string;
+    positioning?: InfographicRendererConfig.RelativePositioning;
   };
 }

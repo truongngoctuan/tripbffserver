@@ -15,11 +15,11 @@ const fooCommandHandler = new FooCommandHandler(
 const fooQueryHandler = new FooQueryHandler(new FooRepository());
 
 module.exports = {
-  init: function(server: Server): void {
+  init: function (server: Server): void {
     server.route({
       method: "GET",
       path: "/hello",
-      handler: async function(request, h) {
+      handler: async function (request, h) {
         try {
           const result = await fooQueryHandler.list();
           return result;
@@ -31,14 +31,14 @@ module.exports = {
       },
       options: {
         auth: "simple",
-        tags: ["api"]
-      }
+        tags: ["api"],
+      },
     });
 
     server.route({
       method: "POST",
       path: "/hello",
-      handler: async function(request, h) {
+      handler: async function (request, h) {
         try {
           const { name, description } = request.payload as any;
           const fooId = Math.floor(Math.random() * 100);
@@ -47,7 +47,7 @@ module.exports = {
             type: "createFoo",
             fooId: fooId.toString(),
             name,
-            description
+            description,
           });
 
           if (commandResult.isSucceed) {
@@ -66,16 +66,16 @@ module.exports = {
         validate: {
           payload: Joi.object({
             name: Joi.required().description("name"),
-            description: Joi.required().description("description")
-          })
-        }
-      }
+            description: Joi.required().description("description"),
+          }),
+        },
+      },
     });
 
     server.route({
       method: "PUT",
       path: "/hello/{id}",
-      handler: async function(request, h) {
+      handler: async function (request, h) {
         try {
           const { name, description } = request.payload as any;
           const fooId = request.params.id;
@@ -84,7 +84,7 @@ module.exports = {
             type: "updateFoo",
             fooId: fooId.toString(),
             name,
-            description
+            description,
           });
 
           if (commandResult.isSucceed) {
@@ -102,14 +102,14 @@ module.exports = {
         tags: ["api"],
         validate: {
           params: Joi.object({
-            id: Joi.required().description("the id for the todo item")
+            id: Joi.required().description("the id for the todo item"),
           }),
           payload: Joi.object({
             name: Joi.required().description("name"),
-            description: Joi.required().description("description")
-          })
-        }
-      }
+            description: Joi.required().description("description"),
+          }),
+        },
+      },
     });
-  }
+  },
 };

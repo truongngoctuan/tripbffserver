@@ -1,5 +1,4 @@
-
 export interface IUserSettingModel {
-    userId: string;
-    locale: string;
+  userId: string;
+  locale: string;
 }

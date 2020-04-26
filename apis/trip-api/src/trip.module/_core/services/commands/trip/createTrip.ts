@@ -10,13 +10,19 @@ export type CreateTripCommand = {
   name: string;
   fromDate: Date;
   toDate: Date;
+  isPublic: boolean;
 };
 
-export async function createTrip(command: CreateTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus): Promise<CommandResult> {
+export async function createTrip(
+  command: CreateTripCommand,
+  eventHandler: EventHandler,
+  reducers: TripReducers,
+  emitter: ServiceBus
+): Promise<CommandResult> {
   //validate
   //todo validation on fromDate, toDate
-  //todo add error code as 
-  const { ownerId, tripId, name, fromDate, toDate } = command;
+  //todo add error code as
+  const { ownerId, tripId, name, fromDate, toDate, isPublic } = command;
   const event: TripEvent = {
     type: "TripCreated",
     ownerId,
@@ -24,6 +30,7 @@ export async function createTrip(command: CreateTripCommand, eventHandler: Event
     name,
     fromDate,
     toDate,
+    isPublic,
   };
 
   eventHandler.save(event);

@@ -6,12 +6,8 @@ export function addLocation(
   prevState: ITrip,
   command: TripLocationAddedEvent
 ): ITrip {
-
   return {
     ...prevState,
-    locations: [
-      ...prevState.locations,
-      command.location
-    ]
+    locations: [...prevState.locations, command.location],
   };
 }

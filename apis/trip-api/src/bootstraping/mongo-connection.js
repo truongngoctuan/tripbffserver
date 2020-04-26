@@ -2,10 +2,11 @@ async function init() {
   const mongoose = require("mongoose");
 
   const mongoDbConnectionString = process.env.MONGODB_CONNECTION_STRING;
-  mongoose.connect(mongoDbConnectionString, {
-      useNewUrlParser: true
+  mongoose
+    .connect(mongoDbConnectionString, {
+      useNewUrlParser: true,
     })
-    .catch(err => {
+    .catch((err) => {
       console.log("error on connect to mongo db");
       console.log(err);
     });

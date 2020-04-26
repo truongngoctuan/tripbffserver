@@ -1,6 +1,7 @@
 import { ITripsRepository, ITripMinimized } from "../models/ITripsRepository";
 import { resolveThumbnailImageUrlFromExternalStorageId } from "./ImageUrlResolver";
 import _ from "lodash";
+import { NumberOfTrips } from "./Constants";
 
 export class MinimizedTripQueryHandler {
   constructor(private TripsRepository: ITripsRepository) {}
@@ -14,10 +15,26 @@ export class MinimizedTripQueryHandler {
   };
 
   async list(ownerId: string): Promise<ITripMinimized[]> {
-    return this.TripsRepository.list(ownerId).then(trips => {
-      let allTrips = trips.map(trip => this.updateTripImageExternalUrl(trip));
-      allTrips = allTrips.filter(item => item.isDeleted != true);
+    return this.TripsRepository.list(ownerId).then((trips) => {
+      let allTrips = trips.map((trip) => this.updateTripImageExternalUrl(trip));
+      allTrips = allTrips.filter((item) => item.isDeleted != true);
       allTrips.sort(this.compareTrip);
+      return allTrips;
+    });
+  }
+
+  async listNewsFeed(
+    loggedUserId: string,
+    page: number
+  ): Promise<ITripMinimized[]> {
+    return this.TripsRepository.listNewsFeed(
+      loggedUserId,
+      page,
+      NumberOfTrips
+    ).then((trips) => {
+      const allTrips = trips.map((trip) =>
+        this.updateTripImageExternalUrl(trip)
+      );
       return allTrips;
     });
   }
@@ -26,7 +43,7 @@ export class MinimizedTripQueryHandler {
     ownerId: string,
     tripId: string
   ): Promise<ITripMinimized | undefined> {
-    return this.TripsRepository.getById(ownerId, tripId).then(trip => {
+    return this.TripsRepository.getById(ownerId, tripId).then((trip) => {
       return trip ? this.updateTripImageExternalUrl(trip) : undefined;
     });
   }
@@ -34,7 +51,7 @@ export class MinimizedTripQueryHandler {
   private updateTripImageExternalUrl(trip: ITripMinimized) {
     if (!trip) return trip;
 
-    trip.locationImages = trip.locationImages.map(locationImage => {
+    trip.locationImages = trip.locationImages.map((locationImage) => {
       return {
         name: locationImage.name,
         address: locationImage.address,
@@ -44,7 +61,7 @@ export class MinimizedTripQueryHandler {
             ? undefined
             : resolveThumbnailImageUrlFromExternalStorageId(
                 locationImage.imageUrl
-              )
+              ),
       };
     });
     return trip;

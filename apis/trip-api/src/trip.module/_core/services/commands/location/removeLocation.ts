@@ -21,7 +21,10 @@ export async function RemoveLocation(
 
   const state = await reducers.getCurrentState(tripId);
 
-  const location = _.find(state.locations, loc => loc.locationId == locationId);
+  const location = _.find(
+    state.locations,
+    (loc) => loc.locationId == locationId
+  );
   if (!location) return BadRequest("LocationNotFound");
 
   const event: TripEvent = {

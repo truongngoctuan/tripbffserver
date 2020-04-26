@@ -25,7 +25,7 @@ export async function UpdateLocationHighlight(
     ownerId,
     tripId,
     locationId,
-    highlights
+    highlights,
   };
 
   eventHandler.save(event);

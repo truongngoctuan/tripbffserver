@@ -10,16 +10,26 @@ export type UpdateTripCommand = {
   name: string;
   fromDate: Date;
   toDate: Date;
+  isPublic: boolean;
 };
 
-export async function updateTrip(command: UpdateTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus) {
-  const { ownerId, tripId, name, fromDate, toDate } = command;
-  
+export async function updateTrip(
+  command: UpdateTripCommand,
+  eventHandler: EventHandler,
+  reducers: TripReducers,
+  emitter: ServiceBus
+) {
+  const { ownerId, tripId, name, fromDate, toDate, isPublic } = command;
+
   //validate
   const state = await reducers.getCurrentState(tripId);
 
   //get current state
-  if (state.name == name && state.fromDate == fromDate && state.toDate == toDate) {
+  if (
+    state.name == name &&
+    state.fromDate == fromDate &&
+    state.toDate == toDate
+  ) {
     return Succeed();
   }
 
@@ -30,6 +40,7 @@ export async function updateTrip(command: UpdateTripCommand, eventHandler: Event
     name,
     fromDate,
     toDate,
+    isPublic,
   };
 
   eventHandler.save(event);
@@ -38,4 +49,4 @@ export async function updateTrip(command: UpdateTripCommand, eventHandler: Event
   await emitter.emit(event);
 
   return Succeed();
-};
+}

@@ -1,4 +1,3 @@
-
 export interface IUserTripModel {
   userId: string;
   trips: Array<ITripModel>;
@@ -13,6 +12,7 @@ export interface ITripModel {
   infographics?: Array<IInfographicModel>;
   isDeleted: boolean;
   createdDate: Date;
+  isPublic: boolean;
 }
 
 export interface ITripLocationModel {

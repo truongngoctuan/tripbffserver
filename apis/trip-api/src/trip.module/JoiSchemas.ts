@@ -1,7 +1,7 @@
 import Joi from "@hapi/joi";
 
 export const IdSchema = Joi.object({
-  id: Joi.required().description("External Id")
+  id: Joi.required().description("External Id"),
 });
 
 // -------------------------------------------------------------------
@@ -10,7 +10,7 @@ const joiLocationDetailsSchema = Joi.object({
   long: Joi.number(),
   lat: Joi.number(),
 
-  address: Joi.string()
+  address: Joi.string(),
 });
 
 export const joiLocationSchema = Joi.object({
@@ -27,7 +27,7 @@ export const joiLocationSchema = Joi.object({
       externalStorageId: Joi.string(),
       externalUrl: Joi.string(),
       isFavorite: Joi.bool(),
-      thumbnailExternalUrl: Joi.string().optional()
+      thumbnailExternalUrl: Joi.string().optional(),
     })
   ),
   description: Joi.string(),
@@ -35,28 +35,28 @@ export const joiLocationSchema = Joi.object({
     feelingId: Joi.string(),
     label_en: Joi.string(),
     label_vi: Joi.string(),
-    icon: Joi.string()
+    icon: Joi.string(),
   }),
   activity: Joi.object({
     activityId: Joi.string(),
     label_en: Joi.string(),
     label_vi: Joi.string(),
-    icon: Joi.string()
+    icon: Joi.string(),
   }),
   highlights: Joi.array().items(
     Joi.object({
       highlightId: Joi.string(),
       label_en: Joi.string(),
       label_vi: Joi.string(),
-      highlightType: Joi.string()
+      highlightType: Joi.string(),
     })
-  )
+  ),
 });
 
 export const joiInfographicSchema = Joi.object({
   infographicId: Joi.string().required(),
   status: Joi.string().required(),
-  externalStorageId: Joi.string().optional()
+  externalStorageId: Joi.string().optional(),
 });
 
 export const joiTripSchema = Joi.object({
@@ -64,13 +64,14 @@ export const joiTripSchema = Joi.object({
   name: Joi.string(),
   fromDate: Joi.date(),
   toDate: Joi.date(),
-  locations: Joi.array()
-    .optional()
-    .items(joiLocationSchema),
-  infographics: Joi.array()
-    .optional()
-    .items(joiInfographicSchema),
-  isDeleted: Joi.boolean()
+  locations: Joi.array().optional().items(joiLocationSchema),
+  infographics: Joi.array().optional().items(joiInfographicSchema),
+  latestExportedExternalStorageId: Joi.string().optional(),
+  isDeleted: Joi.boolean(),
+  createdById: Joi.string(),
+  canContribute: Joi.boolean(),
+  isPublic: Joi.boolean(),
+  createdDate: Joi.date().optional(),
 });
 
 export const joiMinimizedTripSchema = Joi.object({
@@ -80,11 +81,17 @@ export const joiMinimizedTripSchema = Joi.object({
   toDate: Joi.date(),
   locationImages: Joi.array()
     .optional()
-    .items(Joi.object({
-      name: Joi.string(),
-      address: Joi.string(),
-      description: Joi.string(),
-      imageUrl: Joi.string().optional(),
-    })),
-  isDeleted: Joi.boolean()
+    .items(
+      Joi.object({
+        name: Joi.string(),
+        address: Joi.string(),
+        description: Joi.string(),
+        imageUrl: Joi.string().optional(),
+      })
+    ),
+  isDeleted: Joi.boolean(),
+  createdById: Joi.string(),
+  canContribute: Joi.boolean(),
+  isPublic: Joi.boolean(),
+  createdDate: Joi.date().optional(),
 });

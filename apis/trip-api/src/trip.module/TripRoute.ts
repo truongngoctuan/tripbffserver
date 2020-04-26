@@ -12,17 +12,20 @@ import {
   getMinimizedTripByIdAction,
   createTripAction,
   patchTripAction,
-  deleteTripAction
+  deleteTripAction,
+  listNewsFeedTripsAction,
 } from "./actions/TripActions";
 import { joiTripSchema, joiMinimizedTripSchema, IdSchema } from "./JoiSchemas";
 
 module.exports = {
-  init: function(server: Server): void {
+  init: function (server: Server): void {
     server.route({
       method: "GET",
       path: "/trips",
-      handler: async request =>
-        await listTripsAction(CUtils.getUserId(request)),
+      handler: async (request) => {
+        const userId = CUtils.getUserId(request);
+        return await listTripsAction(userId);
+      },
       options: {
         auth: "simple",
         tags: ["api"],
@@ -30,14 +33,14 @@ module.exports = {
         response: {
           // todo setup date/moment validation correctly
           // schema: joiMinimizedTripsSchema
-        }
-      }
+        },
+      },
     });
 
     server.route({
       method: "GET",
       path: "/trips/minimized/{id}",
-      handler: async request => {
+      handler: async (request) => {
         const tripId = request.params.id;
         const userId = CUtils.getUserId(request);
 
@@ -47,87 +50,113 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: IdSchema
+          params: IdSchema,
         },
         response: {
           schema: joiMinimizedTripSchema,
-          failAction: failActionInResponse
-        }
-      }
+          failAction: failActionInResponse,
+        },
+      },
     });
 
     type postPayloadType = {
       name: string;
       fromDate: string;
       toDate: string;
+      isPublic: boolean;
     };
     const postPayloadSchema = Joi.object({
       name: Joi.string().required(),
       fromDate: Joi.string().required(),
-      toDate: Joi.string().required()
+      toDate: Joi.string().required(),
+      isPublic: Joi.boolean().required(),
     });
 
     server.route({
       method: "POST",
       path: "/trips",
-      handler: async request => {
-        const { name, fromDate, toDate } = request.payload as postPayloadType;
+      handler: async (request) => {
+        const {
+          name,
+          fromDate,
+          toDate,
+          isPublic,
+        } = request.payload as postPayloadType;
         const ownerId = CUtils.getUserId(request);
 
-        return await createTripAction(ownerId, name, fromDate, toDate);
+        return await createTripAction(
+          ownerId,
+          name,
+          fromDate,
+          toDate,
+          isPublic
+        );
       },
       options: {
         auth: "simple",
         tags: ["api"],
         validate: {
-          payload: postPayloadSchema
+          payload: postPayloadSchema,
         },
         response: {
-          schema: Joi.string()
-        }
-      }
+          schema: Joi.string(),
+        },
+      },
     });
 
     server.route({
       method: "PATCH",
       path: "/trips/{id}",
-      handler: async function(request) {
+      handler: async function (request) {
         const tripId = request.params.id;
-        const { name, fromDate, toDate } = request.payload as postPayloadType;
+        const {
+          name,
+          fromDate,
+          toDate,
+          isPublic,
+        } = request.payload as postPayloadType;
         console.log("trip name", name);
         console.log("trip from date:", fromDate);
         console.log("trip to date:", toDate);
 
         const ownerId = CUtils.getUserId(request);
 
-        return await patchTripAction(ownerId, tripId, name, fromDate, toDate);
+        return await patchTripAction(
+          ownerId,
+          tripId,
+          name,
+          fromDate,
+          toDate,
+          isPublic
+        );
       },
       options: {
         auth: "simple",
         tags: ["api"],
         validate: {
           params: IdSchema,
-          payload: postPayloadSchema
+          payload: postPayloadSchema,
         },
         response: {
           status: {
-            200: joiTripSchema
-          }
-        }
-      }
+            200: joiTripSchema,
+          },
+        },
+      },
     });
 
     server.route({
       method: "GET",
       path: "/trips/{id}",
-      handler: async function(request) {
+      handler: async function (request) {
         const tripId = request.params.id;
-        const userId = CUtils.getUserId(request);
-
-        return await getTripByIdAction(userId, tripId)
-        .then(trip => {
-          return trip;
-        });
+        const createdById = request.query.createdById as string;
+        const loggedUserId = CUtils.getUserId(request);
+        return await getTripByIdAction(loggedUserId, tripId, createdById).then(
+          (trip) => {
+            return trip;
+          }
+        );
       },
       options: {
         auth: "simple",
@@ -137,17 +166,17 @@ module.exports = {
         },
         response: {
           status: {
-            200: joiTripSchema
+            200: joiTripSchema,
           },
-          failAction: failActionInResponse
-        }
-      }
+          failAction: failActionInResponse,
+        },
+      },
     });
 
     server.route({
       method: "DELETE",
       path: "/trips/{id}",
-      handler: async function(request) {
+      handler: async function (request) {
         const tripId = request.params.id;
         const ownerId = CUtils.getUserId(request);
         return await deleteTripAction(ownerId, tripId);
@@ -156,9 +185,28 @@ module.exports = {
         auth: "simple",
         tags: ["api"],
         validate: {
-          params: IdSchema
-        }
-      }
+          params: IdSchema,
+        },
+      },
     });
-  }
+
+    server.route({
+      method: "GET",
+      path: "/newsFeed/trips",
+      handler: async (request) => {
+        const page = parseInt(request.query.page as string);
+        const loggedUserId = CUtils.getUserId(request);
+        return await listNewsFeedTripsAction(loggedUserId, page);
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+        notes: ["get full list of trips"],
+        response: {
+          // todo setup date/moment validation correctly
+          // schema: joiMinimizedTripsSchema
+        },
+      },
+    });
+  },
 };

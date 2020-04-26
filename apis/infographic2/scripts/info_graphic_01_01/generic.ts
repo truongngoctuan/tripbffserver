@@ -6,7 +6,9 @@ import { getRelativePosition } from "./plugins/utils";
 import _ from "lodash";
 import { preProcessInfographicConfig } from "./transformers";
 import { Trip } from "../models/trip";
-const { executePlugins } = require("./plugins/index");
+import { applyGlobalTransform } from "./transformers/global-transformers";
+import { executePlugins } from "./plugins/index";
+import { InfographicRendererConfig } from "./plugins/index.renderer";
 
 function log(level: number, message: string, data: any = undefined) {
   if (data) console.log(_.repeat("    ", level) + message, data);
@@ -30,44 +32,42 @@ async function renderImage(
 ) {
   log(cursor.level, "render block", blockConfig.type);
   // log(cursor.level, "cursor", cursor);
-  const imageBlock = blockConfig as InfographicConfig.ImageBlock;
+  const imageBlock = blockConfig as InfographicRendererConfig.ImageBlock;
 
   const relativePosition = getRelativePosition(cursor, imageBlock.positioning);
   log(cursor.level, "cursor", cursor);
   log(cursor.level, "relative position", relativePosition);
 
-  await canvasAdaptor.drawImage(imageBlock.url, relativePosition, {
-    width: imageBlock.width,
-    height: imageBlock.height,
-    clipPath: imageBlock.clipPath
-  });
+  await canvasAdaptor.drawImage(imageBlock.url, relativePosition, imageBlock);
+
+  return cursor;
 }
 
 async function renderBlock(
   canvasAdaptor: CanvasAdaptor,
   b: InfographicConfig.Block,
   cursor: Cursor
-) {
+): Promise<Cursor> {
   if (b.type === "container") {
     log(cursor.level, "render block", b.type);
     log(cursor.level, "render cursor", cursor);
   }
 
-  var nextCursor: Cursor = cursor;
+  let nextCursor: Cursor = cursor;
 
   if (b.type === "container") {
     // preNodeContainer
     nextCursor = await executePlugins(b.type, canvasAdaptor, b, cursor);
 
-    let childrenBlocks: InfographicConfig.Block[] = b.blocks;
-    for (var i = 0; i < childrenBlocks.length; i++) {
-      var childBlock = childrenBlocks[i];
+    const childrenBlocks: InfographicConfig.Block[] = b.blocks;
+    for (let i = 0; i < childrenBlocks.length; i++) {
+      const childBlock = childrenBlocks[i];
 
-      var next = await renderBlock(
+      const next = await renderBlock(
         canvasAdaptor,
         childBlock,
         _.assign({}, nextCursor, {
-          level: cursor.level + 1
+          level: cursor.level + 1,
         })
       );
 
@@ -79,12 +79,12 @@ async function renderBlock(
         //override cursor
         if (childBlock["height"]) {
           nextCursor = _.merge({}, nextCursor, {
-            y: nextCursor.y + childBlock["height"]
+            y: nextCursor.y + childBlock["height"],
           });
         } else {
           if (!_.isEmpty(next)) {
             nextCursor = _.merge({}, nextCursor, {
-              y: next.y
+              y: next.y,
             });
           }
         }
@@ -94,10 +94,11 @@ async function renderBlock(
     return nextCursor;
   }
 
+  // todo, improve this filter, remove ??
   if (
     _.findIndex(
-      ["locations", "location", "text", "line", "circle"],
-      type => b.type === type
+      ["locations", "location", "text", "line", "circle", "path", "svg"],
+      (type) => b.type === type
     ) !== -1
   ) {
     return await executePlugins(b.type, canvasAdaptor, b, nextCursor);
@@ -109,13 +110,22 @@ async function renderBlock(
 
 export async function renderInfographic(
   canvasAdaptor: CanvasAdaptor,
-  infographicConfig: InfographicConfig.Infographic,
+  infographicConfig: InfographicConfig.TripInfographic,
+  settings: { scale: number },
   trip: Trip
-) {
+) {  
+  let cloneInfographicConfig = _.cloneDeep(infographicConfig);
+
+  const appliedGlobalTransformer = applyGlobalTransform(
+    cloneInfographicConfig,
+    settings
+  ) as InfographicConfig.TripInfographic;
+  
   const processedInfoConfig = preProcessInfographicConfig(
-    infographicConfig,
+    appliedGlobalTransformer,
+    settings,
     trip
-  ) as InfographicConfig.Infographic;
+  ) as InfographicRendererConfig.Infographic;
 
   if (!(processedInfoConfig.height && processedInfoConfig.height > 0)) {
     throw new Error("total height should have value");
@@ -126,7 +136,8 @@ export async function renderInfographic(
     y: 0,
     level: 0,
     width: infographicConfig.width ? infographicConfig.width : 0,
-    height: 0
+    height: 0,
+    scale: settings.scale ? settings.scale : 1,
   };
 
   const finalCursor: Cursor = await renderBlock(

@@ -34,7 +34,7 @@ export async function uploadImage(
   // console.log("trip state")
   // console.log(state)
   const location = nullCheck(
-    _.find(state.locations, loc => loc.locationId == locationId),
+    _.find(state.locations, (loc) => loc.locationId == locationId),
     "location not found"
   );
 
@@ -44,7 +44,7 @@ export async function uploadImage(
     tripId,
     locationId,
     imageId,
-    externalStorageId
+    externalStorageId,
   };
 
   eventHandler.save(event);

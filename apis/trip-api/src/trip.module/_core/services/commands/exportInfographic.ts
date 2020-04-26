@@ -21,7 +21,7 @@ export async function exportInfographic(
   eventHandler: EventHandler,
   reducers: TripReducers,
   emitter: ServiceBus,
-  extraParams: IExtraParams,
+  extraParams: IExtraParams
 ) {
   const { ownerId, tripId, infographicId, locale } = command;
 
@@ -45,55 +45,59 @@ export async function exportInfographic(
     toDate: trip.toDate,
     fromDate: trip.fromDate,
     locale,
-    locations: await Promise.all(trip.locations.map(async item => {
-      let imageId = undefined,
+    locations: await Promise.all(
+      trip.locations.map(async (item) => {
+        let imageId = undefined,
           signedUrl = "";
 
-      const favoriteImages = item.images.filter(img => img.isFavorite);
+        const favoriteImages = item.images.filter((img) => img.isFavorite);
 
-      if (favoriteImages.length > 0) {
-        imageId = favoriteImages[0].externalStorageId;
-      } else if (item.images.length > 0) {
-        imageId = item.images[0].externalStorageId;
-      }
+        if (favoriteImages.length > 0) {
+          imageId = favoriteImages[0].externalStorageId;
+        } else if (item.images.length > 0) {
+          imageId = item.images[0].externalStorageId;
+        }
 
-      if (imageId) {
-        // build thumbnail on the flight
-        const { fileInfo } = await IoC.fileService.getInfoById(imageId);
-        await IoC.imageService.saveThumbnail(fileInfo.path, 400, 400);
+        if (imageId) {
+          // build thumbnail on the flight
+          const { fileInfo } = await IoC.fileService.getInfoById(imageId);
+          await IoC.imageService.saveThumbnail(fileInfo.path, 400, 400);
 
-        signedUrl = resolveSignOnlyThumbnailImageUrlFromExternalStorageId(imageId);
-      }
+          signedUrl = resolveSignOnlyThumbnailImageUrlFromExternalStorageId(
+            imageId
+          );
+        }
 
-      let feeling = "",
+        let feeling = "",
           activity = "",
           highlights: Array<string> = [];
 
-      if(item.feeling) {
-        feeling = (item.feeling as any)["label_" + locale];
-      }
+        if (item.feeling) {
+          feeling = (item.feeling as any)["label_" + locale];
+        }
 
-      if (item.activity) {
-        activity = (item.activity as any)["label_" + locale];
-      }
+        if (item.activity) {
+          activity = (item.activity as any)["label_" + locale];
+        }
 
-      if (item.highlights) {
-        highlights = item.highlights.map(h => {
-          return (h as any)["label_" + locale];
-        });
-      }
+        if (item.highlights) {
+          highlights = item.highlights.map((h) => {
+            return (h as any)["label_" + locale];
+          });
+        }
 
-      return {
-        locationId: item.locationId,
-        name: item.name,
-        fromTime: item.fromTime,
-        toTime: item.toTime,
-        feeling,
-        activity,
-        highlights,
-        signedUrl,
-      };
-    })),
+        return {
+          locationId: item.locationId,
+          name: item.name,
+          fromTime: item.fromTime,
+          toTime: item.toTime,
+          feeling,
+          activity,
+          highlights,
+          signedUrl,
+        };
+      })
+    ),
   };
 
   extraParams.jobDispatcher.dispatch(jobExportInfo);

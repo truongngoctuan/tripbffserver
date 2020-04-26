@@ -27,7 +27,7 @@ export async function finishShareInfographic(
     type: "InfographicShared",
     ownerId,
     tripId,
-    infographicId
+    infographicId,
   };
 
   eventHandler.save(event);

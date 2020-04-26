@@ -1,5 +1,11 @@
 import { ITripLocation, IHighlight } from "../../models/ITrip";
-import { TripCreatedEvent, TripUpdatedEvent, TripDateRangeUpdatedEvent, TripNameUpdatedEvent, TripDeletedEvent } from "./TripEvents";
+import {
+  TripCreatedEvent,
+  TripUpdatedEvent,
+  TripDateRangeUpdatedEvent,
+  TripNameUpdatedEvent,
+  TripDeletedEvent,
+} from "./TripEvents";
 
 export type TripEvent =
   | TripCreatedEvent
@@ -59,7 +65,6 @@ export type TripLocationAddedEvent = {
   location: ITripLocation;
 };
 
-
 export type TripLocationImageAddedEvent = {
   type: "LocationImageAdded";
   ownerId: string;
@@ -105,7 +110,7 @@ export type TripLocationUpdatedFeelingEvent = {
   label_en: string;
   label_vi: string;
   feelingIcon: string;
-}
+};
 
 export type TripLocationUpdatedActivityEvent = {
   type: "LocationActivityUpdated";
@@ -116,7 +121,7 @@ export type TripLocationUpdatedActivityEvent = {
   label_en: string;
   label_vi: string;
   activityIcon: string;
-}
+};
 
 export type TripLocationUpdatedHighlightEvent = {
   type: "LocationHighlightUpdated";
@@ -124,7 +129,7 @@ export type TripLocationUpdatedHighlightEvent = {
   tripId: string;
   locationId: string;
   highlights: Array<IHighlight>;
-}
+};
 
 export type TripLocationUpdatedAddressEvent = {
   type: "LocationAddressUpdated";
@@ -135,7 +140,7 @@ export type TripLocationUpdatedAddressEvent = {
   address: string;
   long: number;
   lat: number;
-}
+};
 
 export type TripLocationUpdatedDescriptionEvent = {
   type: "LocationDescriptionUpdated";
@@ -143,7 +148,7 @@ export type TripLocationUpdatedDescriptionEvent = {
   tripId: string;
   locationId: string;
   description: string;
-}
+};
 
 export type InfographicCreatedEvent = {
   type: "InfographicCreated";

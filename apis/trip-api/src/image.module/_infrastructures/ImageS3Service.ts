@@ -10,26 +10,33 @@ const THUMBNAIL_IMAGE_SIZES = {
 };
 
 export class ImageS3Service implements IImageService {
-
   generateThumbnailUri(relativeImageUri: string, w: number, h: number): string {
     const parsedPath = path.parse(relativeImageUri);
-    return path.join(parsedPath.dir, `${parsedPath.name}_${w}_${h}${parsedPath.ext}`);
+    return path.join(
+      parsedPath.dir,
+      `${parsedPath.name}_${w}_${h}${parsedPath.ext}`
+    );
   }
 
   isExist(relativeImageUri: string): Promise<boolean> {
     throw "Not implemented";
   }
 
-  async internalSaveThumbnail(fromUri: string, toUri: string, w: number, h: number): Promise<void> {
+  async internalSaveThumbnail(
+    fromUri: string,
+    toUri: string,
+    w: number,
+    h: number
+  ): Promise<void> {
     const buf = await read(fromUri);
 
     // https://sharp.pixelplumbing.com/en/stable/api-operation/#rotate
     // rotate will implicitly using EXIF orientation, so we don't need to use withMetadata anymore
     const thumbnailBuf = await sharp(buf, { failOnError: false })
-    .rotate()
-    .resize(w, h)
-    // .withMetadata()
-    .toBuffer();
+      .rotate()
+      .resize(w, h)
+      // .withMetadata()
+      .toBuffer();
 
     await writeBuffer(toUri, thumbnailBuf);
   }
@@ -45,7 +52,11 @@ export class ImageS3Service implements IImageService {
   //   }
   // }
 
-  async saveThumbnail(relativeImageUri: string, w: number, h: number): Promise<void> {
+  async saveThumbnail(
+    relativeImageUri: string,
+    w: number,
+    h: number
+  ): Promise<void> {
     let fromUri: string;
     let toUri: string;
     let upscaleW: number;
@@ -61,14 +72,16 @@ export class ImageS3Service implements IImageService {
       fromUri = this.generateThumbnailUri(
         relativeImageUri,
         THUMBNAIL_IMAGE_SIZES.HD,
-        THUMBNAIL_IMAGE_SIZES.HD);
+        THUMBNAIL_IMAGE_SIZES.HD
+      );
     } else {
       upscaleW = THUMBNAIL_IMAGE_SIZES.SMALL;
       upscaleH = THUMBNAIL_IMAGE_SIZES.SMALL;
       fromUri = this.generateThumbnailUri(
         relativeImageUri,
         THUMBNAIL_IMAGE_SIZES.MEDIUM,
-        THUMBNAIL_IMAGE_SIZES.MEDIUM);
+        THUMBNAIL_IMAGE_SIZES.MEDIUM
+      );
     }
 
     toUri = this.generateThumbnailUri(relativeImageUri, upscaleW, upscaleH);
@@ -80,7 +93,5 @@ export class ImageS3Service implements IImageService {
       }
       await this.internalSaveThumbnail(fromUri, toUri, w, h);
     }
-
   }
-
 }

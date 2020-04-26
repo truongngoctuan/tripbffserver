@@ -22,24 +22,26 @@ export async function FavoriteLocationImage(
   const { ownerId, tripId, locationId, imageId, isFavorite } = command;
 
   const state = await reducers.getCurrentState(tripId);
-  const location = _.find(state.locations, loc => loc.locationId == locationId);
+  const location = _.find(
+    state.locations,
+    (loc) => loc.locationId == locationId
+  );
   if (!location) return BadRequest("LocationNotFound");
 
-  const image = _.find(location.images, img => img.imageId == imageId);
+  const image = _.find(location.images, (img) => img.imageId == imageId);
   if (!image) return BadRequest("LocationImageNotFound");
   if (image.isFavorite != isFavorite) {
-
     const event: TripEvent = {
       type: "LocationImagesFavored",
       ownerId,
       tripId,
       locationId,
       imageId,
-      isFavorite
+      isFavorite,
     };
-  
+
     eventHandler.save(event);
-  
+
     //update read store synchronously
     await emitter.emit(event);
   }

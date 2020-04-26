@@ -28,18 +28,18 @@ export class JobDispatcher implements IJobDispatcher {
 
       // if (resp === 1) {
       // send anyway, regardless of the queue is created or not
-      rsmq.sendMessage({ qname: qName, message: JSON.stringify(data) }, (
-        err: any,
-        resp: any,
-      ) => {
-        if (err) {
-          console.log("PUB error", err);
+      rsmq.sendMessage(
+        { qname: qName, message: JSON.stringify(data) },
+        (err: any, resp: any) => {
+          if (err) {
+            console.log("PUB error", err);
+          }
+          if (resp) {
+            console.log("Message sent. ID:", resp);
+            console.log("Message data", data);
+          }
         }
-        if (resp) {
-          console.log("Message sent. ID:", resp);
-          console.log("Message data", data);
-        }
-      });
+      );
       // }
     });
   }

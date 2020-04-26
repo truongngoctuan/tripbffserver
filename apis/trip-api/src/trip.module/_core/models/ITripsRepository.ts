@@ -10,11 +10,23 @@ export interface ITripMinimized {
     description: string;
     imageUrl?: string;
   }[];
+  createdById: string;
+  createdDate?: Date;
+  canContribute: boolean;
+  isPublic: boolean;
 }
 
 export interface ITripsRepository {
   list: (ownerId: string) => Promise<Array<ITripMinimized>>;
   create: (ownerId: string, payload: ITripMinimized) => Promise<ITripMinimized>;
   update: (ownerId: string, payload: ITripMinimized) => Promise<void>;
-  getById: (ownerId: string, tripId: string) => Promise<ITripMinimized | undefined>;
+  getById: (
+    ownerId: string,
+    tripId: string
+  ) => Promise<ITripMinimized | undefined>;
+  listNewsFeed: (
+    userId: string,
+    page: number,
+    numberOfTrip: number
+  ) => Promise<Array<ITripMinimized>>;
 }

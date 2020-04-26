@@ -2,21 +2,16 @@ import { ITrip } from "../../models/ITrip";
 import _ from "lodash";
 import { ITripMinimized } from "../../models/ITripsRepository";
 
-
-
 export class TripsMinimizedReducer {
-
   async transform(state: ITrip): Promise<ITripMinimized> {
-
     //each location will have an represent image
     //if image = "" mean to be filled with default image
-    const locationImages = state.locations.map(loc => {
-      const favoredImages = loc.images.filter(img => img.isFavorite);
+    const locationImages = state.locations.map((loc) => {
+      const favoredImages = loc.images.filter((img) => img.isFavorite);
       let returnId;
       if (favoredImages.length > 0)
         returnId = favoredImages[0].externalStorageId;
-      if (loc.images.length > 0)
-        returnId = loc.images[0].externalStorageId;
+      if (loc.images.length > 0) returnId = loc.images[0].externalStorageId;
 
       return {
         name: loc.name,
@@ -26,14 +21,17 @@ export class TripsMinimizedReducer {
       };
     });
 
-
     const newState: ITripMinimized = {
       tripId: state.tripId,
       name: state.name,
       fromDate: state.fromDate,
       toDate: state.toDate,
       locationImages,
-      isDeleted: state.isDeleted
+      isDeleted: state.isDeleted,
+      createdById: state.createdById,
+      canContribute: state.canContribute,
+      isPublic: state.isPublic,
+      createdDate: state.createdDate,
     };
 
     return newState;
@@ -82,5 +80,4 @@ export class TripsMinimizedReducer {
   //       return state;
   //   }
   // }
-
 }

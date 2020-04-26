@@ -14,29 +14,33 @@ export type ImportTripCommand = {
   locations: Array<ITripLocation>;
 };
 
-export async function importTrip(command: ImportTripCommand, eventHandler: EventHandler, reducers: TripReducers, emitter: ServiceBus): Promise<CommandResult> {
+export async function importTrip(
+  command: ImportTripCommand,
+  eventHandler: EventHandler,
+  reducers: TripReducers,
+  emitter: ServiceBus
+): Promise<CommandResult> {
   //validate
 
   const { ownerId, tripId, locations } = command;
 
   //add ids internally
-  _.each(locations, loc => {
+  _.each(locations, (loc) => {
     loc.locationId = uuid4();
     loc.fromTime = loc.fromTime;
     loc.toTime = loc.toTime;
 
-    _.each(loc.images, img => {
+    _.each(loc.images, (img) => {
       img.imageId = uuid4();
       img.time = img.time;
     });
   });
 
-
   const event: TripEvent = {
     type: "TripImportLocations",
     ownerId,
     tripId,
-    locations
+    locations,
   };
 
   eventHandler.save(event);

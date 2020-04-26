@@ -10,51 +10,57 @@ import moment = require("moment");
 import { ISearchLocation } from "./_core/models/ISearchLocation";
 import { insertSearchLocations } from "./_core/services/CommonService";
 const fs = require("fs"),
-    path = require("path");
+  path = require("path");
 
 const dataSourceQueryHandler = IoC.dataSourceQueryHandler;
 
 module.exports = {
-  init: function(server: Server) {   
-
+  init: function (server: Server) {
     server.route({
       method: "GET",
       path: "/checkApiAlive",
-      handler: async function(request, h) {
-        try {          
+      handler: async function (request, h) {
+        try {
           return "API is alive";
         } catch (error) {
           console.log(error);
         }
       },
-      options: {        
-        tags: ["api"]
-      }
+      options: {
+        tags: ["api"],
+      },
     });
-    
+
     server.route({
       method: "GET",
       path: "/trips/searchLocations",
-      handler: async function(request) { 
+      handler: async function (request) {
         const params = request.query as any;
-        const searchLocations: ISearchLocation[] = await dataSourceQueryHandler.getSearchLocations(params.title);
+        const searchLocations: ISearchLocation[] = await dataSourceQueryHandler.getSearchLocations(
+          params.title
+        );
         return searchLocations;
       },
       options: {
         auth: "simple",
-        tags: ["api"]
-      }
+        tags: ["api"],
+      },
     });
 
     server.route({
       method: "POST",
       path: "/insertSearchLocations",
-      handler: async function(request) {   
-
-        const fileTravelPath = path.join(__dirname, "/_appData/TravelData");    
-        const fileRestaurantPath = path.join(__dirname, "/_appData/RestaurantData");
+      handler: async function (request) {
+        const fileTravelPath = path.join(__dirname, "/_appData/TravelData");
+        const fileRestaurantPath = path.join(
+          __dirname,
+          "/_appData/RestaurantData"
+        );
         const fileEduPath = path.join(__dirname, "/_appData/EducationData");
-        const fileEntertainPath = path.join(__dirname, "/_appData/EntertainData");
+        const fileEntertainPath = path.join(
+          __dirname,
+          "/_appData/EntertainData"
+        );
 
         insertSearchLocations(fileTravelPath);
         insertSearchLocations(fileRestaurantPath);
@@ -65,350 +71,355 @@ module.exports = {
       },
       options: {
         tags: ["api"],
-        auth: "simple"
-      }
+        auth: "simple",
+      },
     });
 
     server.route({
       method: "GET",
       path: "/trips/getTopNearerLocationsByCoordinate",
-      handler: async function(request) { 
+      handler: async function (request) {
         const { lat, long } = request.query as any;
-        const nearestLocation = await dataSourceQueryHandler.getTopNearerLocationsByCoordinate(lat, long);
+        const nearestLocation = await dataSourceQueryHandler.getTopNearerLocationsByCoordinate(
+          lat,
+          long
+        );
         return nearestLocation;
       },
       options: {
         auth: "simple",
-        tags: ["api"]
-      }
+        tags: ["api"],
+      },
     });
 
     server.route({
       method: "POST",
       path: "/registerNotify",
-      handler: async function(request) {   
+      handler: async function (request) {
         const rawData = request.payload as any;
         const data = JSON.parse(rawData);
         const repository = new RegisterNotifyRepository();
         const createdDate = moment();
         repository.insert({
           email: data.email,
-          createdDate
+          createdDate,
         });
         return true;
       },
       options: {
         tags: ["api"],
-        cors: true
-      }
+        cors: true,
+      },
     });
-
 
     server.route({
       method: "GET",
       path: "/registerNotify/list",
-      handler: async function(request) {
+      handler: async function (request) {
         const repository = new RegisterNotifyRepository();
         const registeredItems = await repository.list();
         return registeredItems;
       },
       options: {
         tags: ["api"],
-        cors: true
-      }
+        cors: true,
+      },
     });
 
     server.route({
-        method: "GET",
-        path: "/trips/feelings",
-        handler: async function(request) {
-          const feelings = await dataSourceQueryHandler.getFeelings();
+      method: "GET",
+      path: "/trips/feelings",
+      handler: async function (request) {
+        const feelings = await dataSourceQueryHandler.getFeelings();
 
-          for (let i = 0; i < feelings.length; i++) {
-            const item = feelings[i];
-            const signedUrl = item.icon ? await IoC.fileService.signGetIcon(item.icon) : "";
-            item.icon = signedUrl;
-          }
+        for (let i = 0; i < feelings.length; i++) {
+          const item = feelings[i];
+          const signedUrl = item.icon
+            ? await IoC.fileService.signGetIcon(item.icon)
+            : "";
+          item.icon = signedUrl;
+        }
 
-          return feelings;
-        },
-        options: {
-          auth: "simple",
-          tags: ["api"]
-      }
+        return feelings;
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+      },
     });
 
     //TODO: Insert feelings route will be removed later
     server.route({
       method: "POST",
       path: "/trips/feelings/insert",
-      handler: async function(request) {
-        const feelingRepo =  new FeelingRepository();
+      handler: async function (request) {
+        const feelingRepo = new FeelingRepository();
         const feelings: Array<IFeeling> = [
           {
             feelingId: uuid4(),
             label_en: "Beautiful",
             label_vi: "Đẹp",
-            icon: "emoji/01_Beautiful.png"
+            icon: "emoji/01_Beautiful.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Wonderful",
             label_vi: "Tuyệt vời",
-            icon: "emoji/02_Wonderful.png"
+            icon: "emoji/02_Wonderful.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Peaceful",
             label_vi: "Yên bình",
-            icon: "emoji/03_Peaceful.png"
+            icon: "emoji/03_Peaceful.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Free",
             label_vi: "Tự do",
-            icon: "emoji/04_Free.png"
+            icon: "emoji/04_Free.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Comfortable",
             label_vi: "Thoải mái",
-            icon: "emoji/05_Comfortable.png"
+            icon: "emoji/05_Comfortable.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Chill",
             label_vi: "Chill",
-            icon: "emoji/chill.png"
+            icon: "emoji/chill.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Chất phát ngất",
             label_vi: "Chất phát ngất",
-            icon: "emoji/Chat_phat_ngat.png"
+            icon: "emoji/Chat_phat_ngat.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Hạn hán lời",
             label_vi: "Hạn hán lời",
-            icon: "emoji/han_han_loi.png"
+            icon: "emoji/han_han_loi.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Mình thích thì mình làm thôi",
             label_vi: "Mình thích thì mình làm thôi",
-            icon: "emoji/minh_thich_thi_minh_lam_thoi.png"
+            icon: "emoji/minh_thich_thi_minh_lam_thoi.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Trẻ trâu",
             label_vi: "Trẻ trâu",
-            icon: "emoji/tre_trau.png"
+            icon: "emoji/tre_trau.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Cool",
             label_vi: "Ngầu",
-            icon: "emoji/cool.png"
-          },         
+            icon: "emoji/cool.png",
+          },
           {
             feelingId: uuid4(),
             label_en: "Happy",
             label_vi: "Hạnh phúc",
-            icon: "emoji/happy.png"
+            icon: "emoji/happy.png",
           },
           {
             feelingId: uuid4(),
             label_en: "In Love",
             label_vi: "Đang yêu",
-            icon: "emoji/in-love.png"
-          },      
+            icon: "emoji/in-love.png",
+          },
           {
             feelingId: uuid4(),
             label_en: "Loved",
             label_vi: "Được yêu",
-            icon: "emoji/loved.png"
-          },   
+            icon: "emoji/loved.png",
+          },
           {
             feelingId: uuid4(),
             label_en: "Cute",
             label_vi: "Dễ thương",
-            icon: "emoji/cute.png"
-          },  
+            icon: "emoji/cute.png",
+          },
           {
             feelingId: uuid4(),
             label_en: "Excited",
             label_vi: "Hào hứng",
-            icon: "emoji/excited.png"
-          },     
+            icon: "emoji/excited.png",
+          },
           {
             feelingId: uuid4(),
             label_en: "Crazy",
             label_vi: "Khùng",
-            icon: "emoji/crazy.png"
-          },  
+            icon: "emoji/crazy.png",
+          },
           {
             feelingId: uuid4(),
             label_en: "Silly",
             label_vi: "Ngớ ngẩn",
-            icon: "emoji/silly.png"
-          }, 
+            icon: "emoji/silly.png",
+          },
           {
             feelingId: uuid4(),
             label_en: "Relaxed",
             label_vi: "Thư giãn",
-            icon: "emoji/relaxed.png"
+            icon: "emoji/relaxed.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Motivated",
             label_vi: "Có động lực",
-            icon: "emoji/motivated.png"
+            icon: "emoji/motivated.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Confident",
             label_vi: "Tự tin",
-            icon: "emoji/confident.png"
+            icon: "emoji/confident.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Fresh",
             label_vi: "Tươi mới",
-            icon: "emoji/fresh.png"
+            icon: "emoji/fresh.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Lucky",
             label_vi: "May mắn",
-            icon: "emoji/lucky.png"
+            icon: "emoji/lucky.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Cold",
             label_vi: "Lạnh",
-            icon: "emoji/cold.png"
-          },    
+            icon: "emoji/cold.png",
+          },
           {
             feelingId: uuid4(),
             label_en: "Worried",
             label_vi: "Lo lắng",
-            icon: "emoji/worried.png"
-          },   
+            icon: "emoji/worried.png",
+          },
           {
             feelingId: uuid4(),
             label_en: "Funny",
             label_vi: "Hài hước",
-            icon: "emoji/funny.png"
+            icon: "emoji/funny.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Inspired",
             label_vi: "Được truyền cảm hứng",
-            icon: "emoji/inspired.png"
+            icon: "emoji/inspired.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Super",
             label_vi: "Phi thường",
-            icon: "emoji/super.png"
+            icon: "emoji/super.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Satisfied",
             label_vi: "Thỏa mãn",
-            icon: "emoji/satisfied.png"
+            icon: "emoji/satisfied.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Safe",
             label_vi: "An toàn",
-            icon: "emoji/safe.png"
+            icon: "emoji/safe.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Sad",
             label_vi: "Buồn",
-            icon: "emoji/sad.png"
+            icon: "emoji/sad.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Tired",
             label_vi: "Mệt mỏi",
-            icon: "emoji/tired.png"
-          }, 
+            icon: "emoji/tired.png",
+          },
           {
             feelingId: uuid4(),
             label_en: "Angry",
             label_vi: "Giận dữ",
-            icon: "emoji/angry.png"
-          },  
+            icon: "emoji/angry.png",
+          },
           {
             feelingId: uuid4(),
             label_en: "Exhausted",
             label_vi: "Kiệt sức",
-            icon: "emoji/exhausted.png"
-          }, 
+            icon: "emoji/exhausted.png",
+          },
           {
             feelingId: uuid4(),
             label_en: "Bored",
             label_vi: "Chán",
-            icon: "emoji/bored.png"
+            icon: "emoji/bored.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Sleepy",
             label_vi: "Buồn ngủ",
-            icon: "emoji/sleepy.png"
+            icon: "emoji/sleepy.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Hungry",
             label_vi: "Đói",
-            icon: "emoji/hungry.png"
+            icon: "emoji/hungry.png",
           },
           {
             feelingId: uuid4(),
             label_en: "Bad",
             label_vi: "Tồi tệ",
-            icon: "emoji/bad.png"
-          }, 
+            icon: "emoji/bad.png",
+          },
           {
             feelingId: uuid4(),
             label_en: "Disappointed",
             label_vi: "Thất vọng",
-            icon: "emoji/disappointed.png"
-          },       
+            icon: "emoji/disappointed.png",
+          },
           {
             feelingId: uuid4(),
             label_en: "Heartbroken",
             label_vi: "Trái tim tan vỡ",
-            icon: "emoji/heartbroken.png"
-          },         
+            icon: "emoji/heartbroken.png",
+          },
           {
             feelingId: uuid4(),
             label_en: "Lonely",
             label_vi: "Cô đơn",
-            icon: "emoji/lonely.png"
-          }
+            icon: "emoji/lonely.png",
+          },
         ];
         feelingRepo.insertMany(feelings);
         return true;
-      }
+      },
     });
 
-    //////////////  ACTIVITY ROUTES /////////////////  
-   
+    //////////////  ACTIVITY ROUTES /////////////////
 
     server.route({
       method: "GET",
       path: "/trips/activities",
-      handler: async function(request) {
+      handler: async function (request) {
         const activities = await dataSourceQueryHandler.getActivities();
 
         for (let i = 0; i < activities.length; i++) {
           const item = activities[i];
-          const signedUrl = item.icon ? await IoC.fileService.signGetIcon(item.icon) : "";
+          const signedUrl = item.icon
+            ? await IoC.fileService.signGetIcon(item.icon)
+            : "";
           item.icon = signedUrl;
         }
 
@@ -416,319 +427,319 @@ module.exports = {
       },
       options: {
         auth: "simple",
-        tags: ["api"]
-       }
-      });
+        tags: ["api"],
+      },
+    });
 
     //TODO: Insert activities route will be removed later
     server.route({
       method: "POST",
       path: "/trips/activities/insert",
-      handler: async function(request) {
-        const activityRepo =  new ActivityRepository();
+      handler: async function (request) {
+        const activityRepo = new ActivityRepository();
         const activities: Array<IActivity> = [
           {
             activityId: uuid4(),
             label_en: "Eat & Drink",
             label_vi: "Ăn uống",
-            icon: "activity/Eat.png"
+            icon: "activity/Eat.png",
           },
           {
             activityId: uuid4(),
             label_en: "Hiking",
             label_vi: "Đi bộ đường dài ngắn ngày",
-            icon: "activity/hiking.png"
+            icon: "activity/hiking.png",
           },
           {
             activityId: uuid4(),
             label_en: "Trekking",
             label_vi: "Đi bộ đường dài nhiều ngày",
-            icon: "activity/trekking.png"
+            icon: "activity/trekking.png",
           },
           {
             activityId: uuid4(),
             label_en: "Walking with a Storm",
             label_vi: "Bước đi với một cơn bão",
-            icon: "activity/walking-with-a-storm.png"
+            icon: "activity/walking-with-a-storm.png",
           },
           {
             activityId: uuid4(),
             label_en: "Stargazing",
             label_vi: "Ngắm sao",
-            icon: "activity/stargazing.png"
+            icon: "activity/stargazing.png",
           },
           {
             activityId: uuid4(),
             label_en: "Cloud hunting",
             label_vi: "Săn mây",
-            icon: "activity/cloud.png"
+            icon: "activity/cloud.png",
           },
           {
             activityId: uuid4(),
             label_en: "Watch the sunrise",
             label_vi: "Ngắm mặt trời mọc",
-            icon: "activity/sunrise.png"
+            icon: "activity/sunrise.png",
           },
           {
             activityId: uuid4(),
             label_en: "Watch the sunset",
             label_vi: "Ngắm mặt trời lặn",
-            icon: "activity/sunset.png"
+            icon: "activity/sunset.png",
           },
           {
             activityId: uuid4(),
             label_en: "See rice fields",
             label_vi: "Ngắm ruộng lúa",
-            icon: "activity/rice_fields.png"
+            icon: "activity/rice_fields.png",
           },
           {
             activityId: uuid4(),
             label_en: "Rock climbing",
             label_vi: "Leo núi",
-            icon: "activity/climbing.png"
+            icon: "activity/climbing.png",
           },
           {
             activityId: uuid4(),
             label_en: "Camping",
             label_vi: "Cắm trại",
-            icon: "activity/night-camping.png"
+            icon: "activity/night-camping.png",
           },
           {
             activityId: uuid4(),
             label_en: "Swimming",
             label_vi: "Bơi",
-            icon: "activity/swimming.png"
+            icon: "activity/swimming.png",
           },
           {
             activityId: uuid4(),
             label_en: "Extreme sports",
             label_vi: "Thể thao mạo hiểm",
-            icon: "activity/extremem_sports.png"
-          }, 
+            icon: "activity/extremem_sports.png",
+          },
           {
             activityId: uuid4(),
             label_en: "Go sightseeing",
             label_vi: "Tham quan",
-            icon: "activity/sightseeing.png"
-          },  
+            icon: "activity/sightseeing.png",
+          },
           {
             activityId: uuid4(),
             label_en: "Roller coaster",
             label_vi: "Tàu lượn siêu tốc",
-            icon: "activity/roller_coster.png"
-          }, 
+            icon: "activity/roller_coster.png",
+          },
           {
             activityId: uuid4(),
             label_en: "Picnic",
             label_vi: "Dã ngoại",
-            icon: "activity/picnic.png"
-          }, 
+            icon: "activity/picnic.png",
+          },
           {
             activityId: uuid4(),
             label_en: "Photography",
             label_vi: "Chụp hình",
-            icon: "activity/photographer.png"
-          },          
+            icon: "activity/photographer.png",
+          },
           {
             activityId: uuid4(),
             label_en: "Fishing",
             label_vi: "Câu cá",
-            icon: "activity/fishing-man.png"
+            icon: "activity/fishing-man.png",
           },
           {
             activityId: uuid4(),
             label_en: "Paragliding",
             label_vi: "Dù lượn",
-            icon: "activity/Paragliding.png"
-          },  
+            icon: "activity/Paragliding.png",
+          },
           {
             activityId: uuid4(),
             label_en: "Motor racing",
             label_vi: "Đua xe máy",
-            icon: "activity/quad-bike.png"
+            icon: "activity/quad-bike.png",
           },
           {
             activityId: uuid4(),
             label_en: "Cycling",
             label_vi: "Đi xe đạp",
-            icon: "activity/bicycle-rider.png"
+            icon: "activity/bicycle-rider.png",
           },
           {
             activityId: uuid4(),
             label_en: "Kayaking",
             label_vi: "Chèo thuyền Kayak",
-            icon: "activity/kayak.png"
+            icon: "activity/kayak.png",
           },
           {
             activityId: uuid4(),
             label_en: "Surfing",
             label_vi: "Lướt sóng",
-            icon: "activity/surfer-surfing.png"
+            icon: "activity/surfer-surfing.png",
           },
           {
             activityId: uuid4(),
             label_en: "Horseback riding",
             label_vi: "Cưỡi ngựa",
-            icon: "activity/horse-riding.png"
-          },           
+            icon: "activity/horse-riding.png",
+          },
           {
             activityId: uuid4(),
             label_en: "Listen Music",
             label_vi: "Nghe nhạc",
-            icon: "activity/music.png"
-          },     
+            icon: "activity/music.png",
+          },
           {
             activityId: uuid4(),
             label_en: "Read book",
             label_vi: "Đọc sách",
-            icon: "activity/read-book.png"
+            icon: "activity/read-book.png",
           },
           {
             activityId: uuid4(),
             label_en: "Watch movie",
             label_vi: "Xem phim",
-            icon: "activity/watching-a-movie.png"
-          }
+            icon: "activity/watching-a-movie.png",
+          },
         ];
         activityRepo.insertMany(activities);
         return true;
-      }
-    });    
+      },
+    });
 
-    //////////////  HIGHLIGHT ROUTES /////////////////     
+    //////////////  HIGHLIGHT ROUTES /////////////////
 
     server.route({
-        method: "GET",
-        path: "/trips/highlights",
-        handler: async function(request) {
-          const highlights = dataSourceQueryHandler.getHighlights();
-          return highlights;
-        },
-        options: {
-          auth: "simple",
-          tags: ["api"]
-         }
-        });
-  
-      //TODO: Insert highlights route will be removed later
-      server.route({
-        method: "POST",
-        path: "/trips/highlights/insert",
-        handler: async function(request) {
-          const highlightRepo =  new HighlightRepository();
-          const highlights: Array<IHighlight> = [
-            {
-                highlightId: uuid4(),
-                label_en: "Beautiful",
-                label_vi: "Đẹp",
-                highlightType: "Like"
-            },
-            {
-              highlightId: uuid4(),
-              label_en: "Food is delicious",
-              label_vi: "Đồ ăn ngon",
-              highlightType: "Like"
-            },
-            {
-              highlightId: uuid4(),
-              label_en: "Good drinks",
-              label_vi: "Đồ uống ngon",
-              highlightType: "Like"
-            },
-            {
-              highlightId: uuid4(),
-              label_en: "Good services",
-              label_vi: "Phục vụ tốt",
-              highlightType: "Like"
-            },
-            {
-              highlightId: uuid4(),
-              label_en: "A lot of dogs",
-              label_vi: "Nhiều chó",
-              highlightType: "Like"
-            },
-            {
-              highlightId: uuid4(),
-              label_en: "Safe",
-              label_vi: "An toàn",
-              highlightType: "Like"
-            },
-            {
-              highlightId: uuid4(),
-              label_en: "Cheap",
-              label_vi: "Rẻ",
-              highlightType: "Like"
-            },
-            {
-              highlightId: uuid4(),
-              label_en: "Clean",
-              label_vi: "Sạch sẽ",
-              highlightType: "Like"
-            },
-            {
-              highlightId: uuid4(),
-              label_en: "Good movie",
-              label_vi: "Phim hay",
-              highlightType: "Like"
-            },
-            {
-              highlightId: uuid4(),
-              label_en: "Bad services",
-              label_vi: "Phục vụ tệ",
-              highlightType: "Dislike"
-            },
-            {
-              highlightId: uuid4(),
-              label_en: "Bad food",
-              label_vi: "Thức ăn dở",
-              highlightType: "Dislike"
-            },
-            {
-              highlightId: uuid4(),
-              label_en: "Bad drinks",
-              label_vi: "Đồ uống dở",
-              highlightType: "Dislike"
-            },    
-            {
-              highlightId: uuid4(),
-              label_en: "Very noise",
-              label_vi: "Rất ồn",
-              highlightType: "Dislike"
-            },
-            {
-              highlightId: uuid4(),
-              label_en: "Very crowded",
-              label_vi: "Rất đông",
-              highlightType: "Dislike"
-            },
-            {
-              highlightId: uuid4(),
-              label_en: "Not beautiful",
-              label_vi: "Không đẹp",
-              highlightType: "Dislike"
-            },
-            {
-              highlightId: uuid4(),
-              label_en: "Dangerous",
-              label_vi: "Nguy hiểm",
-              highlightType: "Dislike"
-            },
-            {
-              highlightId: uuid4(),
-              label_en: "Expensive",
-              label_vi: "Đắt",
-              highlightType: "Dislike"
-            },
-            {
-              highlightId: uuid4(),
-              label_en: "Dirty",
-              label_vi: "Bẩn",
-              highlightType: "Dislike"
-            }
-          ];
-          highlightRepo.insertMany(highlights);
-          return true;
-        }
-      });  
-  }
+      method: "GET",
+      path: "/trips/highlights",
+      handler: async function (request) {
+        const highlights = dataSourceQueryHandler.getHighlights();
+        return highlights;
+      },
+      options: {
+        auth: "simple",
+        tags: ["api"],
+      },
+    });
+
+    //TODO: Insert highlights route will be removed later
+    server.route({
+      method: "POST",
+      path: "/trips/highlights/insert",
+      handler: async function (request) {
+        const highlightRepo = new HighlightRepository();
+        const highlights: Array<IHighlight> = [
+          {
+            highlightId: uuid4(),
+            label_en: "Beautiful",
+            label_vi: "Đẹp",
+            highlightType: "Like",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "Food is delicious",
+            label_vi: "Đồ ăn ngon",
+            highlightType: "Like",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "Good drinks",
+            label_vi: "Đồ uống ngon",
+            highlightType: "Like",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "Good services",
+            label_vi: "Phục vụ tốt",
+            highlightType: "Like",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "A lot of dogs",
+            label_vi: "Nhiều chó",
+            highlightType: "Like",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "Safe",
+            label_vi: "An toàn",
+            highlightType: "Like",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "Cheap",
+            label_vi: "Rẻ",
+            highlightType: "Like",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "Clean",
+            label_vi: "Sạch sẽ",
+            highlightType: "Like",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "Good movie",
+            label_vi: "Phim hay",
+            highlightType: "Like",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "Bad services",
+            label_vi: "Phục vụ tệ",
+            highlightType: "Dislike",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "Bad food",
+            label_vi: "Thức ăn dở",
+            highlightType: "Dislike",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "Bad drinks",
+            label_vi: "Đồ uống dở",
+            highlightType: "Dislike",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "Very noise",
+            label_vi: "Rất ồn",
+            highlightType: "Dislike",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "Very crowded",
+            label_vi: "Rất đông",
+            highlightType: "Dislike",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "Not beautiful",
+            label_vi: "Không đẹp",
+            highlightType: "Dislike",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "Dangerous",
+            label_vi: "Nguy hiểm",
+            highlightType: "Dislike",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "Expensive",
+            label_vi: "Đắt",
+            highlightType: "Dislike",
+          },
+          {
+            highlightId: uuid4(),
+            label_en: "Dirty",
+            label_vi: "Bẩn",
+            highlightType: "Dislike",
+          },
+        ];
+        highlightRepo.insertMany(highlights);
+        return true;
+      },
+    });
+  },
 };

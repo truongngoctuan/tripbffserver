@@ -1,7 +1,6 @@
-
 export function getRelativePosition(bounds, positioning) {
-  var x = bounds.x;
-  var y = bounds.y;
+  let x = bounds.x;
+  let y = bounds.y;
   if (!positioning) return { x, y };
 
   if (positioning.left) x = x + positioning.left;

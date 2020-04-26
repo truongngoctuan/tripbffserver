@@ -5,6 +5,6 @@ const userFeedbackRepository = new UserFeedbackRepository();
 const userSettingRepository = new UserSettingRepository();
 
 export const IoC = {
-    userFeedbackRepository,
-    userSettingRepository 
+  userFeedbackRepository,
+  userSettingRepository,
 };

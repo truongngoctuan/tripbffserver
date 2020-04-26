@@ -8,7 +8,7 @@ export default function finishCreateInfographic(
 ): ITrip {
   const imageIdx = _.findIndex(
     prevState.infographics,
-    info => info.infographicId == command.infographicId
+    (info) => info.infographicId == command.infographicId
   );
   const infographic = prevState.infographics[imageIdx];
   infographic.externalStorageId = command.externalStorageId;
@@ -19,7 +19,7 @@ export default function finishCreateInfographic(
     infographics: [
       ...prevState.infographics.slice(0, imageIdx),
       infographic,
-      ...prevState.infographics.slice(imageIdx + 1)
-    ]
+      ...prevState.infographics.slice(imageIdx + 1),
+    ],
   };
 }

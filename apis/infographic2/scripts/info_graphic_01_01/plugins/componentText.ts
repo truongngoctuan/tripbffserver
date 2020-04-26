@@ -1,11 +1,12 @@
-import { InfographicConfig } from "../../../configs/index";
 import { getRelativePosition } from "./utils";
 import { RendererFunction } from "./typings";
 import _ from "lodash";
+import { CanvasAdaptor } from "../../utils";
+import { InfographicRendererConfig } from "./index.renderer";
 
-export const componentText: RendererFunction = function(
-  canvasAdaptor,
-  blockConfig: InfographicConfig.TextBlock,
+export const componentText: RendererFunction = function (
+  canvasAdaptor: CanvasAdaptor,
+  blockConfig: InfographicRendererConfig.TextBlock,
   cursor
 ) {
   const paper = canvasAdaptor.getPaper();
@@ -21,28 +22,29 @@ export const componentText: RendererFunction = function(
 };
 
 function renderTextBlock(
-  canvasAdaptor,
-  blockConfig: InfographicConfig.TextBlock,
+  canvasAdaptor: CanvasAdaptor,
+  blockConfig: InfographicRendererConfig.TextBlock,
   text: string,
   cursor
 ) {
-  var relativePosition = getRelativePosition(cursor, blockConfig.positioning);
+  const relativePosition = getRelativePosition(cursor, blockConfig.positioning);
   if (blockConfig.textAnchor === "middle") {
     relativePosition.x = relativePosition.x + cursor.width / 2;
   }
 
-  let locationNameNode = canvasAdaptor.drawText(text, relativePosition, {
+  const locationNameNode = canvasAdaptor.drawText(text, relativePosition, {
     color: blockConfig.color,
     font: blockConfig.fontFamily,
     fontSize: blockConfig.fontSize,
     fontWeight: blockConfig.fontWeight,
     textAnchor: blockConfig.textAnchor,
     textTransform: blockConfig.textTransform,
-    wrapNumber: blockConfig.width
+    wrapNumber: blockConfig.width,
+    numberOfLines: blockConfig.numberOfLines
     // wrapNumber: w - paddingLeftRight
   });
 
-  let locationNameNodeBbox = locationNameNode.bounds;
+  const locationNameNodeBbox = locationNameNode.bounds;
 
   return _.assign({}, cursor, { y: cursor.y + locationNameNodeBbox.height });
 }
