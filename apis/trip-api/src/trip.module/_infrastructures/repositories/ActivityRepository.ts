@@ -19,7 +19,7 @@ export class ActivityRepository implements IActivityRepository {
   }
 
   public async get(id: number) {
-    const activity = await ActivityDocument.findOne({ activityId: id });
+    const activity = await ActivityDocument.findOne({ activityId: id.toString() });
 
     if (!activity) return undefined;
 
@@ -52,7 +52,7 @@ export class ActivityRepository implements IActivityRepository {
 
   public async update(payload: IActivity) {
     const { activityId, label_en, label_vi, icon } = payload;
-    const activity = await ActivityDocument.findOne(activityId);
+    const activity = await ActivityDocument.findOne({ activityId });
 
     if (activity) {
       activity.label_en = label_en;

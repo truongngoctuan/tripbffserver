@@ -1,5 +1,5 @@
 import { Lifecycle } from "@hapi/hapi";
-import Boom from "boom";
+import Boom from "@hapi/boom";
 
 export const failActionInResponse: Lifecycle.Method = async (
   request,

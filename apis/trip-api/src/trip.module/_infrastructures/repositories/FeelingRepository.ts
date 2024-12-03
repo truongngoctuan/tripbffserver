@@ -19,7 +19,7 @@ export class FeelingRepository implements IFeelingRepository {
   }
 
   public async get(id: number) {
-    const feeling = await FeelingDocument.findOne({ feelingId: id });
+    const feeling = await FeelingDocument.findOne({ feelingId: id.toString() });
 
     if (!feeling) return undefined;
 
@@ -52,7 +52,7 @@ export class FeelingRepository implements IFeelingRepository {
 
   public async update(payload: IFeeling) {
     const { feelingId, label_en, label_vi, icon } = payload;
-    const feeling = await FeelingDocument.findOne(feelingId);
+    const feeling = await FeelingDocument.findOne({ feelingId });
 
     if (feeling) {
       feeling.label_en = label_en;

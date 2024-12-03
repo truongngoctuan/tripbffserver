@@ -19,7 +19,7 @@ export class HighlightRepository implements IHighlightRepository {
   }
 
   public async get(id: number) {
-    const highlight = await HighlightDocument.findOne({ highlightId: id });
+    const highlight = await HighlightDocument.findOne({ highlightId: id.toString() });
 
     if (!highlight) return undefined;
 
@@ -52,7 +52,7 @@ export class HighlightRepository implements IHighlightRepository {
 
   public async update(payload: IHighlight) {
     const { highlightId, label_en, label_vi, highlightType } = payload;
-    const highlight = await HighlightDocument.findOne(highlightId);
+    const highlight = await HighlightDocument.findOne({ highlightId });
 
     if (highlight) {
       highlight.label_en = label_en;

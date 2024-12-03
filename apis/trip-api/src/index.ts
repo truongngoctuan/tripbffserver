@@ -56,7 +56,7 @@ const redis = require("redis");
     },
   });
 
-  monitoringService.addMonitoringService(server);
+  // monitoringService.addMonitoringService(server);
 
   // log requests
   server.ext("onRequest", (request, h) => {
