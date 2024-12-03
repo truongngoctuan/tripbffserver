@@ -1,4 +1,4 @@
-import Joi from "@hapi/joi";
+import Joi from "joi";
 
 export const IdSchema = Joi.object({
   id: Joi.required().description("External Id"),

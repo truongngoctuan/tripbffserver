@@ -4,7 +4,7 @@ import { FooCommandHandler } from "./services/commands/_commandHandler";
 import { ServiceBus } from "./services/ServiceBus";
 import { FooQueryHandler } from "./services/FooQuery";
 import { FooEventRepository } from "./infrastructures/repositories/FooEventRepository";
-import Joi from "@hapi/joi";
+import Joi from "joi";
 
 const fooEventRepository = new FooEventRepository();
 const fooRepository = new FooRepository();

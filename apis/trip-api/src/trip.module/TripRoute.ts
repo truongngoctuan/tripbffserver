@@ -1,5 +1,5 @@
 import { Server } from "@hapi/hapi";
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import { CUtils } from "../_shared/ControllerUtils";
 import moment = require("moment-timezone");
 import { failActionInResponse } from "../_shared/joi-utils";

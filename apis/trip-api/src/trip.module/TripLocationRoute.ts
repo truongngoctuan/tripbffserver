@@ -7,7 +7,7 @@ import { IHighlight, ITripLocation } from "./_core/models/ITrip";
 
 const tripCommandHandler = IoC.tripCommandHandler;
 const tripQueryHandler = IoC.tripQueryHandler;
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import { joiLocationSchema, IdSchema } from "./JoiSchemas";
 import { failActionInResponse } from "../_shared/joi-utils";
 
